@@ -30,6 +30,7 @@ CREATE TABLE enum_country (
         );
 
 INSERT INTO enum_country (id, country) VALUES('cz', 'Czech Republic');
+INSERT INTO enum_country (id, country) VALUES('sk', 'Slovak Republic');
 
 DROP TABLE zone CASCADE;
 CREATE TABLE zone (
@@ -102,8 +103,8 @@ CREATE TABLE Contact (
         DiscloseFax boolean DEFAULT False,
         DiscloseEmail boolean DEFAULT False,
         AuthInfoPw varchar(32),
-        NotifyEmail varchar(1024)
-        VAT varchar(32),
+        NotifyEmail varchar(1024),
+        VAT varchar(32)
         );
 CREATE INDEX contact_id_idx ON Contact (ID);
 CREATE INDEX contact_roid_idx ON Contact (ROID);
