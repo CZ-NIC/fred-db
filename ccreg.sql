@@ -49,8 +49,7 @@ CREATE TABLE Registrar (
         ROID varchar(255) UNIQUE NOT NULL,
         Handle varchar(255) UNIQUE NOT NULL,
         Status smallint[], -- TODO: create trigger to check values agains enum_status
-        FName varchar(1024),
-        LName varchar(1024),
+        Name varchar(1024),
         Organization varchar(1024),
         Street1 varchar(1024),
         Street2 varchar(1024),
@@ -85,8 +84,7 @@ CREATE TABLE Contact (
         UpID INTEGER REFERENCES Registrar,
         UpDate timestamp,
         TrDate timestamp,
-        FName varchar(1024),
-        LName varchar(1024),
+        Name varchar(1024),
         Organization varchar(1024),
         Street1 varchar(1024),
         Street2 varchar(1024),
@@ -106,11 +104,27 @@ CREATE TABLE Contact (
         DiscloseEmail boolean DEFAULT False,
         AuthInfoPw varchar(32),
         NotifyEmail varchar(1024),
-        VAT varchar(32)
+        VAT varchar(32),
+        SSN varchar(32)
         );
 CREATE INDEX contact_id_idx ON Contact (ID);
 CREATE INDEX contact_roid_idx ON Contact (ROID);
 CREATE INDEX contact_handle_idx ON Contact (Handle);
+
+DROP TABLE Term CASCADE;
+CREATE TABLE Term (
+        ID SERIAL PRIMARY KEY,
+        CrDate date NOT NULL
+        );
+
+DROP TABLE ContactAgreement CASCADE;
+CREATE TABLE ContactAgreement (
+        ID SERIAL PRIMARY KEY,
+        ContactID INTEGER NOT NULL REFERENCES Contact ON UPDATE Cascade,
+        TermID INTEGER NOT NULL REFERENCES Term ON UPDATE Cascade
+        );
+CREATE INDEX contactagreement_contactid_idx ON ContactAgreement (ContactID);
+CREATE INDEX contactagreement_termid_id ON ContactAgreement (TermID);
 
 DROP TABLE Domain CASCADE;
 CREATE TABLE Domain (
