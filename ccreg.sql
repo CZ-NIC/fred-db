@@ -134,6 +134,7 @@ CREATE TABLE Domain (
         FQDN varchar(255) UNIQUE NOT NULL,
         Status smallint[], -- TODO: create trigger to check values agains enum_status
         Registrant INTEGER REFERENCES Contact,
+        NSSet INTEGER REFERENCES NSSet,
         ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL,
@@ -150,17 +151,43 @@ CREATE INDEX domain_roid_idx ON Domain (ROID);
 
 DROP TABLE domain_contact_map CASCADE;
 CREATE TABLE domain_contact_map (
-        DomainID INTEGER REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE,
-        ContactID INTEGER REFERENCES Contact ON UPDATE CASCADE,
-        Role CHAR(10) NOT NULL CHECK (Role in ('admin', 'tech', 'billing')),
-        UNIQUE (DomainID, ContactID, Role)
+        DomainID INTEGER REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+        ContactID INTEGER REFERENCES Contact ON UPDATE CASCADE NOT NULL,
+        UNIQUE (DomainID, ContactID)
         );
 CREATE INDEX domain_contact_map_domainid_idx ON domain_contact_map (DomainID);
+
+DROP TABLE NSSet CASCADE;
+CREATE TABLE NSSet (
+        ID SERIAL PRIMARY KEY,
+        ROID varchar(255) UNIQUE NOT NULL,
+        Handle varchar(255) UNIQUE NOT NULL,
+        Status smallint[], -- TODO: create trigger to check values agains enum_status
+        ClID INTEGER NOT NULL REFERENCES Registrar,
+        CrID INTEGER NOT NULL REFERENCES Registrar,
+        CrDate timestamp NOT NULL,
+        UpID INTEGER REFERENCES Registrar,
+        UpDate timestamp NOT NULL,
+        ExDate timestamp NOT NULL,
+        AuthInfoPw varchar(32)
+        );
+CREATE INDEX nsset_id_idx ON NSSet (ID);
+CREATE INDEX nsset_roid_idx ON NSSet (ROID);
+CREATE INDEX nsset_handle_idx ON NSSet (Handle);
+CREATE INDEX nsset_clid_idx ON NSSet (ClID);        
+
+DROP TABLE nsset_contact_map CASCADE;
+CREATE TABLE nsset_contact_map (
+        NSSetID INTEGER REFERENCES NSSet ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+        ContactID INTEGER REFERENCES Contact ON UPDATE CASCADE NOT NULL,
+        UNIQUE (NSSetID, ContactID)
+        );
+CREATE INDEX nsset_contact_map_nssetid_idx ON nsset_contact_map (NSSetID);
 
 DROP TABLE Host CASCADE;
 CREATE TABLE Host (
         ID SERIAL PRIMARY KEY,
-        DomainID INTEGER REFERENCES Domain ON UPDATE CASCADE,
+        NSSetID INTEGER REFERENCES NSSet ON UPDATE CASCADE,
         FQDN VARCHAR(255) UNIQUE NOT NULL,
         ClID INTEGER NOT NULL REFERENCES Registrar ON UPDATE CASCADE,
         CrDate TIMESTAMP NOT NULL,
@@ -170,7 +197,7 @@ CREATE TABLE Host (
         IpAddr INET[] NOT NULL -- NOTE: we don't have to store IP version, since it's obvious from address
         );
 
-CREATE INDEX host_domainid_idx ON Host (DomainID);
+CREATE INDEX host_nsset_idx ON Host (NSSetID);
 CREATE INDEX host_fqdn_idx ON Host (FQDN);
 
 DROP TABLE domain_host_map CASCADE;
