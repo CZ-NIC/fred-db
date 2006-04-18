@@ -21,13 +21,24 @@ INSERT INTO enum_action (id , status) VALUES(301 , 'HostInfo');
 INSERT INTO enum_action (id , status) VALUES(302 , 'HostDelete');
 INSERT INTO enum_action (id , status) VALUES(303 , 'HostUpdate');
 INSERT INTO enum_action (id , status) VALUES(304 , 'HostCreate');
+
+-- funkce pro NSSET
+INSERT INTO enum_action (id , status) VALUES(400 , 'NSsetCheck');
+INSERT INTO enum_action (id , status) VALUES(401 , 'NSsetInfo');
+INSERT INTO enum_action (id , status) VALUES(402 , 'NSsetDelete');
+INSERT INTO enum_action (id , status) VALUES(403 , 'NSsetUpdate');
+INSERT INTO enum_action (id , status) VALUES(404 , 'NSsetCreate');
+
 -- funkce pro domeny
-INSERT INTO enum_action (id , status) VALUES(400 , 'DomainCheck');
-INSERT INTO enum_action (id , status) VALUES(401 , 'DomainInfo');
-INSERT INTO enum_action (id , status) VALUES(402 , 'DomainDelete');
-INSERT INTO enum_action (id , status) VALUES(403 , 'DomainUpdate');
-INSERT INTO enum_action (id , status) VALUES(404 , 'DomainCreate');
-INSERT INTO enum_action (id , status) VALUES(405 , 'DomainTransfer');
+INSERT INTO enum_action (id , status) VALUES(500 , 'DomainCheck');
+INSERT INTO enum_action (id , status) VALUES(501 , 'DomainInfo');
+INSERT INTO enum_action (id , status) VALUES(502 , 'DomainDelete');
+INSERT INTO enum_action (id , status) VALUES(503 , 'DomainUpdate');
+INSERT INTO enum_action (id , status) VALUES(504 , 'DomainCreate');
+INSERT INTO enum_action (id , status) VALUES(505 , 'DomainTransfer');
+
+-- funkce nezadana
+INSERT INTO enum_action (id , status) VALUES( 1000 , 'UnknowAction');
 
 --  tabulka pro zapis transakci
 DROP TABLE Action CASCADE;
