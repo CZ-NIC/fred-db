@@ -1,6 +1,7 @@
 
 DELETE FROM registraracl;
 INSERT INTO registraracl VALUES( 1, 3 , 'certifikat' ,  'heslo' );
+INSERT INTO registraracl VALUES( 100, 3 , 'certifikat' ,  'heslo' );
 INSERT INTO registraracl VALUES( 110, 3 , 'certifikat' ,  'heslo' );
 INSERT INTO registraracl VALUES( 120 , 3 , 'certifikat' ,  'heslo' );
 INSERT INTO registraracl VALUES( 130, 3 , 'certifikat' ,  'heslo' );
@@ -15,3 +16,4 @@ INSERT INTO registraracl VALUES( 500, 3 , 'certifikat' ,  'heslo' );
 INSERT INTO registraracl VALUES( 600, 3 , 'certifikat' ,  'heslo' );
 INSERT INTO registraracl VALUES( 700, 3 , 'certifikat' ,  'heslo' );
 INSERT INTO registraracl VALUES( 800, 3 , 'certifikat' ,  'heslo' );
+
