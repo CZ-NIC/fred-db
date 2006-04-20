@@ -44,7 +44,7 @@ INSERT INTO enum_action (id , status) VALUES( 1000 , 'UnknowAction');
 DROP TABLE Action CASCADE;
 CREATE TABLE Action (
         ID SERIAL PRIMARY KEY, -- id zaznamu
-	clientID INTEGER NOT NULL REFERENCES Login, -- id clienta z tabulky Login
+	clientID INTEGER, --  NOT NULL REFERENCES Login, -- id clienta z tabulky Login moznost i nula
 	action INTEGER NOT NULL REFERENCES enum_action, -- typ funkce z enum cisleniku
         response  INTEGER  REFERENCES enum_error, -- navratovt kod funkce 
         StartDate timestamp NOT NULL DEFAULT now(), -- datum a cas prihlaseni do systemu
