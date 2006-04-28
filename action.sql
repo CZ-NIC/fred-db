@@ -8,6 +8,11 @@ CREATE TABLE enum_action (
 -- prihlasovaci funkce
 INSERT INTO enum_action (id , status) VALUES(100 , 'ClientLogin');
 INSERT INTO enum_action (id , status) VALUES(101 , 'ClientLogout');
+-- poll funkce
+INSERT INTO enum_action (id , status) VALUES(  120 , 'PollAcknowledgement' );
+INSERT INTO enum_action (id , status) VALUES(  121 ,  'PollResponse' );
+
+ 
 -- funkce pro praci s kontakty
 INSERT INTO enum_action (id , status) VALUES(200 , 'ContactCheck');
 INSERT INTO enum_action (id , status) VALUES(201 , 'ContactInfo');
