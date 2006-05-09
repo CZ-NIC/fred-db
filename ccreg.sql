@@ -1,28 +1,4 @@
 
-DROP TABLE enum_status CASCADE;
-CREATE TABLE enum_status (
-        id SERIAL PRIMARY KEY,
-        status varchar(64) UNIQUE NOT NULL
-        );
-
-INSERT INTO enum_status (status) VALUES('clientDeleteProhibited');
-INSERT INTO enum_status (status) VALUES('serverDeleteProhibited');
-INSERT INTO enum_status (status) VALUES('clientHold');
-INSERT INTO enum_status (status) VALUES('serverHold');
-INSERT INTO enum_status (status) VALUES('clientRenewProhibited');
-INSERT INTO enum_status (status) VALUES('serverRenewProhibited');
-INSERT INTO enum_status (status) VALUES('clientTransferProhibited');
-INSERT INTO enum_status (status) VALUES('serverTransferProhibited');
-INSERT INTO enum_status (status) VALUES('clientUpdateProhibited');
-INSERT INTO enum_status (status) VALUES('serverUpdateProhibited');
-INSERT INTO enum_status (status) VALUES('inactive');
-INSERT INTO enum_status (status) VALUES('ok');
-INSERT INTO enum_status (status) VALUES('pendingCreate');
-INSERT INTO enum_status (status) VALUES('pendingDelete');
-INSERT INTO enum_status (status) VALUES('pendingRenew');
-INSERT INTO enum_status (status) VALUES('pendingTransfer');
-INSERT INTO enum_status (status) VALUES('pendingUpdate');
-
 DROP TABLE enum_country CASCADE;
 CREATE TABLE enum_country (
         id char(2) PRIMARY KEY,
@@ -140,7 +116,6 @@ CREATE TABLE Domain (
         CrDate timestamp NOT NULL,
         UpID INTEGER REFERENCES Registrar,
         UpDate timestamp NOT NULL,
-        ExDate timestamp NOT NULL,
         TrDate timestamp,
         AuthInfoPw varchar(32)
         );
