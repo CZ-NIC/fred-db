@@ -159,16 +159,17 @@ CREATE TABLE nsset_contact_map (
         );
 CREATE INDEX nsset_contact_map_nssetid_idx ON nsset_contact_map (NSSetID);
 
+
 DROP TABLE Host CASCADE;
 CREATE TABLE Host (
         ID SERIAL PRIMARY KEY,
         NSSetID INTEGER REFERENCES NSSet ON UPDATE CASCADE,
-        FQDN VARCHAR(255) UNIQUE NOT NULL,
-        ClID INTEGER NOT NULL REFERENCES Registrar ON UPDATE CASCADE,
-        CrDate TIMESTAMP NOT NULL,
-        UpID INTEGER NOT NULL REFERENCES Registrar ON UPDATE CASCADE ON DELETE SET NULL,
-        UpDate TIMESTAMP NOT NULL,
-        Status INTEGER[], -- TODO: write trigger to check values
+        FQDN VARCHAR(255)   NOT NULL,  -- nemuze byt UNIQUE pro dva ruzne nssety stejny dns host
+--        ClID INTEGER NOT NULL REFERENCES Registrar ON UPDATE CASCADE,
+-- zruseno        CrDate TIMESTAMP NOT NULL,
+-- duplicitni    UpID INTEGER NOT NULL REFERENCES Registrar ON UPDATE CASCADE ON DELETE SET NULL,
+-- udaje         UpDate TIMESTAMP NOT NULL,
+-- s nsset       Status INTEGER[], -- TODO: write trigger to check values
         IpAddr INET[] NOT NULL -- NOTE: we don't have to store IP version, since it's obvious from address
         );
 
