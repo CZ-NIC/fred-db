@@ -41,7 +41,8 @@ INSERT INTO enum_action (id , status) VALUES(502 , 'DomainDelete');
 INSERT INTO enum_action (id , status) VALUES(503 , 'DomainUpdate');
 INSERT INTO enum_action (id , status) VALUES(504 , 'DomainCreate');
 INSERT INTO enum_action (id , status) VALUES(505 , 'DomainTransfer');
-INSERT INTO insert into (id , status) VALUES(506 , 'DomainRenew' );
+INSERT INTO enum_action (id , status) VALUES(506 , 'DomainRenew');
+INSERT INTO enum_action (id , status) VALUES(507 , 'DomainTrade');
 
 -- funkce nezadana
 INSERT INTO enum_action (id , status) VALUES( 1000 , 'UnknowAction');
