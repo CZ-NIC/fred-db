@@ -19,7 +19,7 @@ INSERT INTO enum_action (id , status) VALUES(201 , 'ContactInfo');
 INSERT INTO enum_action (id , status) VALUES(202 , 'ContactDelete');
 INSERT INTO enum_action (id , status) VALUES(203 , 'ContactUpdate');
 INSERT INTO enum_action (id , status) VALUES(204 , 'ContactCreate');
-INSERT INTO enum_action (id , status) VALUES(205 , 'ContactTransfer');
+
 -- funkce pro hosty
 INSERT INTO enum_action (id , status) VALUES(300 , 'HostCheck');
 INSERT INTO enum_action (id , status) VALUES(301 , 'HostInfo');
@@ -33,6 +33,7 @@ INSERT INTO enum_action (id , status) VALUES(401 , 'NSsetInfo');
 INSERT INTO enum_action (id , status) VALUES(402 , 'NSsetDelete');
 INSERT INTO enum_action (id , status) VALUES(403 , 'NSsetUpdate');
 INSERT INTO enum_action (id , status) VALUES(404 , 'NSsetCreate');
+INSERT INTO enum_action (id , status) VALUES(405 , 'NSsetTransfer');
 
 -- funkce pro domeny
 INSERT INTO enum_action (id , status) VALUES(500 , 'DomainCheck');
