@@ -65,7 +65,7 @@ CREATE TABLE Domain_History (
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL,
         UpID INTEGER REFERENCES Registrar,
-        UpDate timestamp NOT NULL,
+        UpDate timestamp,
         ExDate timestamp NOT NULL,
         TrDate timestamp,
         AuthInfoPw varchar(32)
@@ -92,8 +92,7 @@ CREATE TABLE NSSet_history  (
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL,
         UpID INTEGER REFERENCES Registrar,
-        UpDate timestamp NOT NULL,
-        ExDate timestamp NOT NULL,
+        UpDate timestamp,
         AuthInfoPw varchar(32)
         );
 CREATE INDEX nsset_history_historyid_idx ON NSSet_History (historyID);
