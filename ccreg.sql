@@ -143,7 +143,6 @@ CREATE TABLE NSSet (
         CrDate timestamp NOT NULL,
         UpID INTEGER REFERENCES Registrar,
         UpDate timestamp,
-        ExDate timestamp NOT NULL,
         AuthInfoPw varchar(32)
         );
 CREATE INDEX nsset_id_idx ON NSSet (ID);
