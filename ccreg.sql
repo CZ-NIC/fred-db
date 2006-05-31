@@ -115,7 +115,7 @@ CREATE TABLE Domain (
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL,
         UpID INTEGER REFERENCES Registrar,
-        UpDate timestamp NOT NULL,
+        UpDate timestamp,
         TrDate timestamp,
         AuthInfoPw varchar(32)
         );
@@ -142,7 +142,7 @@ CREATE TABLE NSSet (
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL,
         UpID INTEGER REFERENCES Registrar,
-        UpDate timestamp NOT NULL,
+        UpDate timestamp,
         ExDate timestamp NOT NULL,
         AuthInfoPw varchar(32)
         );
