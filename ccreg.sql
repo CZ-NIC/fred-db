@@ -169,7 +169,8 @@ CREATE TABLE Host (
 -- duplicitni    UpID INTEGER NOT NULL REFERENCES Registrar ON UPDATE CASCADE ON DELETE SET NULL,
 -- udaje         UpDate TIMESTAMP NOT NULL,
 -- s nsset       Status INTEGER[], -- TODO: write trigger to check values
-        IpAddr INET[] NOT NULL -- NOTE: we don't have to store IP version, since it's obvious from address
+        IpAddr INET[] NOT NULL,  -- NOTE: we don't have to store IP version, since it's obvious from address
+        UNIQUE (NSSetID, FQDN ) -- unikatni klic
         );
 
 CREATE INDEX host_nsset_idx ON Host (NSSetID);
