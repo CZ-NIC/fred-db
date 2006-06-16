@@ -121,3 +121,11 @@ CREATE TABLE Host_history  (
 
 CREATE INDEX host_history_historyid_idx ON HOST_History (historyID);
 
+DROP TABLE ENUMVal_history  CASCADE;
+CREATE TABLE ENUMVal_history (
+        historyID SERIAL PRIMARY KEY REFERENCES History, -- pouze jeden nsset 
+        DomainID INTEGER NOT NULL,
+        ExDate timestamp NOT NULL
+        );
+
+CREATE INDEX ENUMVal_history_historyid_idx ON ENUMVal_History (historyID);

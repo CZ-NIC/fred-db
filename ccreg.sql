@@ -87,20 +87,21 @@ CREATE INDEX contact_id_idx ON Contact (ID);
 CREATE INDEX contact_roid_idx ON Contact (ROID);
 CREATE INDEX contact_handle_idx ON Contact (Handle);
 
-DROP TABLE Term CASCADE;
-CREATE TABLE Term (
-        ID SERIAL PRIMARY KEY,
-        CrDate date NOT NULL
-        );
 
-DROP TABLE ContactAgreement CASCADE;
-CREATE TABLE ContactAgreement (
-        ID SERIAL PRIMARY KEY,
-        ContactID INTEGER NOT NULL REFERENCES Contact ON UPDATE Cascade,
-        TermID INTEGER NOT NULL REFERENCES Term ON UPDATE Cascade
-        );
-CREATE INDEX contactagreement_contactid_idx ON ContactAgreement (ContactID);
-CREATE INDEX contactagreement_termid_id ON ContactAgreement (TermID);
+# DROP TABLE Term CASCADE;
+# CREATE TABLE Term (
+#        ID SERIAL PRIMARY KEY,
+#        CrDate date NOT NULL
+#        );
+# 
+# DROP TABLE ContactAgreement CASCADE;
+# CREATE TABLE ContactAgreement (
+#         ID SERIAL PRIMARY KEY,
+#         ContactID INTEGER NOT NULL REFERENCES Contact ON UPDATE Cascade,
+#         TermID INTEGER NOT NULL REFERENCES Term ON UPDATE Cascade
+#         );
+# CREATE INDEX contactagreement_contactid_idx ON ContactAgreement (ContactID);
+# CREATE INDEX contactagreement_termid_id ON ContactAgreement (TermID);
 
 DROP TABLE Domain CASCADE;
 CREATE TABLE Domain (
@@ -200,11 +201,7 @@ CREATE TABLE DNSSEC (
 
 DROP TABLE ENUMVal CASCADE;
 CREATE TABLE ENUMVal (
-        ValID SERIAL PRIMARY KEY,
-        DomainID INTEGER NOT NULL REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE,
-        Method varchar(1024) NOT NULL,
-        EnumRegistrar CHARACTER VARYING(255) NOT NULL,
-        CrDate timestamp NOT NULL,
+        DomainID INTEGER NOT NULL PRIMARY KEY REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE,
         ExDate timestamp NOT NULL
         );
 
