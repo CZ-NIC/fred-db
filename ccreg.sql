@@ -2,11 +2,10 @@
 DROP TABLE enum_country CASCADE;
 CREATE TABLE enum_country (
         id char(2) PRIMARY KEY,
-        country varchar(1024) UNIQUE NOT NULL
+        country_cs  varchar(1024) UNIQUE -- volitelne cesky nazev 
+        country varchar(1024) UNIQUE NOT NULL , 
         );
 
-INSERT INTO enum_country (id, country) VALUES('cz', 'Czech Republic');
-INSERT INTO enum_country (id, country) VALUES('sk', 'Slovak Republic');
 
 DROP TABLE zone CASCADE;
 CREATE TABLE zone (
