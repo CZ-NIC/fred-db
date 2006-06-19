@@ -6,7 +6,8 @@ CREATE TABLE Login (
         LoginDate timestamp NOT NULL DEFAULT now(), -- datum a cas prihlaseni do systemu
         loginTRID varchar(128) NOT NULL, -- cislo prihlasovaci transakce
 	LogoutDate timestamp, -- datum a cas odhlaseni
-        logoutTRID varchar(128) -- cislo odhlasovaci transakce
+        logoutTRID varchar(128), -- cislo odhlasovaci transakce
+        lang  varchar(2) NOT NULL DEFAULT 'en' -- jazyk ve kterem se vraceji chybove zpravy
         );
 
 
