@@ -59,8 +59,8 @@ CREATE TABLE Domain_History (
         ROID varchar(255)  NOT NULL,
         FQDN varchar(255)  NOT NULL,
         Status smallint[], -- TODO: create trigger to check values agains enum_status
-        Registrant INTEGER REFERENCES Contact,
-        NSSet INTEGER REFERENCES NSSet,
+        Registrant INTEGER , -- zrusena reference
+        NSSet INTEGER , -- zruseny reference
         ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL,
