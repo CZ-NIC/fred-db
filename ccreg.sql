@@ -2,8 +2,8 @@
 DROP TABLE enum_country CASCADE;
 CREATE TABLE enum_country (
         id char(2) PRIMARY KEY,
-        country_cs  varchar(1024) UNIQUE -- volitelne cesky nazev 
-        country varchar(1024) UNIQUE NOT NULL , 
+        country_cs  varchar(1024) UNIQUE, -- volitelne cesky nazev 
+        country varchar(1024) UNIQUE NOT NULL
         );
 
 
@@ -53,12 +53,12 @@ CREATE TABLE Contact (
         Handle varchar(255) UNIQUE NOT NULL,
         ROID varchar(255) UNIQUE NOT NULL,
         Status smallint[], -- TODO: create trigger to check values agains enum_status
-# zruseno         ClID INTEGER NOT NULL REFERENCES Registrar,
+-- zruseno         ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL DEFAULT now(),
         UpID INTEGER REFERENCES Registrar,
         UpDate timestamp,
-# zruseno        TrDate timestamp,
+-- zruseno        TrDate timestamp,
         Name varchar(1024),
         Organization varchar(1024),
         Street1 varchar(1024),
@@ -77,7 +77,7 @@ CREATE TABLE Contact (
         DiscloseTelephone boolean DEFAULT False,
         DiscloseFax boolean DEFAULT False,
         DiscloseEmail boolean DEFAULT False,
-# zruseno       AuthInfoPw varchar(32),
+-- zruseno       AuthInfoPw varchar(32),
         NotifyEmail varchar(1024),
         VAT varchar(32),
         SSN varchar(32)
@@ -87,50 +87,20 @@ CREATE INDEX contact_roid_idx ON Contact (ROID);
 CREATE INDEX contact_handle_idx ON Contact (Handle);
 
 
-# DROP TABLE Term CASCADE;
-# CREATE TABLE Term (
-#        ID SERIAL PRIMARY KEY,
-#        CrDate date NOT NULL
-#        );
-# 
-# DROP TABLE ContactAgreement CASCADE;
-# CREATE TABLE ContactAgreement (
-#         ID SERIAL PRIMARY KEY,
-#         ContactID INTEGER NOT NULL REFERENCES Contact ON UPDATE Cascade,
-#         TermID INTEGER NOT NULL REFERENCES Term ON UPDATE Cascade
-#         );
-# CREATE INDEX contactagreement_contactid_idx ON ContactAgreement (ContactID);
-# CREATE INDEX contactagreement_termid_id ON ContactAgreement (TermID);
-
-DROP TABLE Domain CASCADE;
-CREATE TABLE Domain (
-        Zone INTEGER REFERENCES Zone (ID),
-        ID SERIAL PRIMARY KEY,
-        ROID varchar(255) UNIQUE NOT NULL,
-        FQDN varchar(255) UNIQUE NOT NULL,
-        Status smallint[], -- TODO: create trigger to check values agains enum_status
-        Registrant INTEGER REFERENCES Contact,
-        NSSet INTEGER REFERENCES NSSet,
-        ClID INTEGER NOT NULL REFERENCES Registrar,
-        CrID INTEGER NOT NULL REFERENCES Registrar,
-        CrDate timestamp NOT NULL,
-        UpID INTEGER REFERENCES Registrar,
-        UpDate timestamp,
-        TrDate timestamp,
-        AuthInfoPw varchar(32)
-        );
-CREATE INDEX domain_zone_idx ON Domain (Zone);
-CREATE INDEX domain_id_idx ON Domain (ID);
-CREATE INDEX domain_fqdn_idx ON Domain (FQDN);
-CREATE INDEX domain_roid_idx ON Domain (ROID);
-
-DROP TABLE domain_contact_map CASCADE;
-CREATE TABLE domain_contact_map (
-        DomainID INTEGER REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
-        ContactID INTEGER REFERENCES Contact ON UPDATE CASCADE NOT NULL,
-        UNIQUE (DomainID, ContactID)
-        );
-CREATE INDEX domain_contact_map_domainid_idx ON domain_contact_map (DomainID);
+-- DROP TABLE Term CASCADE;
+-- CREATE TABLE Term (
+--        ID SERIAL PRIMARY KEY,
+--        CrDate date NOT NULL
+--        );
+-- 
+-- DROP TABLE ContactAgreement CASCADE;
+-- CREATE TABLE ContactAgreement (
+--         ID SERIAL PRIMARY KEY,
+--         ContactID INTEGER NOT NULL REFERENCES Contact ON UPDATE Cascade,
+--         TermID INTEGER NOT NULL REFERENCES Term ON UPDATE Cascade
+--         );
+-- CREATE INDEX contactagreement_contactid_idx ON ContactAgreement (ContactID);
+-- CREATE INDEX contactagreement_termid_id ON ContactAgreement (TermID);
 
 DROP TABLE NSSet CASCADE;
 CREATE TABLE NSSet (
@@ -176,13 +146,44 @@ CREATE TABLE Host (
 CREATE INDEX host_nsset_idx ON Host (NSSetID);
 CREATE INDEX host_fqdn_idx ON Host (FQDN);
 
-DROP TABLE domain_host_map CASCADE;
-CREATE TABLE domain_host_map (
-        DomainID INTEGER NOT NULL REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE,
-        HostID INTEGER NOT NULL REFERENCES Host ON UPDATE CASCADE,
-        UNIQUE (DomainID, HostID)
+DROP TABLE Domain CASCADE;
+CREATE TABLE Domain (
+        Zone INTEGER REFERENCES Zone (ID),
+        ID SERIAL PRIMARY KEY,
+        ROID varchar(255) UNIQUE NOT NULL,
+        FQDN varchar(255) UNIQUE NOT NULL,
+        Status smallint[], -- TODO: create trigger to check values agains enum_status
+        Registrant INTEGER REFERENCES Contact,
+        NSSet INTEGER REFERENCES NSSet,
+        ClID INTEGER NOT NULL REFERENCES Registrar,
+        CrID INTEGER NOT NULL REFERENCES Registrar,
+        CrDate timestamp NOT NULL,
+        UpID INTEGER REFERENCES Registrar,
+        UpDate timestamp,
+        TrDate timestamp,
+        AuthInfoPw varchar(32)
         );
-CREATE INDEX domain_host_map_domainid_idx ON domain_host_map (DomainID);
+CREATE INDEX domain_zone_idx ON Domain (Zone);
+CREATE INDEX domain_id_idx ON Domain (ID);
+CREATE INDEX domain_fqdn_idx ON Domain (FQDN);
+CREATE INDEX domain_roid_idx ON Domain (ROID);
+
+DROP TABLE domain_contact_map CASCADE;
+CREATE TABLE domain_contact_map (
+        DomainID INTEGER REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+        ContactID INTEGER REFERENCES Contact ON UPDATE CASCADE NOT NULL,
+        UNIQUE (DomainID, ContactID)
+        );
+CREATE INDEX domain_contact_map_domainid_idx ON domain_contact_map (DomainID);
+
+
+-- DROP TABLE domain_host_map CASCADE;
+-- CREATE TABLE domain_host_map (
+--         DomainID INTEGER NOT NULL REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE,
+--         HostID INTEGER NOT NULL REFERENCES Host ON UPDATE CASCADE,
+--         UNIQUE (DomainID, HostID)
+--         );
+-- CREATE INDEX domain_host_map_domainid_idx ON domain_host_map (DomainID);
 
 DROP TABLE DNSSEC CASCADE;
 CREATE TABLE DNSSEC (
