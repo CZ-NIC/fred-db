@@ -2,7 +2,7 @@
 \encoding       LATIN2
 
 -- ciselnik chybovych hlaseni
-DROP TABLE enum_error  CASCADE;
+-- DROP TABLE enum_error  CASCADE;
 CREATE TABLE enum_error (
         id SERIAL PRIMARY KEY,
         status varchar(128) UNIQUE NOT NULL,

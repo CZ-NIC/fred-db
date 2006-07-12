@@ -1,5 +1,5 @@
 -- tabulka pro pricitani creditu za operace DomainCreate a DomainReNew
-DROP TABLE Credit CASCADE;
+-- DROP TABLE Credit CASCADE;
 CREATE TABLE Credit (
         ID SERIAL PRIMARY KEY, -- vraci se jako clientID z CORBA funkce Login
 	RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- id registratora

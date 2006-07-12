@@ -1,29 +1,25 @@
-
-DROP TABLE enum_country CASCADE;
+-- DROP TABLE enum_country CASCADE;
 CREATE TABLE enum_country (
         id char(2) PRIMARY KEY,
-        country_cs  varchar(1024) UNIQUE, -- volitelne cesky nazev 
-        country varchar(1024) UNIQUE NOT NULL
+        country varchar(1024) UNIQUE NOT NULL,
+        country_cs  varchar(1024) UNIQUE -- volitelne cesky nazev 
         );
 
 
-DROP TABLE zone CASCADE;
+-- DROP TABLE zone CASCADE;
 CREATE TABLE zone (
         id SERIAL PRIMARY KEY,
-        fqdn VARCHAR(255) UNIQUE NOT NULL,
-        roid VARCHAR(255) UNIQUE NOT NULL
+        fqdn VARCHAR(255) UNIQUE NOT NULL
         );
 
-INSERT INTO zone (fqdn, roid) VALUES('0.2.4.e164.arpa', '0.2.4.e164.arpa');
-INSERT INTO zone (fqdn, roid) VALUES('0.2.4.c.e164.arpa', '0.2.4.c.e164.arpa');
-INSERT INTO zone (fqdn, roid) VALUES('cz', 'cz');
+INSERT INTO zone (fqdn) VALUES('0.2.4.e164.arpa');
+INSERT INTO zone (fqdn) VALUES('0.2.4.c.e164.arpa');
+INSERT INTO zone (fqdn) VALUES('cz');
 
-DROP TABLE Registrar CASCADE;
+-- DROP TABLE Registrar CASCADE;
 CREATE TABLE Registrar (
         ID SERIAL PRIMARY KEY,
-        ROID varchar(255) UNIQUE NOT NULL,
         Handle varchar(255) UNIQUE NOT NULL,
-        Status smallint[], -- TODO: create trigger to check values agains enum_status
         Name varchar(1024),
         Organization varchar(1024),
         Street1 varchar(1024),
@@ -39,7 +35,7 @@ CREATE TABLE Registrar (
         Url varchar(1024)
         );
 
-DROP TABLE RegistrarACL CASCADE;
+-- DROP TABLE RegistrarACL CASCADE;
 CREATE TABLE RegistrarACL (
         RegistrarID INTEGER NOT NULL REFERENCES Registrar,
         ZoneID INTEGER NOT NULL REFERENCES Zone,
@@ -47,7 +43,7 @@ CREATE TABLE RegistrarACL (
         Password varchar(64) NOT NULL
         );
 
-DROP TABLE Contact CASCADE;
+-- DROP TABLE Contact CASCADE;
 CREATE TABLE Contact (
         ID SERIAL PRIMARY KEY,
         Handle varchar(255) UNIQUE NOT NULL,
@@ -102,7 +98,7 @@ CREATE INDEX contact_handle_idx ON Contact (Handle);
 -- CREATE INDEX contactagreement_contactid_idx ON ContactAgreement (ContactID);
 -- CREATE INDEX contactagreement_termid_id ON ContactAgreement (TermID);
 
-DROP TABLE NSSet CASCADE;
+-- DROP TABLE NSSet CASCADE;
 CREATE TABLE NSSet (
         ID SERIAL PRIMARY KEY,
         ROID varchar(255) UNIQUE NOT NULL,
@@ -112,15 +108,16 @@ CREATE TABLE NSSet (
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL,
         UpID INTEGER REFERENCES Registrar,
-        UpDate timestamp,
-        AuthInfoPw varchar(32)
+        AuthInfoPw varchar(32),
+        TrDate timestamp,
+        UpDate timestamp
         );
 CREATE INDEX nsset_id_idx ON NSSet (ID);
 CREATE INDEX nsset_roid_idx ON NSSet (ROID);
 CREATE INDEX nsset_handle_idx ON NSSet (Handle);
 CREATE INDEX nsset_clid_idx ON NSSet (ClID);        
 
-DROP TABLE nsset_contact_map CASCADE;
+-- DROP TABLE nsset_contact_map CASCADE;
 CREATE TABLE nsset_contact_map (
         NSSetID INTEGER REFERENCES NSSet ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
         ContactID INTEGER REFERENCES Contact ON UPDATE CASCADE NOT NULL,
@@ -129,7 +126,7 @@ CREATE TABLE nsset_contact_map (
 CREATE INDEX nsset_contact_map_nssetid_idx ON nsset_contact_map (NSSetID);
 
 
-DROP TABLE Host CASCADE;
+-- DROP TABLE Host CASCADE;
 CREATE TABLE Host (
         ID SERIAL PRIMARY KEY,
         NSSetID INTEGER REFERENCES NSSet ON UPDATE CASCADE,
@@ -146,7 +143,7 @@ CREATE TABLE Host (
 CREATE INDEX host_nsset_idx ON Host (NSSetID);
 CREATE INDEX host_fqdn_idx ON Host (FQDN);
 
-DROP TABLE Domain CASCADE;
+-- DROP TABLE Domain CASCADE;
 CREATE TABLE Domain (
         Zone INTEGER REFERENCES Zone (ID),
         ID SERIAL PRIMARY KEY,
@@ -159,16 +156,17 @@ CREATE TABLE Domain (
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL,
         UpID INTEGER REFERENCES Registrar,
-        UpDate timestamp,
+        Exdate timestamp NOT NULL,
         TrDate timestamp,
-        AuthInfoPw varchar(32)
+        AuthInfoPw varchar(32),
+        UpDate timestamp
         );
 CREATE INDEX domain_zone_idx ON Domain (Zone);
 CREATE INDEX domain_id_idx ON Domain (ID);
 CREATE INDEX domain_fqdn_idx ON Domain (FQDN);
 CREATE INDEX domain_roid_idx ON Domain (ROID);
 
-DROP TABLE domain_contact_map CASCADE;
+-- DROP TABLE domain_contact_map CASCADE;
 CREATE TABLE domain_contact_map (
         DomainID INTEGER REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
         ContactID INTEGER REFERENCES Contact ON UPDATE CASCADE NOT NULL,
@@ -185,7 +183,7 @@ CREATE INDEX domain_contact_map_domainid_idx ON domain_contact_map (DomainID);
 --         );
 -- CREATE INDEX domain_host_map_domainid_idx ON domain_host_map (DomainID);
 
-DROP TABLE DNSSEC CASCADE;
+-- DROP TABLE DNSSEC CASCADE;
 CREATE TABLE DNSSEC (
         DomainID INTEGER NOT NULL REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE,
         KeyTag varchar(255) NOT NULL,
@@ -199,13 +197,13 @@ CREATE TABLE DNSSEC (
         PubKey character varying(1024)
         );        
 
-DROP TABLE ENUMVal CASCADE;
+-- DROP TABLE ENUMVal CASCADE;
 CREATE TABLE ENUMVal (
         DomainID INTEGER NOT NULL PRIMARY KEY REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE,
         ExDate timestamp NOT NULL
         );
 
-DROP TABLE Message;
+-- DROP TABLE Message;
 CREATE TABLE Message (
         ID SERIAL PRIMARY KEY,
         ClID INTEGER REFERENCES Registrar ON UPDATE CASCADE,

@@ -1,4 +1,4 @@
-DROP TABLE enum_status CASCADE;
+-- DROP TABLE enum_status CASCADE;
 CREATE TABLE enum_status (
         id SERIAL PRIMARY KEY,
         status varchar(64) UNIQUE NOT NULL

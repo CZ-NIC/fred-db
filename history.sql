@@ -2,7 +2,7 @@
 -- ukladaji se pouze operace DELETE UPDATE TRANSFER 
 -- CREATE neni treba ukladat
 
-DROP TABLE History CASCADE;
+-- DROP TABLE History CASCADE;
 CREATE TABLE History (
         ID SERIAL PRIMARY KEY,
         action INTEGER NOT NULL REFERENCES action, -- odkaz to tabulky action         
@@ -11,7 +11,7 @@ CREATE TABLE History (
         
 
 
-DROP TABLE Contact_History CASCADE;
+-- DROP TABLE Contact_History CASCADE;
 CREATE TABLE Contact_History (
         HISTORYID SERIAL PRIMARY  KEY REFERENCES History,
         ID INTEGER   NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE Contact_History (
 CREATE INDEX contact_history_historyid_idx ON Contact_History (historyID);
 
 
-DROP TABLE Domain_History CASCADE;
+-- DROP TABLE Domain_History CASCADE;
 CREATE TABLE Domain_History (
         HISTORYID SERIAL PRIMARY KEY REFERENCES History,          
         Zone INTEGER REFERENCES Zone (ID),
@@ -59,20 +59,20 @@ CREATE TABLE Domain_History (
         ROID varchar(255)  NOT NULL,
         FQDN varchar(255)  NOT NULL,
         Status smallint[], -- TODO: create trigger to check values agains enum_status
-        Registrant INTEGER , -- zrusena reference
-        NSSet INTEGER , -- zruseny reference
         ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL,
         UpID INTEGER REFERENCES Registrar,
-        UpDate timestamp,
         ExDate timestamp NOT NULL,
         TrDate timestamp,
-        AuthInfoPw varchar(32)
+        AuthInfoPw varchar(32),
+        UpDate timestamp,
+        Registrant INTEGER , -- zrusena reference
+        NSSet INTEGER  -- zruseny reference
         );
 CREATE INDEX domain_History_historyid_idx ON Domain_History (historyID);
 
-DROP TABLE domain_contact_map_history CASCADE;
+-- DROP TABLE domain_contact_map_history CASCADE;
 CREATE TABLE domain_contact_map_history  (
         historyID SERIAL REFERENCES History,       
         DomainID INTEGER, --REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
@@ -81,7 +81,7 @@ CREATE TABLE domain_contact_map_history  (
         );
 -- CREATE INDEX domain_contact_map_domainid_idx ON domain_contact_map (DomainID);
 
-DROP TABLE NSSet_history  CASCADE;
+-- DROP TABLE NSSet_history  CASCADE;
 CREATE TABLE NSSet_history  (
         historyID SERIAL PRIMARY KEY REFERENCES History, -- pouze jeden nsset 
         ID INTEGER  NOT NULL,
@@ -91,13 +91,14 @@ CREATE TABLE NSSet_history  (
         ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL,
-        UpID INTEGER REFERENCES Registrar,
-        UpDate timestamp,
-        AuthInfoPw varchar(32)
+        UpID INTEGER REFERENCES Registrar, 
+        AuthInfoPw varchar(32),
+        Trdate timestamp,
+        UpDate timestamp
         );
 CREATE INDEX nsset_history_historyid_idx ON NSSet_History (historyID);
 
-DROP TABLE nsset_contact_map_history  CASCADE;
+-- DROP TABLE nsset_contact_map_history  CASCADE;
 CREATE TABLE nsset_contact_map_history (
         historyID SERIAL  REFERENCES History,
         NSSetID INTEGER, -- REFERENCES NSSet ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
@@ -105,23 +106,18 @@ CREATE TABLE nsset_contact_map_history (
         -- UNIQUE (NSSetID, ContactID)
         );
 
-DROP TABLE Host_history  CASCADE;
+-- DROP TABLE Host_history  CASCADE;
 CREATE TABLE Host_history  (
         historyID SERIAL  REFERENCES History,  -- muze byt vice hostu takze to neni primary key
         ID  INTEGER  NOT NULL,
-        NSSetID INTEGER, -- REFERENCES NSSet ON UPDATE CASCADE,
+        NSSetID INTEGER NOT NULL, -- REFERENCES NSSet ON UPDATE CASCADE,
         FQDN VARCHAR(255)  NOT NULL,
-        ClID INTEGER NOT NULL REFERENCES Registrar, -- ON UPDATE CASCADE,
-        CrDate TIMESTAMP NOT NULL,
-        UpID INTEGER NOT NULL REFERENCES Registrar, -- ON UPDATE CASCADE ON DELETE SET NULL,
-        UpDate TIMESTAMP NOT NULL,
-        Status INTEGER[], -- TODO: write trigger to check values
         IpAddr INET[] NOT NULL -- NOTE: we don't have to store IP version, since it's obvious from address
         );
 
 CREATE INDEX host_history_historyid_idx ON HOST_History (historyID);
 
-DROP TABLE ENUMVal_history  CASCADE;
+-- DROP TABLE ENUMVal_history  CASCADE;
 CREATE TABLE ENUMVal_history (
         historyID SERIAL PRIMARY KEY REFERENCES History, -- pouze jeden nsset 
         DomainID INTEGER NOT NULL,

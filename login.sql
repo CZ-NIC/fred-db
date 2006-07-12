@@ -1,5 +1,5 @@
 -- login tabulka pro pihlasovani clientu
-DROP TABLE Login CASCADE;
+-- DROP TABLE Login CASCADE;
 CREATE TABLE Login (
         ID SERIAL PRIMARY KEY, -- vraci se jako clientID z CORBA funkce Login
 	RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- id registratora

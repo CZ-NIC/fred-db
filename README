@@ -1,0 +1,8 @@
+sada sql skriptu ktere dohromady vytvari databazi centralniho
+registru, pro vytvoreni databaze je treba je volat ve spravnem 
+poradi. k tomu slouzi skript orderedsql.sh, ktery vypise sql 
+prikazy tak jak maji jit za sebou. pro vytvoreni db je tedy 
+nutne zavolat
+
+./orderedsql.sh | psql databaze
+
