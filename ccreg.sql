@@ -9,12 +9,15 @@ CREATE TABLE enum_country (
 -- DROP TABLE zone CASCADE;
 CREATE TABLE zone (
         id SERIAL PRIMARY KEY,
-        fqdn VARCHAR(255) UNIQUE NOT NULL
+        fqdn VARCHAR(255) UNIQUE NOT NULL,
+	ex_period_min int not null,
+        ex_period_max int not null,
+        val_period int not null,
         );
 
-INSERT INTO zone (fqdn) VALUES('0.2.4.e164.arpa');
-INSERT INTO zone (fqdn) VALUES('0.2.4.c.e164.arpa');
-INSERT INTO zone (fqdn) VALUES('cz');
+INSERT INTO zone (fqdn) VALUES('0.2.4.e164.arpa',12,120,6);
+INSERT INTO zone (fqdn) VALUES('0.2.4.c.e164.arpa',12,120,6);
+INSERT INTO zone (fqdn) VALUES('cz',12,120,0);
 
 -- DROP TABLE Registrar CASCADE;
 CREATE TABLE Registrar (
