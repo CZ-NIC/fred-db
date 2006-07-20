@@ -109,7 +109,7 @@ CREATE TABLE NSSet (
         Status smallint[], -- TODO: create trigger to check values agains enum_status
         ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
-        CrDate timestamp NOT NULL,
+        CrDate timestamp NOT NULL DEFAULT now(),
         UpID INTEGER REFERENCES Registrar,
         AuthInfoPw varchar(32),
         TrDate timestamp,
@@ -157,7 +157,7 @@ CREATE TABLE Domain (
         NSSet INTEGER REFERENCES NSSet,
         ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
-        CrDate timestamp NOT NULL,
+        CrDate timestamp NOT NULL DEFAULT now(),
         UpID INTEGER REFERENCES Registrar,
         Exdate timestamp NOT NULL,
         TrDate timestamp,
@@ -210,7 +210,7 @@ CREATE TABLE ENUMVal (
 CREATE TABLE Message (
         ID SERIAL PRIMARY KEY,
         ClID INTEGER REFERENCES Registrar ON UPDATE CASCADE,
-        CrDate TIMESTAMP NOT NULL,
+        CrDate timestamp NOT NULL DEFAULT now(),
         ExDate TIMESTAMP,
         Seen BOOLEAN,
         Message TEXT
