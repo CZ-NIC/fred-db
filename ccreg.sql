@@ -12,12 +12,12 @@ CREATE TABLE zone (
         fqdn VARCHAR(255) UNIQUE NOT NULL,
 	ex_period_min int not null,
         ex_period_max int not null,
-        val_period int not null,
+        val_period int not null
         );
 
-INSERT INTO zone (fqdn) VALUES('0.2.4.e164.arpa',12,120,6);
-INSERT INTO zone (fqdn) VALUES('0.2.4.c.e164.arpa',12,120,6);
-INSERT INTO zone (fqdn) VALUES('cz',12,120,0);
+INSERT INTO zone (fqdn ,ex_period_min, ex_period_max, val_period) VALUES('0.2.4.e164.arpa',12,120,6);
+INSERT INTO zone (fqdn ,ex_period_min, ex_period_max, val_period) VALUES('0.2.4.c.e164.arpa',12,120,6);
+INSERT INTO zone (fqdn ,ex_period_min, ex_period_max, val_period) VALUES('cz',12,120,0);
 
 -- DROP TABLE Registrar CASCADE;
 CREATE TABLE Registrar (
