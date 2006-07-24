@@ -7,12 +7,27 @@ booleans and strings.
 
 import random
 
+def seed():
+	"""
+It's just a wrapper around the function of the same name from random
+module and is provided for convinience reasons.
+	"""
+	return random.seed()
+
+
 def randint(min, max):
 	"""
 It's just a wrapper around the function of the same name from random
 module and is provided for convinience reasons.
 	"""
 	return random.randint(min, max)
+
+def choice(list):
+	"""
+It's just a wrapper around the function of the same name from random
+module and is provided for convinience reasons.
+	"""
+	return random.choice(list)
 
 def randbool():
 	"""
