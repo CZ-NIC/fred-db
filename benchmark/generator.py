@@ -100,8 +100,9 @@ disclorg, discladdress, disclvoice, disclfax, disclemail, notifyemail, vat, ssn 
 roid, status, crid, crdate, name, organization, street1, street2, street3, city,\
 stateorprovince, postalcode, country, telephone, fax, email, disclosename, \
 discloseorganization, discloseaddress, disclosetelephone, disclosefax, \
-discloseemail, notifyemail, vat, ssn) VALUES (%d, %d, %s, %s, '{1}', %d, now(), \
-%s, %s, %s, %s, %s, %s, %s, %s, 'CZ', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, \
+discloseemail, notifyemail, vat, ssn) VALUES (%d, %d, %s, %s, '{1}', %d, \
+'25-JUL-06', %s, %s, %s, %s, %s, %s, %s, %s, 'CZ', %s, %s, %s, %s, %s, %s, %s, \
+%s, %s, %s, \
 %s, %s);\n" % ( histid, id, handle, roid, regid, name, org, street1, street2, \
 street3, city, sp, pc, voice, fax, email, disclname, disclorg, discladdress, \
 disclvoice, disclfax, disclemail, notifyemail, vat, ssn )
@@ -152,7 +153,7 @@ nssetid, contactid) VALUES (%d, %d, %d);\n" % (histid, id, contactid)
 	# insert into nsset_history table
 	ins_nsset_history = "INSERT INTO nsset_history (historyid, id, handle, roid,\
 status, clid, crid, crdate, authinfopw) VALUES (%d, %d, %s, %s, '{1}', %d, %d, \
-now(), %s);\n" % ( histid, id, handle, roid, regid, regid, authinfo )
+'25-JUL-06', %s);\n" % ( histid, id, handle, roid, regid, regid, authinfo )
 	# return result
 	return ins_action + ins_nsset + ins_map_contact + ins_host1 + ins_host2 \
 			+ ins_history + ins_map_contact_history + ins_host1_history \
@@ -178,12 +179,12 @@ servertrid) VALUES (%d, 504, 1000, 'crdomain_trid', %s);\n" \
 	# insert into domain table
 	ins_domain = "INSERT INTO domain (zone, roid, fqdn, status, registrant, \
 nsset, clid, crid, exdate, authinfopw) VALUES (%d, %s, %s, '{1}', %d, %d, %d, \
-%d, now() + '2 year', %s);\n" % ( zone, roid, fqdn, registrant, nsset, regid,\
+%d, '25-JUL-06', %s);\n" % ( zone, roid, fqdn, registrant, nsset, regid,\
 regid, authinfo )
 	if zone == 1:
 		# insert into enumval table
 		ins_enum = "INSERT INTO enumval (domainid, exdate) VALUES \
-(%d, now() + '2 years');\n" % id
+(%d, '25-JUL-06');\n" % id
 	# insert into domain_contact_map table
 	ins_map_contact = "INSERT INTO domain_contact_map (domainid, contactid) \
 VALUES (%d, %d);\n" % (id, admin)
@@ -195,11 +196,11 @@ VALUES (%d, %d);\n" % (id, admin)
 	if zone == 1:
 		# insert into enumval_history table
 		ins_enum_history = "INSERT INTO enumval_history (historyid, domainid, \
-exdate) VALUES (%d, %d, now() + '2 years');\n" % (histid, id)
+exdate) VALUES (%d, %d, '25-JUL-06');\n" % (histid, id)
 	# insert into domain_history table
 	ins_domain_history = "INSERT INTO domain_history (historyid, id, zone, roid,\
 fqdn, status, registrant, nsset, clid, crid, crdate, exdate, authinfopw) VALUES \
-(%d, %d, %d, %s, %s, '{1}', %d, %d, %d, %d, now(), now() + '2 year', %s);\n" \
+(%d, %d, %d, %s, %s, '{1}', %d, %d, %d, %d, '25-JUL-06', '25-JUL-06', %s);\n" \
 % ( histid, id, zone, roid, fqdn, registrant, nsset, regid, regid, authinfo )
 	if zone == 1:
 		# return enum domain result
@@ -215,9 +216,13 @@ def create_msg(regid):
 	"""
 Return SQL INSERT command used for msg creation.
 	"""
-	return "INSERT INTO message (clid, exdate, message) VALUES (%d, now() \
-+ '1 year', 'Zprava pro registratora');\n" % regid
+	return "INSERT INTO message (clid, exdate, message) VALUES (%d, '25-JUL-06',\
+'Zprava pro registratora');\n" % regid
 
+
+#
+# Main
+#
 
 if __name__ == "__main__":
 	# get command line argument (config file)

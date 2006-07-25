@@ -26,7 +26,7 @@ Return default values for configuration directives in form of a dictionary.
 		}
 
 def print_stats(count, time, throughput):
-	sys.stdout.write(\
+	sys.stderr.write(\
 		"Total: %d EPP commands\nTime: %f seconds\nThroughput: %f cmds/sec\n" \
 		% (count, time, throughput))
 
