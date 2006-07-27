@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # vim:set ts=4 sw=4:
 
-import sys, os, signal, time, pg, ConfigParser
+import sys, os, signal, time, ConfigParser
 from executor import *
 
 
@@ -10,9 +10,12 @@ global terminate
 def usage():
 	"""Print usage information"""
 	
-	return "   " + sys.argv[0] + " [config]" + \
+	return "   " + sys.argv[0] + " database [config]" + \
 	"""
-	config	- configuration file (default is bench.conf)
+	database is one of:
+		ora :oracle database is used
+		pg  :postgresql database is used
+	config: configuration file (default is bench.conf)
 	"""
 
 def setDefaults():
@@ -20,9 +23,9 @@ def setDefaults():
 Return default values for configuration directives in form of a dictionary.
 	"""
 	return {
-		"dbname":"benchdb", "host":"localhost", "port":"5432",
-		"user":"benchuser", "passwd":"benchpw", "iterations":"3",
-		"timeout":"0", "par":"1"
+		"dbname":"benchdb", "host":"localhost", "user":"benchuser",
+		"passwd":"benchpw", "iterations":"3", "timeout":"0",
+		"par":"1"
 		}
 
 def print_stats(count, time, throughput):
@@ -47,16 +50,8 @@ Body of process performing testing of database.
 	signal.signal(signal.SIGTERM, sig_term_handler)
 	# desync the random number generators (has to be unique for each child)
 	seed()
-	try:
-		# connect to database
-		db = pg.DB(dbname = pars["dbname"], host = pars["host"], \
-				port = pars["port"], user = pars["user"], \
-				passwd = pars["passwd"])
-	except Exception, e:
-		sys.stderr.write("Could not connect to database: %s\n" % e)
-		sys.exit(1)
 	# create executor which transforms EPP commands into SQL queries
-	exe = Executor(db, False)
+	exe = Executor(dbtype, pars, False)
 	# get handles of all objects
 	domains, contacts, nssets = exe.getHandles()
 	epp_count = 0
@@ -79,16 +74,19 @@ Body of process performing testing of database.
 		epp_count += 3
 	end = time.time()
 	print_stats(epp_count, end - start, epp_count / (end - start))
-	db.close()
 
 
 if __name__ == "__main__":
 	# get command line argument (config file)
-	if len(sys.argv) > 2:
+	if len(sys.argv) > 3 or len(sys.argv) < 2:
 		sys.stderr.write(usage())
 		sys.exit(1)
-	if len(sys.argv) < 2: configfile = "bench.conf"
-	else: configfile = sys.argv[1]
+	dbtype = sys.argv[1]
+	if dbtype not in ("ora", "pg"):
+		sys.stderr.write(usage())
+		sys.exit(1)
+	if len(sys.argv) == 2: configfile = "bench.conf"
+	else: configfile = sys.argv[2]
 	# set config defaults and parse configuration file
 	config = ConfigParser.ConfigParser(setDefaults())
 	config.read([configfile])
@@ -98,7 +96,6 @@ if __name__ == "__main__":
 	cfgs = {}
 	cfgs["dbname"] = config.get("test", "dbname")
 	cfgs["host"] = config.get("test", "host")
-	cfgs["port"] = config.getint("test", "port")
 	cfgs["user"] = config.get("test", "user")
 	cfgs["passwd"] = config.get("test", "passwd")
 	cfgs["iter"] = config.getint("test", "iterations")

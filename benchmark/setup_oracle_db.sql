@@ -113,13 +113,13 @@ CREATE TABLE zone (
         val_period int not null
         );
 CREATE SEQUENCE zone_id_seq START WITH 1 INCREMENT BY 1;
---CREATE OR REPLACE TRIGGER zone_trigger BEFORE INSERT ON zone
---REFERENCING NEW AS NEW
---FOR EACH ROW
---BEGIN
---	SELECT zone_id_seq.nextval INTO :NEW.ID FROM dual;
---END;
---/
+CREATE OR REPLACE TRIGGER zone_trigger BEFORE INSERT ON zone
+REFERENCING NEW AS NEW
+FOR EACH ROW
+BEGIN
+	SELECT zone_id_seq.nextval INTO :NEW.ID FROM dual;
+END;
+/
 
 INSERT INTO zone (fqdn ,ex_period_min, ex_period_max, val_period) VALUES('0.2.4.e164.arpa',12,120,6);
 INSERT INTO zone (fqdn ,ex_period_min, ex_period_max, val_period) VALUES('0.2.4.c.e164.arpa',12,120,6);
@@ -144,13 +144,13 @@ CREATE TABLE Registrar (
         Url varchar(1024)
         );
 CREATE SEQUENCE registrar_id_seq START WITH 1 INCREMENT BY 1;
---CREATE OR REPLACE TRIGGER registrar_trigger BEFORE INSERT ON registrar
---REFERENCING NEW AS NEW
---FOR EACH ROW
---BEGIN
---	SELECT registrar_id_seq.nextval INTO :NEW.ID FROM dual;
---END;
---/
+CREATE OR REPLACE TRIGGER registrar_trigger BEFORE INSERT ON registrar
+REFERENCING NEW AS NEW
+FOR EACH ROW
+BEGIN
+	SELECT registrar_id_seq.nextval INTO :NEW.ID FROM dual;
+END;
+/
 
 -- DROP TABLE RegistrarACL CASCADE;
 CREATE TABLE RegistrarACL (
@@ -267,13 +267,13 @@ CREATE TABLE Host (
         UNIQUE (NSSetID, FQDN ) -- unikatni klic
         );
 CREATE SEQUENCE host_id_seq START WITH 1 INCREMENT BY 1;
---CREATE OR REPLACE TRIGGER host_trigger BEFORE INSERT ON host
---REFERENCING NEW AS NEW
---FOR EACH ROW
---BEGIN
---	SELECT host_id_seq.nextval INTO :NEW.ID FROM dual;
---END;
---/
+CREATE OR REPLACE TRIGGER host_trigger BEFORE INSERT ON host
+REFERENCING NEW AS NEW
+FOR EACH ROW
+BEGIN
+	SELECT host_id_seq.nextval INTO :NEW.ID FROM dual;
+END;
+/
 CREATE INDEX host_nsset_idx ON Host (NSSetID);
 CREATE INDEX host_fqdn_idx ON Host (FQDN);
 
@@ -344,13 +344,13 @@ CREATE TABLE Message (
 CREATE INDEX message_clid_idx ON message (clid);
 CREATE INDEX message_seen_idx ON message (clid,seen,crdate,exdate);
 CREATE SEQUENCE message_id_seq START WITH 1 INCREMENT BY 1;
---CREATE OR REPLACE TRIGGER message_trigger BEFORE INSERT ON message
---REFERENCING NEW AS NEW
---FOR EACH ROW
---BEGIN
---	SELECT message_id_seq.nextval INTO :NEW.ID FROM dual;
---END;
---/
+CREATE OR REPLACE TRIGGER message_trigger BEFORE INSERT ON message
+REFERENCING NEW AS NEW
+FOR EACH ROW
+BEGIN
+	SELECT message_id_seq.nextval INTO :NEW.ID FROM dual;
+END;
+/
 
 -- login tabulka pro pihlasovani clientu
 -- DROP TABLE Login CASCADE;
@@ -364,13 +364,13 @@ CREATE TABLE Login (
         lang  varchar(2) DEFAULT 'en' NOT NULL -- jazyk ve kterem se vraceji chybove zpravy
         );
 CREATE SEQUENCE login_id_seq START WITH 1 INCREMENT BY 1;
---CREATE OR REPLACE TRIGGER login_trigger BEFORE INSERT ON login
---REFERENCING NEW AS NEW
---FOR EACH ROW
---BEGIN
---	SELECT login_id_seq.nextval INTO :NEW.ID FROM dual;
---END;
---/
+CREATE OR REPLACE TRIGGER login_trigger BEFORE INSERT ON login
+REFERENCING NEW AS NEW
+FOR EACH ROW
+BEGIN
+	SELECT login_id_seq.nextval INTO :NEW.ID FROM dual;
+END;
+/
 
 
 -- ciselnik funkci
@@ -436,13 +436,13 @@ CREATE TABLE Action (
         serverTRID varchar(128) UNIQUE   -- cislo transakce ze servru 
         );
 CREATE SEQUENCE action_id_seq START WITH 1 INCREMENT BY 1;
---CREATE OR REPLACE TRIGGER action_trigger BEFORE INSERT ON action
---REFERENCING NEW AS NEW
---FOR EACH ROW
---BEGIN
---	SELECT action_id_seq.nextval INTO :NEW.ID FROM dual;
---END;
---/
+CREATE OR REPLACE TRIGGER action_trigger BEFORE INSERT ON action
+REFERENCING NEW AS NEW
+FOR EACH ROW
+BEGIN
+	SELECT action_id_seq.nextval INTO :NEW.ID FROM dual;
+END;
+/
 
 -- tabulky pro ukladani hostorie
 -- ukladaji se pouze operace DELETE UPDATE TRANSFER 
@@ -455,13 +455,13 @@ CREATE TABLE History (
         ModDate timestamp DEFAULT current_timestamp NOT NULL -- datum a cas provedene zmeny
         );
 CREATE SEQUENCE history_id_seq START WITH 1 INCREMENT BY 1;
---CREATE OR REPLACE TRIGGER history_trigger BEFORE INSERT ON history
---REFERENCING NEW AS NEW
---FOR EACH ROW
---BEGIN
---	SELECT history_id_seq.nextval INTO :NEW.ID FROM dual;
---END;
---/
+CREATE OR REPLACE TRIGGER history_trigger BEFORE INSERT ON history
+REFERENCING NEW AS NEW
+FOR EACH ROW
+BEGIN
+	SELECT history_id_seq.nextval INTO :NEW.ID FROM dual;
+END;
+/
 
 -- DROP TABLE Contact_History CASCADE;
 CREATE TABLE Contact_History (

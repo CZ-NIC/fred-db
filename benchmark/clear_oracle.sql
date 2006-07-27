@@ -36,6 +36,7 @@ DROP SEQUENCE contact_id_seq;
 DROP SEQUENCE host_id_seq;
 DROP SEQUENCE domain_id_seq;
 DROP SEQUENCE nsset_id_seq;
+DROP SEQUENCE zone_id_seq;
 CREATE SEQUENCE history_id_seq;
 CREATE SEQUENCE action_id_seq;
 CREATE SEQUENCE login_id_seq;
@@ -45,4 +46,6 @@ CREATE SEQUENCE contact_id_seq;
 CREATE SEQUENCE host_id_seq;
 CREATE SEQUENCE domain_id_seq;
 CREATE SEQUENCE nsset_id_seq;
+CREATE SEQUENCE zone_id_seq;
 
+COMMIT;
