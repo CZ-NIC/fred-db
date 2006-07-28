@@ -8,10 +8,12 @@ def get_ins_action(id, regid, action):
 	"""
 Insert into action table. Used to begin action.
 	"""
-	return \
+	str = \
 "INSERT INTO action (id, clientid, action, clienttrid) \
 VALUES (%d, %d, %d, 'client_trid')" \
 % (id, regid, action)
+	print  str
+	return str
 
 
 def get_upd_action(id):

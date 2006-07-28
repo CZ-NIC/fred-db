@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 # vim:set ts=4 sw=4:
+"""
+Module handles high-level phase of testing. The routines performing
+individual tests (low-level part) are elsewhere.
+"""
 
 import sys, os, signal, time, ConfigParser
 from executor import *
@@ -29,6 +33,9 @@ Return default values for configuration directives in form of a dictionary.
 		}
 
 def print_stats(count, time, throughput):
+	"""
+Print final results of testing.
+	"""
 	sys.stderr.write(\
 		"Total: %d EPP commands\nTime: %f seconds\nThroughput: %f cmds/sec\n" \
 		% (count, time, throughput))
@@ -41,7 +48,7 @@ from main process. This routine handles the signal.
 	global terminate
 	terminate = True
 
-def child_body(pars):
+def child_body(pars, open_db_hook, close_db_hook, seq_hook):
 	"""
 Body of process performing testing of database.
 	"""
@@ -51,7 +58,8 @@ Body of process performing testing of database.
 	# desync the random number generators (has to be unique for each child)
 	seed()
 	# create executor which transforms EPP commands into SQL queries
-	exe = Executor(dbtype, pars, False)
+	db = open_db_hook(pars)
+	exe = Executor(db, seq_hook, False)
 	# get handles of all objects
 	domains, contacts, nssets = exe.getHandles()
 	epp_count = 0
@@ -73,19 +81,21 @@ Body of process performing testing of database.
 		# update counter
 		epp_count += 3
 	end = time.time()
+	close_db_hook(db)
 	print_stats(epp_count, end - start, epp_count / (end - start))
 
 
-if __name__ == "__main__":
+def main(open_db_hook, close_db_hook, seq_hook):
+	"""
+The entry point for testing. It parses configuration file and invokes
+processes that do the actual testing. open_db_hook is a function which
+returns object "connection" defined in python DB API 2.0.
+	"""
 	# get command line argument (config file)
-	if len(sys.argv) > 3 or len(sys.argv) < 2:
+	if len(sys.argv) > 2:
 		sys.stderr.write(usage())
 		sys.exit(1)
-	dbtype = sys.argv[1]
-	if dbtype not in ("ora", "pg"):
-		sys.stderr.write(usage())
-		sys.exit(1)
-	if len(sys.argv) == 2: configfile = "bench.conf"
+	if len(sys.argv) == 1: configfile = "bench.conf"
 	else: configfile = sys.argv[2]
 	# set config defaults and parse configuration file
 	config = ConfigParser.ConfigParser(setDefaults())
@@ -106,7 +116,7 @@ if __name__ == "__main__":
 	for i in range(cfg_par):
 		pid = os.fork()
 		if (pid == 0):
-			child_body(cfgs)
+			child_body(cfgs, open_db_hook, close_db_hook, seq_hook)
 			sys.exit(0)
 		else:
 			children.append(pid)
@@ -118,4 +128,10 @@ if __name__ == "__main__":
 		time.sleep(cfg_time)
 		for pid in children: os.kill(pid, signal.SIGTERM)
 		for pid in children: os.waitpid(pid, 0)
+
+if __name__ == "__main__":
+	print """
+This module cannot be used directly. It has to be imported. See module's
+documentation for more details ( help(test) ).
+	"""
 

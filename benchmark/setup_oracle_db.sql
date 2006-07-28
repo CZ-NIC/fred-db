@@ -26,49 +26,49 @@ CREATE TABLE enum_error (
 -- chybove zpravy EN a CS
 
 
-INSERT INTO enum_error VALUES(  1000 , 'Command completed successfully',    'Pøíkaz úspì¹nì proveden');
-INSERT INTO enum_error VALUES(  1001 , 'Command completed successfully; action pending',  'Pøíkaz úspì¹nì proveden; vykonání akce odlo¾eno');
+INSERT INTO enum_error VALUES(  1000 , 'Command completed successfully',    'P__kaz _sp__n_ proveden');
+INSERT INTO enum_error VALUES(  1001 , 'Command completed successfully; action pending',  'P__kaz _sp__n_ proveden; vykon_n_ akce odlo_eno');
 
-INSERT INTO enum_error VALUES(  1300 , 'Command completed successfully; no messages',    'Pøíkaz úspì¹nì proveden; ¾ádné nové zprávy');
-INSERT INTO enum_error VALUES(  1301 , 'Command completed successfully; ack to dequeue',    'Pøíkaz úspì¹nì proveden; potvrï za úèelem vyøazení z fronty');
-INSERT INTO enum_error VALUES(  1500 , 'Command completed successfully; ending session',    'Pøíkaz úspì¹nì proveden; konec relace');
-
-
-INSERT INTO enum_error VALUES(  2000 ,    'Unknown command',    'Neznámý pøíkaz');
-INSERT INTO enum_error VALUES(  2001 ,    'Command syntax error',    'Chybná syntaxe pøíkazu');
-INSERT INTO enum_error VALUES(  2002 ,    'Command use error',     'Chybné pou¾ití pøíkazu');
-INSERT INTO enum_error VALUES(  2003 ,    'Required parameter missing',    'Po¾adovaný parametr neuveden');
-INSERT INTO enum_error VALUES(  2004 ,    'Parameter value range error',    'Chybný rozsah parametru');
-INSERT INTO enum_error VALUES(  2005 ,    'Parameter value syntax error',    'Chybná syntaxe hodnoty parametru');
+INSERT INTO enum_error VALUES(  1300 , 'Command completed successfully; no messages',    'P__kaz _sp__n_ proveden; __dn_ nov_ zpr_vy');
+INSERT INTO enum_error VALUES(  1301 , 'Command completed successfully; ack to dequeue',    'P__kaz _sp__n_ proveden; potvr_ za __elem vy_azen_ z fronty');
+INSERT INTO enum_error VALUES(  1500 , 'Command completed successfully; ending session',    'P__kaz _sp__n_ proveden; konec relace');
 
 
-INSERT INTO enum_error VALUES( 2100 ,   'Unimplemented protocol version',    'Neimplementovaná verze protokolu');
-INSERT INTO enum_error VALUES( 2101 ,   'Unimplemented command',     'Neimplementovaný pøíkaz');
-INSERT INTO enum_error VALUES( 2102 ,   'Unimplemented option',    'Neimplementovaná volba');
-INSERT INTO enum_error VALUES( 2103 ,   'Unimplemented extension',    'Neimplementované roz¹íøení');
-INSERT INTO enum_error VALUES( 2104 ,   'Billing failure',     'Úèetní selhání');
-INSERT INTO enum_error VALUES( 2105 ,   'Object is not eligible for renewal',     'Objekt je nezpùsobilý pro obnovení');
-INSERT INTO enum_error VALUES( 2106 ,   'Object is not eligible for transfer',    'Objekt je nezpùsobilý pro transfer');
+INSERT INTO enum_error VALUES(  2000 ,    'Unknown command',    'Nezn_m_ p__kaz');
+INSERT INTO enum_error VALUES(  2001 ,    'Command syntax error',    'Chybn_ syntaxe p__kazu');
+INSERT INTO enum_error VALUES(  2002 ,    'Command use error',     'Chybn_ pou_it_ p__kazu');
+INSERT INTO enum_error VALUES(  2003 ,    'Required parameter missing',    'Po_adovan_ parametr neuveden');
+INSERT INTO enum_error VALUES(  2004 ,    'Parameter value range error',    'Chybn_ rozsah parametru');
+INSERT INTO enum_error VALUES(  2005 ,    'Parameter value syntax error',    'Chybn_ syntaxe hodnoty parametru');
 
 
-INSERT INTO enum_error VALUES( 2200 ,    'Authentication error',    'Chyba ovìøení identity');
-INSERT INTO enum_error VALUES( 2201 ,    'Authorization error',     'Chyba oprávnìní');
-INSERT INTO enum_error VALUES( 2202 ,    'Invalid authorization information',    'Chybná autorizaèní informace');
+INSERT INTO enum_error VALUES( 2100 ,   'Unimplemented protocol version',    'Neimplementovan_ verze protokolu');
+INSERT INTO enum_error VALUES( 2101 ,   'Unimplemented command',     'Neimplementovan_ p__kaz');
+INSERT INTO enum_error VALUES( 2102 ,   'Unimplemented option',    'Neimplementovan_ volba');
+INSERT INTO enum_error VALUES( 2103 ,   'Unimplemented extension',    'Neimplementovan_ roz___en_');
+INSERT INTO enum_error VALUES( 2104 ,   'Billing failure',     '__etn_ selh_n_');
+INSERT INTO enum_error VALUES( 2105 ,   'Object is not eligible for renewal',     'Objekt je nezp_sobil_ pro obnoven_');
+INSERT INTO enum_error VALUES( 2106 ,   'Object is not eligible for transfer',    'Objekt je nezp_sobil_ pro transfer');
 
-INSERT INTO enum_error VALUES( 2300 ,    'Object pending transfer',    'Objekt èeká na transfer');
-INSERT INTO enum_error VALUES( 2301 ,    'Object not pending transfer',    'Objekt neèeká na transfer');
+
+INSERT INTO enum_error VALUES( 2200 ,    'Authentication error',    'Chyba ov__en_ identity');
+INSERT INTO enum_error VALUES( 2201 ,    'Authorization error',     'Chyba opr_vn_n_');
+INSERT INTO enum_error VALUES( 2202 ,    'Invalid authorization information',    'Chybn_ autoriza_n_ informace');
+
+INSERT INTO enum_error VALUES( 2300 ,    'Object pending transfer',    'Objekt _ek_ na transfer');
+INSERT INTO enum_error VALUES( 2301 ,    'Object not pending transfer',    'Objekt ne_ek_ na transfer');
 INSERT INTO enum_error VALUES( 2302 ,    'Object exists',    'Objekt existuje');
 INSERT INTO enum_error VALUES( 2303 ,    'Object does not exist',    'Objekt neexistuje');
 INSERT INTO enum_error VALUES( 2304 ,    'Object status prohibits operation',    'Status objektu nedovoluje operaci');
 INSERT INTO enum_error VALUES( 2305 ,    'Object association prohibits operation',    'Asociace objektu nedovoluje operaci');
-INSERT INTO enum_error VALUES( 2306 ,    'Parameter value policy error',    'Chyba zásady pro hodnotu parametru');
-INSERT INTO enum_error VALUES( 2307 ,    'Unimplemented object service',    'Neimplementovaná slu¾ba objektu');
-INSERT INTO enum_error VALUES( 2308 ,    'Data management policy violation',    'Poru¹ení zásady pro správu dat');
+INSERT INTO enum_error VALUES( 2306 ,    'Parameter value policy error',    'Chyba z_sady pro hodnotu parametru');
+INSERT INTO enum_error VALUES( 2307 ,    'Unimplemented object service',    'Neimplementovan_ slu_ba objektu');
+INSERT INTO enum_error VALUES( 2308 ,    'Data management policy violation',    'Poru_en_ z_sady pro spr_vu dat');
 
-INSERT INTO enum_error VALUES( 2400 ,    'Command failed',    'Pøíkaz selhal');
-INSERT INTO enum_error VALUES( 2500 ,    'Command failed; server closing connection',    'Pøíkaz selhal; server uzavírá spojení');
-INSERT INTO enum_error VALUES( 2501 ,    'Authentication error; server closing connection',    'Chyba ovìøení identity; server uzavírá spojení');
-INSERT INTO enum_error VALUES( 2502 ,    'Session limit exceeded; server closing connection',    'Limit na poèet relací pøekroèen; server uzavírá spojení');
+INSERT INTO enum_error VALUES( 2400 ,    'Command failed',    'P__kaz selhal');
+INSERT INTO enum_error VALUES( 2500 ,    'Command failed; server closing connection',    'P__kaz selhal; server uzav_r_ spojen_');
+INSERT INTO enum_error VALUES( 2501 ,    'Authentication error; server closing connection',    'Chyba ov__en_ identity; server uzav_r_ spojen_');
+INSERT INTO enum_error VALUES( 2502 ,    'Session limit exceeded; server closing connection',    'Limit na po_et relac_ p_ekro_en; server uzav_r_ spojen_');
 
 
 
@@ -112,7 +112,7 @@ CREATE TABLE zone (
         ex_period_max int not null,
         val_period int not null
         );
-CREATE SEQUENCE zone_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE zone_id_seq START WITH 1 INCREMENT BY 1 NOCACHE;
 CREATE OR REPLACE TRIGGER zone_trigger BEFORE INSERT ON zone
 REFERENCING NEW AS NEW
 FOR EACH ROW
@@ -143,7 +143,7 @@ CREATE TABLE Registrar (
         Email varchar(1024),
         Url varchar(1024)
         );
-CREATE SEQUENCE registrar_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE registrar_id_seq START WITH 1 INCREMENT BY 1 NOCACHE;
 CREATE OR REPLACE TRIGGER registrar_trigger BEFORE INSERT ON registrar
 REFERENCING NEW AS NEW
 FOR EACH ROW
@@ -196,14 +196,14 @@ CREATE INDEX contact_id_idx ON Contact (ID);
 CREATE INDEX contact_roid_idx ON Contact (ROID);
 CREATE INDEX contact_handle_idx ON Contact (Handle);
 
---CREATE SEQUENCE contact_id_seq START WITH 1 INCREMENT BY 1;
---CREATE OR REPLACE TRIGGER contact_trigger BEFORE INSERT ON contact
---REFERENCING NEW AS NEW
---FOR EACH ROW
---BEGIN
---	SELECT contact_id_seq.nextval INTO :NEW.ID FROM dual;
---END;
---/
+CREATE SEQUENCE contact_id_seq START WITH 1 INCREMENT BY 1 NOCACHE;
+CREATE OR REPLACE TRIGGER contact_trigger BEFORE INSERT ON contact
+REFERENCING NEW AS NEW
+FOR EACH ROW
+BEGIN
+	SELECT contact_id_seq.nextval INTO :NEW.ID FROM dual;
+END;
+/
 
 
 -- DROP TABLE Term CASCADE;
@@ -239,14 +239,14 @@ CREATE INDEX nsset_id_idx ON NSSet (ID);
 CREATE INDEX nsset_roid_idx ON NSSet (ROID);
 CREATE INDEX nsset_handle_idx ON NSSet (Handle);
 CREATE INDEX nsset_clid_idx ON NSSet (ClID);        
-CREATE SEQUENCE nsset_id_seq START WITH 1 INCREMENT BY 1;
---CREATE OR REPLACE TRIGGER nsset_trigger BEFORE INSERT ON nsset
---REFERENCING NEW AS NEW
---FOR EACH ROW
---BEGIN
---	SELECT nsset_id_seq.nextval INTO :NEW.ID FROM dual;
---END;
---/
+CREATE SEQUENCE nsset_id_seq START WITH 1 INCREMENT BY 1 NOCACHE;
+CREATE OR REPLACE TRIGGER nsset_trigger BEFORE INSERT ON nsset
+REFERENCING NEW AS NEW
+FOR EACH ROW
+BEGIN
+	SELECT nsset_id_seq.nextval INTO :NEW.ID FROM dual;
+END;
+/
 
 
 -- DROP TABLE nsset_contact_map CASCADE;
@@ -266,7 +266,7 @@ CREATE TABLE Host (
         IpAddr varchar(255) NOT NULL,
         UNIQUE (NSSetID, FQDN ) -- unikatni klic
         );
-CREATE SEQUENCE host_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE host_id_seq START WITH 1 INCREMENT BY 1 NOCACHE;
 CREATE OR REPLACE TRIGGER host_trigger BEFORE INSERT ON host
 REFERENCING NEW AS NEW
 FOR EACH ROW
@@ -299,14 +299,14 @@ CREATE INDEX domain_zone_idx ON Domain (Zone);
 CREATE INDEX domain_id_idx ON Domain (ID);
 CREATE INDEX domain_fqdn_idx ON Domain (FQDN);
 CREATE INDEX domain_roid_idx ON Domain (ROID);
-CREATE SEQUENCE domain_id_seq START WITH 1 INCREMENT BY 1;
---CREATE OR REPLACE TRIGGER domain_trigger BEFORE INSERT ON domain
---REFERENCING NEW AS NEW
---FOR EACH ROW
---BEGIN
---	SELECT domain_id_seq.nextval INTO :NEW.ID FROM dual;
---END;
---/
+CREATE SEQUENCE domain_id_seq START WITH 1 INCREMENT BY 1 NOCACHE;
+CREATE OR REPLACE TRIGGER domain_trigger BEFORE INSERT ON domain
+REFERENCING NEW AS NEW
+FOR EACH ROW
+BEGIN
+	SELECT domain_id_seq.nextval INTO :NEW.ID FROM dual;
+END;
+/
 
 
 -- DROP TABLE domain_contact_map CASCADE;
@@ -343,7 +343,7 @@ CREATE TABLE Message (
         );
 CREATE INDEX message_clid_idx ON message (clid);
 CREATE INDEX message_seen_idx ON message (clid,seen,crdate,exdate);
-CREATE SEQUENCE message_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE message_id_seq START WITH 1 INCREMENT BY 1 NOCACHE;
 CREATE OR REPLACE TRIGGER message_trigger BEFORE INSERT ON message
 REFERENCING NEW AS NEW
 FOR EACH ROW
@@ -363,7 +363,7 @@ CREATE TABLE Login (
         logoutTRID varchar(128), -- cislo odhlasovaci transakce
         lang  varchar(2) DEFAULT 'en' NOT NULL -- jazyk ve kterem se vraceji chybove zpravy
         );
-CREATE SEQUENCE login_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE login_id_seq START WITH 1 INCREMENT BY 1 NOCACHE;
 CREATE OR REPLACE TRIGGER login_trigger BEFORE INSERT ON login
 REFERENCING NEW AS NEW
 FOR EACH ROW
@@ -435,7 +435,7 @@ CREATE TABLE Action (
 	EndDate timestamp, -- datum a cas uknceni funkce
         serverTRID varchar(128) UNIQUE   -- cislo transakce ze servru 
         );
-CREATE SEQUENCE action_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE action_id_seq START WITH 1 INCREMENT BY 1 NOCACHE;
 CREATE OR REPLACE TRIGGER action_trigger BEFORE INSERT ON action
 REFERENCING NEW AS NEW
 FOR EACH ROW
@@ -454,7 +454,7 @@ CREATE TABLE History (
         action INTEGER NOT NULL REFERENCES action, -- odkaz to tabulky action         
         ModDate timestamp DEFAULT current_timestamp NOT NULL -- datum a cas provedene zmeny
         );
-CREATE SEQUENCE history_id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE history_id_seq START WITH 1 INCREMENT BY 1 NOCACHE;
 CREATE OR REPLACE TRIGGER history_trigger BEFORE INSERT ON history
 REFERENCING NEW AS NEW
 FOR EACH ROW
@@ -820,72 +820,71 @@ INSERT INTO enum_country (id,country) VALUES ( 'YE' , 'YEMEN' );
 INSERT INTO enum_country (id,country) VALUES ( 'ZM' , 'ZAMBIA' );
 INSERT INTO enum_country (id,country) VALUES ( 'ZW' , 'ZIMBABWE' );
 -- kodovani
-\encoding       LATIN2
 -- nazvy zemi v cestine
-UPDATE enum_country SET country_cs= 'Afghánistán'  WHERE ID= 'AF' ;
-UPDATE enum_country SET country_cs= 'Albánie'  WHERE ID= 'AL' ;
-UPDATE enum_country SET country_cs= 'Al¾írsko'  WHERE ID= 'DZ' ;
-UPDATE enum_country SET country_cs= 'Americká Samoa'  WHERE ID= 'AS' ;
-UPDATE enum_country SET country_cs= 'Americké Panenské ostrovy'  WHERE ID= 'VI' ;
+UPDATE enum_country SET country_cs= 'Afgh_nist_n'  WHERE ID= 'AF' ;
+UPDATE enum_country SET country_cs= 'Alb_nie'  WHERE ID= 'AL' ;
+UPDATE enum_country SET country_cs= 'Al__rsko'  WHERE ID= 'DZ' ;
+UPDATE enum_country SET country_cs= 'Americk_ Samoa'  WHERE ID= 'AS' ;
+UPDATE enum_country SET country_cs= 'Americk_ Panensk_ ostrovy'  WHERE ID= 'VI' ;
 UPDATE enum_country SET country_cs= 'Andorra'  WHERE ID= 'AD' ;
 UPDATE enum_country SET country_cs= 'Angola'  WHERE ID= 'AO' ;
 UPDATE enum_country SET country_cs= 'Anguilla'  WHERE ID= 'AI' ;
 UPDATE enum_country SET country_cs= 'Antarktika'  WHERE ID= 'AQ' ;
 UPDATE enum_country SET country_cs= 'Antigua a Barbuda'  WHERE ID= 'AG' ;
 UPDATE enum_country SET country_cs= 'Argentina'  WHERE ID= 'AR' ;
-UPDATE enum_country SET country_cs= 'Arménie'  WHERE ID= 'AM' ;
+UPDATE enum_country SET country_cs= 'Arm_nie'  WHERE ID= 'AM' ;
 UPDATE enum_country SET country_cs= 'Aruba'  WHERE ID= 'AW' ;
-UPDATE enum_country SET country_cs= 'Austrálie'  WHERE ID= 'AU' ;
-UPDATE enum_country SET country_cs= 'Ázerbajd¾án'  WHERE ID= 'AZ' ;
+UPDATE enum_country SET country_cs= 'Austr_lie'  WHERE ID= 'AU' ;
+UPDATE enum_country SET country_cs= '_zerbajd__n'  WHERE ID= 'AZ' ;
 UPDATE enum_country SET country_cs= 'Bahamy'  WHERE ID= 'BS' ;
 UPDATE enum_country SET country_cs= 'Bahrajn'  WHERE ID= 'BH' ;
-UPDATE enum_country SET country_cs= 'Bangladé¹'  WHERE ID= 'BD' ;
+UPDATE enum_country SET country_cs= 'Banglad__'  WHERE ID= 'BD' ;
 UPDATE enum_country SET country_cs= 'Barbados'  WHERE ID= 'BB' ;
 UPDATE enum_country SET country_cs= 'Barma'  WHERE ID= 'MM' ;
 UPDATE enum_country SET country_cs= 'Belgie'  WHERE ID= 'BE' ;
 UPDATE enum_country SET country_cs= 'Belize'  WHERE ID= 'BZ' ;
-UPDATE enum_country SET country_cs= 'Bìlorusko'  WHERE ID= 'BY' ;
+UPDATE enum_country SET country_cs= 'B_lorusko'  WHERE ID= 'BY' ;
 UPDATE enum_country SET country_cs= 'Benin'  WHERE ID= 'BJ' ;
 UPDATE enum_country SET country_cs= 'Bermudy'  WHERE ID= 'BM' ;
-UPDATE enum_country SET country_cs= 'Bhútán'  WHERE ID= 'BT' ;
-UPDATE enum_country SET country_cs= 'Bolívie'  WHERE ID= 'BO' ;
+UPDATE enum_country SET country_cs= 'Bh_t_n'  WHERE ID= 'BT' ;
+UPDATE enum_country SET country_cs= 'Bol_vie'  WHERE ID= 'BO' ;
 UPDATE enum_country SET country_cs= 'Bosna a Hercegovina'  WHERE ID= 'BA' ;
 UPDATE enum_country SET country_cs= 'Botswana'  WHERE ID= 'BW' ;
-UPDATE enum_country SET country_cs= 'Brazílie'  WHERE ID= 'BR' ;
-UPDATE enum_country SET country_cs= 'Britské indickooceánské teritorium'  WHERE ID= 'IO' ;
-UPDATE enum_country SET country_cs= 'Britské Panenské ostrovy'  WHERE ID= 'VG' ;
+UPDATE enum_country SET country_cs= 'Braz_lie'  WHERE ID= 'BR' ;
+UPDATE enum_country SET country_cs= 'Britsk_ indickooce_nsk_ teritorium'  WHERE ID= 'IO' ;
+UPDATE enum_country SET country_cs= 'Britsk_ Panensk_ ostrovy'  WHERE ID= 'VG' ;
 UPDATE enum_country SET country_cs= 'Brunej'  WHERE ID= 'BN' ;
 UPDATE enum_country SET country_cs= 'Bulharsko'  WHERE ID= 'BG' ;
 UPDATE enum_country SET country_cs= 'Burkina Faso'  WHERE ID= 'BF' ;
 UPDATE enum_country SET country_cs= 'Burundi'  WHERE ID= 'BI' ;
 UPDATE enum_country SET country_cs= 'Cookovy ostrovy'  WHERE ID= 'CK' ;
-UPDATE enum_country SET country_cs= 'Èad'  WHERE ID= 'TD' ;
-UPDATE enum_country SET country_cs= 'Èeská republika'  WHERE ID= 'CZ' ;
-UPDATE enum_country SET country_cs= 'Èína'  WHERE ID= 'CN' ;
-UPDATE enum_country SET country_cs= 'Dánsko'  WHERE ID= 'DK' ;
+UPDATE enum_country SET country_cs= '_ad'  WHERE ID= 'TD' ;
+UPDATE enum_country SET country_cs= '_esk_ republika'  WHERE ID= 'CZ' ;
+UPDATE enum_country SET country_cs= '__na'  WHERE ID= 'CN' ;
+UPDATE enum_country SET country_cs= 'D_nsko'  WHERE ID= 'DK' ;
 UPDATE enum_country SET country_cs= 'Dominika'  WHERE ID= 'DM' ;
-UPDATE enum_country SET country_cs= 'Dominikánská republika'  WHERE ID= 'DO' ;
-UPDATE enum_country SET country_cs= 'D¾ibuti'  WHERE ID= 'DJ' ;
+UPDATE enum_country SET country_cs= 'Dominik_nsk_ republika'  WHERE ID= 'DO' ;
+UPDATE enum_country SET country_cs= 'D_ibuti'  WHERE ID= 'DJ' ;
 UPDATE enum_country SET country_cs= 'Egypt'  WHERE ID= 'EG' ;
-UPDATE enum_country SET country_cs= 'Ekvádor'  WHERE ID= 'EC' ;
+UPDATE enum_country SET country_cs= 'Ekv_dor'  WHERE ID= 'EC' ;
 UPDATE enum_country SET country_cs= 'Eritrea'  WHERE ID= 'ER' ;
 UPDATE enum_country SET country_cs= 'Estonsko'  WHERE ID= 'EE' ;
 UPDATE enum_country SET country_cs= 'Etiopie'  WHERE ID= 'ET' ;
-UPDATE enum_country SET country_cs= 'Faerské ostrovy'  WHERE ID= 'FO' ;
+UPDATE enum_country SET country_cs= 'Faersk_ ostrovy'  WHERE ID= 'FO' ;
 UPDATE enum_country SET country_cs= 'Falklandy'  WHERE ID= 'FK' ;
-UPDATE enum_country SET country_cs= 'Fid¾i'  WHERE ID= 'FJ' ;
-UPDATE enum_country SET country_cs= 'Filipíny'  WHERE ID= 'PH' ;
+UPDATE enum_country SET country_cs= 'Fid_i'  WHERE ID= 'FJ' ;
+UPDATE enum_country SET country_cs= 'Filip_ny'  WHERE ID= 'PH' ;
 UPDATE enum_country SET country_cs= 'Finsko'  WHERE ID= 'FI' ;
 UPDATE enum_country SET country_cs= 'Francie'  WHERE ID= 'FR' ;
-UPDATE enum_country SET country_cs= 'Francouzská Guyana'  WHERE ID= 'GF' ;
-UPDATE enum_country SET country_cs= 'Francouzská Polynézie'  WHERE ID= 'PF' ;
-UPDATE enum_country SET country_cs= 'Francouzská ji¾ní území'  WHERE ID= 'TF' ;
+UPDATE enum_country SET country_cs= 'Francouzsk_ Guyana'  WHERE ID= 'GF' ;
+UPDATE enum_country SET country_cs= 'Francouzsk_ Polyn_zie'  WHERE ID= 'PF' ;
+UPDATE enum_country SET country_cs= 'Francouzsk_ ji_n_ _zem_'  WHERE ID= 'TF' ;
 UPDATE enum_country SET country_cs= 'Gabun'  WHERE ID= 'GA' ;
 UPDATE enum_country SET country_cs= 'Gambie'  WHERE ID= 'GM' ;
 UPDATE enum_country SET country_cs= 'Ghana'  WHERE ID= 'GH' ;
 UPDATE enum_country SET country_cs= 'Gibraltar'  WHERE ID= 'GI' ;
 UPDATE enum_country SET country_cs= 'Grenada'  WHERE ID= 'GD' ;
-UPDATE enum_country SET country_cs= 'Grónsko'  WHERE ID= 'GL' ;
+UPDATE enum_country SET country_cs= 'Gr_nsko'  WHERE ID= 'GL' ;
 UPDATE enum_country SET country_cs= 'Gruzie'  WHERE ID= 'GE' ;
 UPDATE enum_country SET country_cs= 'Guadeloupe'  WHERE ID= 'GP' ;
 UPDATE enum_country SET country_cs= 'Guam' WHERE ID= 'GU' ;
@@ -899,53 +898,53 @@ UPDATE enum_country SET country_cs= 'Hongkong'  WHERE ID= 'HK' ;
 UPDATE enum_country SET country_cs= 'Chile'  WHERE ID= 'CL' ;
 UPDATE enum_country SET country_cs= 'Chorvatsko'  WHERE ID= 'HR' ;
 UPDATE enum_country SET country_cs= 'Indie'  WHERE ID= 'IN' ;
-UPDATE enum_country SET country_cs= 'Indonézie'  WHERE ID= 'ID' ;
-UPDATE enum_country SET country_cs= 'Irák'  WHERE ID= 'IQ' ;
-UPDATE enum_country SET country_cs= 'Írán'  WHERE ID= 'IR' ;
+UPDATE enum_country SET country_cs= 'Indon_zie'  WHERE ID= 'ID' ;
+UPDATE enum_country SET country_cs= 'Ir_k'  WHERE ID= 'IQ' ;
+UPDATE enum_country SET country_cs= '_r_n'  WHERE ID= 'IR' ;
 UPDATE enum_country SET country_cs= 'Irsko'  WHERE ID= 'IE' ;
 UPDATE enum_country SET country_cs= 'Island'  WHERE ID= 'IS' ;
-UPDATE enum_country SET country_cs= 'Itálie'  WHERE ID= 'IT' ;
+UPDATE enum_country SET country_cs= 'It_lie'  WHERE ID= 'IT' ;
 UPDATE enum_country SET country_cs= 'Izrael'  WHERE ID= 'IL' ;
 UPDATE enum_country SET country_cs= 'Jamajka'  WHERE ID= 'JM' ;
 UPDATE enum_country SET country_cs= 'Japonsko'  WHERE ID= 'JP' ;
 UPDATE enum_country SET country_cs= 'Jemen'  WHERE ID= 'YE' ;
-UPDATE enum_country SET country_cs= 'Jihoafrická republika'  WHERE ID= 'ZA' ;
-UPDATE enum_country SET country_cs= 'Ji¾ní Georgie'  WHERE ID= 'GS' ;
-UPDATE enum_country SET country_cs= 'Jordánsko'  WHERE ID= 'JO' ;
-UPDATE enum_country SET country_cs= 'Kajmanské ostrovy'  WHERE ID= 'KY' ;
-UPDATE enum_country SET country_cs= 'Kambod¾a'  WHERE ID= 'KH' ;
+UPDATE enum_country SET country_cs= 'Jihoafrick_ republika'  WHERE ID= 'ZA' ;
+UPDATE enum_country SET country_cs= 'Ji_n_ Georgie'  WHERE ID= 'GS' ;
+UPDATE enum_country SET country_cs= 'Jord_nsko'  WHERE ID= 'JO' ;
+UPDATE enum_country SET country_cs= 'Kajmansk_ ostrovy'  WHERE ID= 'KY' ;
+UPDATE enum_country SET country_cs= 'Kambod_a'  WHERE ID= 'KH' ;
 UPDATE enum_country SET country_cs= 'Kamerun'  WHERE ID= 'CM' ;
 UPDATE enum_country SET country_cs= 'Kanada'  WHERE ID= 'CA' ;
 UPDATE enum_country SET country_cs= 'Kapverdy'  WHERE ID= 'CV' ;
 UPDATE enum_country SET country_cs= 'Katar'  WHERE ID= 'QA' ;
-UPDATE enum_country SET country_cs= 'Kazachstán'  WHERE ID= 'KZ' ;
-UPDATE enum_country SET country_cs= 'Keòa'  WHERE ID= 'KE' ;
+UPDATE enum_country SET country_cs= 'Kazachst_n'  WHERE ID= 'KZ' ;
+UPDATE enum_country SET country_cs= 'Ke_a'  WHERE ID= 'KE' ;
 UPDATE enum_country SET country_cs= 'Kiribati'  WHERE ID= 'KI' ;
 UPDATE enum_country SET country_cs= 'Kolumbie'  WHERE ID= 'CO' ;
-UPDATE enum_country SET country_cs= 'Kokosové ostrovy'  WHERE ID= 'CC' ;
+UPDATE enum_country SET country_cs= 'Kokosov_ ostrovy'  WHERE ID= 'CC' ;
 UPDATE enum_country SET country_cs= 'Komory'  WHERE ID= 'KM' ;
 UPDATE enum_country SET country_cs= 'Kongo'  WHERE ID= 'CG' ;
-UPDATE enum_country SET country_cs= 'Kongo (Demokratická republika Kongo)'  WHERE ID= 'CD' ;
-UPDATE enum_country SET country_cs= 'Severní Korea (Korejská lidovì demokratická republika)'  WHERE ID= 'KP' ;
-UPDATE enum_country SET country_cs= 'Korea (Korejská republika)'  WHERE ID= 'KR' ;
+UPDATE enum_country SET country_cs= 'Kongo (Demokratick_ republika Kongo)'  WHERE ID= 'CD' ;
+UPDATE enum_country SET country_cs= 'Severn_ Korea (Korejsk_ lidov_ demokratick_ republika)'  WHERE ID= 'KP' ;
+UPDATE enum_country SET country_cs= 'Korea (Korejsk_ republika)'  WHERE ID= 'KR' ;
 UPDATE enum_country SET country_cs= 'Kostarika'  WHERE ID= 'CR' ;
 UPDATE enum_country SET country_cs= 'Kuba'  WHERE ID= 'CU' ;
 UPDATE enum_country SET country_cs= 'Kuvajt'  WHERE ID= 'KW' ;
 UPDATE enum_country SET country_cs= 'Kypr'  WHERE ID= 'CY' ;
-UPDATE enum_country SET country_cs= 'Kyrgyzstán'  WHERE ID= 'KG' ;
+UPDATE enum_country SET country_cs= 'Kyrgyzst_n'  WHERE ID= 'KG' ;
 UPDATE enum_country SET country_cs= 'Laos'  WHERE ID= 'LA' ;
 UPDATE enum_country SET country_cs= 'Libanon'  WHERE ID= 'LB' ;
 UPDATE enum_country SET country_cs= 'Lesotho'  WHERE ID= 'LS' ;
-UPDATE enum_country SET country_cs= 'Libérie'  WHERE ID= 'LR' ;
+UPDATE enum_country SET country_cs= 'Lib_rie'  WHERE ID= 'LR' ;
 UPDATE enum_country SET country_cs= 'Libye'  WHERE ID= 'LY' ;
-UPDATE enum_country SET country_cs= 'Lichten¹tejnsko'  WHERE ID= 'LI' ;
+UPDATE enum_country SET country_cs= 'Lichten_tejnsko'  WHERE ID= 'LI' ;
 UPDATE enum_country SET country_cs= 'Litva'  WHERE ID= 'LT' ;
-UPDATE enum_country SET country_cs= 'Loty¹sko'  WHERE ID= 'LV' ;
+UPDATE enum_country SET country_cs= 'Loty_sko'  WHERE ID= 'LV' ;
 UPDATE enum_country SET country_cs= 'Lucembursko'  WHERE ID= 'LU' ;
 UPDATE enum_country SET country_cs= 'Makao'  WHERE ID= 'MO' ;
 UPDATE enum_country SET country_cs= 'Makedonie'  WHERE ID= 'MK' ;
 UPDATE enum_country SET country_cs= 'Madagaskar'  WHERE ID= 'MG' ;
-UPDATE enum_country SET country_cs= 'Maïarsko'  WHERE ID= 'HU' ;
+UPDATE enum_country SET country_cs= 'Ma_arsko'  WHERE ID= 'HU' ;
 UPDATE enum_country SET country_cs= 'Malawi'  WHERE ID= 'MW' ;
 UPDATE enum_country SET country_cs= 'Malajsie'  WHERE ID= 'MY' ;
 UPDATE enum_country SET country_cs= 'Maledivy'  WHERE ID= 'MV' ;
@@ -954,80 +953,80 @@ UPDATE enum_country SET country_cs= 'Malta'  WHERE ID= 'MT' ;
 UPDATE enum_country SET country_cs= 'Maroko'  WHERE ID= 'MA' ;
 UPDATE enum_country SET country_cs= 'Marshallovy ostrovy'  WHERE ID= 'MH' ;
 UPDATE enum_country SET country_cs= 'Martinik'  WHERE ID= 'MQ' ;
-UPDATE enum_country SET country_cs= 'Mauretánie'  WHERE ID= 'MR' ;
+UPDATE enum_country SET country_cs= 'Mauret_nie'  WHERE ID= 'MR' ;
 UPDATE enum_country SET country_cs= 'Mauricius'  WHERE ID= 'MU' ;
 UPDATE enum_country SET country_cs= 'Mayotte'  WHERE ID= 'YT' ;
 UPDATE enum_country SET country_cs= 'Mexiko'  WHERE ID= 'MX' ;
-UPDATE enum_country SET country_cs= 'Mikronésie'  WHERE ID= 'FM' ;
+UPDATE enum_country SET country_cs= 'Mikron_sie'  WHERE ID= 'FM' ;
 UPDATE enum_country SET country_cs= 'Moldavsko'  WHERE ID= 'MD' ;
 UPDATE enum_country SET country_cs= 'Monako'  WHERE ID= 'MC' ;
 UPDATE enum_country SET country_cs= 'Mongolsko'  WHERE ID= 'MN' ;
 UPDATE enum_country SET country_cs= 'Montserrat'  WHERE ID= 'MS' ;
 UPDATE enum_country SET country_cs= 'Mosambik'  WHERE ID= 'MZ' ;
-UPDATE enum_country SET country_cs= 'Namíbie'  WHERE ID= 'NA' ;
+UPDATE enum_country SET country_cs= 'Nam_bie'  WHERE ID= 'NA' ;
 UPDATE enum_country SET country_cs= 'Nauru'  WHERE ID= 'NR' ;
-UPDATE enum_country SET country_cs= 'Nìmecko'  WHERE ID= 'DE' ;
-UPDATE enum_country SET country_cs= 'Nepál'  WHERE ID= 'NP' ;
+UPDATE enum_country SET country_cs= 'N_mecko'  WHERE ID= 'DE' ;
+UPDATE enum_country SET country_cs= 'Nep_l'  WHERE ID= 'NP' ;
 UPDATE enum_country SET country_cs= 'Niger'  WHERE ID= 'NE' ;
-UPDATE enum_country SET country_cs= 'Nigérie'  WHERE ID= 'NG' ;
+UPDATE enum_country SET country_cs= 'Nig_rie'  WHERE ID= 'NG' ;
 UPDATE enum_country SET country_cs= 'Nikaragua'  WHERE ID= 'NI' ;
-UPDATE enum_country SET country_cs= 'Nizozemí'  WHERE ID= 'NL' ;
-UPDATE enum_country SET country_cs= 'Nizozemské Antily'  WHERE ID= 'AN' ;
+UPDATE enum_country SET country_cs= 'Nizozem_'  WHERE ID= 'NL' ;
+UPDATE enum_country SET country_cs= 'Nizozemsk_ Antily'  WHERE ID= 'AN' ;
 UPDATE enum_country SET country_cs= 'Niue'  WHERE ID= 'NU' ;
 UPDATE enum_country SET country_cs= 'Norfolk'  WHERE ID= 'NF' ;
 UPDATE enum_country SET country_cs= 'Norsko'  WHERE ID= 'NO' ;
-UPDATE enum_country SET country_cs= 'Nová Kaledonie'  WHERE ID= 'NC' ;
-UPDATE enum_country SET country_cs= 'Nový Zéland'  WHERE ID= 'NZ' ;
-UPDATE enum_country SET country_cs= 'Omán'  WHERE ID= 'OM' ;
-UPDATE enum_country SET country_cs= 'Pákistán'  WHERE ID= 'PK' ;
+UPDATE enum_country SET country_cs= 'Nov_ Kaledonie'  WHERE ID= 'NC' ;
+UPDATE enum_country SET country_cs= 'Nov_ Z_land'  WHERE ID= 'NZ' ;
+UPDATE enum_country SET country_cs= 'Om_n'  WHERE ID= 'OM' ;
+UPDATE enum_country SET country_cs= 'P_kist_n'  WHERE ID= 'PK' ;
 UPDATE enum_country SET country_cs= 'Palau'  WHERE ID= 'PW' ;
 UPDATE enum_country SET country_cs= 'Palestina'  WHERE ID= 'PS' ;
 UPDATE enum_country SET country_cs= 'Panama'  WHERE ID= 'PA' ;
-UPDATE enum_country SET country_cs= 'Papua Nová Guinea'  WHERE ID= 'PG' ;
+UPDATE enum_country SET country_cs= 'Papua Nov_ Guinea'  WHERE ID= 'PG' ;
 UPDATE enum_country SET country_cs= 'Paraguay'  WHERE ID= 'PY' ;
 UPDATE enum_country SET country_cs= 'Peru'  WHERE ID= 'PE' ;
 UPDATE enum_country SET country_cs= 'Pitcairnovy ostrovy'  WHERE ID= 'PN' ;
-UPDATE enum_country SET country_cs= 'Pobøe¾í slonoviny'  WHERE ID= 'CI' ;
+UPDATE enum_country SET country_cs= 'Pob_e__ slonoviny'  WHERE ID= 'CI' ;
 UPDATE enum_country SET country_cs= 'Polsko'  WHERE ID= 'PL' ;
 UPDATE enum_country SET country_cs= 'Portoriko'  WHERE ID= 'PR' ;
 UPDATE enum_country SET country_cs= 'Portugalsko'  WHERE ID= 'PT' ;
 UPDATE enum_country SET country_cs= 'Rakousko'  WHERE ID= 'AT' ;
-UPDATE enum_country SET country_cs= 'Réunion'  WHERE ID= 'RE' ;
-UPDATE enum_country SET country_cs= 'Rovníková Guinea'  WHERE ID= 'GQ' ;
+UPDATE enum_country SET country_cs= 'R_union'  WHERE ID= 'RE' ;
+UPDATE enum_country SET country_cs= 'Rovn_kov_ Guinea'  WHERE ID= 'GQ' ;
 UPDATE enum_country SET country_cs= 'Rumunsko'  WHERE ID= 'RO' ;
 UPDATE enum_country SET country_cs= 'Rusko'  WHERE ID= 'RU' ;
 UPDATE enum_country SET country_cs= 'Rwanda'  WHERE ID= 'RW' ;
-UPDATE enum_country SET country_cs= 'Øecko'  WHERE ID= 'GR' ;
+UPDATE enum_country SET country_cs= '_ecko'  WHERE ID= 'GR' ;
 UPDATE enum_country SET country_cs= 'Salvador'  WHERE ID= 'SV' ;
 UPDATE enum_country SET country_cs= 'Samoa'  WHERE ID= 'WS' ;
 UPDATE enum_country SET country_cs= 'San Marino'  WHERE ID= 'SM' ;
-UPDATE enum_country SET country_cs= 'Saúdská Arábie'  WHERE ID= 'SA' ;
+UPDATE enum_country SET country_cs= 'Sa_dsk_ Ar_bie'  WHERE ID= 'SA' ;
 UPDATE enum_country SET country_cs= 'Senegal'  WHERE ID= 'SN' ;
-UPDATE enum_country SET country_cs= 'Severní Mariany'  WHERE ID= 'MP' ;
+UPDATE enum_country SET country_cs= 'Severn_ Mariany'  WHERE ID= 'MP' ;
 UPDATE enum_country SET country_cs= 'Seychely'  WHERE ID= 'SC' ;
 UPDATE enum_country SET country_cs= 'Sierra Leone'  WHERE ID= 'SL' ;
 UPDATE enum_country SET country_cs= 'Singapur'  WHERE ID= 'SG' ;
 UPDATE enum_country SET country_cs= 'Slovensko'  WHERE ID= 'SK' ;
 UPDATE enum_country SET country_cs= 'Slovinsko'  WHERE ID= 'SI' ;
-UPDATE enum_country SET country_cs= 'Somálsko'  WHERE ID= 'SO' ;
-UPDATE enum_country SET country_cs= 'Spojené arabské emiráty'  WHERE ID= 'AE' ;
-UPDATE enum_country SET country_cs= 'Spojené státy americké'  WHERE ID= 'US' ;
-UPDATE enum_country SET country_cs= 'Srbsko a Èerná hora'  WHERE ID= 'CS' ;
-UPDATE enum_country SET country_cs= 'Srí Lanka (Cejlon)'  WHERE ID= 'LK' ;
-UPDATE enum_country SET country_cs= 'Støedoafrická republika'  WHERE ID= 'CF' ;
-UPDATE enum_country SET country_cs= 'Súdán'  WHERE ID= 'SD' ;
+UPDATE enum_country SET country_cs= 'Som_lsko'  WHERE ID= 'SO' ;
+UPDATE enum_country SET country_cs= 'Spojen_ arabsk_ emir_ty'  WHERE ID= 'AE' ;
+UPDATE enum_country SET country_cs= 'Spojen_ st_ty americk_'  WHERE ID= 'US' ;
+UPDATE enum_country SET country_cs= 'Srbsko a _ern_ hora'  WHERE ID= 'CS' ;
+UPDATE enum_country SET country_cs= 'Sr_ Lanka (Cejlon)'  WHERE ID= 'LK' ;
+UPDATE enum_country SET country_cs= 'St_edoafrick_ republika'  WHERE ID= 'CF' ;
+UPDATE enum_country SET country_cs= 'S_d_n'  WHERE ID= 'SD' ;
 UPDATE enum_country SET country_cs= 'Surinam'  WHERE ID= 'SR' ;
-UPDATE enum_country SET country_cs= 'Svatá Helena'  WHERE ID= 'SH' ;
-UPDATE enum_country SET country_cs= 'Svatá Lucie'  WHERE ID= 'LC' ;
+UPDATE enum_country SET country_cs= 'Svat_ Helena'  WHERE ID= 'SH' ;
+UPDATE enum_country SET country_cs= 'Svat_ Lucie'  WHERE ID= 'LC' ;
 UPDATE enum_country SET country_cs= 'Svazijsko'  WHERE ID= 'SZ' ;
-UPDATE enum_country SET country_cs= 'Sýrie'  WHERE ID= 'SY' ;
-UPDATE enum_country SET country_cs= '©alomounovy ostrovy'  WHERE ID= 'SB' ;
-UPDATE enum_country SET country_cs= '©panìlsko'  WHERE ID= 'ES' ;
-UPDATE enum_country SET country_cs= '©picberky'  WHERE ID= 'SJ' ;
-UPDATE enum_country SET country_cs= '©védsko'  WHERE ID= 'SE' ;
-UPDATE enum_country SET country_cs= '©výcarsko'  WHERE ID= 'CH' ;
-UPDATE enum_country SET country_cs= 'Tád¾ikistán'  WHERE ID= 'TJ' ;
-UPDATE enum_country SET country_cs= 'Tanzánie'  WHERE ID= 'TZ' ;
+UPDATE enum_country SET country_cs= 'S_rie'  WHERE ID= 'SY' ;
+UPDATE enum_country SET country_cs= '_alomounovy ostrovy'  WHERE ID= 'SB' ;
+UPDATE enum_country SET country_cs= '_pan_lsko'  WHERE ID= 'ES' ;
+UPDATE enum_country SET country_cs= '_picberky'  WHERE ID= 'SJ' ;
+UPDATE enum_country SET country_cs= '_v_dsko'  WHERE ID= 'SE' ;
+UPDATE enum_country SET country_cs= '_v_carsko'  WHERE ID= 'CH' ;
+UPDATE enum_country SET country_cs= 'T_d_ikist_n'  WHERE ID= 'TJ' ;
+UPDATE enum_country SET country_cs= 'Tanz_nie'  WHERE ID= 'TZ' ;
 UPDATE enum_country SET country_cs= 'Thajsko'  WHERE ID= 'TH' ;
 UPDATE enum_country SET country_cs= 'Tchajwan'  WHERE ID= 'TW' ;
 UPDATE enum_country SET country_cs= 'Togo'  WHERE ID= 'TG' ;
@@ -1036,20 +1035,22 @@ UPDATE enum_country SET country_cs= 'Tonga'  WHERE ID= 'TO' ;
 UPDATE enum_country SET country_cs= 'Trinidad a Tobago'  WHERE ID= 'TT' ;
 UPDATE enum_country SET country_cs= 'Tunisko'  WHERE ID= 'TN' ;
 UPDATE enum_country SET country_cs= 'Turecko'  WHERE ID= 'TR' ;
-UPDATE enum_country SET country_cs= 'Turkmenistán'  WHERE ID= 'TM' ;
+UPDATE enum_country SET country_cs= 'Turkmenist_n'  WHERE ID= 'TM' ;
 UPDATE enum_country SET country_cs= 'Tuvalu'  WHERE ID= 'TV' ;
 UPDATE enum_country SET country_cs= 'Uganda'  WHERE ID= 'UG' ;
 UPDATE enum_country SET country_cs= 'Ukrajina'  WHERE ID= 'UA' ;
 UPDATE enum_country SET country_cs= 'Uruguay'  WHERE ID= 'UY' ;
-UPDATE enum_country SET country_cs= 'Uzbekistán'  WHERE ID= 'UZ' ;
-UPDATE enum_country SET country_cs= 'Vánoèní ostrov'  WHERE ID= 'CX' ;
+UPDATE enum_country SET country_cs= 'Uzbekist_n'  WHERE ID= 'UZ' ;
+UPDATE enum_country SET country_cs= 'V_no_n_ ostrov'  WHERE ID= 'CX' ;
 UPDATE enum_country SET country_cs= 'Vanuatu'  WHERE ID= 'VU' ;
-UPDATE enum_country SET country_cs= 'Vatikán'  WHERE ID= 'VA' ;
-UPDATE enum_country SET country_cs= 'Velká Británie a Severní Irsko'  WHERE ID= 'GB' ;
+UPDATE enum_country SET country_cs= 'Vatik_n'  WHERE ID= 'VA' ;
+UPDATE enum_country SET country_cs= 'Velk_ Brit_nie a Severn_ Irsko'  WHERE ID= 'GB' ;
 UPDATE enum_country SET country_cs= 'Venezuela'  WHERE ID= 'VE' ;
 UPDATE enum_country SET country_cs= 'Vietnam'  WHERE ID= 'VN' ;
-UPDATE enum_country SET country_cs= 'Východní timor'  WHERE ID= 'TL' ;
+UPDATE enum_country SET country_cs= 'V_chodn_ timor'  WHERE ID= 'TL' ;
 UPDATE enum_country SET country_cs= 'Wallisovy ostrovy'  WHERE ID= 'WF' ;
 UPDATE enum_country SET country_cs= 'Zambie'  WHERE ID= 'ZM' ;
-UPDATE enum_country SET country_cs= 'Západní Sahara'  WHERE ID= 'EH' ;
+UPDATE enum_country SET country_cs= 'Z_padn_ Sahara'  WHERE ID= 'EH' ;
 UPDATE enum_country SET country_cs= 'Zimbabwe'  WHERE ID= 'ZW' ;
+
+COMMIT;
