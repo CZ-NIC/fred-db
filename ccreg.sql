@@ -153,8 +153,8 @@ CREATE TABLE Domain (
         ROID varchar(255) UNIQUE NOT NULL,
         FQDN varchar(255) UNIQUE NOT NULL,
         Status smallint[], -- TODO: create trigger to check values agains enum_status
-        Registrant INTEGER REFERENCES Contact,
-        NSSet INTEGER REFERENCES NSSet,
+        Registrant INTEGER NOT NULL REFERENCES Contact,
+        NSSet INTEGER NOT NULL REFERENCES NSSet,
         ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL DEFAULT now(),
@@ -209,11 +209,11 @@ CREATE TABLE ENUMVal (
 -- DROP TABLE Message;
 CREATE TABLE Message (
         ID SERIAL PRIMARY KEY,
-        ClID INTEGER REFERENCES Registrar ON UPDATE CASCADE,
+        ClID INTEGER NOT NULL REFERENCES Registrar ON UPDATE CASCADE,
         CrDate timestamp NOT NULL DEFAULT now(),
         ExDate TIMESTAMP,
-        Seen BOOLEAN,
-        Message TEXT
+        Seen BOOLEAN NOT NULL DEFAULT false,
+        Message TEXT NOT NULL
         );
 CREATE INDEX message_clid_idx ON message (clid);
 CREATE INDEX message_seen_idx ON message (clid,seen,crdate,exdate);
