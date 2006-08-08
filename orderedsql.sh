@@ -10,3 +10,5 @@ cat credit.sql
 cat enum_country.sql
 cat enum_cs_country.sql
 cat error.sql
+# ukladani historie 
+cat history.sql
