@@ -6,3 +6,7 @@ nutne zavolat
 
 ./orderedsql.sh | psql databaze
 
+
+potom je jeste nutne mit nejake zaznamy v tabulkech registrar a registraracl
+staci pouzit sql scriptty registrar.sql a registraracl.sql na testovani
+
