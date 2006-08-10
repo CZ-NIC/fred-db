@@ -50,7 +50,7 @@ just EPP commands.
 				res.append("'%s'" % col)
 		dict = {}
 		for i in range(len(desc)):
-			dict[desc[i][0]] = res[i]
+			dict[desc[i][0].lower()] = res[i]
 		return dict
 	#
 	# class interface

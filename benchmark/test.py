@@ -63,6 +63,7 @@ Body of process performing testing of database.
 	# get handles of all objects
 	domains, contacts, nssets = exe.getHandles()
 	epp_count = 0
+	print "starting"
 	start = time.time()
 	for i in range(pars["iter"]):
 		if terminate: break

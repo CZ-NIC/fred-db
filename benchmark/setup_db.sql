@@ -142,7 +142,7 @@ CREATE TABLE Contact (
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL DEFAULT now(),
         UpID INTEGER REFERENCES Registrar,
-        UpDate timestamp,
+        UpDatex timestamp,
 -- zruseno        TrDate timestamp,
         Name varchar(1024),
         Organization varchar(1024),
@@ -199,7 +199,7 @@ CREATE TABLE NSSet (
         UpID INTEGER REFERENCES Registrar,
         AuthInfoPw varchar(32),
         TrDate timestamp,
-        UpDate timestamp
+        UpDatex timestamp
         );
 CREATE INDEX nsset_id_idx ON NSSet (ID);
 CREATE INDEX nsset_roid_idx ON NSSet (ROID);
@@ -248,7 +248,7 @@ CREATE TABLE Domain (
         Exdate timestamp NOT NULL,
         TrDate timestamp,
         AuthInfoPw varchar(32),
-        UpDate timestamp
+        UpDatex timestamp
         );
 CREATE INDEX domain_zone_idx ON Domain (Zone);
 CREATE INDEX domain_id_idx ON Domain (ID);
@@ -403,7 +403,7 @@ CREATE TABLE Contact_History (
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL, -- DEFAULT now(),
         UpID INTEGER REFERENCES Registrar,
-        UpDate timestamp,
+        UpDatex timestamp,
 -- zruseno       TrDate timestamp,
         Name varchar(1024),
         Organization varchar(1024),
@@ -447,7 +447,7 @@ CREATE TABLE Domain_History (
         ExDate timestamp NOT NULL,
         TrDate timestamp,
         AuthInfoPw varchar(32),
-        UpDate timestamp,
+        UpDatex timestamp,
         Registrant INTEGER , -- zrusena reference
         NSSet INTEGER  -- zruseny reference
         );
@@ -475,7 +475,7 @@ CREATE TABLE NSSet_history  (
         UpID INTEGER REFERENCES Registrar, 
         AuthInfoPw varchar(32),
         Trdate timestamp,
-        UpDate timestamp
+        UpDatex timestamp
         );
 CREATE INDEX nsset_history_historyid_idx ON NSSet_History (historyID);
 

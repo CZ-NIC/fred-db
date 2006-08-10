@@ -8,12 +8,10 @@ def get_ins_action(id, regid, action):
 	"""
 Insert into action table. Used to begin action.
 	"""
-	str = \
+	return \
 "INSERT INTO action (id, clientid, action, clienttrid) \
 VALUES (%d, %d, %d, 'client_trid')" \
 % (id, regid, action)
-	print  str
-	return str
 
 
 def get_upd_action(id):
@@ -21,7 +19,7 @@ def get_upd_action(id):
 Update into action table. Used to end action.
 	"""
 	return \
-"UPDATE action SET response=1000 , enddate=now() , servertrid=%s WHERE id = %d"\
+"UPDATE action SET response=1000 , enddate='25-jul-06', servertrid=%s WHERE id = %d"\
 % ( randstr(50, 120) , id )
 
 
@@ -29,7 +27,7 @@ def get_sel_zone(fqdn):
 	"""
 Select zone which the domain belongs to. Used for EPP command renew-domain.
 	"""
-	return "SELECT zone FROM domain WHERE fqdn ILIKE '%s'" % fqdn
+	return "SELECT zone FROM domain WHERE fqdn LIKE '%s'" % fqdn
 
 
 def get_sel_zone_min(id):
@@ -43,28 +41,28 @@ def get_sel_domainid(fqdn):
 	"""
 Select domain's id from domain table. Used for EPP command check-domain.
 	"""
-	return "SELECT id FROM domain WHERE fqdn ILIKE '%s'" % fqdn
+	return "SELECT id FROM domain WHERE fqdn LIKE '%s'" % fqdn
 
 
 def get_sel_contactid(handle):
 	"""
 Select contact's id from contact table. Used for EPP command check-contact.
 	"""
-	return "SELECT id FROM contact WHERE handle ILIKE '%s'" % handle
+	return "SELECT id FROM contact WHERE handle LIKE '%s'" % handle
 
 
 def get_sel_nssetid(handle):
 	"""
 Select nsset's id from nsset table. Used for EPP command check-nsset.
 	"""
-	return "SELECT id FROM nsset WHERE handle ILIKE '%s'" % handle
+	return "SELECT id FROM nsset WHERE handle LIKE '%s'" % handle
 
 
 def get_sel_domain(fqdn):
 	"""
 Select domain record from domain table. Used for EPP command info-domain.
 	"""
-	return "SELECT * FROM domain WHERE fqdn ILIKE '%s'" % fqdn
+	return "SELECT * FROM domain WHERE fqdn LIKE '%s'" % fqdn
 
 
 def get_sel_domain_all(id):
@@ -99,7 +97,7 @@ def get_sel_contact(handle):
 	"""
 Select contact record from contact table. Used for EPP command info-contact.
 	"""
-	return "SELECT * FROM contact WHERE handle ILIKE '%s'" % handle
+	return "SELECT * FROM contact WHERE handle LIKE '%s'" % handle
 
 
 def get_sel_contact_all(id):
@@ -113,7 +111,7 @@ def get_sel_nsset(handle):
 	"""
 Select nsset record from nsset table. Used for EPP command info-nsset.
 	"""
-	return "SELECT * FROM nsset WHERE handle ILIKE '%s'" % handle
+	return "SELECT * FROM nsset WHERE handle LIKE '%s'" % handle
 
 
 def get_sel_nsset_all(id):
@@ -176,7 +174,7 @@ def get_upd_domain_xfer(id, regid):
 	"""
 Update trdate, clID fields in domain table. Used for EPP command transfer-domain.
 	"""
-	return "UPDATE domain SET trdate = now(), clID = %d WHERE id = %d" \
+	return "UPDATE domain SET trdate = '25-jul-06', clID = %d WHERE id = %d" \
 			% (regid, id)
 
 
@@ -184,16 +182,16 @@ def get_upd_nsset_xfer(id, regid):
 	"""
 Update trdate, clID fields in nsset table. Used for EPP command transfer-nsset.
 	"""
-	return "UPDATE nsset SET trdate = now(), clID = %d WHERE id = %d" \
+	return "UPDATE nsset SET trdate = '25-jul-06', clID = %d WHERE id = %d" \
 			% (regid, id)
 
 
 def get_upd_domain(id, regid):
 	"""
-Update upid, update, authinfopw fields in domain table. Used for EPP command
+Update upid, updatex, authinfopw fields in domain table. Used for EPP command
 update-domain.
 	"""
-	return "UPDATE domain SET upid = %d, update = now(), authinfopw = %s \
+	return "UPDATE domain SET upid = %d, updatex = '25-jul-06', authinfopw = %s \
 			WHERE id = %d" % (regid, randstr(3,25), id)
 
 
@@ -201,7 +199,7 @@ def get_upd_domain_renew(id):
 	"""
 Update exdate field in domain table. Used for EPP command renew-domain.
 	"""
-	return "UPDATE domain SET exdate = now() + '1 year' WHERE id = %d" % id
+	return "UPDATE domain SET exdate = '25-jul-06' WHERE id = %d" % id
 
 
 def get_ins_history(id, actid):
@@ -216,12 +214,11 @@ def get_ins_history_domain(id, rec):
 Insert old domain record in history. Used for transform domain commands.
 	"""
 	return "INSERT INTO domain_history (historyid, zone, id, roid, fqdn, \
-status, clid, crid, crdate, upid, exdate, trdate, authinfopw, update, \
-registrant, nsset) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, \
-%s, %s, %s, %s, %s, %s)" % (id, rec["zone"], rec["id"], rec["roid"], \
-rec["fqdn"], rec["status"], rec["clid"], rec["crid"], rec["crdate"], \
-rec["upid"], rec["exdate"], rec["trdate"], rec["authinfopw"], rec["update"], \
-rec["registrant"], rec["nsset"])
+status, clid, crid, crdate, upid, exdate, trdate, authinfopw, updatex, \
+registrant, nsset) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, '25-jul-06', %s, \
+'25-jul-06', '25-jul-06', %s, '25-jul-06', %s, %s)" % (id, rec["zone"], \
+rec["id"], rec["roid"], rec["fqdn"], rec["status"], rec["clid"], rec["crid"], \
+rec["upid"], rec["authinfopw"], rec["registrant"], rec["nsset"])
 
 
 def get_ins_history_enumval(id, rec):
@@ -229,7 +226,7 @@ def get_ins_history_enumval(id, rec):
 Insert old enumval record in history. Used for transform domain commands.
 	"""
 	return "INSERT INTO enumval_history (historyid, domainid, exdate) \
-VALUES (%s, %s, %s)" % (id, rec["domainid"], rec["exdate"])
+VALUES (%s, %s, '25-jul-06')" % (id, rec["domainid"])
 
 
 def get_ins_history_domain_contact_map(id, rec):
@@ -245,10 +242,10 @@ def get_ins_history_nsset(id, rec):
 Insert old nsset record in history. Used for transform nsset commands.
 	"""
 	return "INSERT INTO nsset_history (historyid, id, roid, handle, \
-status, clid, crid, crdate, upid, trdate, authinfopw, update) VALUES \
-(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" % (id, rec["id"], \
-rec["roid"], rec["handle"], rec["status"], rec["clid"], rec["crid"], \
-rec["crdate"], rec["upid"], rec["trdate"], rec["authinfopw"], rec["update"])
+status, clid, crid, crdate, upid, updatex, authinfopw, trdate) \
+VALUES (%s, %s, %s, %s, %s, %s, %s, '25-jul-06', %s, '25-jul-06', %s, \
+'25-jul-06')" % (id, rec["id"], rec["roid"], rec["handle"], rec["status"], \
+rec["clid"], rec["crid"], rec["upid"], rec["authinfopw"])
 
 
 def get_ins_history_nsset_contact_map(id, rec):
@@ -264,14 +261,14 @@ def get_ins_history_contact(id, rec):
 Insert old contact record in history. Used for transform contact commands.
 	"""
 	return "INSERT INTO contact_history (historyid, id, roid, handle, \
-status, crid, crdate, upid, update, name, organization, street1, street2, \
-street3, city, stateorprovince, postalcode, country, telephone, fax, email, \
-disclosename, discloseorganization, discloseaddress, disclosetelephone, \
-disclosefax, discloseemail, notifyemail, vat, ssn) VALUES \
-(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, \
-%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" % (id, rec["id"], \
-rec["roid"], rec["handle"], rec["status"], rec["crid"], rec["crdate"], \
-rec["upid"], rec["update"], rec["name"], rec["organization"], rec["street1"], \
+status, crid, crdate, upid, updatex, name, organization, street1, \
+street2, street3, city, stateorprovince, postalcode, country, telephone, \
+fax, email, disclosename, discloseorganization, discloseaddress, \
+disclosetelephone, disclosefax, discloseemail, notifyemail, vat, ssn) VALUES \
+(%s, %s, %s, %s, %s, %s, '25-jul-06', %s, '25-jul-06', %s, %s, %s, %s, %s, \
+%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" % \
+(id, rec["id"], rec["roid"], rec["handle"], rec["status"], rec["crid"], \
+rec["upid"], rec["name"], rec["organization"], rec["street1"], \
 rec["street2"], rec["street3"], rec["city"], rec["stateorprovince"], \
 rec["postalcode"], rec["country"], rec["telephone"], rec["fax"], rec["email"], \
 rec["disclosename"], rec["discloseorganization"], rec["discloseaddress"], \
@@ -281,19 +278,19 @@ rec["notifyemail"], rec["vat"], rec["ssn"])
 
 def get_upd_nsset(id, regid):
 	"""
-Update upid, update, authinfopw fields in domain table. Used for EPP command
+Update upid, updatex, authinfopw fields in domain table. Used for EPP command
 update-domain.
 	"""
-	return "UPDATE nsset SET upid = %d, update = now(), authinfopw = %s \
+	return "UPDATE nsset SET upid = %d, updatex = '25-jul-06', authinfopw = %s \
 			WHERE id = %d" % (regid, randstr(3,25), id)
 
 
 def get_upd_contact(id, regid):
 	"""
-Update upid, update, name fields in contact table. Used for EPP command
+Update upid, updatex, name fields in contact table. Used for EPP command
 update-contact.
 	"""
-	return "UPDATE contact SET upid = %d, update = now(), name = %s \
+	return "UPDATE contact SET upid = %d, updatex = '25-jul-06', name = %s \
 			WHERE id = %d" % (regid, randstr(3,30), id)
 
 
