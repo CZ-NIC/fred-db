@@ -79,7 +79,8 @@ CREATE TABLE Contact (
         AuthInfoPw varchar(32),
         NotifyEmail varchar(1024),
         VAT varchar(32),
-        SSN varchar(32)
+        SSN varchar(32),
+	SSNtype INTEGER REFERENCES enum_ssntype
         );
 CREATE INDEX contact_id_idx ON Contact (ID);
 CREATE INDEX contact_roid_idx ON Contact (ROID);
