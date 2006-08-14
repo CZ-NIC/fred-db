@@ -42,6 +42,12 @@ INSERT INTO enum_action (id , status) VALUES(507 , 'DomainTrade');
 -- funkce nezadana
 INSERT INTO enum_action (id , status) VALUES( 1000 , 'UnknowAction');
 
+-- list funkce
+INSERT INTO  enum_action (id , status) VALUES( 1002 ,  'ListContact' );
+INSERT INTO  enum_action (id , status) VALUES( 1004 ,  'EPP_ListNSset' ); 
+INSERT INTO  enum_action (id , status) VALUES( 1005  ,  'EPP_ListDomain' );
+
+
 --  tabulka pro zapis transakci
 -- DROP TABLE Action CASCADE;
 CREATE TABLE Action (
