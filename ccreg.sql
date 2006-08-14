@@ -52,12 +52,12 @@ CREATE TABLE Contact (
         Handle varchar(255) UNIQUE NOT NULL,
         ROID varchar(255) UNIQUE NOT NULL,
         Status smallint[], -- TODO: create trigger to check values agains enum_status
--- zruseno         ClID INTEGER NOT NULL REFERENCES Registrar,
+        ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL DEFAULT now(),
         UpID INTEGER REFERENCES Registrar,
         UpDate timestamp,
--- zruseno        TrDate timestamp,
+        TrDate timestamp,
         Name varchar(1024),
         Organization varchar(1024),
         Street1 varchar(1024),
@@ -76,7 +76,7 @@ CREATE TABLE Contact (
         DiscloseTelephone boolean DEFAULT False,
         DiscloseFax boolean DEFAULT False,
         DiscloseEmail boolean DEFAULT False,
--- zruseno       AuthInfoPw varchar(32),
+        AuthInfoPw varchar(32),
         NotifyEmail varchar(1024),
         VAT varchar(32),
         SSN varchar(32)
