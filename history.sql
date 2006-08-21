@@ -45,8 +45,9 @@ CREATE TABLE Contact_History (
         AuthInfoPw varchar(32),
         NotifyEmail varchar(1024),
         VAT varchar(32),
-        SSN varchar(32)
-        );
+        SSN varchar(32),
+        SSNtype integer REFERENCES enum_ssntype
+);
 
 CREATE INDEX contact_history_historyid_idx ON Contact_History (historyID);
 
