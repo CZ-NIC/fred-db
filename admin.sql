@@ -1,3 +1,11 @@
+CREATE TABLE "user"
+(
+  id serial NOT NULL, -- primarni klic
+  firstname varchar(20) NOT NULL, -- jmeno
+  surname varchar(40) NOT NULL, --- prijmeni
+  CONSTRAINT user_pkey PRIMARY KEY (id)
+);
+
 CREATE TABLE domain_blacklist
 (
   id serial NOT NULL, -- primarni klic
@@ -10,15 +18,7 @@ CREATE TABLE domain_blacklist
   CONSTRAINT domain_blacklist_creator_fkey FOREIGN KEY (creator)
       REFERENCES "user" (id) MATCH SIMPLE
       ON UPDATE RESTRICT ON DELETE RESTRICT
-) ;
-
-CREATE TABLE "user"
-(
-  id serial NOT NULL, -- primarni klic
-  firstname varchar(20) NOT NULL, -- jmeno
-  surname varchar(40) NOT NULL, --- prijmeni
-  CONSTRAINT user_pkey PRIMARY KEY (id)
-) ;
+);
 
 CREATE TABLE price
 (
