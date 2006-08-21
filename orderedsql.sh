@@ -11,5 +11,4 @@ cat credit.sql
 cat enum_country.sql
 cat enum_cs_country.sql
 cat genzone.sql
-cat enum_ssntype.sql
 cat admin.sql
