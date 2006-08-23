@@ -15,3 +15,6 @@ INSERT INTO Registrar ( id,handle , organization , name , url ) VALUES( 150 ,  '
 INSERT INTO Registrar ( id,handle , organization , name , url ) VALUES( 160 ,'REG-IPEX'  , 'IPEX a.s.'              ,       'IPEX'        ,    'www.ipex.cz');
 INSERT INTO Registrar ( id, handle ,organization , name , url ) VALUES( 170 , 'REG-SKYNET',   'SkyNet, a.s.'            ,      'SkyNet'    ,        'www.skynet.cz');
 INSERT INTO Registrar ( id, handle ,organization , name , url ) VALUES( 1,   'REG-LRR',    'CZ.NIC, z.s.p.o.'          ,    'LRR'         ,      'www.lrr.cz');
+
+-- nastav credit 
+UPDATE registrar set credit=1000000.0;

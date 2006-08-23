@@ -37,7 +37,8 @@ CREATE TABLE Registrar (
         Telephone varchar(32),
         Fax varchar(32),
         Email varchar(1024),
-        Url varchar(1024)
+        Url varchar(1024),
+        Credit numeric(10,2) NOT NULL deafult 0.0 -- vyse kreditu registratora
         );
 
 -- DROP TABLE RegistrarACL CASCADE;

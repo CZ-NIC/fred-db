@@ -1,12 +1,13 @@
 -- tabulka pro pricitani creditu za operace DomainCreate a DomainReNew
-DROP TABLE Credit CASCADE;
+-- DROP TABLE Credit CASCADE;
+
+
 CREATE TABLE Credit (
-        ID SERIAL PRIMARY KEY, -- vraci se jako clientID z CORBA funkce Login
-	RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- id registratora
-	ObjectID  INTEGER NOT NULL , -- id objektu domain nsset contact
-        Date timestamp NOT NULL DEFAULT now(), -- datum a cas pricteni creditu
-        OperationID INTEGER NOT NULL REFERENCES enum_action , -- typ akce 
-        period INTEGER   -- perioda prodlozeni platnosti domeny v mesicich
-        );
-
-
+ id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
+ registrar integer NOT NULL REFERENCES Registrar, -- id registratora
+ action integer REFERENCES  Action, -- pri jake akci -> action.id (NULL=prijata platba)
+ amount numeric(10,2) NOT NULL, -- o jakou castku se ucet pohnul
+ credit numeric(10,2) NOT NULL -- celkova castka na kreditu
+ );
+     
+     
