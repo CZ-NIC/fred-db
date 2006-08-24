@@ -46,6 +46,8 @@ INSERT INTO enum_action (id , status) VALUES( 1000 , 'UnknowAction');
 INSERT INTO  enum_action (id , status) VALUES( 1002 ,  'ListContact' );
 INSERT INTO  enum_action (id , status) VALUES( 1004 ,  'ListNSset' ); 
 INSERT INTO  enum_action (id , status) VALUES( 1005  ,  'ListDomain' );
+-- credit funkce
+INSERT INTO enum_action (id , status) VALUES(1010 , 'ClientCredit');
 
 
 --  tabulka pro zapis transakci
