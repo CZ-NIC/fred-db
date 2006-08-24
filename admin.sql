@@ -27,7 +27,7 @@ CREATE TABLE price
   action int4 NOT NULL, -- na jakou akci se cena vaze 
   valid_from timestamp NOT NULL, -- od kdy zaznam plati
   valid_to timestamp, -- do kdy zaznam plati, pokud je NULL, neni omezen
-  price numeric(10,2) NOT NULL -- cena operace
+  price numeric(10,2) NOT NULL, -- cena operace
   CONSTRAINT price_pkey PRIMARY KEY (id),
   CONSTRAINT price_action_fkey FOREIGN KEY ("action")
       REFERENCES "action" (id) MATCH SIMPLE
@@ -43,5 +43,5 @@ CREATE TABLE credit
   registrar INTEGER NOT NULL REFERENCES registrar, -- id registratora
   date timestamp NOT NULL DEFAULT now(), -- datum a cas zmeny kreditu
   change INTEGER REFERENCES history , -- typ akce
-  credit NUMBER(10,2) NOT NULL 
+  credit NUMERIC(10,2) NOT NULL 
 );
