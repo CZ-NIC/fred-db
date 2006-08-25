@@ -19,29 +19,3 @@ CREATE TABLE domain_blacklist
       REFERENCES "user" (id) MATCH SIMPLE
       ON UPDATE RESTRICT ON DELETE RESTRICT
 );
-
-CREATE TABLE price
-(
-  id serial NOT NULL, -- primarni klic
-  zone int4 NOT NULL, -- odkaz na zonu pro kterou cenik plati
-  action int4 NOT NULL, -- na jakou akci se cena vaze 
-  valid_from timestamp NOT NULL, -- od kdy zaznam plati
-  valid_to timestamp, -- do kdy zaznam plati, pokud je NULL, neni omezen
-  price numeric(10,2) NOT NULL, -- cena operace
-  CONSTRAINT price_pkey PRIMARY KEY (id),
-  CONSTRAINT price_action_fkey FOREIGN KEY ("action")
-      REFERENCES "action" (id) MATCH SIMPLE
-      ON UPDATE RESTRICT ON DELETE RESTRICT,
-  CONSTRAINT price_zone_fkey FOREIGN KEY ("zone")
-      REFERENCES "zone" (id) MATCH SIMPLE
-      ON UPDATE RESTRICT ON DELETE RESTRICT
-);
-
-CREATE TABLE credit 
-(
-  id SERIAL PRIMARY KEY, -- primarni klic
-  registrar INTEGER NOT NULL REFERENCES registrar, -- id registratora
-  date timestamp NOT NULL DEFAULT now(), -- datum a cas zmeny kreditu
-  change INTEGER REFERENCES history , -- typ akce
-  credit NUMERIC(10,2) NOT NULL 
-);
