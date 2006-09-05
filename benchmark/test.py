@@ -70,15 +70,18 @@ Body of process performing testing of database.
 		# select random EPP command manipulating with domain object
 		epp_cmd = choice([exe.check_domain, exe.info_domain,
 				exe.transfer_domain, exe.renew_domain, exe.update_domain])
-		epp_cmd(choice(domains))
+		try: epp_cmd(choice(domains))
+		except Exception: print '.',
 		# select random EPP command manipulating with contact object
 		epp_cmd = choice([exe.check_contact, exe.info_contact,
 				exe.update_contact])
-		epp_cmd(choice(contacts))
+		try: epp_cmd(choice(contacts))
+		except Exception: print '.',
 		# select random EPP command manipulating with nsset object
 		epp_cmd = choice([exe.check_nsset, exe.info_nsset,
 				exe.transfer_nsset, exe.update_nsset])
-		epp_cmd(choice(nssets))
+		try: epp_cmd(choice(nssets))
+		except Exception: print '.',
 		# update counter
 		epp_count += 3
 	end = time.time()
