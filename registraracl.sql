@@ -1,19 +1,19 @@
 
 DELETE FROM registraracl;
-INSERT INTO registraracl VALUES( 1, 3 , 'certifikat' ,  'heslo' );
-INSERT INTO registraracl VALUES( 100, 3 , 'certifikat' ,  'heslo' );
-INSERT INTO registraracl VALUES( 110, 3 , 'certifikat' ,  'heslo' );
-INSERT INTO registraracl VALUES( 120 , 3 , 'certifikat' ,  'heslo' );
-INSERT INTO registraracl VALUES( 130, 3 , 'certifikat' ,  'heslo' );
-INSERT INTO registraracl VALUES( 140, 3 , 'certifikat' ,  'heslo' );
-INSERT INTO registraracl VALUES( 150, 3 , 'certifikat' ,  'heslo' );
-INSERT INTO registraracl VALUES( 160, 3 , 'certifikat' ,  'heslo' );
-INSERT INTO registraracl VALUES( 170, 3 , 'certifikat' ,  'heslo' );
-INSERT INTO registraracl VALUES( 200, 3 , 'certifikat' ,  'heslo' );
-INSERT INTO registraracl VALUES( 300, 3 , 'certifikat' ,  'heslo' );
-INSERT INTO registraracl VALUES( 400, 3 , 'certifikat' ,  'heslo' );
-INSERT INTO registraracl VALUES( 500, 3 , 'certifikat' ,  'heslo' );
-INSERT INTO registraracl VALUES( 600, 3 , 'certifikat' ,  'heslo' );
-INSERT INTO registraracl VALUES( 700, 3 , 'certifikat' ,  'heslo' );
-INSERT INTO registraracl VALUES( 800, 3 , 'certifikat' ,  'heslo' );
+INSERT INTO registraracl VALUES( 1, 3 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' ,  '123456789' );
+INSERT INTO registraracl VALUES( 100, 3 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' ,  '123456789' );
+INSERT INTO registraracl VALUES( 110, 3 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' ,  '123456789' );
+INSERT INTO registraracl VALUES( 120 , 3 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' ,  '123456789' );
+INSERT INTO registraracl VALUES( 130, 3 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' ,  '123456789' );
+INSERT INTO registraracl VALUES( 140, 3 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' ,  '123456789' );
+INSERT INTO registraracl VALUES( 150, 3 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' ,  '123456789' );
+INSERT INTO registraracl VALUES( 160, 3 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' ,  '123456789' );
+INSERT INTO registraracl VALUES( 170, 3 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' ,  '123456789' );
+INSERT INTO registraracl VALUES( 200, 3 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' ,  '123456789' );
+INSERT INTO registraracl VALUES( 300, 3 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' ,  '123456789' );
+INSERT INTO registraracl VALUES( 400, 3 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' ,  '123456789' );
+INSERT INTO registraracl VALUES( 500, 3 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' ,  '123456789' );
+INSERT INTO registraracl VALUES( 600, 3 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' ,  '123456789' );
+INSERT INTO registraracl VALUES( 700, 3 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' ,  '123456789' );
+INSERT INTO registraracl VALUES( 800, 3 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' ,  '123456789' );
 
