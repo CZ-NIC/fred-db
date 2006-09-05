@@ -23,7 +23,7 @@ CREATE TABLE price
   period integer NOT NULL, -- za jednotku 
   CONSTRAINT price_pkey PRIMARY KEY (id),
   CONSTRAINT price_action_fkey FOREIGN KEY ("action")
-      REFERENCES "action" (id) MATCH SIMPLE
+      REFERENCES "enum_action" (id) MATCH SIMPLE
       ON UPDATE RESTRICT ON DELETE RESTRICT,
   CONSTRAINT price_zone_fkey FOREIGN KEY ("zone")
       REFERENCES "zone" (id) MATCH SIMPLE
