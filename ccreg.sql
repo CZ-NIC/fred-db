@@ -158,7 +158,7 @@ CREATE TABLE Domain (
         FQDN varchar(255) UNIQUE NOT NULL,
         Status smallint[], -- TODO: create trigger to check values agains enum_status
         Registrant INTEGER NOT NULL REFERENCES Contact,
-        NSSet INTEGER NOT NULL REFERENCES NSSet,
+        NSSet INTEGER NULL REFERENCES NSSet, -- odkaz na nsset muze by i NULL lze zaregistrovat domenu bez nssetu
         ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL DEFAULT now(),
