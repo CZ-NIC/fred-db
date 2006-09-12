@@ -24,6 +24,7 @@ INSERT INTO zone  VALUES(3,'cz',12,120,0,1,'f');
 -- DROP TABLE Registrar CASCADE;
 CREATE TABLE Registrar (
         ID SERIAL PRIMARY KEY,
+        Zone integer[],  --  zony kam ma registrator pristup 
         Handle varchar(255) UNIQUE NOT NULL,
         Name varchar(1024),
         Organization varchar(1024),
@@ -44,7 +45,6 @@ CREATE TABLE Registrar (
 -- DROP TABLE RegistrarACL CASCADE;
 CREATE TABLE RegistrarACL (
         RegistrarID INTEGER NOT NULL REFERENCES Registrar,
-        ZoneID INTEGER NOT NULL REFERENCES Zone,
         Cert varchar(1024) NOT NULL, -- certificate fingerprint
         Password varchar(64) NOT NULL
         );
