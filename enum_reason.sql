@@ -36,6 +36,9 @@ INSERT INTO enum_reason VALUES(  409 ,  'can not remove DNS host to zero'  ,  'n
 INSERT INTO enum_reason VALUES(  410 ,  'can not remove DNS host'  , 'nelze odstranit jmený server DNS' );
 INSERT INTO enum_reason VALUES(  411 , 'can not add DNS host'  , 'nelze pøidat jmený server DNS' );
 
+INSERT INTO enum_reason VALUES(  501 , 'date of expirate validation is required' , 'datum vypr¹ení platnosti je po¾adován' );
+INSERT INTO enum_reason VALUES(  502 , 'date of expirate validation is not valid' , 'datum vypr¹ení platnosti je neplatné' );
+INSERT INTO enum_reason VALUES(  503 , 'date of expirate validation is not used' ,  'datum vypr¹ení platnosti  se nepou¾ívá'  );
 
 INSERT INTO enum_reason VALUES(  901 , 'nsset handle exist not Avail'  , 'ukazatel nssetu existuje není dostupný' );
 INSERT INTO enum_reason VALUES(  902 , 'nsset handle not exist '  , 'ukazatel nssetu  neexistuje');
@@ -56,7 +59,7 @@ INSERT INTO enum_reason VALUES(  1003 , 'admin contact not exist in contact map'
 INSERT INTO enum_reason VALUES(  1011 , 'tech contact exist in contact map'  , 'technický kontakt je u¾ zadán');
 INSERT INTO enum_reason VALUES(  1013 , 'tech contact not exist in contact map' , 'technický kontakt není zadán'  );
 
-INSERT INTO enum_reason VALUES(  1100 , 'registrant not exist'  , 'vlastník neexistuje; );
+INSERT INTO enum_reason VALUES(  1100 , 'registrant not exist'  , 'vlastník neexistuje' );
 
 INSERT INTO enum_reason VALUES(  1101 , 'unknown registrant handle' ,  'neznámý ukazatel vlastníka' );
 INSERT INTO enum_reason VALUES(  1102 , 'unknown nsset handle'  , 'neznámý ukazatel nssettu');
