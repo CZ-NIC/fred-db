@@ -14,9 +14,9 @@ CREATE TABLE zone_soa (
 --
 -- Uncomment for testing values
 --
-INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn, ns_addrs) VALUES (1, 86400, 'hostmaster@nic.cz', NULL, 43200, 900, 1814400, 10800, 'primary.ns.cz');
-INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn, ns_addrs) VALUES (2, 86400, 'hostmaster@nic.cz', NULL, 43200, 900, 1814400, 10800, 'primary.ns.cz');
-INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn, ns_addrs) VALUES (3, 86400, 'hostmaster@nic.cz', NULL, 43200, 900, 1814400, 10800, 'primary.ns.cz');
+INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn) VALUES (1, 86400, 'hostmaster@nic.cz', NULL, 43200, 900, 1814400, 10800, 'a.ns.nic.cz');
+INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn) VALUES (2, 86400, 'hostmaster@nic.cz', NULL, 43200, 900, 1814400, 10800, 'a.ns.nic.cz');
+INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn) VALUES (3, 86400, 'hostmaster@nic.cz', NULL, 43200, 900, 1814400, 10800, 'ns.tld.cz');
 
 -- DROP TABLE secNS
 CREATE TABLE zone_ns (
@@ -29,8 +29,14 @@ CREATE TABLE zone_ns (
 --
 -- Uncomment for testing values
 --
-INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (1, 'sec1.ns.cz', '{123.21.21.1}');
-INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (1, 'sec2.czns.org', '{}');
-INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (2, 'sec1.ns.cz', '{123.21.21.1}');
-INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (2, 'sec2.czns.org', '{}');
-INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'sec1.ns.cz', '{123.21.21.1}');
+INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (1, 'a.ns.nic.cz', '{}');
+INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (1, 'b.ns.cznic.org', '{}');
+INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (1, 'c.ns.nic.cz', '{}');
+INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (2, 'a.ns.nic.cz', '{}');
+INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'ns.tld.cz', '{217.31.196.10}');
+INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'ns2.nic.fr', '{}');
+INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'nsl.tld.cz', '{195.66.241.202}');
+INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'nss.tld.cz', '{217.31.200.10}');
+INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'ns-cz.ripe.net', '{}');
+INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'sunic.sunet.se', '{}');
+INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'ns-ext.vix.com', '{}');
