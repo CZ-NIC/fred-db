@@ -1,4 +1,3 @@
--- DROP TABLE soa CASCADE;
 CREATE TABLE zone_soa (
         Zone INTEGER PRIMARY KEY REFERENCES Zone (ID),
         TTL INTEGER NOT NULL,
@@ -12,13 +11,12 @@ CREATE TABLE zone_soa (
         );
 
 --
--- Uncomment for testing values
+-- Default values for zone soa
 --
 INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn) VALUES (1, 86400, 'hostmaster@nic.cz', NULL, 43200, 900, 1814400, 10800, 'a.ns.nic.cz');
 INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn) VALUES (2, 86400, 'hostmaster@nic.cz', NULL, 43200, 900, 1814400, 10800, 'a.ns.nic.cz');
 INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn) VALUES (3, 86400, 'hostmaster@nic.cz', NULL, 43200, 900, 1814400, 10800, 'ns.tld.cz');
 
--- DROP TABLE secNS
 CREATE TABLE zone_ns (
         id SERIAL PRIMARY KEY,
         Zone INTEGER REFERENCES Zone (ID),
@@ -27,7 +25,7 @@ CREATE TABLE zone_ns (
         );
 
 --
--- Uncomment for testing values
+-- Default values for nameservers
 --
 INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (1, 'a.ns.nic.cz', '{}');
 INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (1, 'b.ns.cznic.org', '{}');
