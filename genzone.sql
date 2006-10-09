@@ -30,6 +30,7 @@ CREATE TABLE zone_ns (
 INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (1, 'a.ns.nic.cz', '{}');
 INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (1, 'b.ns.cznic.org', '{}');
 INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (1, 'c.ns.nic.cz', '{}');
+INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (1, 'e.ns.nic.cz', '{}');
 INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (2, 'a.ns.nic.cz', '{}');
 INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'ns.tld.cz', '{217.31.196.10}');
 INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'ns2.nic.fr', '{}');
