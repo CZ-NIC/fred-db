@@ -13,6 +13,7 @@ CREATE TABLE enum_reason (
 INSERT INTO enum_reason VALUES(  1 ,  'bad format contact handle'   , 'neplatný formát ukazatele kontaktu' );
 INSERT INTO enum_reason VALUES(  2 ,  'bad format nsset handle' ,  'neplatný formát ukazatele nssettu' );
 INSERT INTO enum_reason VALUES(  3 ,  'bad format of fqdn domain'  , 'neplatný formát názvu domény' );
+INSERT INTO enum_reason VALUES(  4 ,  'not applicable domain'  , 'nepou¾itelný název domény' );
 
 
 INSERT INTO enum_reason VALUES( 100 , 'bad periody interval'  , 'neplatný interval prodlou¾ení'  );
