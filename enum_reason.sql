@@ -16,12 +16,18 @@ INSERT INTO enum_reason VALUES(  3 ,  'bad format of fqdn domain'  , 'neplatný f
 INSERT INTO enum_reason VALUES(  4 ,  'not applicable domain'  , 'nepou¾itelný název domény' );
 
 
+INSERT INTO enum_reason VALUES(  8 ,  'handle exist'   , 'ukazatel je jiz vytvoren' );
+INSERT INTO enum_reason VALUES(  9 ,  'handle not exist' ,  'ukazatel neni vytvoren' );
+INSERT INTO enum_reason VALUES(  10 , 'bad format of handle'  , 'neplatný formát ukazatele' );
+INSERT INTO enum_reason VALUES(  11 , 'handle in protected peridod' , 'ukazatel je v ochrané lhùtì' );
+
+
 INSERT INTO enum_reason VALUES( 100 , 'bad periody interval'  , 'neplatný interval prodlou¾ení'  );
 INSERT INTO enum_reason VALUES( 101 , 'bad format of valExpDate' , 'neplatný formát expirace validace'  );
 INSERT INTO enum_reason VALUES( 102 , 'ip addres is not valid' , 'neplatná ip adresa'  );
 INSERT INTO enum_reason VALUES( 103 , 'can not add status flag' , 'nelze pøidat stavový pøíznak'  );
 INSERT INTO enum_reason VALUES( 104 , 'can not remove status flag' , 'nelze odstranit stavový pøíznak' );
-INSERT INTO enum_reason VALUES( 105 ,  'current ExpDate is not expiry date' , 'zadané datum expirace nesouhlasí' );
+INSERT INTO enum_reason VALUES( 105 ,  'expiry date is invalid' , 'nesouhlasí datum expirace' );
 
 INSERT INTO enum_reason VALUES(  400 ,  'bad format of DNS host name'  ,  'neplatný formát  názvu  DNS servru' );
 INSERT INTO enum_reason VALUES(  401 ,  'duplicity DNS host address' , 'duplicitní adresa jmeného servru DNS'  );
