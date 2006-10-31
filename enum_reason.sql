@@ -16,9 +16,9 @@ INSERT INTO enum_reason VALUES(  3 ,  'bad format of fqdn domain'  , 'neplatný f
 INSERT INTO enum_reason VALUES(  4 ,  'not applicable domain'  , 'nepou¾itelný název domény' );
 
 
-INSERT INTO enum_reason VALUES(  8 ,  'handle exist'   , 'ukazatel je jiz vytvoren' );
-INSERT INTO enum_reason VALUES(  9 ,  'handle not exist' ,  'ukazatel neni vytvoren' );
-INSERT INTO enum_reason VALUES(  10 , 'bad format of handle'  , 'neplatný formát ukazatele' );
+INSERT INTO enum_reason VALUES(  8 ,  'handle already registered'   , 'ukazatel je ji¾ zaregistrován' );
+INSERT INTO enum_reason VALUES(  9 ,  'handle not yet registred' ,  'ukazatel je¹tì není zaregistrován' );
+INSERT INTO enum_reason VALUES(  10 , 'invalid format of handle'  , 'neplatný formát ukazatele' );
 INSERT INTO enum_reason VALUES(  11 , 'handle in protected peridod' , 'ukazatel je v ochrané lhùtì' );
 
 
