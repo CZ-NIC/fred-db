@@ -22,6 +22,11 @@ INSERT INTO enum_reason VALUES(  10 , 'invalid format of handle'  , 'neplatný fo
 INSERT INTO enum_reason VALUES(  11 , 'handle in protected peridod' , 'ukazatel je v ochrané lhùtì' );
 
 
+
+INSERT INTO enum_reason VALUES( 98 , 'period is above maximal allowed value' , 'perioda je nad maximalní dovolenou hodnotou' );
+INSERT INTO enum_reason VALUES( 99 , 'period is not aligned with allowed step' , 'perioda neodpovída dovolenému intervalu' );
+
+ 
 INSERT INTO enum_reason VALUES( 100 , 'bad periody interval'  , 'neplatný interval prodlou¾ení'  );
 INSERT INTO enum_reason VALUES( 101 , 'bad format of valExpDate' , 'neplatný formát expirace validace'  );
 INSERT INTO enum_reason VALUES( 102 , 'ip addres is not valid' , 'neplatná ip adresa'  );
