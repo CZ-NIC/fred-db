@@ -24,7 +24,8 @@ CREATE TABLE account
 id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
 account_number char(16) UNIQUE NOT NULL , -- cislo uctu
 bank_code char(4)  REFERENCES enum_bank_code,   -- kod banky
-balance  money -- aktualni zustatek 
+balance  numeric(10,2), -- aktualni zustatek 
+last_statement date -- do jakeho data byl nacten vypis z banky
 );
 
 -- bankovni vypisy 
@@ -32,12 +33,12 @@ CREATE TABLE BANK_STATEMENT_HEAD
 (
 id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
 account_id int  REFERENCES account, -- zpracovani pro dany ucet odkaz to tabulky account
-statement_from date, -- vypis za obdobi OD - DO
-statement_to date, -- do
-balance_in money, -- pocatecni zustatek
-balance_out money,  -- konecny zustatek
-receipts   money, -- prijmy za behem vypisu
-expenditures money -- vydaje behem vypisu
+statement_from date NOT NULL, -- vypis za obdobi OD - DO
+statement_to date NOT NULL , -- do
+balance_in numeric(10,2) NOT NULL, -- pocatecni zustatek
+balance_out numeric(10,2) NOT NULL ,  -- konecny zustatek
+receipts   numeric(10,2) NOT NULL, -- prijmy za behem vypisu
+expenditures numeric(10,2) NOT NULL -- vydaje behem vypisu
 );
 
 
@@ -52,7 +53,7 @@ typ int  REFERENCES  enum_bank_type, -- typ operace prevod na ucet bankovni popl
 KS char(10), -- konstantni symbol
 VS char(10), -- konstantni symbol
 SS char(10), -- konstantni symbol
-price money NOT NULL,  -- zuctovana castka  pokud je debet zaporna castka
+price numeric(10,2) NOT NULL,  -- zuctovana castka  pokud je debet zaporna castka
 mem  varchar(64) -- poznamka
 );
 
