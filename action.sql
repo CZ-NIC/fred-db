@@ -50,6 +50,13 @@ INSERT INTO  enum_action (id , status) VALUES( 1005  ,  'ListDomain' );
 INSERT INTO enum_action (id , status) VALUES(1010 , 'ClientCredit');
 
 
+-- send auth info fce
+INSERT INTO enum_action (  status , id )  VALUES(  'ContactSendAuthInfo' ,  1101 );
+INSERT INTO enum_action (  status , id )  VALUES(  'NSSetSendAuthInfo'  , 1102 );
+INSERT INTO enum_action (  status , id )  VALUES(  'DomainSendAuthInfo' ,  1103 );
+
+ 
+
 --  tabulka pro zapis transakci
 -- DROP TABLE Action CASCADE;
 CREATE TABLE Action (
