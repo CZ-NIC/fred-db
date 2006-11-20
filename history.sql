@@ -17,7 +17,7 @@ CREATE TABLE Contact_History (
         ID INTEGER   NOT NULL,
         Handle varchar(255)  NOT NULL,
         ROID varchar(255)  NOT NULL,
-        Status smallint[], -- TODO: create trigger to check values agains enum_status
+--REMOVE        Status smallint[], -- TODO: create trigger to check values agains enum_status
         ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL, -- DEFAULT now(),
@@ -59,7 +59,7 @@ CREATE TABLE Domain_History (
         ID INTEGER   NOT NULL,
         ROID varchar(255)  NOT NULL,
         FQDN varchar(255)  NOT NULL,
-        Status smallint[], -- TODO: create trigger to check values agains enum_status
+-- REMOVE        Status smallint[], -- TODO: create trigger to check values agains enum_status
         ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE NSSet_history  (
         ID INTEGER  NOT NULL,
         ROID varchar(255)  NOT NULL,
         Handle varchar(255)  NOT NULL,
-        Status smallint[], -- TODO: create trigger to check values agains enum_status
+-- REMOVE        Status smallint[], -- TODO: create trigger to check values agains enum_status
         ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL,
