@@ -113,8 +113,18 @@ CREATE TABLE Host_history  (
         ID  INTEGER  NOT NULL,
         NSSetID INTEGER NOT NULL, -- REFERENCES NSSet ON UPDATE CASCADE,
         FQDN VARCHAR(255)  NOT NULL,
-        IpAddr INET[] NOT NULL -- NOTE: we don't have to store IP version, since it's obvious from address
+-- zruseno        IpAddr INET[] NOT NULL -- NOTE: we don't have to store IP version, since it's obvious from address
         );
+-- nahrazeno
+
+CREATE TABLE host_ipaddr_map_history (
+	historyID INTEGER  REFERENCES History,
+	HostID  INTEGER NOT NULL,
+	NSSetID INTEGER NOT NULL,
+	IpAddr INET NOT NULL
+	);
+
+
 
 CREATE INDEX host_history_historyid_idx ON HOST_History (historyID);
 

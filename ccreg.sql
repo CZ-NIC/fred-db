@@ -54,7 +54,7 @@ CREATE TABLE Contact (
         ID SERIAL PRIMARY KEY,
         Handle varchar(255) UNIQUE NOT NULL,
         ROID varchar(255) UNIQUE NOT NULL,
-        Status smallint[], -- TODO: create trigger to check values agains enum_status
+-- REMOVE        Status smallint[], -- TODO: create trigger to check values agains enum_status
         ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL DEFAULT now(),
@@ -110,7 +110,7 @@ CREATE TABLE NSSet (
         ID SERIAL PRIMARY KEY,
         ROID varchar(255) UNIQUE NOT NULL,
         Handle varchar(255) UNIQUE NOT NULL,
-        Status smallint[], -- TODO: create trigger to check values agains enum_status
+-- REMOVE        Status smallint[], -- TODO: create trigger to check values agains enum_status
         ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL DEFAULT now(),
@@ -143,12 +143,22 @@ CREATE TABLE Host (
 -- duplicitni    UpID INTEGER NOT NULL REFERENCES Registrar ON UPDATE CASCADE ON DELETE SET NULL,
 -- udaje         UpDate TIMESTAMP NOT NULL,
 -- s nsset       Status INTEGER[], -- TODO: write trigger to check values
-        IpAddr INET[] NOT NULL,  -- NOTE: we don't have to store IP version, since it's obvious from address
+-- zruseno nahrazeno vazebni tabulkou host_ipaddr_map
+--     IpAddr INET[] NOT NULL,  -- NOTE: we don't have to store IP version, since it's obvious from address
         UNIQUE (NSSetID, FQDN ) -- unikatni klic
         );
 
+
 CREATE INDEX host_nsset_idx ON Host (NSSetID);
 CREATE INDEX host_fqdn_idx ON Host (FQDN);
+
+-- DROP TABLE  host_ipaddr_map  CASCADE;
+CREATE TABLE host_ipaddr_map (
+           HostID  INTEGER NOT NULL REFERENCES HOST ON UPDATE CASCADE ON DELETE CASCADE,
+           NSSetID INTEGER NOT NULL REFERENCES NSSET ON UPDATE CASCADE ON DELETE CASCADE, 
+           IpAddr INET NOT NULL -- ip adresa
+         );
+
 
 -- DROP TABLE Domain CASCADE;
 CREATE TABLE Domain (
@@ -156,7 +166,7 @@ CREATE TABLE Domain (
         ID SERIAL PRIMARY KEY,
         ROID varchar(255) UNIQUE NOT NULL,
         FQDN varchar(255) UNIQUE NOT NULL,
-        Status smallint[], -- TODO: create trigger to check values agains enum_status
+-- REMOVE        Status smallint[], -- TODO: create trigger to check values agains enum_status
         Registrant INTEGER NOT NULL REFERENCES Contact,
         NSSet INTEGER NULL REFERENCES NSSet, -- odkaz na nsset muze by i NULL lze zaregistrovat domenu bez nssetu
         ClID INTEGER NOT NULL REFERENCES Registrar,
