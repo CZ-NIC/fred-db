@@ -9,7 +9,7 @@ CREATE TABLE OBJECT (
         CrID INTEGER NOT NULL REFERENCES Registrar,
         UpID INTEGER REFERENCES Registrar,
         CrDate timestamp NOT NULL DEFAULT now(),
-        Exdate timestamp DEFAULT NULL ,
+--      Exdate timestamp DEFAULT NULL , specificky pro jen pro domenu DROP
         TrDate timestamp DEFAULT NULL,
         UpDate timestamp DEFAULT NULL,
         AuthInfoPw varchar(300) -- dle Honzy v XML schematech
