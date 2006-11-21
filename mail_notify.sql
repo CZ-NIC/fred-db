@@ -65,7 +65,7 @@ CREATE TABLE mailarchive (
 	id SERIAL PRIMARY KEY,
 	crdate timestamp NOT NULL DEFAULT now(),
 	moddate timestamp,
-	status integer NOT NULL,
+	status integer,
 	message text NOT NULL
 	);
 
