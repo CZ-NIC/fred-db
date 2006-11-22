@@ -69,10 +69,10 @@ CREATE TABLE mailarchive (
 	message text NOT NULL
 	);
 
-CREATE TABLE atachment_ids (
+CREATE TABLE attachment_ids (
 	id SERIAL PRIMARY KEY,
 	mailid integer references mailarchive(id),
-	atachid varchar(255)
+	attachid varchar(255)
 	);
 
 CREATE TABLE assoc_handles (
