@@ -50,17 +50,6 @@ CREATE TABLE mail_templates (
 	moddate timestamp NOT NULL DEFAULT now()
 	);
 
-INSERT INTO mail_templates (name, contenttype, template) VALUES
-('test_txt_template', 'plain',
-'Hello <?cs var:body.name ?>,
-
-this is test email for testing of email templates. It was generated
-on <?cs var:header.date ?> by notification system.
-
-                                                    Have a nice day!
-                                                    NIC.CZ Team.
-');
-
 CREATE TABLE mail_archive (
 	id SERIAL PRIMARY KEY,
 	crdate timestamp NOT NULL DEFAULT now(),
@@ -80,3 +69,39 @@ CREATE TABLE mail_handles (
 	mailid integer references mail_archive(id),
 	associd varchar(255)
 	);
+
+INSERT INTO mail_templates (name, contenttype, template) VALUES
+('sendauthinfo_pif', 'plain',
+'Vážený zákazníku,
+
+   na základě Vaší žádosti podané prostřednictvím webového formuláře
+na stránce <?cs var:wwwpage ?> dne <?cs var:reqdate ?>, které
+bylo přiděleno identifikační číslo <?cs var:reqid ?>, Vám zasíláme požadované
+heslo, příslušející <?cs var:handle ?>.
+
+   Heslo je: <?cs var:authinfo ?>
+
+   V případě, že jste tuto žádost nepodali, oznamte prosím tuto
+skutečnost na adresu podpora@nic.cz.
+');
+
+INSERT INTO mail_templates (name, contenttype, template) VALUES
+('sendauthinfo_epp', 'plain',
+'Vážený zákazníku,
+
+   na základě Vaší žádosti podané prostřednictvím registrátora 
+<?cs var:registrar ?>, jejímž obsahem je žádost o zaslání hesla
+příslušejícího <?cs var:handle ?>.
+
+   Heslo je: <?cs var:authinfo ?>
+
+   Tato zpráva je zaslána pouze na e-mailovou adresu uvedenou u příslušné
+osoby v Centrálním registru doménových jmen.
+
+   V případě, že jste tuto žádost nepodali, oznamte prosím tuto
+skutečnost na adresu podpora@nic.cz.
+
+
+                                                 S pozdravem
+                                                 podpora CZ.NIC, z.s.p.o.
+');
