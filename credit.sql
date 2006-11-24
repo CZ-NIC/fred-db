@@ -1,15 +1,35 @@
 -- tabulka pro pricitani creditu za operace DomainCreate a DomainReNew
 -- DROP TABLE Credit CASCADE;
 
+-- tabulka pro cerpani kreditu ze zalohych faktur
+CREATE TABLE Credit_invoice_credit_map
+(
+Zone INTEGER REFERENCES Zone (ID), 
+registrarID integer NOT NULL REFERENCES Registrar, -- id registratora
+Invoice_ID INTEGER REFERENCES Invoice (ID), -- zalohova faktura
+Credit numeric(10,2) NOT NULL default 0 , -- celkova vyse kreditu (bez DPH) prevedena ze zalohove faktury
+Total numeric(10,2) NOT NULL default 0 -- cerpano  ( pokud Credit == Total ) zalohova faktura je vycerpana
+);
 
-CREATE TABLE Credit (
+-- tabulka pro cerpany credit po uzavereni ucetni faktury
+CREATE TABLE Credit_invoice_total_map
+(
+Invoice_ID INTEGER REFERENCES Invoice (ID),  -- normalni ucetovaci faktura
+aInvoice_ID INTEGER REFERENCES Invoice (ID),  -- zalohova faktura ze ktere bylo cerpano
+Total numeric(10,2) NOT NULL default 0 -- kolik creditu vycerpano
+);
+
+-- polozky faktury
+CREATE TABLE Credit_invoice_items (
  id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
  registrar integer NOT NULL REFERENCES Registrar, -- id registratora
+ InvoiceID INTEGER REFERENCES Invoice (ID) , -- pri uzavreni faktury se sem vlozi ID faktury
  action integer REFERENCES  Action, -- pri jake akci -> action.id (NULL=prijata platba)
- amount numeric(10,2) NOT NULL, -- o jakou castku se ucet pohnul
- credit numeric(10,2) NOT NULL -- celkova castka na kreditu
+ object varchar(256) NOT NULL, -- nazev objektu fqdn ci handle
+ price numeric(10,2) NOT NULL -- cena za operaci
  );
      
+
      
 -- tabulka cen
 CREATE TABLE price
