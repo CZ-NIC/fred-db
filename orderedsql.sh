@@ -13,3 +13,4 @@ cat enum_country.sql
 cat enum_cs_country.sql
 cat genzone.sql
 cat admin.sql
+cat mail_notify.sql

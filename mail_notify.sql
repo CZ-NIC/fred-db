@@ -14,7 +14,7 @@
 --'
 --);
 
-CREATE TABLE header_defaults (
+CREATE TABLE mail_header_defaults (
 	id SERIAL PRIMARY KEY,
 	h_from varchar(300),
 	h_replyto varchar(300),
@@ -25,7 +25,7 @@ CREATE TABLE header_defaults (
 	h_subject varchar(300)
 );
 
-INSERT INTO header_defaults
+INSERT INTO mail_header_defaults
 (h_from,
 h_replyto,
 h_errorsto,
@@ -42,7 +42,7 @@ VALUES
 'nic.cz',
 'Default subject of CZ.NIC notification message');
 
-CREATE TABLE templates (
+CREATE TABLE mail_templates (
 	id SERIAL PRIMARY KEY,
 	name varchar(100) UNIQUE NOT NULL,
 	contenttype varchar(100) NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE templates (
 	moddate timestamp NOT NULL DEFAULT now()
 	);
 
-INSERT INTO templates (name, contenttype, template) VALUES
+INSERT INTO mail_templates (name, contenttype, template) VALUES
 ('test_txt_template', 'plain',
 'Hello <?cs var:body.name ?>,
 
@@ -61,7 +61,7 @@ on <?cs var:header.date ?> by notification system.
                                                     NIC.CZ Team.
 ');
 
-CREATE TABLE mailarchive (
+CREATE TABLE mail_archive (
 	id SERIAL PRIMARY KEY,
 	crdate timestamp NOT NULL DEFAULT now(),
 	moddate timestamp,
@@ -69,14 +69,14 @@ CREATE TABLE mailarchive (
 	message text NOT NULL
 	);
 
-CREATE TABLE attachment_ids (
+CREATE TABLE mail_attachments (
 	id SERIAL PRIMARY KEY,
-	mailid integer references mailarchive(id),
+	mailid integer references mail_archive(id),
 	attachid varchar(255)
 	);
 
-CREATE TABLE assoc_handles (
+CREATE TABLE mail_handles (
 	id SERIAL PRIMARY KEY,
-	mailid integer references mailarchive(id),
+	mailid integer references mail_archive(id),
 	associd varchar(255)
 	);
