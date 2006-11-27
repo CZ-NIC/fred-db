@@ -9,15 +9,16 @@ id serial NOT NULL PRIMARY KEY,
 Zone INTEGER REFERENCES Zone (ID),
 typ integer default 0,  -- typ faktury 1 zalohova 0 normalni
 pref char(12),  -- prefix
-num int  -- citac rad
+num int,  -- pocet null rad
+counter int-- citac
 );
 
 -- 4 rady faktur ( 2) zalohove pro CZ a ENUM
-insert into invoice_prefix values ( 1 , 3 ,  1 , 'Z2006-CZ-'  ,  1 );
-insert into invoice_prefix values ( 2 , 1  , 1 , 'Z2006-ENUM-'  ,  1 );
+insert into invoice_prefix values ( 1 , 3 ,  1 , 'Z2006-CZ-'  ,  6  , 1 );
+insert into invoice_prefix values ( 2 , 1  , 1 , 'Z2006-ENUM-'  ,  6  ,  1);
 -- dve rady normalni
-insert into invoice_prefix values ( 3 , 3 ,  0  , 'F2006-CZ-' , 1 );
-insert into invoice_prefix values ( 4 , 1 ,  0  , 'F2006-ENUM-' , 1 );
+insert into invoice_prefix values ( 3 , 3 ,  0  , 'F2006-CZ-' , 6 , 1 );
+insert into invoice_prefix values ( 4 , 1 ,  0  , 'F2006-ENUM-' , 6  , 1 );
 
 
 -- invoice  faktury (zolohove i normalni)
