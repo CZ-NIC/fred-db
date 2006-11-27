@@ -8,7 +8,7 @@ CREATE TABLE invoice_prefix
 id serial NOT NULL PRIMARY KEY, 
 Zone INTEGER REFERENCES Zone (ID),
 typ integer default 0,  -- typ faktury 1 zalohova 0 normalni
-pref char(12),  -- prefix
+pref varchar(16),  -- prefix
 num int,  -- pocet null rad
 counter int-- citac
 );
@@ -27,7 +27,7 @@ CREATE TABLE invoice
 id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
 typ integer default 0, -- typ faktury 1 zalohova 2 normalni
 CrDate timestamp NOT NULL DEFAULT now(),  -- datum a cas vytvoreni
-prefix char(24) UNIQUE NOT NULL , -- cislo  faktury z invoice_prefix.prefix a counter
+prefix varchar(24) UNIQUE NOT NULL , -- cislo  faktury z invoice_prefix.prefix a counter
 registarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora kteremu byla faktura vystavena
 Credit numeric(10,2) NOT NULL DEFAULT 0.0, -- kredit ze ktereho se cerpa az do nuly 
 Price numeric(10,2) NOT NULL DEFAULT 0.0, -- vyse faktury i s dani
