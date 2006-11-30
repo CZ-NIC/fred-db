@@ -117,7 +117,8 @@ CREATE TABLE NSSet (
         UpID INTEGER REFERENCES Registrar,
         AuthInfoPw varchar(32),
         TrDate timestamp,
-        UpDate timestamp
+        UpDate timestamp,
+        checklevel smallint default 0
         );
 CREATE INDEX nsset_id_idx ON NSSet (ID);
 CREATE INDEX nsset_roid_idx ON NSSet (ROID);
