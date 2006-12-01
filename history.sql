@@ -95,7 +95,8 @@ CREATE TABLE NSSet_history  (
         UpID INTEGER REFERENCES Registrar, 
         AuthInfoPw varchar(32),
         Trdate timestamp,
-        UpDate timestamp
+        UpDate timestamp,
+        checklevel smallint default 0 -- dopsan check level
         );
 CREATE INDEX nsset_history_historyid_idx ON NSSet_History (historyID);
 
