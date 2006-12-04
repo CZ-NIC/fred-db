@@ -19,7 +19,13 @@ CREATE TABLE mail_defaults (
 	name varchar(300) UNIQUE NOT NULL,
 	value text NOT NULL
 );
-INSERT INTO mail_defaults (name, value) VALUES ('testdefault', 'xxx');
+INSERT INTO mail_defaults (name, value) VALUES ('company', 'CZ.NIC, z.s.p.o');
+INSERT INTO mail_defaults (name, value) VALUES ('street', 'Americka 23');
+INSERT INTO mail_defaults (name, value) VALUES ('postalcode', '120 00');
+INSERT INTO mail_defaults (name, value) VALUES ('city', 'Praha 2');
+INSERT INTO mail_defaults (name, value) VALUES ('tel', '+420 222 745 104');
+INSERT INTO mail_defaults (name, value) VALUES ('fax', '+420 222 745 112');
+INSERT INTO mail_defaults (name, value) VALUES ('emailsupport', 'support@nic.cz');
 
 CREATE TABLE mail_header_defaults (
 	id SERIAL PRIMARY KEY,
@@ -38,24 +44,14 @@ h_replyto,
 h_errorsto,
 h_organization,
 h_contentencoding,
-h_messageidserver,
-h_subject)
+h_messageidserver)
 VALUES
 ('notifications@nic.cz',
 'help-desk@nic.cz',
 'notification-errors@nic.cz',
 'CZ.NIC, z.s.p.o.',
 'charset=UTF-8',
-'nic.cz',
-'Default subject of CZ.NIC notification message');
-
-CREATE TABLE mail_templates (
-	id SERIAL PRIMARY KEY,
-	name varchar(100) UNIQUE NOT NULL,
-	contenttype varchar(100) NOT NULL,
-	template text NOT NULL,
-	moddate timestamp NOT NULL DEFAULT now()
-	);
+'nic.cz');
 
 CREATE TABLE mail_archive (
 	id SERIAL PRIMARY KEY,
@@ -77,8 +73,26 @@ CREATE TABLE mail_handles (
 	associd varchar(255)
 	);
 
-INSERT INTO mail_templates (name, contenttype, template) VALUES
-('sendauthinfo_pif', 'plain',
+CREATE TABLE mail_templates (
+	id SERIAL PRIMARY KEY,
+	contenttype varchar(100) NOT NULL,
+	template text NOT NULL
+	);
+
+CREATE TABLE mail_type (
+	id SERIAL PRIMARY KEY,
+	name varchar(100) UNIQUE NOT NULL,
+	subject varchar(300) NOT NULL
+	);
+
+CREATE TABLE mail_type_template_map (
+	id SERIAL PRIMARY KEY,
+	typeid integer references mail_type(id),
+	templateid integer references mail_templates(id)
+	);
+
+INSERT INTO mail_templates (contenttype, template) VALUES
+('plain',
 'English version is bellow
 
 Zaslání autorizační informace
@@ -96,13 +110,13 @@ heslo, příslušející <?cs var:handle ?>.
 skutečnost na adresu <?cs var:defaults.emailsupport ?>.
 
                                                  S pozdravem
-                                                 podpora CZ.NIC, z.s.p.o.
+                                                 podpora <?cs var:defaults.company ?>
 
 
 
 English version is not available
 
---
+-- 
 <?cs var:defaults.company ?>
 <?cs var:defaults.street ?>
 <?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
@@ -112,9 +126,11 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
+INSERT INTO mail_type (name, subject) VALUES ('sendauthinfo_pif', 'subject not available yet');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (1, 1);
 
-INSERT INTO mail_templates (name, contenttype, template) VALUES
-('sendauthinfo_epp', 'plain',
+INSERT INTO mail_templates (contenttype, template) VALUES
+('plain',
 'English version is bellow
 
 Zaslání autorizační informace
@@ -135,13 +151,13 @@ skutečnost na adresu <?cs var:defaults.emailsupport ?>.
 
 
                                                  S pozdravem
-                                                 podpora CZ.NIC, z.s.p.o.
+                                                 podpora <?cs var:defaults.company ?>
 
 
 
 English version is not available
 
---
+-- 
 <?cs var:defaults.company ?>
 <?cs var:defaults.street ?>
 <?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
@@ -151,9 +167,11 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
+INSERT INTO mail_type (name, subject) VALUES ('sendauthinfo_epp', 'subject not available yet');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (2, 2);
 
-INSERT INTO mail_templates (name, contenttype, template) VALUES
-('expiration_notify', 'plain',
+INSERT INTO mail_templates (contenttype, template) VALUES
+('plain',
 'English version is bellow
 
 Upozornění na nutnost úhrady doménového jména <?cs var:domain ?>
@@ -191,7 +209,7 @@ Vzhledem k této situaci máte nyní následující možnosti:
 
 
                                                  S pozdravem
-                                                 podpora CZ.NIC, z.s.p.o.
+                                                 podpora <?cs var:defaults.company ?>
 
 
 
@@ -232,9 +250,9 @@ one of the following:
 
 
                                                  Yours sincerely
-                                                 support CZ.NIC, z.s.p.o.
+                                                 support <?cs var:defaults.company ?>
 
---
+-- 
 <?cs var:defaults.company ?>
 <?cs var:defaults.street ?>
 <?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
@@ -244,9 +262,12 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
+INSERT INTO mail_type (name, subject) VALUES ('expiration_notify', 'subject not available yet');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (3, 3);
 
-INSERT INTO mail_templates (name, contenttype, template) VALUES
-('expiration_dns', 'plain',
+
+INSERT INTO mail_templates (contenttype, template) VALUES
+('plain',
 'English version is bellow
 
 Oznámení o vyřazení domény <?cs var:domain?> z DNS
@@ -256,10 +277,10 @@ Vážený zákazníku,
 dovolujeme si Vás tímto upozornit, že doposud nebyla uhrazena platba
 za prodloužení či registraci doménového jména <?cs var:domain ?>.
 Vzhledem k této skutečnosti a na základě Pravidel registrace doménových
-jmen, CZ.NIC, z.s.p.o. pozastavuje registraci doménového jména a vyřazuje
+jmen, <?cs var:defaults.company ?> pozastavuje registraci doménového jména a vyřazuje
 ji ze zóny .CZ.
 
-V případě, že do dne <?cs var:exdate ?> neobdrží CZ.NIC, z.s.p.o.
+V případě, že do dne <?cs var:exdate ?> neobdrží <?cs var:defaults.company ?>
 od vašeho registrátora platbu za prodloužení platnosti doménového jména,
 bude doménové jméno definitivně uvolněno pro použití dalším zájemcem.
 
@@ -287,13 +308,13 @@ Administrátorský kontakt: <?cs var:item ?>
 
 
                                                  S pozdravem
-                                                 podpora CZ.NIC, z.s.p.o.
+                                                 podpora <?cs var:defaults.company ?>
 
 
 
 English version is not available
 
---
+-- 
 <?cs var:defaults.company ?>
 <?cs var:defaults.street ?>
 <?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
@@ -303,9 +324,12 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
+INSERT INTO mail_type (name, subject) VALUES ('expiration_dns', 'subject not available yet');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (4, 4);
 
-INSERT INTO mail_templates (name, contenttype, template) VALUES
-('expiration_register_owner', 'plain',
+
+INSERT INTO mail_templates (contenttype, template) VALUES
+('plain',
 'English version is bellow
 
 Oznámení o zrušení domény <?cs var:domain ?>
@@ -314,11 +338,11 @@ Vážený zákazníku,
 
 dovolujeme si Vás upozornit, že nebylo provedeno prodloužení registrace
 pro doménové jméno <?cs var:domain ?>. Vzhledem k této skutečnosti
-a na základě Pravidel registrace doménových jmen , CZ.NIC, z.s.p.o. ruší
+a na základě Pravidel registrace doménových jmen , <?cs var:defaults.company ?> ruší
 registraci doménového jména.
 
                                                  S pozdravem
-                                                 podpora CZ.NIC, z.s.p.o.
+                                                 podpora <?cs var:defaults.company ?>
 
 
 
@@ -327,13 +351,13 @@ Dear customer,
 we would like to inform you that the registration extension has not yet
 been implemented for the domain name <?cs var:domain ?>. Due to
 this fact and based on the Domain Name Registration Rules (Pravidla
-registrace domenovych jmen), CZ.NIC, z.s.p.o. is cancelling the domain
+registrace domenovych jmen), <?cs var:defaults.company ?> is cancelling the domain
 name registration.
 
                                                  Yours sincerely
-                                                 support CZ.NIC, z.s.p.o.
+                                                 support <?cs var:defaults.company ?>
 
---
+-- 
 <?cs var:defaults.company ?>
 <?cs var:defaults.street ?>
 <?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
@@ -343,9 +367,12 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
+INSERT INTO mail_type (name, subject) VALUES ('expiration_register_owner', 'subject not available yet');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (5, 5);
 
-INSERT INTO mail_templates (name, contenttype, template) VALUES
-('expiration_register_tech', 'plain',
+
+INSERT INTO mail_templates (contenttype, template) VALUES
+('plain',
 'English version is bellow
 
 Oznámení o zrušení domény <?cs var:domain ?>
@@ -358,13 +385,13 @@ dovolujeme si Vás upozornit, že toto doménové jméno bylo ke dni
 <?cs var:exdate ?> vyřazeno z DNS / zrušeno.
 
                                                  S pozdravem
-                                                 podpora CZ.NIC, z.s.p.o.
+                                                 podpora <?cs var:defaults.company ?>
 
 
 
 English version is not available
 
---
+-- 
 <?cs var:defaults.company ?>
 <?cs var:defaults.street ?>
 <?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
@@ -374,4 +401,7 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
+INSERT INTO mail_type (name, subject) VALUES ('expiration_register_tech', 'subject not available yet');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (6, 6);
+
 
