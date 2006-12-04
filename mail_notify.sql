@@ -79,7 +79,11 @@ CREATE TABLE mail_handles (
 
 INSERT INTO mail_templates (name, contenttype, template) VALUES
 ('sendauthinfo_pif', 'plain',
-'Vážený zákazníku,
+'English version is bellow
+
+Zaslání autorizační informace
+
+Vážený zákazníku,
 
    na základě Vaší žádosti podané prostřednictvím webového formuláře
 na stránce <?cs var:wwwpage ?> dne <?cs var:reqdate ?>, které
@@ -89,19 +93,33 @@ heslo, příslušející <?cs var:handle ?>.
    Heslo je: <?cs var:authinfo ?>
 
    V případě, že jste tuto žádost nepodali, oznamte prosím tuto
-skutečnost na adresu podpora@nic.cz.
+skutečnost na adresu <?cs var:defaults.emailsupport ?>.
 
                                                  S pozdravem
                                                  podpora CZ.NIC, z.s.p.o.
 
-====================================================================
 
-Anglická verze je zatím nedostupná.
+
+English version is not available
+
+--
+<?cs var:defaults.company ?>
+<?cs var:defaults.street ?>
+<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
+---------------------------------
+tel.: <?cs var:defaults.tel ?>
+fax : <?cs var:defaults.fax ?>
+e-mail : <?cs var:defaults.emailsupport ?>
+---------------------------------
 ');
 
 INSERT INTO mail_templates (name, contenttype, template) VALUES
 ('sendauthinfo_epp', 'plain',
-'Vážený zákazníku,
+'English version is bellow
+
+Zaslání autorizační informace
+
+Vážený zákazníku,
 
    na základě Vaší žádosti podané prostřednictvím registrátora 
 <?cs var:registrar ?>, jejímž obsahem je žádost o zaslání hesla
@@ -113,28 +131,34 @@ příslušejícího <?cs var:handle ?>.
 osoby v Centrálním registru doménových jmen.
 
    V případě, že jste tuto žádost nepodali, oznamte prosím tuto
-skutečnost na adresu podpora@nic.cz.
+skutečnost na adresu <?cs var:defaults.emailsupport ?>.
 
 
                                                  S pozdravem
                                                  podpora CZ.NIC, z.s.p.o.
 
-====================================================================
 
-Anglická verze je zatím nedostupná.
-');
 
-INSERT INTO mail_templates (name, contenttype, template) VALUES
-('expiration_warning', 'plain',
-'Nedostupna ceska verze
-====================================================================
+English version is not available
 
-Anglická verze je zatím nedostupná.
+--
+<?cs var:defaults.company ?>
+<?cs var:defaults.street ?>
+<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
+---------------------------------
+tel.: <?cs var:defaults.tel ?>
+fax : <?cs var:defaults.fax ?>
+e-mail : <?cs var:defaults.emailsupport ?>
+---------------------------------
 ');
 
 INSERT INTO mail_templates (name, contenttype, template) VALUES
 ('expiration_notify', 'plain',
-'Vážený držiteli domény,
+'English version is bellow
+
+Upozornění na nutnost úhrady doménového jména <?cs var:domain ?>
+
+Vážený zákazníku,
 
 dovolujeme si Vás upozornit, že k <?cs var:checkdatetime ?> dosud nedošlo
 k prodloužení registrace doménového jména <?cs var:domain ?>.
@@ -150,8 +174,10 @@ V této chvíli evidujeme následující údaje o doméně:
 
 Doménové jméno: <?cs var:domain ?>
 Držitel: <?cs var:owner ?>
-Technický správce: <?cs var:tech ?>
 Registrátor: <?cs var:registrator ?>
+<?cs each:item = administrators ?>
+Administrátorský kontakt: <?cs var:item ?>
+<?cs /each ?>
 
 Vzhledem k této situaci máte nyní následující možnosti:
 
@@ -162,9 +188,16 @@ Vzhledem k této situaci máte nyní následující možnosti:
    zajistěte prodloužení registrace vašeho doménového jména. Seznam
    registrátorů najdete na www.nic.cz (Seznam registratoru)
 
-====================================================================
 
-Dear domain holder,
+
+                                                 S pozdravem
+                                                 podpora CZ.NIC, z.s.p.o.
+
+
+
+Reminder of the need to settle fees for the <?cs var:domain ?> domain name
+
+Dear customer,
 
 We would like to inform you that as of <?cs var:checkdatetime ?>,
 the registration of the domain name <?cs var:domain ?>
@@ -181,8 +214,10 @@ At present, our database includes the following details concerning your domain:
 
 Domain name: <?cs var:domain ?>
 Holder: <?cs var:owner ?>
-Technical administrator: <?cs var:tech ?>
 Registrar: <?cs var:registrator ?>
+<?cs each:item = administrators ?>
+Admin contact: <?cs var:item ?>
+<?cs /each ?>
 
 To ensure adequate remedy of the existing situation, you can choose
 one of the following:
@@ -194,11 +229,29 @@ one of the following:
    domain name. For a list of registrars, please visit www.nic.cz
    (List of Registrars)
 
+
+
+                                                 Yours sincerely
+                                                 support CZ.NIC, z.s.p.o.
+
+--
+<?cs var:defaults.company ?>
+<?cs var:defaults.street ?>
+<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
+---------------------------------
+tel.: <?cs var:defaults.tel ?>
+fax : <?cs var:defaults.fax ?>
+e-mail : <?cs var:defaults.emailsupport ?>
+---------------------------------
 ');
 
 INSERT INTO mail_templates (name, contenttype, template) VALUES
-('expiration_dns_owner', 'plain',
-'Vážený zákazníku,
+('expiration_dns', 'plain',
+'English version is bellow
+
+Oznámení o vyřazení domény <?cs var:domain?> z DNS
+
+Vážený zákazníku,
 
 dovolujeme si Vás tímto upozornit, že doposud nebyla uhrazena platba
 za prodloužení či registraci doménového jména <?cs var:domain ?>.
@@ -207,104 +260,57 @@ jmen, CZ.NIC, z.s.p.o. pozastavuje registraci doménového jména a vyřazuje
 ji ze zóny .CZ.
 
 V případě, že do dne <?cs var:exdate ?> neobdrží CZ.NIC, z.s.p.o.
-zálohu, bude doménové jméno definitivně uvolněno pro použití dalším
-zájemcem.
+od vašeho registrátora platbu za prodloužení platnosti doménového jména,
+bude doménové jméno definitivně uvolněno pro použití dalším zájemcem.
 
-Prosíme kontaktujte společnost <?cs var:owner ?> uvedenou
-u Vaší domény jako plátce, případně Vašeho Určeného registrátora
-<?cs var:registrator ?> a prověřte, proč záloha
-není uhrazena.
+Prosíme kontaktujte Vašeho Určeného registrátora <?cs var:registrator ?>
+za účelem prodloužení doménového jména.
 
 V případě, že se domníváte, že platba byla provedena, prověřte nejdříve,
 zda byla provedena pod spravným variabilním symbolem, na správné číslo
-účtu a ve spravné výši ...
+účtu a ve spravné výši a tyto informace svému Určenému registrátorovi
+sdělte.
 
-??? Co znamena toto ???
-... a zda jste registrátorovi udělili souhlas s
-Pravidly registrace (pokud byl požadován) a tyto informace svému
-Určenému registrátorovi sdělte.
+Harmonogram plánovaných akcí:
 
-??? nebo toto ???
-Pripadne dalsi informace k platbe pote sdelte na adresu fakt@nic.cz
+<?cs var:dnsdate ?> - Znefunkčnění doménového jména (vyřazení z DNS).
+<?cs var:exregdate ?> - Definitivní zrušení registrace doménového jména.
+
+V této chvíli evidujeme následující údaje o doméně:
+
+Doménové jméno: <?cs var:domain ?>
+Držitel: <?cs var:owner ?>
+Registrátor: <?cs var:registrator ?>
+<?cs each:item = administrators ?>
+Administrátorský kontakt: <?cs var:item ?>
+<?cs /each ?>
+
 
                                                  S pozdravem
                                                  podpora CZ.NIC, z.s.p.o.
 
-====================================================================
 
-Dear customer,
 
-we would like to inform you that you have not yet made the payment
-for the registration extension for the domain <?cs var:domain ?>.
-Due to this fact and based on the Domain Name Registration Rules
-(Pravidla registrace domenovych jmen), CZ.NIC, z.s.p.o. is suspending
-the domain name registration and removing the domain from the .CZ zone
-(delegation cancellation). Unless a remedy is made before <?cs var:exdate ?>,
-the domain name registration will be cancelled!
+English version is not available
 
-Please contact the designated registrar <?cs var:registrator ?>
-for this domain and agree with him on further steps.
-
- !tato verze neni prelozena uplne, nektere vety z ceske verze chybeji!
-
-');
-
-INSERT INTO mail_templates (name, contenttype, template) VALUES
-('expiration_dns_tech', 'plain',
-'Vážený zákazníku,
-
-dovolujeme si Vás tímto upozornit, že doposud nebyla uhrazena platba
-za prodloužení či registraci doménového jména <?cs var:domain ?>.
-Vzhledem k této skutečnosti a na základě Pravidel registrace doménových
-jmen, CZ.NIC, z.s.p.o. pozastavuje registraci doménového jména a vyřazuje
-ji ze zóny .CZ.
-
-V případě, že do dne <?cs var:exdate ?> neobdrží CZ.NIC, z.s.p.o.
-zálohu, bude doménové jméno definitivně uvolněno pro použití dalším
-zájemcem.
-
-Prosíme kontaktujte společnost <?cs var:owner ?> uvedenou
-u Vaší domény jako plátce, případně Vašeho Určeného registrátora
-<?cs var:registrator ?> a prověřte, proč záloha
-není uhrazena.
-
-V případě, že se domníváte, že platba byla provedena, prověřte nejdříve,
-zda byla provedena pod spravným variabilním symbolem, na správné číslo
-účtu a ve spravné výši ...
-
-??? Co znamena toto ???
-... a zda jste registrátorovi udělili souhlas s
-Pravidly registrace (pokud byl požadován) a tyto informace svému
-Určenému registrátorovi sdělte.
-
-??? nebo toto ???
-Pripadne dalsi informace k platbe pote sdelte na adresu fakt@nic.cz
-
-                                                 S pozdravem
-                                                 podpora CZ.NIC, z.s.p.o.
-
-====================================================================
-
-Dear customer,
-
-we would like to inform you that you have not yet made the payment
-for the registration extension for the domain <?cs var:domain ?>.
-Due to this fact and based on the Domain Name Registration Rules
-(Pravidla registrace domenovych jmen), CZ.NIC, z.s.p.o. is suspending
-the domain name registration and removing the domain from the .CZ zone
-(delegation cancellation). Unless a remedy is made before <?cs var:exdate ?>,
-the domain name registration will be cancelled!
-
-Please contact the designated registrar <?cs var:registrator ?>
-for this domain and agree with him on further steps.
-
- !tato verze neni prelozena uplne, nektere vety z ceske verze chybeji!
-
+--
+<?cs var:defaults.company ?>
+<?cs var:defaults.street ?>
+<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
+---------------------------------
+tel.: <?cs var:defaults.tel ?>
+fax : <?cs var:defaults.fax ?>
+e-mail : <?cs var:defaults.emailsupport ?>
+---------------------------------
 ');
 
 INSERT INTO mail_templates (name, contenttype, template) VALUES
 ('expiration_register_owner', 'plain',
-'Vážený zákazníku,
+'English version is bellow
+
+Oznámení o zrušení domény <?cs var:domain ?>
+
+Vážený zákazníku,
 
 dovolujeme si Vás upozornit, že nebylo provedeno prodloužení registrace
 pro doménové jméno <?cs var:domain ?>. Vzhledem k této skutečnosti
@@ -314,7 +320,7 @@ registraci doménového jména.
                                                  S pozdravem
                                                  podpora CZ.NIC, z.s.p.o.
 
-====================================================================
+
 
 Dear customer,
 
@@ -324,29 +330,48 @@ this fact and based on the Domain Name Registration Rules (Pravidla
 registrace domenovych jmen), CZ.NIC, z.s.p.o. is cancelling the domain
 name registration.
 
+                                                 Yours sincerely
+                                                 support CZ.NIC, z.s.p.o.
+
+--
+<?cs var:defaults.company ?>
+<?cs var:defaults.street ?>
+<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
+---------------------------------
+tel.: <?cs var:defaults.tel ?>
+fax : <?cs var:defaults.fax ?>
+e-mail : <?cs var:defaults.emailsupport ?>
+---------------------------------
 ');
 
 INSERT INTO mail_templates (name, contenttype, template) VALUES
 ('expiration_register_tech', 'plain',
-'Vážený zákazníku,
+'English version is bellow
 
-dovolujeme si Vás upozornit, že nebylo provedeno prodloužení registrace
-pro doménové jméno <?cs var:domain ?>. Vzhledem k této skutečnosti
-a na základě Pravidel registrace doménových jmen , CZ.NIC, z.s.p.o. ruší
-registraci doménového jména.
+Oznámení o zrušení domény <?cs var:domain ?>
+
+Vážený technický správce,
+
+vzhledem k tomu, že jste vedený jako technický kontakt u sady nameserverů
+<?cs var:nsset ?>, která je přiřazena k doménovému jménu <?cs var:domain ?>,
+dovolujeme si Vás upozornit, že toto doménové jméno bylo ke dni
+<?cs var:exdate ?> vyřazeno z DNS / zrušeno.
 
                                                  S pozdravem
                                                  podpora CZ.NIC, z.s.p.o.
 
-====================================================================
 
-Dear customer,
 
-we would like to inform you that the registration extension has not yet
-been implemented for the domain name <?cs var:domain ?>. Due to
-this fact and based on the Domain Name Registration Rules (Pravidla
-registrace domenovych jmen), CZ.NIC, z.s.p.o. is cancelling the domain
-name registration.
+English version is not available
 
+--
+<?cs var:defaults.company ?>
+<?cs var:defaults.street ?>
+<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
+---------------------------------
+tel.: <?cs var:defaults.tel ?>
+fax : <?cs var:defaults.fax ?>
+e-mail : <?cs var:defaults.emailsupport ?>
+---------------------------------
 ');
 
