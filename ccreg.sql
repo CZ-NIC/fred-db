@@ -51,16 +51,16 @@ CREATE TABLE RegistrarACL (
 
 -- DROP TABLE Contact CASCADE;
 CREATE TABLE Contact (
-        ID SERIAL PRIMARY KEY,
-        Handle varchar(255) UNIQUE NOT NULL,
-        ROID varchar(255) UNIQUE NOT NULL,
+        ID INTEGER PRIMARY KEY REFERENCES object (id),
+-- REMOVE        Handle varchar(255) UNIQUE NOT NULL,
+-- REMOVE        ROID varchar(255) UNIQUE NOT NULL,
 -- REMOVE        Status smallint[], -- TODO: create trigger to check values agains enum_status
-        ClID INTEGER NOT NULL REFERENCES Registrar,
-        CrID INTEGER NOT NULL REFERENCES Registrar,
-        CrDate timestamp NOT NULL DEFAULT now(),
-        UpID INTEGER REFERENCES Registrar,
-        UpDate timestamp,
-        TrDate timestamp,
+-- REMOVE        ClID INTEGER NOT NULL REFERENCES Registrar,
+-- REMOVE        CrID INTEGER NOT NULL REFERENCES Registrar,
+-- REMOVE        CrDate timestamp NOT NULL DEFAULT now(),
+-- REMOVE        UpID INTEGER REFERENCES Registrar,
+-- REMOVE        UpDate timestamp,
+-- REMOVE        TrDate timestamp,
         Name varchar(1024),
         Organization varchar(1024),
         Street1 varchar(1024),
@@ -107,17 +107,17 @@ CREATE INDEX contact_handle_idx ON Contact (Handle);
 
 -- DROP TABLE NSSet CASCADE;
 CREATE TABLE NSSet (
-        ID SERIAL PRIMARY KEY,
-        ROID varchar(255) UNIQUE NOT NULL,
-        Handle varchar(255) UNIQUE NOT NULL,
+        ID INTEGER PRIMARY KEY REFERENCES object (id),
+-- REMOVE        ROID varchar(255) UNIQUE NOT NULL,
+-- REMOVE        Handle varchar(255) UNIQUE NOT NULL,
 -- REMOVE        Status smallint[], -- TODO: create trigger to check values agains enum_status
-        ClID INTEGER NOT NULL REFERENCES Registrar,
-        CrID INTEGER NOT NULL REFERENCES Registrar,
-        CrDate timestamp NOT NULL DEFAULT now(),
-        UpID INTEGER REFERENCES Registrar,
-        AuthInfoPw varchar(32),
-        TrDate timestamp,
-        UpDate timestamp,
+-- REMOVE        ClID INTEGER NOT NULL REFERENCES Registrar,
+-- REMOVE        CrID INTEGER NOT NULL REFERENCES Registrar,
+-- REMOVE        CrDate timestamp NOT NULL DEFAULT now(),
+-- REMOVE        UpID INTEGER REFERENCES Registrar,
+-- REMOVE        AuthInfoPw varchar(32),
+-- REMOVE        TrDate timestamp,
+-- REMOVE        UpDate timestamp,
         checklevel smallint default 0
         );
 CREATE INDEX nsset_id_idx ON NSSet (ID);
@@ -164,19 +164,19 @@ CREATE TABLE host_ipaddr_map (
 -- DROP TABLE Domain CASCADE;
 CREATE TABLE Domain (
         Zone INTEGER REFERENCES Zone (ID),
-        ID SERIAL PRIMARY KEY,
-        ROID varchar(255) UNIQUE NOT NULL,
-        FQDN varchar(255) UNIQUE NOT NULL,
+        ID INTEGER PRIMARY KEY REFERENCES object (ID),
+-- REMOVE        ROID varchar(255) UNIQUE NOT NULL,
+-- REMOVE        FQDN varchar(255) UNIQUE NOT NULL,
 -- REMOVE        Status smallint[], -- TODO: create trigger to check values agains enum_status
         Registrant INTEGER NOT NULL REFERENCES Contact,
         NSSet INTEGER NULL REFERENCES NSSet, -- odkaz na nsset muze by i NULL lze zaregistrovat domenu bez nssetu
-        ClID INTEGER NOT NULL REFERENCES Registrar,
-        CrID INTEGER NOT NULL REFERENCES Registrar,
-        CrDate timestamp NOT NULL DEFAULT now(),
-        UpID INTEGER REFERENCES Registrar,
+-- REMOVE        ClID INTEGER NOT NULL REFERENCES Registrar,
+-- REMOVE        CrID INTEGER NOT NULL REFERENCES Registrar,
+-- REMOVE        CrDate timestamp NOT NULL DEFAULT now(),
+-- REMOVE        UpID INTEGER REFERENCES Registrar,
         Exdate timestamp NOT NULL,
-        TrDate timestamp,
-        AuthInfoPw varchar(32),
+-- REMOVE        TrDate timestamp,
+-- REMOVE        AuthInfoPw varchar(32),
         UpDate timestamp
         );
 CREATE INDEX domain_zone_idx ON Domain (Zone);
