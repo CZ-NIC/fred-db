@@ -34,8 +34,7 @@ CREATE TABLE mail_header_defaults (
 	h_errorsto varchar(300),
 	h_organization varchar(300),
 	h_contentencoding varchar(300),
-	h_messageidserver varchar(300),
-	h_subject varchar(300)
+	h_messageidserver varchar(300)
 );
 
 INSERT INTO mail_header_defaults
