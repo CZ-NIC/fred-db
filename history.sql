@@ -1,29 +1,35 @@
--- tabulky pro ukladani hostorie
--- ukladaji se pouze operace DELETE UPDATE TRANSFER 
--- CREATE neni treba ukladat
 
--- DROP TABLE History CASCADE;
-CREATE TABLE History (
-        ID SERIAL PRIMARY KEY,
-        action INTEGER NOT NULL REFERENCES action, -- odkaz to tabulky action         
-        ModDate timestamp NOT NULL DEFAULT now() -- datum a cas provedene zmeny
+
+CREATE TABLE OBJECT_history (
+        historyID INTEGER PRIMARY KEY REFERENCES History, -- odkaz do historie
+        ID INTEGER  NOT NULL,
+        type smallint , -- typ onjektu 1 kontakt 2 nsset 3 domena
+        NAME varchar(255) NOT NULL , -- handle ci FQDN
+        ROID varchar(64)  NOT NULL,
+        ClID INTEGER NOT NULL REFERENCES Registrar,
+        CrID INTEGER NOT NULL REFERENCES Registrar,
+        UpID INTEGER REFERENCES Registrar,
+        CrDate timestamp NOT NULL,
+        Trdate timestamp,
+        UpDate timestamp,
+        AuthInfoPw varchar(300)
         );
-        
 
+        
 
 -- DROP TABLE Contact_History CASCADE;
 CREATE TABLE Contact_History (
         HISTORYID INTEGER PRIMARY  KEY REFERENCES History,
         ID INTEGER   NOT NULL,
-        Handle varchar(255)  NOT NULL,
-        ROID varchar(255)  NOT NULL,
+--        Handle varchar(255)  NOT NULL,
+--        ROID varchar(255)  NOT NULL,
 --REMOVE        Status smallint[], -- TODO: create trigger to check values agains enum_status
-        ClID INTEGER NOT NULL REFERENCES Registrar,
-        CrID INTEGER NOT NULL REFERENCES Registrar,
-        CrDate timestamp NOT NULL, -- DEFAULT now(),
-        UpID INTEGER REFERENCES Registrar,
-        UpDate timestamp,
-        TrDate timestamp,
+--        ClID INTEGER NOT NULL REFERENCES Registrar,
+--        CrID INTEGER NOT NULL REFERENCES Registrar,
+--        CrDate timestamp NOT NULL, -- DEFAULT now(),
+--        UpID INTEGER REFERENCES Registrar,
+--        UpDate timestamp,
+--        TrDate timestamp,
         Name varchar(1024),
         Organization varchar(1024),
         Street1 varchar(1024),
@@ -42,7 +48,7 @@ CREATE TABLE Contact_History (
         DiscloseTelephone boolean DEFAULT False,
         DiscloseFax boolean DEFAULT False,
         DiscloseEmail boolean DEFAULT False,
-        AuthInfoPw varchar(32),
+--        AuthInfoPw varchar(32),
         NotifyEmail varchar(1024),
         VAT varchar(32),
         SSN varchar(32),
@@ -56,18 +62,18 @@ CREATE INDEX contact_history_historyid_idx ON Contact_History (historyID);
 CREATE TABLE Domain_History (
         HISTORYID INTEGER PRIMARY KEY REFERENCES History,          
         Zone INTEGER REFERENCES Zone (ID),
-        ID INTEGER   NOT NULL,
-        ROID varchar(255)  NOT NULL,
-        FQDN varchar(255)  NOT NULL,
+        ID INTEGER  NOT NULL,
+--        ROID varchar(255)  NOT NULL,
+--        FQDN varchar(255)  NOT NULL,
 -- REMOVE        Status smallint[], -- TODO: create trigger to check values agains enum_status
-        ClID INTEGER NOT NULL REFERENCES Registrar,
-        CrID INTEGER NOT NULL REFERENCES Registrar,
-        CrDate timestamp NOT NULL,
-        UpID INTEGER REFERENCES Registrar,
+--        ClID INTEGER NOT NULL REFERENCES Registrar,
+--        CrID INTEGER NOT NULL REFERENCES Registrar,
+--        CrDate timestamp NOT NULL,
+--        UpID INTEGER REFERENCES Registrar,
         ExDate timestamp NOT NULL,
-        TrDate timestamp,
-        AuthInfoPw varchar(32),
-        UpDate timestamp,
+--        TrDate timestamp,
+--        AuthInfoPw varchar(32),
+--        UpDate timestamp,
         Registrant INTEGER , -- zrusena reference
         NSSet INTEGER  -- zruseny reference
         );
@@ -86,16 +92,16 @@ CREATE TABLE domain_contact_map_history  (
 CREATE TABLE NSSet_history  (
         historyID INTEGER PRIMARY KEY REFERENCES History, -- pouze jeden nsset 
         ID INTEGER  NOT NULL,
-        ROID varchar(255)  NOT NULL,
-        Handle varchar(255)  NOT NULL,
+--        ROID varchar(255)  NOT NULL,
+--        Handle varchar(255)  NOT NULL,
 -- REMOVE        Status smallint[], -- TODO: create trigger to check values agains enum_status
-        ClID INTEGER NOT NULL REFERENCES Registrar,
-        CrID INTEGER NOT NULL REFERENCES Registrar,
-        CrDate timestamp NOT NULL,
-        UpID INTEGER REFERENCES Registrar, 
-        AuthInfoPw varchar(32),
-        Trdate timestamp,
-        UpDate timestamp,
+--        ClID INTEGER NOT NULL REFERENCES Registrar,
+--        CrID INTEGER NOT NULL REFERENCES Registrar,
+--        CrDate timestamp NOT NULL,
+--        UpID INTEGER REFERENCES Registrar, 
+--        AuthInfoPw varchar(32),
+--        Trdate timestamp,
+--        UpDate timestamp,
         checklevel smallint default 0 -- dopsan check level
         );
 CREATE INDEX nsset_history_historyid_idx ON NSSet_History (historyID);
@@ -113,8 +119,7 @@ CREATE TABLE Host_history  (
         historyID INTEGER  REFERENCES History,  -- muze byt vice hostu takze to neni primary key
         ID  INTEGER  NOT NULL,
         NSSetID INTEGER NOT NULL, -- REFERENCES NSSet ON UPDATE CASCADE,
-        FQDN VARCHAR(255)  NOT NULL,
--- zruseno        IpAddr INET[] NOT NULL -- NOTE: we don't have to store IP version, since it's obvious from address
+        FQDN VARCHAR(255)  NOT NULL
         );
 -- nahrazeno
 
@@ -124,7 +129,6 @@ CREATE TABLE host_ipaddr_map_history (
 	NSSetID INTEGER NOT NULL,
 	IpAddr INET NOT NULL
 	);
-
 
 
 CREATE INDEX host_history_historyid_idx ON HOST_History (historyID);
