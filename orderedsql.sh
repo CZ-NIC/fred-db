@@ -22,6 +22,8 @@ cat history.sql
 cat admin.sql  
 #mailer
 cat mail_notify.sql
+#authinfo
+cat authinfo.sql
 # banking
 cat enum_bank_code.sql
 cat bank.sql
