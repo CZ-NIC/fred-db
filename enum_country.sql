@@ -1,3 +1,10 @@
+--DROP TABLE enum_country CASCADE;
+CREATE TABLE enum_country (
+        id char(2) PRIMARY KEY,
+        country varchar(1024) UNIQUE NOT NULL,
+        country_cs  varchar(1024) UNIQUE -- volitelne cesky nazev
+        );
+
 -- vymaz vsechny zaznamy 
 DELETE FROM  enum_country ;
 -- nacti vsechny staty
