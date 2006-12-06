@@ -19,16 +19,6 @@ aInvoice_ID INTEGER REFERENCES Invoice (ID),  -- zalohova faktura ze ktere bylo 
 Total numeric(10,2) NOT NULL default 0 -- kolik creditu vycerpano
 );
 
--- polozky faktury
-CREATE TABLE Credit_invoice_items (
- id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
- registrar integer NOT NULL REFERENCES Registrar, -- id registratora
- InvoiceID INTEGER REFERENCES Invoice (ID) , -- pri uzavreni faktury se sem vlozi ID faktury
- action integer REFERENCES  Action, -- pri jake akci -> action.id (NULL=prijata platba)
- object varchar(256) NOT NULL, -- nazev objektu fqdn ci handle
- price numeric(10,2) NOT NULL -- cena za operaci
- );
-     
 
      
 -- tabulka cen
