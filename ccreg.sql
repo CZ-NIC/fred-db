@@ -1,53 +1,21 @@
--- DROP TABLE enum_country CASCADE;
-CREATE TABLE enum_country (
-        id char(2) PRIMARY KEY,
-        country varchar(1024) UNIQUE NOT NULL,
-        country_cs  varchar(1024) UNIQUE -- volitelne cesky nazev 
-        );
+-- DROP TABLE  OBJECT  CASCADE;
 
-
--- DROP TABLE zone CASCADE;
-CREATE TABLE zone (
-        id SERIAL PRIMARY KEY,
-        fqdn VARCHAR(255) UNIQUE NOT NULL,
-        ex_period_min int not null,
-        ex_period_max int not null,
-        val_period int not null,
-        dots_max  int not null default 1,
-        enum_zone boolean default 'f'
-        );
-
-INSERT INTO zone  VALUES(1,'0.2.4.e164.arpa',12,120,6,9,'t');
-INSERT INTO zone  VALUES(2,'0.2.4.c.e164.arpa',12,120,6,9,'t');
-INSERT INTO zone  VALUES(3,'cz',12,120,0,1,'f');
-
--- DROP TABLE Registrar CASCADE;
-CREATE TABLE Registrar (
+CREATE TABLE OBJECT (
         ID SERIAL PRIMARY KEY,
-        Zone integer[],  --  zony kam ma registrator pristup 
-        Handle varchar(255) UNIQUE NOT NULL,
-        Name varchar(1024),
-        Organization varchar(1024),
-        Street1 varchar(1024),
-        Street2 varchar(1024),
-        Street3 varchar(1024),
-        City varchar(1024),
-        StateOrProvince varchar(1024),
-        PostalCode varchar(32),
-        Country char(2) REFERENCES enum_country,
-        Telephone varchar(32),
-        Fax varchar(32),
-        Email varchar(1024),
-        Url varchar(1024),
-        Credit numeric(10,2) NOT NULL DEFAULT 0.0 -- vyse kreditu registratora
+        historyID integer REFERENCES history, -- odkaz na posledni zmenu v historii
+        type smallint , -- typ onjektu 1 kontakt 2 nsset 3 domena
+        NAME varchar(255) UNIQUE NOT NULL , -- handle ci FQDN
+        ROID varchar(64) UNIQUE NOT NULL,
+        ClID INTEGER NOT NULL REFERENCES Registrar,
+        CrID INTEGER NOT NULL REFERENCES Registrar,
+        UpID INTEGER REFERENCES Registrar,
+        CrDate timestamp NOT NULL DEFAULT now(),
+        TrDate timestamp DEFAULT NULL,
+        UpDate timestamp DEFAULT NULL,
+        AuthInfoPw varchar(300) -- dle Honzy v XML schematech
         );
 
--- DROP TABLE RegistrarACL CASCADE;
-CREATE TABLE RegistrarACL (
-        RegistrarID INTEGER NOT NULL REFERENCES Registrar,
-        Cert varchar(1024) NOT NULL, -- certificate fingerprint
-        Password varchar(64) NOT NULL
-        );
+
 
 -- DROP TABLE Contact CASCADE;
 CREATE TABLE Contact (
@@ -79,15 +47,13 @@ CREATE TABLE Contact (
         DiscloseTelephone boolean DEFAULT False,
         DiscloseFax boolean DEFAULT False,
         DiscloseEmail boolean DEFAULT False,
-        AuthInfoPw varchar(32),
+--         AuthInfoPw varchar(32),
         NotifyEmail varchar(1024),
         VAT varchar(32),
         SSN varchar(32),
 	SSNtype INTEGER REFERENCES enum_ssntype
         );
 CREATE INDEX contact_id_idx ON Contact (ID);
-CREATE INDEX contact_roid_idx ON Contact (ROID);
-CREATE INDEX contact_handle_idx ON Contact (Handle);
 
 
 -- DROP TABLE Term CASCADE;
@@ -121,9 +87,6 @@ CREATE TABLE NSSet (
         checklevel smallint default 0
         );
 CREATE INDEX nsset_id_idx ON NSSet (ID);
-CREATE INDEX nsset_roid_idx ON NSSet (ROID);
-CREATE INDEX nsset_handle_idx ON NSSet (Handle);
-CREATE INDEX nsset_clid_idx ON NSSet (ClID);        
 
 -- DROP TABLE nsset_contact_map CASCADE;
 CREATE TABLE nsset_contact_map (
@@ -163,8 +126,9 @@ CREATE TABLE host_ipaddr_map (
 
 -- DROP TABLE Domain CASCADE;
 CREATE TABLE Domain (
-        Zone INTEGER REFERENCES Zone (ID),
         ID INTEGER PRIMARY KEY REFERENCES object (ID),
+        Zone INTEGER REFERENCES Zone (ID),
+
 -- REMOVE        ROID varchar(255) UNIQUE NOT NULL,
 -- REMOVE        FQDN varchar(255) UNIQUE NOT NULL,
 -- REMOVE        Status smallint[], -- TODO: create trigger to check values agains enum_status
@@ -181,8 +145,6 @@ CREATE TABLE Domain (
         );
 CREATE INDEX domain_zone_idx ON Domain (Zone);
 CREATE INDEX domain_id_idx ON Domain (ID);
-CREATE INDEX domain_fqdn_idx ON Domain (FQDN);
-CREATE INDEX domain_roid_idx ON Domain (ROID);
 
 -- DROP TABLE domain_contact_map CASCADE;
 CREATE TABLE domain_contact_map (
@@ -232,3 +194,4 @@ CREATE TABLE Message (
         );
 CREATE INDEX message_clid_idx ON message (clid);
 CREATE INDEX message_seen_idx ON message (clid,seen,crdate,exdate);
+
