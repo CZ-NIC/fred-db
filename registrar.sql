@@ -1,3 +1,32 @@
+
+-- DROP TABLE Registrar CASCADE;
+CREATE TABLE Registrar (
+        ID SERIAL PRIMARY KEY,
+        Zone integer[],  --  zony kam ma registrator pristup
+        Handle varchar(255) UNIQUE NOT NULL,
+        Name varchar(1024),
+        Organization varchar(1024),
+        Street1 varchar(1024),
+        Street2 varchar(1024),
+        Street3 varchar(1024),
+        City varchar(1024),
+        StateOrProvince varchar(1024),
+        PostalCode varchar(32),
+        Country char(2) REFERENCES enum_country,
+        Telephone varchar(32),
+        Fax varchar(32),
+        Email varchar(1024),
+        Url varchar(1024)
+        );
+
+-- DROP TABLE RegistrarACL CASCADE;
+CREATE TABLE RegistrarACL (
+        RegistrarID INTEGER NOT NULL REFERENCES Registrar,
+        Cert varchar(1024) NOT NULL, -- certificate fingerprint
+        Password varchar(64) NOT NULL
+        );
+
+
 DELETE FROM Registrar;
 INSERT INTO Registrar ( id,zone, handle , organization , name , url ) VALUES( 100,   '{1 }' , 'REG-GENERAL-REGISTRY' ,  'GENERAL REGISTRY, s.r.o.' ,     'DomainMaster',   'www.domainmaster.cz');
 INSERT INTO Registrar ( id,zone,  handle ,organization , name , url ) VALUES( 300 ,   '{1 }' , 'REG-ACTIVE24'  ,'ACTIVE 24, s. r. o.' ,    'DOMENY.CZ' , 'www.domeny.cz');
@@ -16,5 +45,3 @@ INSERT INTO Registrar ( id,zone, handle , organization , name , url ) VALUES( 16
 INSERT INTO Registrar ( id, zone, handle ,organization , name , url ) VALUES( 170 , '{1 }' , 'REG-SKYNET',   'SkyNet, a.s.'            ,      'SkyNet'    ,        'www.skynet.cz');
 INSERT INTO Registrar ( id, zone, handle ,organization , name , url ) VALUES( 1,  '{1 , 2 , 3 }' , 'REG-LRR',    'CZ.NIC, z.s.p.o.'          ,    'LRR'         ,      'www.lrr.cz');
 
--- nastav credit 
-UPDATE registrar set credit=1000000.0;
