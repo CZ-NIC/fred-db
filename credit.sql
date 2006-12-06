@@ -42,13 +42,13 @@ CREATE TABLE price
 
 -- testovaci zaznamy
 -- data za rok 2005
-INSERT INTO price ( zone , action ,   valid_from ,  valid_to ,  price ,  period ) values ( 3 , 504 , '01-01-2005' , '12-31-2005 23:59:59' , 600 , 12 );
-INSERT INTO price ( zone , action ,   valid_from ,  valid_to ,  price ,  period ) values ( 3 , 506 , '01-01-2005' , '12-31-2005 23:59:59' , 600 , 12 );
+INSERT INTO price ( zone , action ,   valid_from ,  valid_to ,  price ,  period ) values ( 3 , 504 , '01-01-2005' , '12-31-2005 23:59:59' , 0 , 12 );
+INSERT INTO price ( zone , action ,   valid_from ,  valid_to ,  price ,  period ) values ( 3 , 506 , '01-01-2005' , '12-31-2005 23:59:59' , 0 , 12 );
 -- pro rok 2006
-INSERT INTO price ( zone , action ,   valid_from , valid_to , price ,  period ) values ( 3 , 504 , '01-01-2006' , '08-31-2006  23:59:59' ,  500 , 12 );
-INSERT INTO price ( zone , action ,   valid_from ,  price ,  period ) values ( 3 , 504 , '09-01-2006' ,  400 , 12 );
-INSERT INTO price ( zone , action ,   valid_from ,  price ,  period ) values ( 3 , 506 , '01-01-2006' ,  500 , 12 );
+INSERT INTO price ( zone , action ,   valid_from , valid_to , price ,  period ) values ( 3 , 504 , '01-01-2006' , '08-31-2006  23:59:59' ,  0 , 12 );
+INSERT INTO price ( zone , action ,   valid_from ,  price ,  period ) values ( 3 , 504 , '09-01-2006' ,  0 , 12 );
+INSERT INTO price ( zone , action ,   valid_from ,  price ,  period ) values ( 3 , 506 , '01-01-2006' ,  0 , 12 );
 -- ceny za enum domeny pouze DomainRenew 
-INSERT INTO price ( zone , action ,   valid_from ,  price ,  period ) values ( 1 , 506 , '01-01-2006' ,  200 , 12 );
-INSERT INTO price ( zone , action ,   valid_from ,  price ,  period ) values ( 2 , 506 , '01-01-2006' ,  200 , 12 );
+INSERT INTO price ( zone , action ,   valid_from ,  price ,  period ) values ( 1 , 506 , '01-01-2006' ,  0 , 12 );
+INSERT INTO price ( zone , action ,   valid_from ,  price ,  period ) values ( 2 , 506 , '01-01-2006' ,  0 , 12 );
 
