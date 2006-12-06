@@ -55,6 +55,7 @@ INSERT INTO enum_action (  status , id )  VALUES(  'ContactSendAuthInfo' ,  1101
 INSERT INTO enum_action (  status , id )  VALUES(  'NSSetSendAuthInfo'  , 1102 );
 INSERT INTO enum_action (  status , id )  VALUES(  'DomainSendAuthInfo' ,  1103 );
 
+
  
 
 --  tabulka pro zapis transakci
@@ -70,6 +71,14 @@ CREATE TABLE Action (
         serverTRID varchar(128) UNIQUE   -- cislo transakce ze servru 
         );
 
+CREATE TABLE History (
+        ID SERIAL PRIMARY KEY,
+        action INTEGER NOT NULL REFERENCES action -- odkaz to tabulky action
+        );
+
+-- odkaz na historyID z z tabulky action
+ALTER TABLE action add historyID INTEGER  REFERENCES History;
+
 -- DROP TABLE  action_xml CASCADE;
-CREATE TABLE action_xml( actionID INTEGER NOT NULL REFERENCES action, xml text not NULL );
+CREATE TABLE action_xml( actionID INTEGER NOT NULL REFERENCES action, xml text not NULL  , xml_out text );
 
