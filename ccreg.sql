@@ -3,7 +3,7 @@
 CREATE TABLE OBJECT (
         ID SERIAL PRIMARY KEY,
         historyID integer REFERENCES history, -- odkaz na posledni zmenu v historii
-        type smallint , -- typ onjektu 1 kontakt 2 nsset 3 domena
+        type smallint , -- typ objektu 1 kontakt 2 nsset 3 domena
         NAME varchar(255) UNIQUE NOT NULL , -- handle ci FQDN
         ROID varchar(64) UNIQUE NOT NULL,
         ClID INTEGER NOT NULL REFERENCES Registrar,

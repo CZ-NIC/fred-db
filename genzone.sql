@@ -1,3 +1,4 @@
+-- table holding data from SOA record for a zone
 CREATE TABLE zone_soa (
         Zone INTEGER PRIMARY KEY REFERENCES Zone (ID),
         TTL INTEGER NOT NULL,
@@ -17,6 +18,7 @@ INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expir
 INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn) VALUES (2, 86400, 'hostmaster@nic.cz', NULL, 43200, 900, 1814400, 10800, 'a.ns.nic.cz');
 INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn) VALUES (3, 86400, 'hostmaster@nic.cz', NULL, 43200, 900, 1814400, 10800, 'ns.tld.cz');
 
+-- Nameservers for a zone
 CREATE TABLE zone_ns (
         id SERIAL PRIMARY KEY,
         Zone INTEGER REFERENCES Zone (ID),
@@ -39,3 +41,13 @@ INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'nss.tld.cz', '{217.31.200.10
 INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'ns-cz.ripe.net', '{}');
 INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'sunic.sunet.se', '{}');
 INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'ns-ext.vix.com', '{}');
+
+-- History of generation of domain in zone file
+CREATE TABLE zone_history (
+	id SERIAL PRIMARY KEY,
+	domainid INTEGER REFERENCES domain_history.historyid,
+	status INTEGER REFERENCES zone_status.id,
+	inzone boolean NOT NULL,
+	chdate timestamp NOT NULL DEFAULT now(),
+	boolean last NOT NULL DEFAULT True
+);
