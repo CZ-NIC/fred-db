@@ -54,6 +54,7 @@ VALUES
 
 CREATE TABLE mail_archive (
 	id SERIAL PRIMARY KEY,
+	mailtype integer references mail_type(id),
 	crdate timestamp NOT NULL DEFAULT now(),
 	moddate timestamp,
 	status integer,
