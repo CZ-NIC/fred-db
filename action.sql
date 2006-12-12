@@ -76,9 +76,6 @@ CREATE TABLE History (
         action INTEGER NOT NULL REFERENCES action -- odkaz to tabulky action
         );
 
--- odkaz na historyID z z tabulky action
-ALTER TABLE action add historyID INTEGER  REFERENCES History;
-
 -- DROP TABLE  action_xml CASCADE;
 CREATE TABLE action_xml( actionID INTEGER NOT NULL REFERENCES action, xml text not NULL  , xml_out text );
 

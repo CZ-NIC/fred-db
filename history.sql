@@ -15,8 +15,15 @@ CREATE TABLE OBJECT_history (
         AuthInfoPw varchar(300)
         );
 
-        
+-- pro smazane objekty          
+CREATE TABLE OBJECT_delete (        
+        ID INTEGER PRIMARY KEY, -- jednoznacne ID objektu z object.id 
+        historyID INTEGER  REFERENCES History, -- odkaz do historie na posledni zaznam
+        DelTime timestamp NOT NULL default now(), -- aktualni datum a cas smazani objektu 
+        NAME varchar(255) NOT NULL  -- handle ci FQDN
+        );
 
+  
 -- DROP TABLE Contact_History CASCADE;
 CREATE TABLE Contact_History (
         HISTORYID INTEGER PRIMARY  KEY REFERENCES History,
