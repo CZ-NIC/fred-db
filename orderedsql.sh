@@ -8,8 +8,6 @@ cat enum_ssntype.sql
 cat enum_country.sql
 cat enum_cs_country.sql
 cat zone.sql
-#zone generator
-cat genzone.sql
 #registar & registraracl (pass) tables
 cat registrar.sql
 cat registraracl.sql
@@ -19,6 +17,8 @@ cat action.sql
 # object table
 cat ccreg.sql
 cat history.sql
+#zone generator
+cat genzone.sql
 #adif
 cat admin.sql  
 #filemanager
