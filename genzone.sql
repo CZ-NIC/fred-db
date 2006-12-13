@@ -42,12 +42,32 @@ INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'ns-cz.ripe.net', '{}');
 INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'sunic.sunet.se', '{}');
 INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'ns-ext.vix.com', '{}');
 
--- History of generation of domain in zone file
-CREATE TABLE zone_history (
-	id SERIAL PRIMARY KEY,
-	domainid INTEGER REFERENCES domain_history.historyid,
-	status INTEGER REFERENCES zone_status.id,
-	inzone boolean NOT NULL,
-	chdate timestamp NOT NULL DEFAULT now(),
-	boolean last NOT NULL DEFAULT True
+-- List of status for domain zone generator classification
+-- supplement missing enum type in postgresql
+CREATE TABLE genzone_domain_status (
+	id integer PRIMARY KEY, -- id of status
+	name char(20) NOT NULL -- decriptive name
 );
+
+INSERT INTO genzone_domain_status VALUES (1,'is in zone');
+INSERT INTO genzone_domain_status VALUES (2,'is deleted');
+INSERT INTO genzone_domain_status VALUES (3,'is without nsset');
+INSERT INTO genzone_domain_status VALUES (4,'expired');
+INSERT INTO genzone_domain_status VALUES (5,'is not validated');
+
+-- History of generation of domain in zone file
+CREATE TABLE genzone_domain_history (
+        -- id of record
+	id SERIAL PRIMARY KEY, 
+        -- domain version, actual in time of record creation
+	domainid INTEGER REFERENCES domain_history (historyid), 
+        -- status of generation
+	status INTEGER REFERENCES genzone_domain_status (id), 
+        -- shortage for status=1
+	inzone boolean NOT NULL,
+        -- time of record creation
+	chdate timestamp NOT NULL DEFAULT now(), 
+        -- flag of actual record
+	last boolean NOT NULL DEFAULT True 
+);
+
