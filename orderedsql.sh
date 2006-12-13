@@ -21,8 +21,11 @@ cat ccreg.sql
 cat history.sql
 #adif
 cat admin.sql  
+#filemanager
+cat filemanager.sql
 #mailer
 cat mail_notify.sql
+cat mail_templates.sql
 #authinfo
 cat authinfo.sql
 # banking
