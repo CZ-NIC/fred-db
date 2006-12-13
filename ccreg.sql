@@ -15,6 +15,9 @@ CREATE TABLE OBJECT (
         AuthInfoPw varchar(300) -- dle Honzy v XML schematech
         );
 
+-- indexy
+CREATE INDEX object_id_idx ON Object (ID);
+CREATE INDEX object_name_idx ON Object (NAME);
 
 
 -- DROP TABLE Contact CASCADE;
