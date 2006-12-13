@@ -1,81 +1,78 @@
--- kodovani
-\encoding       LATIN2
-
 -- ciselnik chybovych hlaseni reason
 DROP TABLE enum_reason  CASCADE;
 CREATE TABLE enum_reason (
         id SERIAL PRIMARY KEY,
         reason varchar(128) UNIQUE NOT NULL,
-        reason_cs varchar(128)  UNIQUE  NOT NULL -- Ëesk˝ p¯eklad
+        reason_cs varchar(128)  UNIQUE  NOT NULL -- ƒçesk√Ω p≈ôeklad
         );
 
 
-INSERT INTO enum_reason VALUES(  1 ,  'bad format contact handle'   , 'neplatn˝ form·t ukazatele kontaktu' );
-INSERT INTO enum_reason VALUES(  2 ,  'bad format nsset handle' ,  'neplatn˝ form·t ukazatele nssettu' );
-INSERT INTO enum_reason VALUES(  3 ,  'bad format of fqdn domain'  , 'neplatn˝ form·t n·zvu domÈny' );
-INSERT INTO enum_reason VALUES(  4 ,  'not applicable domain'  , 'nepouæiteln˝ n·zev domÈny' );
+INSERT INTO enum_reason VALUES(  1 ,  'bad format contact handle'   , 'neplatn√Ω form√°t ukazatele kontaktu' );
+INSERT INTO enum_reason VALUES(  2 ,  'bad format nsset handle' ,  'neplatn√Ω form√°t ukazatele nssettu' );
+INSERT INTO enum_reason VALUES(  3 ,  'bad format of fqdn domain'  , 'neplatn√Ω form√°t n√°zvu dom√©ny' );
+INSERT INTO enum_reason VALUES(  4 ,  'not applicable domain'  , 'nepou≈æiteln√Ω n√°zev dom√©ny' );
 
 
-INSERT INTO enum_reason VALUES(  8 ,  'handle already registered'   , 'ukazatel je jiæ zaregistrov·n' );
-INSERT INTO enum_reason VALUES(  9 ,  'handle not yet registred' ,  'ukazatel jeπtÏ nenÌ zaregistrov·n' );
-INSERT INTO enum_reason VALUES(  10 , 'invalid format of handle'  , 'neplatn˝ form·t ukazatele' );
-INSERT INTO enum_reason VALUES(  11 , 'handle in protected peridod' , 'ukazatel je v ochranÈ lh˘tÏ' );
+INSERT INTO enum_reason VALUES(  8 ,  'handle already registered'   , 'ukazatel je ji≈æ zaregistrov√°n' );
+INSERT INTO enum_reason VALUES(  9 ,  'handle not yet registred' ,  'ukazatel je≈°tƒõ nen√≠ zaregistrov√°n' );
+INSERT INTO enum_reason VALUES(  10 , 'invalid format of handle'  , 'neplatn√Ω form√°t ukazatele' );
+INSERT INTO enum_reason VALUES(  11 , 'handle in protected peridod' , 'ukazatel je v ochran√© lh≈Øtƒõ' );
 
 
 
-INSERT INTO enum_reason VALUES( 98 , 'period is above maximal allowed value' , 'perioda je nad maximalnÌ dovolenou hodnotou' );
-INSERT INTO enum_reason VALUES( 99 , 'period is not aligned with allowed step' , 'perioda neodpovÌda dovolenÈmu intervalu' );
+INSERT INTO enum_reason VALUES( 98 , 'period is above maximal allowed value' , 'perioda je nad maximaln√≠ dovolenou hodnotou' );
+INSERT INTO enum_reason VALUES( 99 , 'period is not aligned with allowed step' , 'perioda neodpov√≠da dovolen√©mu intervalu' );
 
  
-INSERT INTO enum_reason VALUES( 100 , 'bad periody interval'  , 'neplatn˝ interval prodlouæenÌ'  );
-INSERT INTO enum_reason VALUES( 101 , 'bad format of valExpDate' , 'neplatn˝ form·t expirace validace'  );
-INSERT INTO enum_reason VALUES( 102 , 'ip addres is not valid' , 'neplatn· ip adresa'  );
-INSERT INTO enum_reason VALUES( 103 , 'can not add status flag' , 'nelze p¯idat stavov˝ p¯Ìznak'  );
-INSERT INTO enum_reason VALUES( 104 , 'can not remove status flag' , 'nelze odstranit stavov˝ p¯Ìznak' );
-INSERT INTO enum_reason VALUES( 105 ,  'expiry date is invalid' , 'nesouhlasÌ datum expirace' );
+INSERT INTO enum_reason VALUES( 100 , 'bad periody interval'  , 'neplatn√Ω interval prodlou≈æen√≠'  );
+INSERT INTO enum_reason VALUES( 101 , 'bad format of valExpDate' , 'neplatn√Ω form√°t expirace validace'  );
+INSERT INTO enum_reason VALUES( 102 , 'ip addres is not valid' , 'neplatn√° ip adresa'  );
+INSERT INTO enum_reason VALUES( 103 , 'can not add status flag' , 'nelze p≈ôidat stavov√Ω p≈ô√≠znak'  );
+INSERT INTO enum_reason VALUES( 104 , 'can not remove status flag' , 'nelze odstranit stavov√Ω p≈ô√≠znak' );
+INSERT INTO enum_reason VALUES( 105 ,  'expiry date is invalid' , 'nesouhlas√≠ datum expirace' );
 
-INSERT INTO enum_reason VALUES(  400 ,  'bad format of DNS host name'  ,  'neplatn˝ form·t  n·zvu  DNS servru' );
-INSERT INTO enum_reason VALUES(  401 ,  'duplicity DNS host address' , 'duplicitnÌ adresa jmenÈho servru DNS'  );
-INSERT INTO enum_reason VALUES(  402 ,  'DNS host is not in table'  , 'DNS host nenÌ v tabulce' );
-INSERT INTO enum_reason VALUES(  403 ,  'DNS host name exist' , 'jmen˝ server DNS uæ existuje' );
-INSERT INTO enum_reason VALUES(  404 ,  'minimal two dns host set one'  , 'minim·lnÏ dva DNS servry' );
-INSERT INTO enum_reason VALUES(  405 ,  'not any DNS host sets'  , 'nejsou nastaven æ·dnÈ DNS servry' );
-INSERT INTO enum_reason VALUES(  406 ,  'not any tech contact sets'  , 'nenÌ  zad·n æ·dn˝ technick˝ kontakt' );
-INSERT INTO enum_reason VALUES(  407 ,  'not glue ipaddr allowed'  , 'nepovolen·  ip adresa' );
-INSERT INTO enum_reason VALUES(  408 ,  'can not remove tech contact to zero'  , 'nelze vymazat vπechny technickÈ kontakty'  );
-INSERT INTO enum_reason VALUES(  409 ,  'can not remove DNS host to zero'  ,  'nelze vymazat vπechny DNS hosty' );
+INSERT INTO enum_reason VALUES(  400 ,  'bad format of DNS host name'  ,  'neplatn√Ω form√°t  n√°zvu  DNS servru' );
+INSERT INTO enum_reason VALUES(  401 ,  'duplicity DNS host address' , 'duplicitn√≠ adresa jmen√©ho servru DNS'  );
+INSERT INTO enum_reason VALUES(  402 ,  'DNS host is not in table'  , 'DNS host nen√≠ v tabulce' );
+INSERT INTO enum_reason VALUES(  403 ,  'DNS host name exist' , 'jmen√Ω server DNS u≈æ existuje' );
+INSERT INTO enum_reason VALUES(  404 ,  'minimal two dns host set one'  , 'minim√°lnƒõ dva DNS servry' );
+INSERT INTO enum_reason VALUES(  405 ,  'not any DNS host sets'  , 'nejsou nastaven ≈æ√°dn√© DNS servry' );
+INSERT INTO enum_reason VALUES(  406 ,  'not any tech contact sets'  , 'nen√≠  zad√°n ≈æ√°dn√Ω technick√Ω kontakt' );
+INSERT INTO enum_reason VALUES(  407 ,  'not glue ipaddr allowed'  , 'nepovolen√°  ip adresa' );
+INSERT INTO enum_reason VALUES(  408 ,  'can not remove tech contact to zero'  , 'nelze vymazat v≈°echny technick√© kontakty'  );
+INSERT INTO enum_reason VALUES(  409 ,  'can not remove DNS host to zero'  ,  'nelze vymazat v≈°echny DNS hosty' );
 
-INSERT INTO enum_reason VALUES(  410 ,  'can not remove DNS host'  , 'nelze odstranit jmen˝ server DNS' );
-INSERT INTO enum_reason VALUES(  411 , 'can not add DNS host'  , 'nelze p¯idat jmen˝ server DNS' );
+INSERT INTO enum_reason VALUES(  410 ,  'can not remove DNS host'  , 'nelze odstranit jmen√Ω server DNS' );
+INSERT INTO enum_reason VALUES(  411 , 'can not add DNS host'  , 'nelze p≈ôidat jmen√Ω server DNS' );
 
-INSERT INTO enum_reason VALUES(  501 , 'date of expirate validation is required' , 'datum vyprπenÌ platnosti je poæadov·n' );
-INSERT INTO enum_reason VALUES(  502 , 'date of expirate validation is not valid' , 'datum vyprπenÌ platnosti je neplatnÈ' );
-INSERT INTO enum_reason VALUES(  503 , 'date of expirate validation is not used' ,  'datum vyprπenÌ platnosti  se nepouæÌv·'  );
+INSERT INTO enum_reason VALUES(  501 , 'date of expirate validation is required' , 'datum vypr≈°en√≠ platnosti je po≈æadov√°n' );
+INSERT INTO enum_reason VALUES(  502 , 'date of expirate validation is not valid' , 'datum vypr≈°en√≠ platnosti je neplatn√©' );
+INSERT INTO enum_reason VALUES(  503 , 'date of expirate validation is not used' ,  'datum vypr≈°en√≠ platnosti  se nepou≈æ√≠v√°'  );
 
-INSERT INTO enum_reason VALUES(  901 , 'nsset handle exist not Avail'  , 'ukazatel nssetu existuje nenÌ dostupn˝' );
+INSERT INTO enum_reason VALUES(  901 , 'nsset handle exist not Avail'  , 'ukazatel nssetu existuje nen√≠ dostupn√Ω' );
 INSERT INTO enum_reason VALUES(  902 , 'nsset handle not exist '  , 'ukazatel nssetu  neexistuje');
-INSERT INTO enum_reason VALUES(  903 , 'nsset handle in history'  , 'ukazatel nssetu je v ochranÈ lh˘tÏ'  );
+INSERT INTO enum_reason VALUES(  903 , 'nsset handle in history'  , 'ukazatel nssetu je v ochran√© lh≈Øtƒõ'  );
 
-INSERT INTO enum_reason VALUES(  911 , 'contact handle exist not Avail' , 'ukazatel  kontaktu existuje nenÌ dostupn˝'   );
+INSERT INTO enum_reason VALUES(  911 , 'contact handle exist not Avail' , 'ukazatel  kontaktu existuje nen√≠ dostupn√Ω'   );
 INSERT INTO enum_reason VALUES(  912 , 'contact handle not exist '  , 'ukazatel  kontaktu neexistuje'  );
-INSERT INTO enum_reason VALUES(  913 , 'contact handle in history' ,  'ukazatel  kontaktu  je v ochranÈ lh˘tÏ'  );
+INSERT INTO enum_reason VALUES(  913 , 'contact handle in history' ,  'ukazatel  kontaktu  je v ochran√© lh≈Øtƒõ'  );
 
-INSERT INTO enum_reason VALUES(  921 , 'fqdn of domain exist not Avail' , 'n·zev domÈny  existuje nenÌ dostupn·'   );
-INSERT INTO enum_reason VALUES(  922 , 'fqdn of domain not exist ' ,  'n·zev domÈny neexistuje' );
-INSERT INTO enum_reason VALUES(  923 , 'fqdn of domain in history'  , 'n·zev domÈny je v ochranÈ lh˘tÏ'  );
+INSERT INTO enum_reason VALUES(  921 , 'fqdn of domain exist not Avail' , 'n√°zev dom√©ny  existuje nen√≠ dostupn√°'   );
+INSERT INTO enum_reason VALUES(  922 , 'fqdn of domain not exist ' ,  'n√°zev dom√©ny neexistuje' );
+INSERT INTO enum_reason VALUES(  923 , 'fqdn of domain in history'  , 'n√°zev dom√©ny je v ochran√© lh≈Øtƒõ'  );
 
 
-INSERT INTO enum_reason VALUES(  1001 , 'admin contact exist in contact map'  , 'administr·tork˝ kontakt je uæ zad·n' );
-INSERT INTO enum_reason VALUES(  1003 , 'admin contact not exist in contact map' ,  'administr·tork˝ kontak nenÌ zad·n'   );
+INSERT INTO enum_reason VALUES(  1001 , 'admin contact exist in contact map'  , 'administr√°tork√Ω kontakt je u≈æ zad√°n' );
+INSERT INTO enum_reason VALUES(  1003 , 'admin contact not exist in contact map' ,  'administr√°tork√Ω kontak nen√≠ zad√°n'   );
 
-INSERT INTO enum_reason VALUES(  1011 , 'tech contact exist in contact map'  , 'technick˝ kontakt je uæ zad·n');
-INSERT INTO enum_reason VALUES(  1013 , 'tech contact not exist in contact map' , 'technick˝ kontakt nenÌ zad·n'  );
+INSERT INTO enum_reason VALUES(  1011 , 'tech contact exist in contact map'  , 'technick√Ω kontakt je u≈æ zad√°n');
+INSERT INTO enum_reason VALUES(  1013 , 'tech contact not exist in contact map' , 'technick√Ω kontakt nen√≠ zad√°n'  );
 
-INSERT INTO enum_reason VALUES(  1100 , 'registrant not exist'  , 'vlastnÌk neexistuje' );
+INSERT INTO enum_reason VALUES(  1100 , 'registrant not exist'  , 'vlastn√≠k neexistuje' );
 
-INSERT INTO enum_reason VALUES(  1101 , 'unknown registrant handle' ,  'nezn·m˝ ukazatel vlastnÌka' );
-INSERT INTO enum_reason VALUES(  1102 , 'unknown nsset handle'  , 'nezn·m˝ ukazatel nssettu');
-INSERT INTO enum_reason VALUES(  1103 , 'unknown admin contact' , 'nezn·m˝ administr·tork˝ kontakt'  );
-INSERT INTO enum_reason VALUES(  1104 , 'unknown tech contact' , 'nezn·m˝ technick˝ kontakt');
-INSERT INTO enum_reason VALUES(  1105 , 'unknown country code'  , 'nezn·m˝ kÛd zemÏ' );
-INSERT INTO enum_reason VALUES(  1106 , 'unknown msgID' ,  'nezn·mÈ  msgID' );
+INSERT INTO enum_reason VALUES(  1101 , 'unknown registrant handle' ,  'nezn√°m√Ω ukazatel vlastn√≠ka' );
+INSERT INTO enum_reason VALUES(  1102 , 'unknown nsset handle'  , 'nezn√°m√Ω ukazatel nssettu');
+INSERT INTO enum_reason VALUES(  1103 , 'unknown admin contact' , 'nezn√°m√Ω administr√°tork√Ω kontakt'  );
+INSERT INTO enum_reason VALUES(  1104 , 'unknown tech contact' , 'nezn√°m√Ω technick√Ω kontakt');
+INSERT INTO enum_reason VALUES(  1105 , 'unknown country code'  , 'nezn√°m√Ω k√≥d zemƒõ' );
+INSERT INTO enum_reason VALUES(  1106 , 'unknown msgID' ,  'nezn√°m√©  msgID' );

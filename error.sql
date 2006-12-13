@@ -1,6 +1,3 @@
--- kodovani
-\encoding       LATIN2
-
 -- ciselnik chybovych hlaseni
 -- DROP TABLE enum_error  CASCADE;
 CREATE TABLE enum_error (
@@ -14,49 +11,49 @@ CREATE TABLE enum_error (
 -- chybove zpravy EN a CS
 
 
-INSERT INTO enum_error VALUES(  1000 , 'Command completed successfully',    'P¯Ìkaz ˙spÏπnÏ proveden');
-INSERT INTO enum_error VALUES(  1001 , 'Command completed successfully; action pending',  'P¯Ìkaz ˙spÏπnÏ proveden; vykon·nÌ akce odloæeno');
+INSERT INTO enum_error VALUES(  1000 , 'Command completed successfully',    'P≈ô√≠kaz √∫spƒõ≈°nƒõ proveden');
+INSERT INTO enum_error VALUES(  1001 , 'Command completed successfully; action pending',  'P≈ô√≠kaz √∫spƒõ≈°nƒõ proveden; vykon√°n√≠ akce odlo≈æeno');
 
-INSERT INTO enum_error VALUES(  1300 , 'Command completed successfully; no messages',    'P¯Ìkaz ˙spÏπnÏ proveden; æ·dnÈ novÈ zpr·vy');
-INSERT INTO enum_error VALUES(  1301 , 'Command completed successfully; ack to dequeue',    'P¯Ìkaz ˙spÏπnÏ proveden; potvrÔ za ˙Ëelem vy¯azenÌ z fronty');
-INSERT INTO enum_error VALUES(  1500 , 'Command completed successfully; ending session',    'P¯Ìkaz ˙spÏπnÏ proveden; konec relace');
-
-
-INSERT INTO enum_error VALUES(  2000 ,    'Unknown command',    'Nezn·m˝ p¯Ìkaz');
-INSERT INTO enum_error VALUES(  2001 ,    'Command syntax error',    'Chybn· syntaxe p¯Ìkazu');
-INSERT INTO enum_error VALUES(  2002 ,    'Command use error',     'ChybnÈ pouæitÌ p¯Ìkazu');
-INSERT INTO enum_error VALUES(  2003 ,    'Required parameter missing',    'Poæadovan˝ parametr neuveden');
-INSERT INTO enum_error VALUES(  2004 ,    'Parameter value range error',    'Chybn˝ rozsah parametru');
-INSERT INTO enum_error VALUES(  2005 ,    'Parameter value syntax error',    'Chybn· syntaxe hodnoty parametru');
+INSERT INTO enum_error VALUES(  1300 , 'Command completed successfully; no messages',    'P≈ô√≠kaz √∫spƒõ≈°nƒõ proveden; ≈æ√°dn√© nov√© zpr√°vy');
+INSERT INTO enum_error VALUES(  1301 , 'Command completed successfully; ack to dequeue',    'P≈ô√≠kaz √∫spƒõ≈°nƒõ proveden; potvrƒè za √∫ƒçelem vy≈ôazen√≠ z fronty');
+INSERT INTO enum_error VALUES(  1500 , 'Command completed successfully; ending session',    'P≈ô√≠kaz √∫spƒõ≈°nƒõ proveden; konec relace');
 
 
-INSERT INTO enum_error VALUES( 2100 ,   'Unimplemented protocol version',    'Neimplementovan· verze protokolu');
-INSERT INTO enum_error VALUES( 2101 ,   'Unimplemented command',     'Neimplementovan˝ p¯Ìkaz');
-INSERT INTO enum_error VALUES( 2102 ,   'Unimplemented option',    'Neimplementovan· volba');
-INSERT INTO enum_error VALUES( 2103 ,   'Unimplemented extension',    'NeimplementovanÈ rozπÌ¯enÌ');
-INSERT INTO enum_error VALUES( 2104 ,   'Billing failure',     '⁄ËetnÌ selh·nÌ');
-INSERT INTO enum_error VALUES( 2105 ,   'Object is not eligible for renewal',     'Objekt je nezp˘sobil˝ pro obnovenÌ');
-INSERT INTO enum_error VALUES( 2106 ,   'Object is not eligible for transfer',    'Objekt je nezp˘sobil˝ pro transfer');
+INSERT INTO enum_error VALUES(  2000 ,    'Unknown command',    'Nezn√°m√Ω p≈ô√≠kaz');
+INSERT INTO enum_error VALUES(  2001 ,    'Command syntax error',    'Chybn√° syntaxe p≈ô√≠kazu');
+INSERT INTO enum_error VALUES(  2002 ,    'Command use error',     'Chybn√© pou≈æit√≠ p≈ô√≠kazu');
+INSERT INTO enum_error VALUES(  2003 ,    'Required parameter missing',    'Po≈æadovan√Ω parametr neuveden');
+INSERT INTO enum_error VALUES(  2004 ,    'Parameter value range error',    'Chybn√Ω rozsah parametru');
+INSERT INTO enum_error VALUES(  2005 ,    'Parameter value syntax error',    'Chybn√° syntaxe hodnoty parametru');
 
 
-INSERT INTO enum_error VALUES( 2200 ,    'Authentication error',    'Chyba ovÏ¯enÌ identity');
-INSERT INTO enum_error VALUES( 2201 ,    'Authorization error',     'Chyba opr·vnÏnÌ');
-INSERT INTO enum_error VALUES( 2202 ,    'Invalid authorization information',    'Chybn· autorizaËnÌ informace');
+INSERT INTO enum_error VALUES( 2100 ,   'Unimplemented protocol version',    'Neimplementovan√° verze protokolu');
+INSERT INTO enum_error VALUES( 2101 ,   'Unimplemented command',     'Neimplementovan√Ω p≈ô√≠kaz');
+INSERT INTO enum_error VALUES( 2102 ,   'Unimplemented option',    'Neimplementovan√° volba');
+INSERT INTO enum_error VALUES( 2103 ,   'Unimplemented extension',    'Neimplementovan√© roz≈°√≠≈ôen√≠');
+INSERT INTO enum_error VALUES( 2104 ,   'Billing failure',     '√öƒçetn√≠ selh√°n√≠');
+INSERT INTO enum_error VALUES( 2105 ,   'Object is not eligible for renewal',     'Objekt je nezp≈Øsobil√Ω pro obnoven√≠');
+INSERT INTO enum_error VALUES( 2106 ,   'Object is not eligible for transfer',    'Objekt je nezp≈Øsobil√Ω pro transfer');
 
-INSERT INTO enum_error VALUES( 2300 ,    'Object pending transfer',    'Objekt Ëek· na transfer');
-INSERT INTO enum_error VALUES( 2301 ,    'Object not pending transfer',    'Objekt neËek· na transfer');
+
+INSERT INTO enum_error VALUES( 2200 ,    'Authentication error',    'Chyba ovƒõ≈ôen√≠ identity');
+INSERT INTO enum_error VALUES( 2201 ,    'Authorization error',     'Chyba opr√°vnƒõn√≠');
+INSERT INTO enum_error VALUES( 2202 ,    'Invalid authorization information',    'Chybn√° autorizaƒçn√≠ informace');
+
+INSERT INTO enum_error VALUES( 2300 ,    'Object pending transfer',    'Objekt ƒçek√° na transfer');
+INSERT INTO enum_error VALUES( 2301 ,    'Object not pending transfer',    'Objekt neƒçek√° na transfer');
 INSERT INTO enum_error VALUES( 2302 ,    'Object exists',    'Objekt existuje');
 INSERT INTO enum_error VALUES( 2303 ,    'Object does not exist',    'Objekt neexistuje');
 INSERT INTO enum_error VALUES( 2304 ,    'Object status prohibits operation',    'Status objektu nedovoluje operaci');
 INSERT INTO enum_error VALUES( 2305 ,    'Object association prohibits operation',    'Asociace objektu nedovoluje operaci');
-INSERT INTO enum_error VALUES( 2306 ,    'Parameter value policy error',    'Chyba z·sady pro hodnotu parametru');
-INSERT INTO enum_error VALUES( 2307 ,    'Unimplemented object service',    'Neimplementovan· sluæba objektu');
-INSERT INTO enum_error VALUES( 2308 ,    'Data management policy violation',    'PoruπenÌ z·sady pro spr·vu dat');
+INSERT INTO enum_error VALUES( 2306 ,    'Parameter value policy error',    'Chyba z√°sady pro hodnotu parametru');
+INSERT INTO enum_error VALUES( 2307 ,    'Unimplemented object service',    'Neimplementovan√° slu≈æba objektu');
+INSERT INTO enum_error VALUES( 2308 ,    'Data management policy violation',    'Poru≈°en√≠ z√°sady pro spr√°vu dat');
 
-INSERT INTO enum_error VALUES( 2400 ,    'Command failed',    'P¯Ìkaz selhal');
-INSERT INTO enum_error VALUES( 2500 ,    'Command failed; server closing connection',    'P¯Ìkaz selhal; server uzavÌr· spojenÌ');
-INSERT INTO enum_error VALUES( 2501 ,    'Authentication error; server closing connection',    'Chyba ovÏ¯enÌ identity; server uzavÌr· spojenÌ');
-INSERT INTO enum_error VALUES( 2502 ,    'Session limit exceeded; server closing connection',    'Limit na poËet relacÌ p¯ekroËen; server uzavÌr· spojenÌ');
+INSERT INTO enum_error VALUES( 2400 ,    'Command failed',    'P≈ô√≠kaz selhal');
+INSERT INTO enum_error VALUES( 2500 ,    'Command failed; server closing connection',    'P≈ô√≠kaz selhal; server uzav√≠r√° spojen√≠');
+INSERT INTO enum_error VALUES( 2501 ,    'Authentication error; server closing connection',    'Chyba ovƒõ≈ôen√≠ identity; server uzav√≠r√° spojen√≠');
+INSERT INTO enum_error VALUES( 2502 ,    'Session limit exceeded; server closing connection',    'Limit na poƒçet relac√≠ p≈ôekroƒçen; server uzav√≠r√° spojen√≠');
 
 
 

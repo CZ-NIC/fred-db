@@ -1,8 +1,5 @@
--- kodovani
-\encoding       LATIN2
-
 -- ciselnik chybovych hlaseni reason
-DROP TABLE enum_bank_code  CASCADE;
+-- DROP TABLE enum_bank_code  CASCADE;
 CREATE TABLE enum_bank_code (
         code char(4) PRIMARY KEY,
         name_short varchar(4) UNIQUE NOT NULL , -- zkratka
@@ -11,31 +8,31 @@ CREATE TABLE enum_bank_code (
 
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'ABN AMRO BANK N.V.' , 'AMRO'  , '5400' );
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'HVB CZECH REPUBLIC, A. S.' , 'HVB' ,'2700' );
-INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'BNP-DRESDNER BANK (»R) A.S.' , 'BNP' , '4000' ); 
+INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'BNP-DRESDNER BANK (ƒåR) A.S.' , 'BNP' , '4000' ); 
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'CITIBANK A.S.' , 'CITI' ,	'2600' );
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'COMMERZBANK AG' , 'COMM'	, '6200'  );
-INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( '»ESK¡ SPOÿITELNA A.S.' , 'CS' ,	'0800'  );
-INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( '»ESKOMOR. HYPOT…»NÕ BANKA A.S.' ,  'CMHB' 	,'2100');
-INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( '»ESKOMORAVSK¡ STAVEBNÕ SPOÿITELNA' , 'CMSS' 	,'7960');
-INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( '»ESKOSLOVENSK¡ OBCHODNÕ BANKA A.S.' , 'CSOB' 	,'0300' );
+INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'ƒåESK√Å SPO≈òITELNA A.S.' , 'CS' ,	'0800'  );
+INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'ƒåESKOMOR. HYPOT√âƒåN√ç BANKA A.S.' ,  'CMHB' 	,'2100');
+INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'ƒåESKOMORAVSK√Å STAVEBN√ç SPO≈òITELNA' , 'CMSS' 	,'7960');
+INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'ƒåESKOSLOVENSK√Å OBCHODN√ç BANKA A.S.' , 'CSOB' 	,'0300' );
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'DEUTSCHE BANK A.G.', 'DB'  ,	'7910');
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'EBANKA', 'EB' , '2400' );
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'GE CAPITAL BANK, A. S.' , 'GE' , '0600');
-INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'HYPO STAVEBNÕ SPOÿITELNA' , 'HYPO' ,	'8070');
+INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'HYPO STAVEBN√ç SPO≈òITELNA' , 'HYPO' ,	'8070');
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'IC BANKA A.S.'  , 'IC' , '6100');
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'ING BANK N. V.' , 'ING' ,	'3500');
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'INTERBANKA A.S.'  , 'INTB' ,  '2500' ); 
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'J & T BANKA, A. S.' , 'J&T' , 	'5800');
-INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'KOMER»NÕ BANKA A.S.' , 'KB' ,	'0100');
-INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'KONSOLIDA»NÕ BANKA PRAHA' ,  'KONS'	,'3300');
-INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'PLZE“SK¡ BANKA A.S.' , 'PILS' 	, '4600');
+INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'KOMERƒåN√ç BANKA A.S.' , 'KB' ,	'0100');
+INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'KONSOLIDAƒåN√ç BANKA PRAHA' ,  'KONS'	,'3300');
+INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'PLZE≈áSK√Å BANKA A.S.' , 'PILS' 	, '4600');
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'PPF BANKA A.S.' , 'PPF' 	,'6000');
-INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'RAIFFEISEN STAVEBNÕ SPOÿITELNA, A. S.' , 'RFSS', 	'7950');
+INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'RAIFFEISEN STAVEBN√ç SPO≈òITELNA, A. S.' , 'RFSS', 	'7950');
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'RAIFFEISENBANK A.S.' , 'RF' ,	 '5500' );
-INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'STAVEBNÕ SPOÿITELNA »ESK… SPOÿITELNY, A. S.'  , 'SSCS', 	'8060' );
+INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'STAVEBN√ç SPO≈òITELNA ƒåESK√â SPO≈òITELNY, A. S.'  , 'SSCS', 	'8060' );
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'UNION BANKA A.S.' , 'UB' ,	'3400' );
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'VOLKSBANK CZ, A. S.' , 'VB' 	,'6800');
-INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'V©EOB.⁄VÃR.BANKA POB. PRAHA' , 'VUB'	,'6700');
-INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'V©EOBECN¡ STAV.SPOÿITELNA' , 'VSS' ,	'7990' );
-INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'WUSTENROT STAVEBNÕ SPOÿITELNA' , 'WS'  , 	'7970');
-INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'ÆIVNOSTENSK¡ BANKA A.S.' , 'ZB' , 	'0400');
+INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'V≈†EOB.√öVƒöR.BANKA POB. PRAHA' , 'VUB'	,'6700');
+INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'V≈†EOBECN√Å STAV.SPO≈òITELNA' , 'VSS' ,	'7990' );
+INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'WUSTENROT STAVEBN√ç SPO≈òITELNA' , 'WS'  , 	'7970');
+INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( '≈ΩIVNOSTENSK√Å BANKA A.S.' , 'ZB' , 	'0400');
