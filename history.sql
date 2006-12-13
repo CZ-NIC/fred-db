@@ -2,41 +2,20 @@
 
 CREATE TABLE OBJECT_history (
         historyID INTEGER PRIMARY KEY REFERENCES History, -- odkaz do historie
-        ID INTEGER  NOT NULL,
-        type smallint , -- typ onjektu 1 kontakt 2 nsset 3 domena
-        NAME varchar(255) NOT NULL , -- handle ci FQDN
-        ROID varchar(64)  NOT NULL,
+        ID INTEGER  REFERENCES object_registry (id),
         ClID INTEGER NOT NULL REFERENCES Registrar,
-        CrID INTEGER NOT NULL REFERENCES Registrar,
         UpID INTEGER REFERENCES Registrar,
-        CrDate timestamp NOT NULL,
         Trdate timestamp,
         UpDate timestamp,
         AuthInfoPw varchar(300)
         );
 
--- pro smazane objekty          
-CREATE TABLE OBJECT_delete (        
-        ID INTEGER PRIMARY KEY, -- jednoznacne ID objektu z object.id 
-        historyID INTEGER  REFERENCES History, -- odkaz do historie na posledni zaznam
-        DelTime timestamp NOT NULL default now(), -- aktualni datum a cas smazani objektu 
-        NAME varchar(255) NOT NULL  -- handle ci FQDN
-        );
 
   
 -- DROP TABLE Contact_History CASCADE;
 CREATE TABLE Contact_History (
         HISTORYID INTEGER PRIMARY  KEY REFERENCES History,
-        ID INTEGER   NOT NULL,
---        Handle varchar(255)  NOT NULL,
---        ROID varchar(255)  NOT NULL,
---REMOVE        Status smallint[], -- TODO: create trigger to check values agains enum_status
---        ClID INTEGER NOT NULL REFERENCES Registrar,
---        CrID INTEGER NOT NULL REFERENCES Registrar,
---        CrDate timestamp NOT NULL, -- DEFAULT now(),
---        UpID INTEGER REFERENCES Registrar,
---        UpDate timestamp,
---        TrDate timestamp,
+        ID INTEGER  REFERENCES object_registry (id),
         Name varchar(1024),
         Organization varchar(1024),
         Street1 varchar(1024),
@@ -55,32 +34,20 @@ CREATE TABLE Contact_History (
         DiscloseTelephone boolean DEFAULT False,
         DiscloseFax boolean DEFAULT False,
         DiscloseEmail boolean DEFAULT False,
---        AuthInfoPw varchar(32),
         NotifyEmail varchar(1024),
         VAT varchar(32),
         SSN varchar(32),
         SSNtype integer REFERENCES enum_ssntype
 );
 
-CREATE INDEX contact_history_historyid_idx ON Contact_History (historyID);
 
 
 -- DROP TABLE Domain_History CASCADE;
 CREATE TABLE Domain_History (
         HISTORYID INTEGER PRIMARY KEY REFERENCES History,          
         Zone INTEGER REFERENCES Zone (ID),
-        ID INTEGER  NOT NULL,
---        ROID varchar(255)  NOT NULL,
---        FQDN varchar(255)  NOT NULL,
--- REMOVE        Status smallint[], -- TODO: create trigger to check values agains enum_status
---        ClID INTEGER NOT NULL REFERENCES Registrar,
---        CrID INTEGER NOT NULL REFERENCES Registrar,
---        CrDate timestamp NOT NULL,
---        UpID INTEGER REFERENCES Registrar,
+        ID INTEGER   REFERENCES object_registry (id),
         ExDate timestamp NOT NULL,
---        TrDate timestamp,
---        AuthInfoPw varchar(32),
---        UpDate timestamp,
         Registrant INTEGER , -- zrusena reference
         NSSet INTEGER  -- zruseny reference
         );
@@ -89,26 +56,15 @@ CREATE INDEX domain_History_historyid_idx ON Domain_History (historyID);
 -- DROP TABLE domain_contact_map_history CASCADE;
 CREATE TABLE domain_contact_map_history  (
         historyID INTEGER REFERENCES History,       
-        DomainID INTEGER, --REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
-        ContactID INTEGER --REFERENCES Contact ON UPDATE CASCADE NOT NULL,
-       -- UNIQUE (DomainID, ContactID)
+        DomainID INTEGER  REFERENCES object_registry (id),
+        ContactID INTEGER REFERENCES object_registry (id)
+-- TODO         ContactHistoryID INTEGER REFERENCES  History(id) --  Contact ve stavu jakem byl pri zmene 
         );
--- CREATE INDEX domain_contact_map_domainid_idx ON domain_contact_map (DomainID);
 
 -- DROP TABLE NSSet_history  CASCADE;
 CREATE TABLE NSSet_history  (
         historyID INTEGER PRIMARY KEY REFERENCES History, -- pouze jeden nsset 
-        ID INTEGER  NOT NULL,
---        ROID varchar(255)  NOT NULL,
---        Handle varchar(255)  NOT NULL,
--- REMOVE        Status smallint[], -- TODO: create trigger to check values agains enum_status
---        ClID INTEGER NOT NULL REFERENCES Registrar,
---        CrID INTEGER NOT NULL REFERENCES Registrar,
---        CrDate timestamp NOT NULL,
---        UpID INTEGER REFERENCES Registrar, 
---        AuthInfoPw varchar(32),
---        Trdate timestamp,
---        UpDate timestamp,
+        ID INTEGER  REFERENCES object_registry (id),
         checklevel smallint default 0 -- dopsan check level
         );
 CREATE INDEX nsset_history_historyid_idx ON NSSet_History (historyID);
@@ -116,8 +72,9 @@ CREATE INDEX nsset_history_historyid_idx ON NSSet_History (historyID);
 -- DROP TABLE nsset_contact_map_history  CASCADE;
 CREATE TABLE nsset_contact_map_history (
         historyID INTEGER  REFERENCES History,
-        NSSetID INTEGER, -- REFERENCES NSSet ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
-        ContactID INTEGER -- REFERENCES Contact ON UPDATE CASCADE NOT NULL,
+        NSSetID INTEGER REFERENCES object_registry (id), 
+        ContactID INTEGER REFERENCES object_registry (id)
+-- TODO   ContactHistoryID 
         -- UNIQUE (NSSetID, ContactID)
         );
 
@@ -125,7 +82,7 @@ CREATE TABLE nsset_contact_map_history (
 CREATE TABLE Host_history  (
         historyID INTEGER  REFERENCES History,  -- muze byt vice hostu takze to neni primary key
         ID  INTEGER  NOT NULL,
-        NSSetID INTEGER NOT NULL, -- REFERENCES NSSet ON UPDATE CASCADE,
+        NSSetID INTEGER REFERENCES object_registry (id), -- REFERENCES NSSet ON UPDATE CASCADE,
         FQDN VARCHAR(255)  NOT NULL
         );
 -- nahrazeno
@@ -133,18 +90,16 @@ CREATE TABLE Host_history  (
 CREATE TABLE host_ipaddr_map_history (
 	historyID INTEGER  REFERENCES History,
 	HostID  INTEGER NOT NULL,
-	NSSetID INTEGER NOT NULL,
+	NSSetID INTEGER REFERENCES object_registry (id),
 	IpAddr INET NOT NULL
 	);
 
 
-CREATE INDEX host_history_historyid_idx ON HOST_History (historyID);
 
 -- DROP TABLE ENUMVal_history  CASCADE;
 CREATE TABLE ENUMVal_history (
         historyID INTEGER PRIMARY KEY REFERENCES History, -- pouze jeden nsset 
-        DomainID INTEGER NOT NULL,
+        DomainID INTEGER REFERENCES object_registry (id),
         ExDate timestamp NOT NULL
         );
 
-CREATE INDEX ENUMVal_history_historyid_idx ON ENUMVal_History (historyID);

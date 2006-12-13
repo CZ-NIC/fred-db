@@ -1,15 +1,25 @@
 -- DROP TABLE  OBJECT  CASCADE;
 
+
+CREATE TABLE OBJECT_registry (
+       ID SERIAL PRIMARY KEY,
+       ROID varchar(255) UNIQUE NOT NULL , -- unikatni roid
+       type smallint , -- typ objektu 1 kontakt 2 nsset 3 domena
+       NAME varchar(255)  NOT NULL , -- handle ci FQDN
+       CrID INTEGER NOT NULL REFERENCES Registrar,
+       CrDate timestamp NOT NULL DEFAULT now(),
+       ErDate timestamp DEFAULT NULL, -- erase date 
+       CrhistoryID INTEGER  REFERENCES History, -- odkaz do historie vytvoreni
+       historyID integer REFERENCES history -- odkaz na posledni zmenu v historii                 
+       );
+
+-- index
+CREATE INDEX object_registry_name_idx ON Object_registry  (NAME);
+
 CREATE TABLE OBJECT (
-        ID SERIAL PRIMARY KEY,
-        historyID integer REFERENCES history, -- odkaz na posledni zmenu v historii
-        type smallint , -- typ objektu 1 kontakt 2 nsset 3 domena
-        NAME varchar(255) UNIQUE NOT NULL , -- handle ci FQDN
-        ROID varchar(64) UNIQUE NOT NULL,
+        ID SERIAL PRIMARY KEY  REFERENCES object_registry (id),
         ClID INTEGER NOT NULL REFERENCES Registrar,
-        CrID INTEGER NOT NULL REFERENCES Registrar,
         UpID INTEGER REFERENCES Registrar,
-        CrDate timestamp NOT NULL DEFAULT now(),
         TrDate timestamp DEFAULT NULL,
         UpDate timestamp DEFAULT NULL,
         AuthInfoPw varchar(300) -- dle Honzy v XML schematech
