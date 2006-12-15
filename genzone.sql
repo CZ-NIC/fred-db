@@ -57,17 +57,19 @@ INSERT INTO genzone_domain_status VALUES (5,'is not validated');
 
 -- History of generation of domain in zone file
 CREATE TABLE genzone_domain_history (
-        -- id of record
-	id SERIAL PRIMARY KEY, 
-        -- domain version, actual in time of record creation
-	domainid INTEGER REFERENCES domain_history (historyid), 
-        -- status of generation
-	status INTEGER REFERENCES genzone_domain_status (id), 
-        -- shortage for status=1
-	inzone boolean NOT NULL,
-        -- time of record creation
-	chdate timestamp NOT NULL DEFAULT now(), 
-        -- flag of actual record
-	last boolean NOT NULL DEFAULT True 
+    -- id of record
+    id SERIAL PRIMARY KEY,
+    -- domain  
+    domain_id INTEGER REFERENCES object_registry (id), 
+    -- domain version, actual in time of record creation
+    domain_hid INTEGER REFERENCES domain_history (historyid), 
+    -- status of generation
+    status INTEGER REFERENCES genzone_domain_status (id), 
+    -- shortage for status=1
+    inzone boolean NOT NULL,
+    -- time of record creation
+    chdate timestamp NOT NULL DEFAULT now(), 
+    -- flag of actual record
+    last boolean NOT NULL DEFAULT True 
 );
 
