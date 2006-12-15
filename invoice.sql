@@ -56,8 +56,8 @@ vat numeric(10,2) NOT NULL DEFAULT 0.0  -- odvedena dan
 -- tabulka pro odcerpany credit ze zalohovych faktur
 CREATE TABLE invoice_credit
 (
-Invoice_ID INTEGER REFERENCES Invoice (ID),  -- normalni ucetovaci faktura
-aInvoice_ID INTEGER REFERENCES Invoice (ID),  -- zalohova faktura ze ktere bylo cerpano
+InvoiceID INTEGER REFERENCES Invoice (ID),  -- normalni ucetovaci faktura
+aInvoiceID INTEGER REFERENCES Invoice (ID),  -- zalohova faktura ze ktere bylo cerpano
 Total numeric(10,2) NOT NULL default 0 -- kolik creditu odcerpano
 );
 
@@ -65,9 +65,11 @@ Total numeric(10,2) NOT NULL default 0 -- kolik creditu odcerpano
 CREATE TABLE invoice_object_registry
 (
 id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
-Invoice_ID INTEGER REFERENCES Invoice (ID), -- id uctovaci faktury po uzavreni
+InvoiceID INTEGER REFERENCES Invoice (ID), -- id uctovaci faktury po uzavreni
 CrDate timestamp NOT NULL DEFAULT now(),  -- datum a cas zuctovani
-object_ID integer  REFERENCES object_registry (id),
+objectID integer  REFERENCES object_registry (id),
+registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora 
+Zone INTEGER REFERENCES Zone (ID),
 action INTEGER NOT NULL REFERENCES enum_action, -- typ funkce z DomainCreate ci DomainRenew
 ExDate date NOT NULL , -- vysledny ExDate
 price numeric(10,2) NOT NULL default 0 -- cena za operaci
