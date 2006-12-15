@@ -11,14 +11,6 @@ Credit numeric(10,2) NOT NULL default 0 , -- celkova vyse kreditu (bez DPH) prev
 Total numeric(10,2) NOT NULL default 0 -- cerpano  ( pokud Credit == Total ) zalohova faktura je vycerpana
 );
 
--- tabulka pro cerpany credit po uzavereni ucetni faktury
-CREATE TABLE Credit_invoice_total_map
-(
-Invoice_ID INTEGER REFERENCES Invoice (ID),  -- normalni ucetovaci faktura
-aInvoice_ID INTEGER REFERENCES Invoice (ID),  -- zalohova faktura ze ktere bylo cerpano
-Total numeric(10,2) NOT NULL default 0 -- kolik creditu vycerpano
-);
-
 
      
 -- tabulka cen
