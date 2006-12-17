@@ -21,6 +21,7 @@ CREATE TABLE Registrar (
 
 -- DROP TABLE RegistrarACL CASCADE;
 CREATE TABLE RegistrarACL (
+        ID SERIAL PRIMARY KEY,
         RegistrarID INTEGER NOT NULL REFERENCES Registrar,
         Cert varchar(1024) NOT NULL, -- certificate fingerprint
         Password varchar(64) NOT NULL

@@ -1,16 +1,16 @@
 
 -- zrus tabulky
-drop table banking_invoice_varsym_map;
-drop table BANK_STATEMENT_ITEM;
-drop table BANK_STATEMENT_HEAD;
-drop table bank_account;
+-- drop table banking_invoice_varsym_map;
+-- drop table BANK_STATEMENT_ITEM;
+-- drop table BANK_STATEMENT_HEAD;
+-- drop table bank_account;
 
 -- ciselnik bank
-CREATE TABLE enum_bank_code (
-code char(4) PRIMARY KEY,
-name_short varchar(4) UNIQUE NOT NULL , -- zkratka
-name_full varchar(64) UNIQUE  NOT NULL -- uplny nazev
-);
+-- CREATE TABLE enum_bank_code (
+-- code char(4) PRIMARY KEY,
+-- name_short varchar(4) UNIQUE NOT NULL , -- zkratka
+-- name_full varchar(64) UNIQUE  NOT NULL -- uplny nazev
+-- );
 
                                    
 -- ACCOUNT -- tabulka nasich uctu
@@ -69,7 +69,7 @@ CREATE TABLE banking_invoice_varsym_map
 Zone INTEGER REFERENCES Zone (ID), -- pro jakou zony  se ma zpracovavat
 account_number char(16)  NOT NULL , -- cislo uctu ze ktereho by mela platba prijit
 bank_code char(4)  REFERENCES enum_bank_code,   -- kod banky
-varsymb  char(10) UNIQUE NOT NULL , -- parovaci variabilni symbol
+varsymb  char(10) PRIMARY KEY , -- parovaci variabilni symbol
 registarID INTEGER NOT NULL REFERENCES Registrar -- registrator
 );
 

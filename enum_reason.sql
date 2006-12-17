@@ -1,5 +1,5 @@
 -- ciselnik chybovych hlaseni reason
-DROP TABLE enum_reason  CASCADE;
+-- DROP TABLE enum_reason  CASCADE;
 CREATE TABLE enum_reason (
         id SERIAL PRIMARY KEY,
         reason varchar(128) UNIQUE NOT NULL,

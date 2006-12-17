@@ -57,8 +57,9 @@ CREATE INDEX domain_History_historyid_idx ON Domain_History (historyID);
 CREATE TABLE domain_contact_map_history  (
         historyID INTEGER REFERENCES History,       
         DomainID INTEGER  REFERENCES object_registry (id),
-        ContactID INTEGER REFERENCES object_registry (id)
+        ContactID INTEGER REFERENCES object_registry (id),
 -- TODO         ContactHistoryID INTEGER REFERENCES  History(id) --  Contact ve stavu jakem byl pri zmene 
+       PRIMARY KEY(historyID,DomainID,ContactID)
         );
 
 -- DROP TABLE NSSet_history  CASCADE;
@@ -73,9 +74,9 @@ CREATE INDEX nsset_history_historyid_idx ON NSSet_History (historyID);
 CREATE TABLE nsset_contact_map_history (
         historyID INTEGER  REFERENCES History,
         NSSetID INTEGER REFERENCES object_registry (id), 
-        ContactID INTEGER REFERENCES object_registry (id)
+        ContactID INTEGER REFERENCES object_registry (id),
 -- TODO   ContactHistoryID 
-        -- UNIQUE (NSSetID, ContactID)
+        PRIMARY KEY (historyID,NSSetID, ContactID)
         );
 
 -- DROP TABLE Host_history  CASCADE;
@@ -83,15 +84,18 @@ CREATE TABLE Host_history  (
         historyID INTEGER  REFERENCES History,  -- muze byt vice hostu takze to neni primary key
         ID  INTEGER  NOT NULL,
         NSSetID INTEGER REFERENCES object_registry (id), -- REFERENCES NSSet ON UPDATE CASCADE,
-        FQDN VARCHAR(255)  NOT NULL
+        FQDN VARCHAR(255)  NOT NULL,
+        PRIMARY KEY(historyID,ID)
         );
 -- nahrazeno
 
 CREATE TABLE host_ipaddr_map_history (
 	historyID INTEGER  REFERENCES History,
+        ID INTEGER NOT NULL,
 	HostID  INTEGER NOT NULL,
 	NSSetID INTEGER REFERENCES object_registry (id),
-	IpAddr INET NOT NULL
+	IpAddr INET NOT NULL,
+        PRIMARY KEY(historyID,ID)
 	);
 
 

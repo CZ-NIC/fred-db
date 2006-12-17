@@ -30,7 +30,7 @@ cat mail_templates.sql
 cat authinfo.sql
 # banking
 cat enum_bank_code.sql
-cat bank.sql
 cat invoice.sql
+cat bank.sql
 cat credit.sql
 

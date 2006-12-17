@@ -1,10 +1,10 @@
 -- ciselnik chybovych hlaseni reason
 -- DROP TABLE enum_bank_code  CASCADE;
 CREATE TABLE enum_bank_code (
-        code char(4) PRIMARY KEY,
-        name_short varchar(4) UNIQUE NOT NULL , -- zkratka
-        name_full varchar(64) UNIQUE  NOT NULL -- uplny nazev
-        );
+      code char(4) PRIMARY KEY,
+      name_short varchar(4) UNIQUE NOT NULL , -- zkratka
+      name_full varchar(64) UNIQUE  NOT NULL -- uplny nazev
+);
 
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'ABN AMRO BANK N.V.' , 'AMRO'  , '5400' );
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'HVB CZECH REPUBLIC, A. S.' , 'HVB' ,'2700' );

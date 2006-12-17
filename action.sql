@@ -77,5 +77,5 @@ CREATE TABLE History (
         );
 
 -- DROP TABLE  action_xml CASCADE;
-CREATE TABLE action_xml( actionID INTEGER NOT NULL REFERENCES action, xml text not NULL  , xml_out text );
+CREATE TABLE action_xml( actionID INTEGER PRIMARY KEY REFERENCES action, xml text not NULL  , xml_out text );
 

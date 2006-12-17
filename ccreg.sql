@@ -27,7 +27,6 @@ CREATE TABLE OBJECT (
 
 -- indexy
 CREATE INDEX object_id_idx ON Object (ID);
-CREATE INDEX object_name_idx ON Object (NAME);
 
 
 -- DROP TABLE Contact CASCADE;
@@ -105,7 +104,7 @@ CREATE INDEX nsset_id_idx ON NSSet (ID);
 CREATE TABLE nsset_contact_map (
         NSSetID INTEGER REFERENCES NSSet ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
         ContactID INTEGER REFERENCES Contact ON UPDATE CASCADE NOT NULL,
-        UNIQUE (NSSetID, ContactID)
+        PRIMARY KEY (NSSetID, ContactID)
         );
 CREATE INDEX nsset_contact_map_nssetid_idx ON nsset_contact_map (NSSetID);
 
@@ -131,6 +130,7 @@ CREATE INDEX host_fqdn_idx ON Host (FQDN);
 
 -- DROP TABLE  host_ipaddr_map  CASCADE;
 CREATE TABLE host_ipaddr_map (
+           ID SERIAL PRIMARY KEY,
            HostID  INTEGER NOT NULL REFERENCES HOST ON UPDATE CASCADE ON DELETE CASCADE,
            NSSetID INTEGER NOT NULL REFERENCES NSSET ON UPDATE CASCADE ON DELETE CASCADE, 
            IpAddr INET NOT NULL -- ip adresa
@@ -163,7 +163,7 @@ CREATE INDEX domain_id_idx ON Domain (ID);
 CREATE TABLE domain_contact_map (
         DomainID INTEGER REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
         ContactID INTEGER REFERENCES Contact ON UPDATE CASCADE NOT NULL,
-        UNIQUE (DomainID, ContactID)
+        PRIMARY KEY (DomainID, ContactID)
         );
 CREATE INDEX domain_contact_map_domainid_idx ON domain_contact_map (DomainID);
 
@@ -178,7 +178,7 @@ CREATE INDEX domain_contact_map_domainid_idx ON domain_contact_map (DomainID);
 
 -- DROP TABLE DNSSEC CASCADE;
 CREATE TABLE DNSSEC (
-        DomainID INTEGER NOT NULL REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE,
+        DomainID INTEGER PRIMARY KEY REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE,
         KeyTag varchar(255) NOT NULL,
         Alg smallint NOT NULL CHECK (Alg >= 0 AND Alg <= 255),
         DigestType smallint NOT NULL,

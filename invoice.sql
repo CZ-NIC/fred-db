@@ -1,7 +1,7 @@
 
 -- smaz tabulky
-drop table invoice;
-drop table invoice_prefix;
+-- drop table invoice;
+-- drop table invoice_prefix;
 
 CREATE TABLE invoice_prefix
 (
@@ -56,6 +56,7 @@ vat numeric(10,2) NOT NULL DEFAULT 0.0  -- odvedena dan
 -- tabulka pro odcerpany credit ze zalohovych faktur
 CREATE TABLE invoice_credit
 (
+ID serial PRIMARY KEY,
 InvoiceID INTEGER REFERENCES Invoice (ID),  -- normalni ucetovaci faktura
 aInvoiceID INTEGER REFERENCES Invoice (ID),  -- zalohova faktura ze ktere bylo cerpano
 Total numeric(10,2) NOT NULL default 0 -- kolik creditu odcerpano
