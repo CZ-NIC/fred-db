@@ -32,4 +32,5 @@ cat enum_bank_code.sql
 cat invoice.sql
 cat bank.sql
 cat credit.sql
-
+#tech-check
+cat techcheck.sql
