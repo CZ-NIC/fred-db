@@ -8,9 +8,8 @@ cat enum_ssntype.sql
 cat enum_country.sql
 cat enum_cs_country.sql
 cat zone.sql
-#registar & registraracl (pass) tables
+#registar and registraracl  tables
 cat registrar.sql
-cat registraracl.sql
 #login and action table plus history table
 cat login.sql
 cat action.sql

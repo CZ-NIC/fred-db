@@ -28,7 +28,7 @@ CREATE TABLE RegistrarACL (
         );
 
 
-DELETE FROM Registrar;
+-- DELETE FROM Registrar;
 INSERT INTO Registrar ( id,zone, handle , organization , name , url ) VALUES( 100,   '{1 }' , 'REG-GENERAL-REGISTRY' ,  'GENERAL REGISTRY, s.r.o.' ,     'DomainMaster',   'www.domainmaster.cz');
 INSERT INTO Registrar ( id,zone,  handle ,organization , name , url ) VALUES( 300 ,   '{1 }' , 'REG-ACTIVE24'  ,'ACTIVE 24, s. r. o.' ,    'DOMENY.CZ' , 'www.domeny.cz');
 INSERT INTO Registrar ( id, zone, handle , organization , name , url ) VALUES( 400 ,  '{1 }' ,'REG-HAVEL'  ,'ha-vel internet s.r.o.' ,       'ha-vel' , 'domeny.ha-vel.cz');
@@ -45,4 +45,11 @@ INSERT INTO Registrar ( id,zone, handle , organization , name , url ) VALUES( 15
 INSERT INTO Registrar ( id,zone, handle , organization , name , url ) VALUES( 160 , '{1 }' ,'REG-IPEX'  , 'IPEX a.s.'              ,       'IPEX'        ,    'www.ipex.cz');
 INSERT INTO Registrar ( id, zone, handle ,organization , name , url ) VALUES( 170 , '{1 }' , 'REG-SKYNET',   'SkyNet, a.s.'            ,      'SkyNet'    ,        'www.skynet.cz');
 INSERT INTO Registrar ( id, zone, handle ,organization , name , url ) VALUES( 1,  '{1 , 2 , 3 }' , 'REG-LRR',    'CZ.NIC, z.s.p.o.'          ,    'LRR'         ,      'www.lrr.cz');
+
+INSERT INTO Registrar ( id, zone, handle , name  ) VALUES( 2,  '{1 , 2 , 3 }' , 'REG-LRR2',    'LRR2'   );
+
+
+-- pro defualt prihlaseni
+INSERT INTO  RegistrarACL values ( 1 , 1 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' , '123456789' );
+INSERT INTO  RegistrarACL values ( 2 , 2 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' , '123456789' );
 
