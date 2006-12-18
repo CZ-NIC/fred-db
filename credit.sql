@@ -1,15 +1,3 @@
--- tabulka pro pricitani creditu za operace DomainCreate a DomainReNew
--- DROP TABLE Credit CASCADE;
-
--- tabulka pro cerpani kreditu ze zalohych faktur
-CREATE TABLE Credit_invoice_credit_map
-(
-Zone INTEGER REFERENCES Zone (ID), 
-registrarID integer NOT NULL REFERENCES Registrar, -- id registratora
-Invoice_ID INTEGER PRIMARY KEY REFERENCES Invoice (ID), -- zalohova faktura
-Credit numeric(10,2) NOT NULL default 0 , -- celkova vyse kreditu (bez DPH) prevedena ze zalohove faktury
-Total numeric(10,2) NOT NULL default 0 -- cerpano  ( pokud Credit == Total ) zalohova faktura je vycerpana
-);
 
 
      
