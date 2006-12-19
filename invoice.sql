@@ -76,13 +76,20 @@ vat numeric(10,2) NOT NULL DEFAULT 0.0  -- odvedena dan
 CREATE TABLE invoice_object_registry
 (
 id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
-InvoiceID INTEGER REFERENCES Invoice (ID), -- id zalohove faktiry ze ktere jde castka price
 FakturID INTEGER REFERENCES Invoice (ID) , -- id ostre faktury na ktere je polozka vedena
 CrDate timestamp NOT NULL DEFAULT now(),  -- datum a cas zuctovani
 objectID integer  REFERENCES object_registry (id),
 registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora 
 action INTEGER NOT NULL REFERENCES enum_action, -- typ funkce z DomainCreate ci DomainRenew
 ExDate date NOT NULL , -- vysledny ExDate
-price numeric(10,2) NOT NULL default 0 -- cena za operaci
+);
+
+
+CREATE TABLE invoice_object_registry_price_map
+(
+id INTEGER REFERENCES invoice_object_registry(ID),
+InvoiceID INTEGER REFERENCES Invoice (ID), -- id zalohove faktury
+price numeric(10,2) NOT NULL default 0 , -- cena za operaci
+UNIQUE (id ,  InvoiceID  ) -- unikatni klic
 );
 
