@@ -104,6 +104,6 @@ CREATE TABLE host_ipaddr_map_history (
 CREATE TABLE ENUMVal_history (
         historyID INTEGER PRIMARY KEY REFERENCES History, -- pouze jeden nsset 
         DomainID INTEGER REFERENCES object_registry (id),
-        ExDate timestamp NOT NULL
+        ExDate date NOT NULL
         );
 
