@@ -1,5 +1,4 @@
 -- ciselnik chybovych hlaseni reason
--- DROP TABLE enum_reason  CASCADE;
 CREATE TABLE enum_reason (
         id SERIAL PRIMARY KEY,
         reason varchar(128) UNIQUE NOT NULL,
@@ -9,70 +8,63 @@ CREATE TABLE enum_reason (
 
 INSERT INTO enum_reason VALUES(  1 ,  'bad format contact handle'   , 'neplatný formát ukazatele kontaktu' );
 INSERT INTO enum_reason VALUES(  2 ,  'bad format nsset handle' ,  'neplatný formát ukazatele nssettu' );
-INSERT INTO enum_reason VALUES(  3 ,  'bad format of fqdn domain'  , 'neplatný formát názvu domény' );
-INSERT INTO enum_reason VALUES(  4 ,  'not applicable domain'  , 'nepoužitelný název domény' );
+INSERT INTO enum_reason VALUES(  3 ,  'bad format of fqdn domain'  , 'neplatný formát  názevu domény' );
+
+INSERT INTO enum_reason VALUES(  4 ,  'Domain name not applicable.'  , 'nepoužitelný název domény' );
+
+-- pro check
+INSERT INTO enum_reason VALUES(  5 , 'invalid format'  , 'neplatný formát' );
+INSERT INTO enum_reason VALUES(  6 ,  'already registered.'   , 'již zaregistrováno' );
+INSERT INTO enum_reason VALUES(  7 , 'within protection peridod.' , 'je v ochrané lhůtě' );
 
 
-INSERT INTO enum_reason VALUES(  8 ,  'handle already registered'   , 'ukazatel je již zaregistrován' );
-INSERT INTO enum_reason VALUES(  9 ,  'handle not yet registred' ,  'ukazatel ještě není zaregistrován' );
-INSERT INTO enum_reason VALUES(  10 , 'invalid format of handle'  , 'neplatný formát ukazatele' );
-INSERT INTO enum_reason VALUES(  11 , 'handle in protected peridod' , 'ukazatel je v ochrané lhůtě' );
+INSERT INTO enum_reason VALUES( 8 , 'Invalid IP address.' , 'neplatná ip adresa'  );
+INSERT INTO enum_reason VALUES(  9 ,  'Invalid nameserver hostname.'  ,  'neplatný formát názvu jmeného servru DNS' );
+INSERT INTO enum_reason VALUES(  10 ,  'Duplicate nameserver address.' , 'duplicitní adresa jmeného servru DNS'  );
+INSERT INTO enum_reason VALUES(  11 ,  'Glue IP address not allowed here.'  , 'nepovolená  ip adresa glue záznamu' );
+INSERT INTO enum_reason VALUES(  12 ,  'At least two nameservers required.'  , 'minimálně dva DNS servry' );
 
 
+-- spatne zadana perioda pri domain renew
+INSERT INTO enum_reason VALUES(  13 , 'invalid date of period' ,  'neplatná hodnota periody' );
+INSERT INTO enum_reason VALUES( 14 , 'period exceedes maximal allowed validity time.' , 'perioda je nad maximalní dovolenou hodnotou' );
+INSERT INTO enum_reason VALUES( 15 , 'period is not aligned with allowed step.' , 'perioda neodpovída dovolenému intervalu' );
 
-INSERT INTO enum_reason VALUES( 98 , 'period is above maximal allowed value' , 'perioda je nad maximalní dovolenou hodnotou' );
-INSERT INTO enum_reason VALUES( 99 , 'period is not aligned with allowed step' , 'perioda neodpovída dovolenému intervalu' );
 
+-- country code neexistuje
+INSERT INTO enum_reason VALUES(  16 , 'Unknown country code'  , 'neznámý kód země' );
+
+-- nezmame msgID neexistuje
+INSERT INTO enum_reason VALUES(  17 , 'Unknown message ID' ,  'neznámé  msgID' );
+
+
+-- pro ENUMval	
+INSERT INTO enum_reason VALUES(  18 , 'Validation expiration date can not be used here.' ,  'datum vypršení platnosti  se nepoužívá'  );
+INSERT INTO enum_reason VALUES(  19 , 'Validation expiration date does not match registry data.' , 'datum vypršení platnosti je neplatné' );
+INSERT INTO enum_reason VALUES(  20 , 'Validation expiration date is required.' , 'datum vypršení platnosti je požadováno' );
+
+-- Update NSSET nelze odstranit ci pradat DNS jost ci vyradit tech kontakt min 1 tech
+INSERT INTO enum_reason VALUES(  21 , 'Can not remove nameserver.'  , 'nelze odstranit jmený server DNS' );
+INSERT INTO enum_reason VALUES(  22 , 'Can not add nameserver'  , 'nelze přidat jmený server DNS' );
+
+INSERT INTO enum_reason VALUES(  23 ,  'Can not remove  technical contact'  , 'nelze vymazat  technický kontakt'  );
+
+INSERT INTO enum_reason VALUES(  24 , 'Technical contact is already set to this nsset.'  , 'administrátorký kontakt je již přiřazen k  sadě jmených servrů' );
+INSERT INTO enum_reason VALUES(  25 , 'Technical contact is not set to this nsset.' ,  'administrátorký kontak není přiřazen k sadě jmených servrů'   );
+
+INSERT INTO enum_reason VALUES(  26 , 'Administrative contact is already set to this domain.'  , 'administrátorký kontakt je již přiřazen k doméně' );
+INSERT INTO enum_reason VALUES(  27 , 'Administravite contact is not set to this domain.' ,  'administrátorký kontak není přiřazen k doméně'   );
  
-INSERT INTO enum_reason VALUES( 100 , 'bad periody interval'  , 'neplatný interval prodloužení'  );
-INSERT INTO enum_reason VALUES( 101 , 'bad format of valExpDate' , 'neplatný formát expirace validace'  );
-INSERT INTO enum_reason VALUES( 102 , 'ip addres is not valid' , 'neplatná ip adresa'  );
-INSERT INTO enum_reason VALUES( 103 , 'can not add status flag' , 'nelze přidat stavový příznak'  );
-INSERT INTO enum_reason VALUES( 104 , 'can not remove status flag' , 'nelze odstranit stavový příznak' );
-INSERT INTO enum_reason VALUES( 105 ,  'expiry date is invalid' , 'nesouhlasí datum expirace' );
+-- pro domenu kdyz neexistuje vlastnik ci nsset
+INSERT INTO enum_reason VALUES( 28 ,  'handle of nsset does not exist.' , 'sada jmených servrů není vytvořena' );
+INSERT INTO enum_reason VALUES( 29 ,  'contact handle of registrant does not exist.' , 'ukazatel kontaktu vlastníka není vytvořen' );
 
-INSERT INTO enum_reason VALUES(  400 ,  'bad format of DNS host name'  ,  'neplatný formát  názvu  DNS servru' );
-INSERT INTO enum_reason VALUES(  401 ,  'duplicity DNS host address' , 'duplicitní adresa jmeného servru DNS'  );
-INSERT INTO enum_reason VALUES(  402 ,  'DNS host is not in table'  , 'DNS host není v tabulce' );
-INSERT INTO enum_reason VALUES(  403 ,  'DNS host name exist' , 'jmený server DNS už existuje' );
-INSERT INTO enum_reason VALUES(  404 ,  'minimal two dns host set one'  , 'minimálně dva DNS servry' );
-INSERT INTO enum_reason VALUES(  405 ,  'not any DNS host sets'  , 'nejsou nastaven žádné DNS servry' );
-INSERT INTO enum_reason VALUES(  406 ,  'not any tech contact sets'  , 'není  zadán žádný technický kontakt' );
-INSERT INTO enum_reason VALUES(  407 ,  'not glue ipaddr allowed'  , 'nepovolená  ip adresa' );
-INSERT INTO enum_reason VALUES(  408 ,  'can not remove tech contact to zero'  , 'nelze vymazat všechny technické kontakty'  );
-INSERT INTO enum_reason VALUES(  409 ,  'can not remove DNS host to zero'  ,  'nelze vymazat všechny DNS hosty' );
+-- pokud nelze pridat nebo odebrat dns host
+INSERT INTO enum_reason VALUES( 30 , 'Nameserver is already set to this nsset.' , 'jmený server DNS je již přiřazen v sadě jmených servrů' );
+INSERT INTO enum_reason VALUES( 31 , 'Nameserver is not set to this nsset.'  , 'jmený server DNS není přiřazen v sadě jmených servrů' );
 
-INSERT INTO enum_reason VALUES(  410 ,  'can not remove DNS host'  , 'nelze odstranit jmený server DNS' );
-INSERT INTO enum_reason VALUES(  411 , 'can not add DNS host'  , 'nelze přidat jmený server DNS' );
-
-INSERT INTO enum_reason VALUES(  501 , 'date of expirate validation is required' , 'datum vypršení platnosti je požadován' );
-INSERT INTO enum_reason VALUES(  502 , 'date of expirate validation is not valid' , 'datum vypršení platnosti je neplatné' );
-INSERT INTO enum_reason VALUES(  503 , 'date of expirate validation is not used' ,  'datum vypršení platnosti  se nepoužívá'  );
-
-INSERT INTO enum_reason VALUES(  901 , 'nsset handle exist not Avail'  , 'ukazatel nssetu existuje není dostupný' );
-INSERT INTO enum_reason VALUES(  902 , 'nsset handle not exist '  , 'ukazatel nssetu  neexistuje');
-INSERT INTO enum_reason VALUES(  903 , 'nsset handle in history'  , 'ukazatel nssetu je v ochrané lhůtě'  );
-
-INSERT INTO enum_reason VALUES(  911 , 'contact handle exist not Avail' , 'ukazatel  kontaktu existuje není dostupný'   );
-INSERT INTO enum_reason VALUES(  912 , 'contact handle not exist '  , 'ukazatel  kontaktu neexistuje'  );
-INSERT INTO enum_reason VALUES(  913 , 'contact handle in history' ,  'ukazatel  kontaktu  je v ochrané lhůtě'  );
-
-INSERT INTO enum_reason VALUES(  921 , 'fqdn of domain exist not Avail' , 'název domény  existuje není dostupná'   );
-INSERT INTO enum_reason VALUES(  922 , 'fqdn of domain not exist ' ,  'název domény neexistuje' );
-INSERT INTO enum_reason VALUES(  923 , 'fqdn of domain in history'  , 'název domény je v ochrané lhůtě'  );
+-- pro domain renew kdyz nesouhlasi zadany datum expirace
+INSERT INTO enum_reason VALUES( 32 ,  'Expiration date does not match registry data.' , 'nesouhlasí datum expirace' );
+ 
 
 
-INSERT INTO enum_reason VALUES(  1001 , 'admin contact exist in contact map'  , 'administrátorký kontakt je už zadán' );
-INSERT INTO enum_reason VALUES(  1003 , 'admin contact not exist in contact map' ,  'administrátorký kontak není zadán'   );
-
-INSERT INTO enum_reason VALUES(  1011 , 'tech contact exist in contact map'  , 'technický kontakt je už zadán');
-INSERT INTO enum_reason VALUES(  1013 , 'tech contact not exist in contact map' , 'technický kontakt není zadán'  );
-
-INSERT INTO enum_reason VALUES(  1100 , 'registrant not exist'  , 'vlastník neexistuje' );
-
-INSERT INTO enum_reason VALUES(  1101 , 'unknown registrant handle' ,  'neznámý ukazatel vlastníka' );
-INSERT INTO enum_reason VALUES(  1102 , 'unknown nsset handle'  , 'neznámý ukazatel nssettu');
-INSERT INTO enum_reason VALUES(  1103 , 'unknown admin contact' , 'neznámý administrátorký kontakt'  );
-INSERT INTO enum_reason VALUES(  1104 , 'unknown tech contact' , 'neznámý technický kontakt');
-INSERT INTO enum_reason VALUES(  1105 , 'unknown country code'  , 'neznámý kód země' );
-INSERT INTO enum_reason VALUES(  1106 , 'unknown msgID' ,  'neznámé  msgID' );
