@@ -1,8 +1,4 @@
 
--- smaz tabulky
--- drop table invoice;
--- drop table invoice_prefix;
-
 CREATE TABLE invoice_prefix
 (
 id serial NOT NULL PRIMARY KEY, 
@@ -27,46 +23,20 @@ CREATE TABLE invoice
 id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
 Zone INTEGER REFERENCES Zone (ID),
 CrDate timestamp NOT NULL DEFAULT now(),  -- datum a cas vytvoreni
+-- ZdDate date NOT NULL, -- datum zdanitelneho plneni 
+FromDate timestamp NOT NULL , -- datum zuctovaciho odobi od-do
+ToDate timestamp NOT NULL , -- do datumu
+payment integer default 1, -- typ platby 1 ( bankovnim prevodem )
 prefix varchar(24) UNIQUE NOT NULL , -- cislo  faktury z invoice_prefix.prefix a counter
 registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora
+-- TODO registrarhistoryID pro odkazy na spravne adresy ICO a DIC
 Credit numeric(10,2) NOT NULL DEFAULT 0.0, -- kredit ze ktereho se cerpa az do nuly 
 Price numeric(10,2) NOT NULL DEFAULT 0.0, -- vyse faktury i s dani
-numVAT integer  NOT NULL  DEFAULT 19, -- vyse dane 19%
+VAT integer  NOT NULL  DEFAULT 19, -- vyse dane 19%
 total numeric(10,2) NOT NULL DEFAULT 0.0,  -- castka bez dane
-vat numeric(10,2) NOT NULL DEFAULT 0.0  -- odvedena dan
+totalVAT numeric(10,2) NOT NULL DEFAULT 0.0  -- odvedena dan
 );
 
--- faktur faktury za  uctovane polozky
-CREATE TABLE faktur
-(
-id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
-Zone INTEGER REFERENCES Zone (ID),
-CrDate timestamp NOT NULL DEFAULT now(),  -- datum a cas vytvoreni
-FromDate date NOT NULL , -- datum zuctovaciho odobi od-do
-ToDate date NOT NULL , -- do datumu
-prefix varchar(24) UNIQUE NOT NULL , -- cislo  faktury z invoice_prefix.prefix a counter
-registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora
-Price numeric(10,2) NOT NULL DEFAULT 0.0, -- celkova castka
-numVAT integer  NOT NULL  DEFAULT 19, -- vyse dane 19%
-total numeric(10,2) NOT NULL DEFAULT 0.0,  -- castka bez dane
-vat numeric(10,2) NOT NULL DEFAULT 0.0  -- odvedena dan
-);
-
--- payment int NOT NULL DEFAULT 1,  -- typ platby 1 prevodem 2 hotove 3
--- TODO
--- nutno zkopirovat vsechny udaje o adrese z tabulky registar
---        Name varchar(128),
---        Organization varchar(128),
---        Street varchar(128),
---        City varchar(128),
---        PostalCode varchar(32),
---        Country char(2) REFERENCES enum_country,
---        Telephone varchar(32),
---        Fax varchar(32),
---        Email varchar(128),
--- specificke udaje
---ICO  varchar(32),
---DIC  varchar(32)
 
 
 -- TODO do normalnich uctovacich faktur udelat zucotvaci obdobi od kdy do kdy.
@@ -76,12 +46,12 @@ vat numeric(10,2) NOT NULL DEFAULT 0.0  -- odvedena dan
 CREATE TABLE invoice_object_registry
 (
 id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
-FakturID INTEGER REFERENCES Invoice (ID) , -- id ostre faktury na ktere je polozka vedena
+invoiceID INTEGER REFERENCES Invoice (ID) , -- id ostre faktury na ktere je polozka vedena
 CrDate timestamp NOT NULL DEFAULT now(),  -- datum a cas zuctovani
 objectID integer  REFERENCES object_registry (id),
 registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora 
-action INTEGER NOT NULL REFERENCES enum_action, -- typ funkce z DomainCreate ci DomainRenew
-ExDate date NOT NULL -- vysledny ExDate
+operation INTEGER NOT NULL REFERENCES enum_operation, -- typ operace registrace ci prodlouzeni
+ExDate date NOT NULL  -- vysledny ExDate
 );
 
 

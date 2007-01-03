@@ -1,34 +1,44 @@
 
+-- ciselnik zpoplatnenych operaci ( zatim dve pro domeny )
+-- DROP TABLE enum_operation CASCADE;
+CREATE TABLE enum_operation (
+        id SERIAL PRIMARY KEY,         
+        operation varchar(64) UNIQUE NOT NULL
+        );
+
+INSERT INTO enum_operation  VALUES( 1 , 'CreateDomain'); -- registracni poplatek
+INSERT INTO enum_operation  VALUES( 2 , 'RenewDomain'); -- udrzovaci poplatek
+
+-- tabulka platnosti DPH ( pro pripad ze se DPH bude v budoucnu menit ) a take aby bylo kde ulozeno
+CREATE TABLE price_vat
+(
+  id serial PRIMARY KEY, -- primarni klic
+  valid_to timestamp default NULL, -- datum kdy probehne zmena DPH    
+  VAT numeric default 19 -- vyse DPH 
+);
+
+INSERT INTO price_vat ( id , valid_to ,  VAT )  VALUES ( 1 , '2004-04-30 22:00:00' , 22 ); -- uvedeno v UTC CEST +2:00
+INSERT INTO price_vat ( id , valid_to , VAT )  VALUES ( 2 , NULL , 19 );
 
      
--- tabulka cen
-CREATE TABLE price
+-- cenik operaci
+CREATE TABLE price_list
 (
-  id serial NOT NULL, -- primarni klic
-  zone integer, -- odkaz na zonu pro kterou cenik plati pokud se jedna o domenu, pokud ne je to NULL
-  action integer NOT NULL, -- na jakou akci se cena vaze 
+  id serial PRIMARY KEY, -- primarni klic
+  zone integer not null  REFERENCES  zone , -- odkaz na zonu pro kterou cenik plati pokud se jedna o domenu, pokud ne je to NULL
+  operation integer NOT NULL REFERENCES  enum_operation, -- na jakou akci se cena vaze 
   valid_from timestamp NOT NULL, -- od kdy zaznam plati
   valid_to timestamp default NULL, -- do kdy zaznam plati, pokud je NULL, neni omezen
-  price numeric(10,2) NOT NULL, -- cena operace
-  period integer NOT NULL, -- za jednotku 
-  CONSTRAINT price_pkey PRIMARY KEY (id),
-  CONSTRAINT price_action_fkey FOREIGN KEY ("action")
-      REFERENCES "enum_action" (id) MATCH SIMPLE
-      ON UPDATE RESTRICT ON DELETE RESTRICT,
-  CONSTRAINT price_zone_fkey FOREIGN KEY ("zone")
-      REFERENCES "zone" (id) MATCH SIMPLE
-      ON UPDATE RESTRICT ON DELETE RESTRICT
+  price numeric(10,2) NOT NULL default 0, -- cena operace ( za rok 12 mesicu )
+  period integer default 12 -- pokud neni periodicka operace NULL
 );
 
 -- testovaci zaznamy
--- data za rok 2005
-INSERT INTO price ( zone , action ,   valid_from ,  valid_to ,  price ,  period ) values ( 3 , 504 , '01-01-2005' , '12-31-2005 23:59:59' , 0 , 12 );
-INSERT INTO price ( zone , action ,   valid_from ,  valid_to ,  price ,  period ) values ( 3 , 506 , '01-01-2005' , '12-31-2005 23:59:59' , 0 , 12 );
--- pro rok 2006
-INSERT INTO price ( zone , action ,   valid_from , valid_to , price ,  period ) values ( 3 , 504 , '01-01-2006' , '08-31-2006  23:59:59' ,  0 , 12 );
-INSERT INTO price ( zone , action ,   valid_from ,  price ,  period ) values ( 3 , 504 , '09-01-2006' ,  0 , 12 );
-INSERT INTO price ( zone , action ,   valid_from ,  price ,  period ) values ( 3 , 506 , '01-01-2006' ,  0 , 12 );
 -- ceny za enum domeny pouze DomainRenew 
-INSERT INTO price ( zone , action ,   valid_from ,  price ,  period ) values ( 1 , 506 , '01-01-2006' ,  0 , 12 );
-INSERT INTO price ( zone , action ,   valid_from ,  price ,  period ) values ( 2 , 506 , '01-01-2006' ,  0 , 12 );
+
+INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (1, 1 , 1 , '01-01-2007' ,  1 , 12 ); -- registrace
+INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (2, 1 , 2 , '01-01-2007' ,  50 , 12 ); -- prodlouzeni
+
+INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (3 , 3 , 1 , '01-01-2007' ,  -50 , 12 ); -- registrace ( 1 rok pouze 50 Kc )
+INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (4 , 3 , 2 , '01-01-2007' ,  100 , 12 ); -- prodlouzeni
 
