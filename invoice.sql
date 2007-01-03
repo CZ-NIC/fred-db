@@ -49,6 +49,7 @@ id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
 invoiceID INTEGER REFERENCES Invoice (ID) , -- id ostre faktury na ktere je polozka vedena
 CrDate timestamp NOT NULL DEFAULT now(),  -- datum a cas zuctovani
 objectID integer  REFERENCES object_registry (id),
+zone INTEGER REFERENCES Zone (ID),
 registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora 
 operation INTEGER NOT NULL REFERENCES enum_operation, -- typ operace registrace ci prodlouzeni
 ExDate date NOT NULL  -- vysledny ExDate
