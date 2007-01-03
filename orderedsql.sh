@@ -33,4 +33,4 @@ cat invoice.sql
 cat bank.sql
 cat credit.sql
 #tech-check
-cat techcheck.sql
+#cat techcheck.sql
