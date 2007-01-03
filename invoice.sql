@@ -24,8 +24,8 @@ id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
 Zone INTEGER REFERENCES Zone (ID),
 CrDate timestamp NOT NULL DEFAULT now(),  -- datum a cas vytvoreni
 -- ZdDate date NOT NULL, -- datum zdanitelneho plneni 
-FromDate timestamp NOT NULL , -- datum zuctovaciho odobi od-do
-ToDate timestamp NOT NULL , -- do datumu
+FromDate timestamp default NULL , -- datum zuctovaciho odobi od-do
+ToDate timestamp default NULL , -- do datumu
 payment integer default 1, -- typ platby 1 ( bankovnim prevodem )
 prefix varchar(24) UNIQUE NOT NULL , -- cislo  faktury z invoice_prefix.prefix a counter
 registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora
