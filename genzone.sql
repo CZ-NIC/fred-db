@@ -63,6 +63,8 @@ CREATE TABLE genzone_domain_history (
     domain_id INTEGER REFERENCES object_registry (id), 
     -- domain version, actual in time of record creation
     domain_hid INTEGER REFERENCES domain_history (historyid), 
+    -- zone identifier of domain
+    zone_id INTEGER REFERENCES zone (id),
     -- status of generation
     status INTEGER REFERENCES genzone_domain_status (id), 
     -- shortage for status=1
