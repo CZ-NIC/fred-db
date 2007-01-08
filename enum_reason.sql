@@ -66,5 +66,9 @@ INSERT INTO enum_reason VALUES( 31 , 'Nameserver is not set to this nsset.'  , '
 -- pro domain renew kdyz nesouhlasi zadany datum expirace
 INSERT INTO enum_reason VALUES( 32 ,  'Expiration date does not match registry data.' , 'nesouhlasí datum expirace' );
  
-
-
+-- chyba z mod_eppd, pokud chybi u prikazu transfer atribut 'op'
+INSERT INTO enum_reason VALUES( 33 ,  'Attribute op in element transfer is missing', 'Chybi atribut op u elementu transfer' );
+-- chyba z mod_eppd, pokud chybi u elementu ident jeho typ
+INSERT INTO enum_reason VALUES( 34 ,  'Attribute type in element ident is missing', 'Chybi atribut type u elementu ident' );
+-- chyba z mod_eppd, pokud chybi u elementu poll atribut msgID
+INSERT INTO enum_reason VALUES( 35 ,  'Attribute msgID in element poll is missing', 'Chybi atribut msgID u elementu poll' );
