@@ -66,3 +66,23 @@ invoice_ID INTEGER REFERENCES Invoice default NULL -- nula pokud neni prichozi p
 );
 
 
+
+
+-- polozky ON-LINE vypisu E-BANKA
+CREATE TABLE BANK_EBANKA_LIST
+(
+id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
+account_id int  REFERENCES bank_account, -- zpracovany ucet
+price numeric(10,2) NOT NULL,  -- prevedena  castka
+CrDate  timestamp NOT NULL DEFAULT now(),  -- datum a cas prevodu prevedeneho uz do UTC
+account_number char(16)  NOT NULL , -- cislo protiuctu ze ktereho prisla nebo kam byla odeslana platba
+bank_code char(4)  REFERENCES enum_bank_code,   -- kod banky platce
+status int, -- status  0 Nezrealizováno , Zrealizováno , Ukonèeno
+KonstSym char(10), -- konstantni symbol platby
+VarSymb char(10), -- variabilni symbol platby
+memo  varchar(64), -- poznamka
+Ident char(10) UNIQUE, -- jednoznacny identifikator platby
+invoice_ID INTEGER REFERENCES Invoice default NULL -- nula pokud neni prichozi platba zpracovani jinak odkaz na zalohovou faktu$
+);
+
+
