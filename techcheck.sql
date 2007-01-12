@@ -17,20 +17,27 @@ CREATE TABLE check_test (
 	need_domain BOOLEAN NOT NULL -- zda-li test dava smysl pouze s konkretnim fqdn domeny
 );
 
-INSERT INTO check_test (id, name, severity, description, disabled, script)
-VALUES (1,  'existance',     1, '', False, 'existance.py');
-INSERT INTO check_test (id, name, severity, description, disabled, script)
-VALUES (10, 'autonomous',    5, '', False, 'autonomous.py');
-INSERT INTO check_test (id, name, severity, description, disabled, script)
-VALUES (20, 'presence',      2, '', False, 'presence.py');
-INSERT INTO check_test (id, name, severity, description, disabled, script)
-VALUES (30, 'authoritative', 3, '', False, 'authoritative.py');
-INSERT INTO check_test (id, name, severity, description, disabled, script)
-VALUES (40, 'heterogenous',  6, '', False, 'heterogenous.py');
-INSERT INTO check_test (id, name, severity, description, disabled, script)
-VALUES (50, 'recursive',     4, '', False, 'recursive.py');
-INSERT INTO check_test (id, name, severity, description, disabled, script)
-VALUES (60, 'recursive4all', 4, '', False, 'recursive4all.py');
+INSERT INTO check_test (id, name, severity, description, disabled, script,
+	need_domain)
+VALUES (1,  'existance',     1, '', False, 'existance.py', False);
+INSERT INTO check_test (id, name, severity, description, disabled, script,
+	need_domain)
+VALUES (10, 'autonomous',    5, '', False, 'autonomous.py', False);
+INSERT INTO check_test (id, name, severity, description, disabled, script,
+	need_domain)
+VALUES (20, 'presence',      2, '', False, 'presence.py', True);
+INSERT INTO check_test (id, name, severity, description, disabled, script,
+	need_domain)
+VALUES (30, 'authoritative', 3, '', False, 'authoritative.py', True);
+INSERT INTO check_test (id, name, severity, description, disabled, script,
+	need_domain)
+VALUES (40, 'heterogenous',  6, '', False, 'heterogenous.py', False);
+INSERT INTO check_test (id, name, severity, description, disabled, script,
+	need_domain)
+VALUES (50, 'recursive',     4, '', False, 'recursive.py', False);
+INSERT INTO check_test (id, name, severity, description, disabled, script,
+	need_domain)
+VALUES (60, 'recursive4all', 4, '', False, 'recursive4all.py', False);
 
 CREATE TABLE check_dependance (
 	id SERIAL PRIMARY KEY,
@@ -59,7 +66,10 @@ CREATE TABLE check_nsset (
 	-- 0 = all tests were passed
 	-- 1 = one or more tests failed
 	-- 2 = one or more tests have unknown status and none has failed
-	overallstatus SMALLINT NOT NULL
+	overallstatus SMALLINT NOT NULL,
+	-- Here are stored fqdns of domains which were tested with nsset and
+	-- are not part of register
+	extra_fqdns VARCHAR(300)[]
 );
 
 CREATE TABLE check_result (
@@ -70,13 +80,6 @@ CREATE TABLE check_result (
 	--    unknown occurs if script failed for unknown reason
 	status SMALLINT NOT NULL,
 	note VARCHAR(300), -- output of test script (stderr)
-	data VARCHAR(300) -- test-specific text data (stdout)
+	data VARCHAR(300)  -- test-specific text data (stdout)
 );
 
--- Here are stored fqdns of domains which were tested with nsset and are not
--- part of register
-CREATE TABLE check_fqdn (
-	id SERIAL PRIMARY KEY,
-	checkid INTEGER references check_nsset(id),
-	fqdn VARCHAR(300) NOT NULL
-);
