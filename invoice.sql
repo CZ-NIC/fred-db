@@ -35,7 +35,6 @@ CrDate timestamp NOT NULL DEFAULT now(),  -- datum a cas vytvoreni faktury
 TaxDate date  , -- datum zdanitelneho plneni ( kdy prisla platba u zalohove FA)
 FromDate timestamp default NULL , -- datum zuctovaciho odobi od-do
 ToDate timestamp default NULL , -- do datumu
-payment integer default 1, -- typ platby 1 ( bankovnim prevodem )
 typ integer default 0, --  typ faktury 0 zalohova 1 vyuctovaci 2 vypis sluzeb za obdobi 
 prefix integer UNIQUE default NULL , -- deviti mistne  cislo faktury z invoice_prefix.prefix pocitano dle TaxDate
                                      -- pokud je NULL je to vypis vyuctovani za sluzby  vyuctovaci faktura se neuvadi je to typ 2 
