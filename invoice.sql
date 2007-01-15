@@ -1,41 +1,53 @@
 
+
+-- TODO dodelat cislenik prefixu pro kazdy rok aby se zvladnul prechod mezi roky
 CREATE TABLE invoice_prefix
 (
 id serial NOT NULL PRIMARY KEY, 
 Zone INTEGER REFERENCES Zone (ID),
-typ integer default 0,  -- typ faktury 1 zalohova 0 normalni
-pref varchar(16),  -- prefix
-num int,  -- pocet null rad
-counter int-- citac
+typ integer default 0,  -- typ faktury 0 zalohova 1 normalni
+year numeric NOT NULL, --pro jaky rok  
+prefix integer -- citac s prefixem ciselne rady fakrru 
 );
 
--- 4 rady faktur ( 2) zalohove pro CZ a ENUM
-insert into invoice_prefix values ( 1 , 3 ,  1 , 'Z2006-CZ-'  ,  6  , 1 );
-insert into invoice_prefix values ( 2 , 1  , 1 , 'Z2006-ENUM-'  ,  6  ,  1);
--- dve rady normalni
-insert into invoice_prefix values ( 3 , 3 ,  0  , 'F2006-CZ-' , 6 , 1 );
-insert into invoice_prefix values ( 4 , 1 ,  0  , 'F2006-ENUM-' , 6  , 1 );
+-- zona enum
+-- zalohove
+insert into invoice_prefix values ( 1 , 3 ,  0 , 2007 , 110700001 );
+-- vyuctovaci 
+insert into invoice_prefix values ( 2 , 3 ,  1 , 2007 , 120700001 );
+-- zona CZ
+-- zalohove
+insert into invoice_prefix values ( 3 , 1 ,  0 , 2007 , 130700001 );
+-- vyuctovaci
+insert into invoice_prefix values ( 4 , 1 ,  1 , 2007 , 140700001 );
+ 
+ 
 
+
+-- taulka fakturaci ucetnich faltur od do a id faktury pokud je NULL neni vyuctovaci faktura vystavena
 
 -- invoice  Zalohove faktury 
 CREATE TABLE invoice
 (
 id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
 Zone INTEGER REFERENCES Zone (ID),
-CrDate timestamp NOT NULL DEFAULT now(),  -- datum a cas vytvoreni
--- ZdDate date NOT NULL, -- datum zdanitelneho plneni 
+CrDate timestamp NOT NULL DEFAULT now(),  -- datum a cas vytvoreni faktury
+TaxDate date  , -- datum zdanitelneho plneni ( kdy prisla platba u zalohove FA)
 FromDate timestamp default NULL , -- datum zuctovaciho odobi od-do
 ToDate timestamp default NULL , -- do datumu
 payment integer default 1, -- typ platby 1 ( bankovnim prevodem )
-prefix varchar(24) UNIQUE NOT NULL , -- cislo  faktury z invoice_prefix.prefix a counter
+typ integer default 0, --  typ faktury 0 zalohova 1 vyuctovaci 2 vypis sluzeb za obdobi 
+prefix integer UNIQUE default NULL , -- deviti mistne  cislo faktury z invoice_prefix.prefix pocitano dle TaxDate
+                                     -- pokud je NULL je to vypis vyuctovani za sluzby  vyuctovaci faktura se neuvadi je to typ 2 
 registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora
 -- TODO registrarhistoryID pro odkazy na spravne adresy ICO a DIC
-Credit numeric(10,2) NOT NULL DEFAULT 0.0, -- kredit ze ktereho se cerpa az do nuly 
-Price numeric(10,2) NOT NULL DEFAULT 0.0, -- vyse faktury i s dani
-VAT integer  NOT NULL  DEFAULT 19, -- vyse dane 19%
-total numeric(10,2) NOT NULL DEFAULT 0.0,  -- castka bez dane
-totalVAT numeric(10,2) NOT NULL DEFAULT 0.0  -- odvedena dan
+Credit numeric(10,2)  DEFAULT 0.0, -- kredit ze ktereho se cerpa az do nuly pokud NULL je to vyctovaci faktura
+Price numeric(10,2)  DEFAULT 0.0, -- vyse faktury i s dani
+VAT integer   DEFAULT 19, -- vyse dane 19%
+total numeric(10,2)  DEFAULT 0.0,  -- castka bez dane
+totalVAT numeric(10,2)  DEFAULT 0.0  -- odvedena dan
 );
+
 
 
 
