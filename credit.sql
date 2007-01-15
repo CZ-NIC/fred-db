@@ -9,16 +9,20 @@ CREATE TABLE enum_operation (
 INSERT INTO enum_operation  VALUES( 1 , 'CreateDomain'); -- registracni poplatek
 INSERT INTO enum_operation  VALUES( 2 , 'RenewDomain'); -- udrzovaci poplatek
 
--- tabulka platnosti DPH ( pro pripad ze se DPH bude v budoucnu menit ) a take aby bylo kde ulozeno
+-- tabulka platnosti DPH ( pro pripad ze se DPH bude v budoucnu menit 
+-- ulozeni koeficientu pro prepocet DPH
+
 CREATE TABLE price_vat
 (
   id serial PRIMARY KEY, -- primarni klic
-  valid_to timestamp default NULL, -- datum kdy probehne zmena DPH    
-  VAT numeric default 19 -- vyse DPH 
+  valid_to timestamp default NULL, -- datum kdy probehne zmena DPH
+  koef real, -- vyse koeficinetu pro prepocet DPH
+  VAT numeric default 19 -- vyse DPH
 );
 
-INSERT INTO price_vat ( id , valid_to ,  VAT )  VALUES ( 1 , '2004-04-30 22:00:00' , 22 ); -- uvedeno v UTC CEST +2:00
-INSERT INTO price_vat ( id , valid_to , VAT )  VALUES ( 2 , NULL , 19 );
+INSERT INTO price_vat   VALUES ( 1 , '2004-04-30 22:00:00' , 0.1803 ,  22 ); -- uvedeno v UTC CEST +2:00
+INSERT INTO price_vat  VALUES ( 2 , NULL , 0.1597 , 19 );
+
 
      
 -- cenik operaci
