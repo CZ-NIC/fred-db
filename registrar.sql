@@ -5,7 +5,7 @@ CREATE TABLE Registrar (
         ICO  char(10), -- ICO registratora 
         DIC  char(15), -- DIC registratora
         varsymb  char(10)  , -- parovaci variabilni symbol (ico )
-        VAT boolean DEFAULT True --jestli se ma zapocitavat DPH pri fakturaci
+        VAT boolean DEFAULT True, --jestli se ma zapocitavat DPH pri fakturaci
         Handle varchar(255) UNIQUE NOT NULL,
         Name varchar(1024),
         Organization varchar(1024),
@@ -19,7 +19,8 @@ CREATE TABLE Registrar (
         Telephone varchar(32),
         Fax varchar(32),
         Email varchar(1024),
-        Url varchar(1024)
+        Url varchar(1024),
+	System bool default false
         );
 
 -- DROP TABLE RegistrarACL CASCADE;
@@ -33,7 +34,7 @@ CREATE TABLE RegistrarACL (
 CREATE TABLE RegistrarInvoice (       
         ID SERIAL PRIMARY KEY,
         RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- id registratora
-        Zone integer,  --  zona pro kterou ma registratrio pristup
+        Zone integer REFERENCES Zone,  --  zona pro kterou ma registratrio pristup
         FromDate timestamp DEFAULT NULL , -- datum kdy zacal registrator pracovat v dane zone
         LastDate timestamp DEFAULT NULL  -- datum kdy byla naposledy vyvorena faktura
         );
