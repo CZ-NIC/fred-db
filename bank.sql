@@ -29,7 +29,9 @@ last_num int  -- cislo posledniho vypisu
 -- parovaci variabilni symbol registratora je v tabulce registrar ( je to jeho ICO pro CZ ) a plati pro vsechny zony
 
 -- testovaci zaznam pro nacteni vypisu
-insert into  bank_account values ( 1 , 3 , '188208275' , 'CZNIC ucet CSOB' , '0300' , '130000' , '2006-11-10' , 161  );
+insert into  bank_account values ( 2 , 3 , '188208275' , 'CZNIC ucet CSOB' , '0300' , '130000' , '2006-11-10' , 161  );
+insert into bank_account (  id , Zone , account_number , account_name , bank_code )  values ( 1 , 1 , '756' , 'ENUM ucet ebanka' , '2400'   );
+
 
 
 -- bankovni vypisy 
