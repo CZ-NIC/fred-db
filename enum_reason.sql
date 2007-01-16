@@ -49,8 +49,8 @@ INSERT INTO enum_reason VALUES(  22 , 'Can not add nameserver'  , 'nelze přidat
 
 INSERT INTO enum_reason VALUES(  23 ,  'Can not remove  technical contact'  , 'nelze vymazat  technický kontakt'  );
 
-INSERT INTO enum_reason VALUES(  24 , 'Technical contact is already set to this nsset.'  , 'administrátorký kontakt je již přiřazen k  sadě jmených servrů' );
-INSERT INTO enum_reason VALUES(  25 , 'Technical contact is not set to this nsset.' ,  'administrátorký kontak není přiřazen k sadě jmených servrů'   );
+INSERT INTO enum_reason VALUES(  24 , 'Technical contact is already set to this nsset.'  , 'technický kontakt je již přiřazen k  sadě jmených servrů' );
+INSERT INTO enum_reason VALUES(  25 , 'Technical contact is not set to this nsset.' ,  'technický kontak není přiřazen k sadě jmených servrů'   );
 
 INSERT INTO enum_reason VALUES(  26 , 'Administrative contact is already set to this domain.'  , 'administrátorký kontakt je již přiřazen k doméně' );
 INSERT INTO enum_reason VALUES(  27 , 'Administravite contact is not set to this domain.' ,  'administrátorký kontak není přiřazen k doméně'   );
