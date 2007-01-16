@@ -48,7 +48,8 @@ INSERT INTO  enum_action (id , status) VALUES( 1004 ,  'ListNSset' );
 INSERT INTO  enum_action (id , status) VALUES( 1005  ,  'ListDomain' );
 -- credit funkce
 INSERT INTO enum_action (id , status) VALUES(1010 , 'ClientCredit');
-
+-- tech check nsset
+INSERT INTO enum_action (id , status) VALUES( 1012 , 'nssetTest' );
 
 -- send auth info fce
 INSERT INTO enum_action (  status , id )  VALUES(  'ContactSendAuthInfo' ,  1101 );
