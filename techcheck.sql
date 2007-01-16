@@ -56,7 +56,7 @@ INSERT INTO check_dependance (addictid, testid) VALUES (60, 1);
 CREATE TABLE check_nsset (
 	id SERIAL PRIMARY KEY,
 	-- nsset version, actual in time of record creation
-	nsset_hid INTEGER REFERENCES domain_history (historyid),
+	nsset_hid INTEGER REFERENCES nsset_history (historyid),
 	checkdate TIMESTAMP NOT NULL DEFAULT now(),
 	-- 0 = UNKNOWN
 	-- 1 = EPP
