@@ -34,8 +34,8 @@ CREATE TABLE RegistrarInvoice (
         ID SERIAL PRIMARY KEY,
         RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- id registratora
         Zone integer,  --  zona pro kterou ma registratrio pristup
-        FromDate  date DEFAULT NULL , -- datum kdy zacal registrator pracovat v dane zone
-        LastDate date DEFAULT NULL  -- datum kdy byla naposledy vyvorena faktura
+        FromDate timestamp DEFAULT NULL , -- datum kdy zacal registrator pracovat v dane zone
+        LastDate timestamp DEFAULT NULL  -- datum kdy byla naposledy vyvorena faktura
         );
 
 
@@ -61,11 +61,11 @@ INSERT INTO Registrar ( id, handle , name  ) VALUES( 2,  '{1 , 2 , 3 }' , 'REG-L
 
 -- prace s danou zonou
 -- REG-LRR zone enum a .cz
-INSERT INTO   RegistrarInvoice ( 1 , 1  , 1 , '2007-01-01' , NULL );
-INSERT INTO   RegistrarInvoice ( 2 , 1  , 3 , '2007-01-01' , NULL ); 
+INSERT INTO  RegistrarInvoice VALUES ( 1 , 1  , 1 , '2007-01-01' , NULL );
+INSERT INTO  RegistrarInvoice VALUES ( 2 , 1  , 3 , '2007-01-01' , NULL ); 
 -- REG-LRR2  zone enum a .cz
-INSERT INTO   RegistrarInvoice ( 3 , 2  , 1 , '2007-01-01' , NULL );
-INSERT INTO   RegistrarInvoice ( 4 , 2  , 3 , '2007-01-01' , NULL ); 
+INSERT INTO  RegistrarInvoice VALUES ( 3 , 2  , 1 , '2007-01-01' , NULL );
+INSERT INTO  RegistrarInvoice VALUES ( 4 , 2  , 3 , '2007-01-01' , NULL ); 
 
 
 -- pro defualt prihlaseni
