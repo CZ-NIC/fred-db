@@ -82,6 +82,7 @@ bank_code char(4)  REFERENCES enum_bank_code,   -- kod banky platce
 KonstSym char(10), -- konstantni symbol platby
 VarSymb char(10), -- variabilni symbol platby
 memo  varchar(64), -- poznamka
+name varchar(64), -- nazev uctu ze ktereho prisla platba
 Ident char(10) UNIQUE, -- jednoznacny identifikator platby
 invoice_ID INTEGER REFERENCES Invoice default NULL -- nula pokud neni prichozi platba zpracovani jinak odkaz na zalohovou faktu$
 );
