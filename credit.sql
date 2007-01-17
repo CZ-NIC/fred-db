@@ -39,10 +39,13 @@ CREATE TABLE price_list
 
 -- testovaci zaznamy
 -- ceny za enum domeny pouze DomainRenew 
+-- ENUM  testovaci provoz  zpoplatnene pouze oprarace prodlouzeni domeny
+-- od 22 ledna 14:00  CEST do te doby zadarmo
+INSERT into price_list  values ( 1 , 1 , 2 , '2007-01-22 13:00:00' , NULL , 1.00 , 12 );
 
-INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (1, 1 , 1 , '01-01-2007' ,  1 , 12 ); -- registrace
-INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (2, 1 , 2 , '01-01-2007' ,  50 , 12 ); -- prodlouzeni
+--INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (1, 1 , 1 , '01-01-2007' ,  1 , 12 ); -- registrace
+--INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (2, 1 , 2 , '01-01-2007' ,  50 , 12 ); -- prodlouzeni
 
-INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (3 , 3 , 1 , '01-01-2007' ,  -50 , 12 ); -- registrace ( 1 rok pouze 50 Kc )
-INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (4 , 3 , 2 , '01-01-2007' ,  100 , 12 ); -- prodlouzeni
+--INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (3 , 3 , 1 , '01-01-2007' ,  -50 , 12 ); -- registrace ( 1 rok pouze 50 Kc )
+--INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (4 , 3 , 2 , '01-01-2007' ,  100 , 12 ); -- prodlouzeni
 
