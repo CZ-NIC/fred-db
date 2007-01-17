@@ -102,7 +102,7 @@ CREATE TABLE Domain (
         Zone INTEGER REFERENCES Zone (ID),
         Registrant INTEGER NOT NULL REFERENCES Contact,
         NSSet INTEGER NULL REFERENCES NSSet, -- odkaz na nsset muze by i NULL lze zaregistrovat domenu bez nssetu
-        Exdate timestamp NOT NULL,
+        Exdate timestamp NOT NULL
         );
 CREATE INDEX domain_zone_idx ON Domain (Zone);
 CREATE INDEX domain_id_idx ON Domain (ID);
