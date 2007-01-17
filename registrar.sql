@@ -1,4 +1,3 @@
-
 -- DROP TABLE Registrar CASCADE;
 CREATE TABLE Registrar (
         ID SERIAL PRIMARY KEY,
@@ -40,36 +39,78 @@ CREATE TABLE RegistrarInvoice (
         );
 
 
--- DELETE FROM Registrar;
-INSERT INTO Registrar ( id, handle , organization , name , url ) VALUES( 100,    'REG-GENERAL-REGISTRY' ,  'GENERAL REGISTRY, s.r.o.' ,     'DomainMaster',   'www.domainmaster.cz');
-INSERT INTO Registrar ( id,  handle ,organization , name , url ) VALUES( 300 ,   'REG-ACTIVE24'  ,'ACTIVE 24, s. r. o.' ,    'DOMENY.CZ' , 'www.domeny.cz');
-INSERT INTO Registrar ( id, handle , organization , name , url ) VALUES( 400 ,  'REG-HAVEL'  ,'ha-vel internet s.r.o.' ,       'ha-vel' , 'domeny.ha-vel.cz');
-INSERT INTO Registrar ( id,   handle ,organization , name , url ) VALUES( 500,  'REG-IGNUM'   , 'IGNUM, s.r.o.' ,                 'DOMENA.CZ' ,   ' www.domena.cz');
-INSERT INTO Registrar ( id, handle , organization , name , url ) VALUES( 600 ,   'REG-INTERNET-CZ',  'INTERNET CZ, a.s.' ,       'Velkoobchod domen' ,  'domeny.velkoobchod.cz');
-INSERT INTO Registrar ( id, handle ,organization , name , url ) VALUES( 700,    'REG-MIRAMO' , 'MIRAMO spol. s r.o.' ,          '9net.cz' ,  'www.9net.cz');
-INSERT INTO Registrar ( id,  handle ,organization , name , url ) VALUES( 800,   'REG-ZONER' , 'ZONER software, s.r.o.' ,       'RegZone!' ,  'www.regZone.cz');
-INSERT INTO Registrar ( id, handle ,organization , name , url ) VALUES( 200,  'REG-CT'   , 'CESKY TELECOM, a.s.' ,          'Internet OnLine' , 'domeny.iol.cz');
-INSERT INTO Registrar ( id,  handle ,organization , name , url ) VALUES( 110,  'REG-KRAXNET'  ,   'KRAXNET s.r.o.' ,               'XNET'   ,   'www.xnet.cz');
-INSERT INTO Registrar ( id, handle , organization , name , url ) VALUES(120,    'REG-MEDIA4WEB',    'Media4web s.r.o.' ,          'Media4web'   , 'www.media4web.cz');
-INSERT INTO Registrar ( id, handle , organization , name , url ) VALUES(130,  'REG-ONE'   ,   'ONE.CZ s.r.o.' ,                 'REGISTRATOR.CZ'  , 'www.registrator.cz');
-INSERT INTO Registrar ( id, handle ,organization , name , url ) VALUES( 140,  'REG-WEB4U'  ,'Web4U s.r.o.' ,                  'Sprava domen',  'www.spravadomen.cz');
-INSERT INTO Registrar ( id, handle , organization , name , url ) VALUES( 150 , 'REG-NEXTRA' ,  'NEXTRA Czech Republic s.r.o.' ,  'NEXTRA'   ,   'domeny.nextra.cz');
-INSERT INTO Registrar ( id, handle , organization , name , url ) VALUES( 160 , 'REG-IPEX'  , 'IPEX a.s.'              ,       'IPEX'        ,    'www.ipex.cz');
-INSERT INTO Registrar ( id, handle ,organization , name , url ) VALUES( 170 ,  'REG-SKYNET',   'SkyNet, a.s.'            ,      'SkyNet'    ,        'www.skynet.cz');
-INSERT INTO Registrar ( id, handle ,organization , name , url ) VALUES( 1,   'REG-LRR',    'CZ.NIC, z.s.p.o.'          ,    'LRR'         ,      'www.lrr.cz');
+-- sytemovy registrator
+INSERT INTO Registrar ( id, handle , System , organization , name , url , Country ) 
+  VALUES( 1,   'REG-LRR',   't' , 'CZ.NIC, z.s.p.o.'  , 'LRR' ,  'www.nic.cz' , 'CZ' );
 
-INSERT INTO Registrar ( id, handle , name  ) VALUES( 2,  '{1 , 2 , 3 }' , 'REG-LRR2',    'LRR2'   );
+-- nutny  pro unit testy REG-LRR2
+-- INSERT INTO Registrar ( id, handle , name , System ) VALUES( 200,   'REG-LRR2',    'LRR2'  , 't'  );
+
+
+INSERT INTO Registrar ( id, handle, name,organization , url , Street1 , PostalCode , City,ICO,varsymb, DIC , Country )
+VALUES  ( 2 , 'REG-KRAXNET' , 'KRAXNET, s.r.o.', 'KRAXNET, s.r.o.',  'www.registr-cisel.cz' ,
+           'Kamenická 599/26' ,  '170 00' , 'Praha 7' ,  '26460335' , '26460335' , 'CZ26460335', 'CZ' );
+
+INSERT INTO Registrar ( id, handle, name,organization , url , Street1 , PostalCode , City,ICO,varsymb, DIC , Country )
+VALUES  (  3  , 'REG-IGNUM' , 'IGNUM, s.r.o.' , 'IGNUM, s.r.o.' , 'www.domena.cz' , 
+               'Thámova 18' ,  '186 00' ,  'Praha 8' , '26159708' ,  '26159708' , 'CZ26159708', 'CZ' );
+
+INSERT INTO Registrar ( id, handle, name,organization , url , Street1 , PostalCode , City,ICO,varsymb, DIC , Country )
+VALUES  ( 4 , 'REG-IPEX'  ,  'IPEX, a.s.' , 'IPEX, a.s.' , 'www.ipex.cz' , 
+         'Široká 37' , '370 01' ,  'České Budějovice' , '45021295' , '45021295' , 'CZ45021295' , 'CZ');
+            
+
+INSERT INTO Registrar ( id, handle, name,organization , url , Street1 , PostalCode , City,ICO,varsymb, DIC , Country )
+VALUES  (  5 , 'REG-GENREG'  , 'GENERAL REGISTRY, s.r.o.' , 'GENERAL REGISTRY, s.r.o.' ,   'www.domainmaster.cz' , 
+         'Novohradská 745/21' , '371 07' , 'České Budějovice' , '26027267' , '26027267' , 'CZ26027267', 'CZ' );
+
+
+INSERT INTO Registrar ( id, handle, name,organization , url , Street1 , PostalCode , City,ICO,varsymb, DIC , Country )
+VALUES  (  6 , 'REG-MATTES' , 'MATTES AD, s.r.o.' , 'MATTES AD, s.r.o.' ,  '802.cz' , 
+          'Masarykova 1117'  , '738 01' ,  'Frýdek - Místek' , '42868602' , '42868602' , 'CZ42868602' , 'CZ' );
+
+
+INSERT INTO Registrar ( id, handle, name,organization , url , Street1 , PostalCode , City,ICO,varsymb, DIC , Country )
+VALUES  ( 7  , 'REG-FORPSI' ,  'P.E.S. consulting, s.r.o.'  ,  'P.E.S. consulting, s.r.o.' , 'www.forpsi.com' , 
+           'Václavské náměstí 17' , '110 00' , 'Praha 1' , '25124005' , '25124005' , 'CZ25124005' , 'CZ' );
+           
+INSERT INTO Registrar ( id, handle, name,organization , url , Street1 , PostalCode , City, DIC , Country )
+VALUES  (   8 , 'REG-EURODNS'  , 'EuroDNS S.A.' , 'EuroDNS S.A.' ,  'www.eurodns.com' , 
+            '2, rue Léon Laval' , 'L-3372' ,  'Leudelange' , 'LU19406747' , 'LU' );
+            
+            
+INSERT INTO Registrar ( id, handle, name,organization , url , Street1 , PostalCode , City,ICO,varsymb, DIC , Country )
+VALUES  ( 9  , 'REG-ACTIVE'  , 'ACTIVE 24, s.r.o.' , 'ACTIVE 24, s.r.o.' , 'www.active24.cz' , 
+           'Pláničkova 1' ,  '162 00' ,  'Praha 6' , '25115804' , '25115804' , 'CZ25115804' , 'CZ' );
+ 
+INSERT INTO Registrar ( id, handle, name,organization , url , Street1 , PostalCode , City,ICO,varsymb, DIC , Country )
+VALUES  (  10 ,  'REG-SWS'     ,  'SW Systems s.r.o.' ,  'SW Systems s.r.o.' , 'www.swsystems.cz' , 
+           'Bernolákova 1190/4' ,  '142 00' ,  'Praha 4' , '27218791' , '27218791' , 'CZ27218791' , 'CZ' );
+ 
+
+
 
 -- prace s danou zonou
 -- REG-LRR zone enum a .cz
+--INSERT INTO  RegistrarInvoice VALUES ( 1 , 1  , 1 , '2007-01-01' , NULL );
+--INSERT INTO  RegistrarInvoice VALUES ( 2 , 1  , 3 , '2007-01-01' , NULL ); 
+--  REG-LRR2  zone enum a .cz
+--INSERT INTO  RegistrarInvoice VALUES ( 3 , 2  , 1 , '2007-01-01' , NULL );
+--INSERT INTO  RegistrarInvoice VALUES ( 4 , 2  , 3 , '2007-01-01' , NULL ); 
+
+-- registratori 23 .1 predelat na 22.1 2007 od kdy se zacne fakturovat
 INSERT INTO  RegistrarInvoice VALUES ( 1 , 1  , 1 , '2007-01-01' , NULL );
-INSERT INTO  RegistrarInvoice VALUES ( 2 , 1  , 3 , '2007-01-01' , NULL ); 
--- REG-LRR2  zone enum a .cz
-INSERT INTO  RegistrarInvoice VALUES ( 3 , 2  , 1 , '2007-01-01' , NULL );
-INSERT INTO  RegistrarInvoice VALUES ( 4 , 2  , 3 , '2007-01-01' , NULL ); 
+INSERT INTO  RegistrarInvoice VALUES ( 2 , 2  , 1 , '2007-01-01' , NULL );
+INSERT INTO  RegistrarInvoice VALUES ( 3 , 3  , 1 , '2007-01-01' , NULL );
+INSERT INTO  RegistrarInvoice VALUES ( 4 , 4  , 1 , '2007-01-01' , NULL );
+INSERT INTO  RegistrarInvoice VALUES ( 5 , 5  , 1 , '2007-01-01' , NULL );
+INSERT INTO  RegistrarInvoice VALUES ( 6 , 6  , 1 , '2007-01-01' , NULL );
+INSERT INTO  RegistrarInvoice VALUES ( 8 , 7  , 1 , '2007-01-01' , NULL );
+INSERT INTO  RegistrarInvoice VALUES ( 9 , 8  , 1 , '2007-01-01' , NULL );
+INSERT INTO  RegistrarInvoice VALUES ( 10 , 10  , 1 , '2007-01-01' , NULL );
 
 
--- pro defualt prihlaseni
+
+-- pro defualt prihlaseni REG-LRR
 INSERT INTO  RegistrarACL values ( 1 , 1 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' , '123456789' );
-INSERT INTO  RegistrarACL values ( 2 , 2 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' , '123456789' );
 
