@@ -84,12 +84,12 @@ e-mail : <?cs var:defaults.emailsupport ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (2, 2);
 
-INSERT INTO mail_type (name, subject) VALUES ('expiration_notify', 'Upozornění na nutnost úhrady doménového jména <?cs var:domain ?>');
+INSERT INTO mail_type (name, subject) VALUES ('expiration_notify', 'Upozornění na nutnost úhrady domény <?cs var:domain ?>');
 INSERT INTO mail_templates (contenttype, template) VALUES
 ('plain',
 'English version is bellow
 
-Upozornění na nutnost úhrady doménového jména <?cs var:domain ?>
+Upozornění na nutnost úhrady domény <?cs var:domain ?>
 
 Vážený zákazníku,
 
@@ -180,7 +180,7 @@ e-mail : <?cs var:defaults.emailsupport ?>
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (3, 3);
 
 
-INSERT INTO mail_type (name, subject) VALUES ('expiration_dns', 'Oznámení o vyřazení domény <?cs var:domain?> z DNS');
+INSERT INTO mail_type (name, subject) VALUES ('expiration_dns_owner', 'Oznámení o vyřazení domény <?cs var:domain?> z DNS');
 INSERT INTO mail_templates (contenttype, template) VALUES
 ('plain',
 'English version is bellow
@@ -190,7 +190,7 @@ Oznámení o vyřazení domény <?cs var:domain?> z DNS
 Vážený zákazníku,
 
 dovolujeme si Vás tímto upozornit, že doposud nebyla uhrazena platba
-za prodloužení či registraci doménového jména <?cs var:domain ?>.
+za prodloužení doménového jména <?cs var:domain ?>.
 Vzhledem k této skutečnosti a na základě Pravidel registrace doménových
 jmen, <?cs var:defaults.company ?> pozastavuje registraci doménového jména
 a vyřazuje ji ze zóny <?cs var:zone ?>.
@@ -285,19 +285,19 @@ e-mail : <?cs var:defaults.emailsupport ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (5, 5);
 
-INSERT INTO mail_type (name, subject) VALUES ('expiration_register_tech', 'Oznámení o zrušení domény <?cs var:domain ?>');
+INSERT INTO mail_type (name, subject) VALUES ('expiration_dns_tech', 'Oznámení o vyřazení domény <?cs var:domain?> z DNS');
 INSERT INTO mail_templates (contenttype, template) VALUES
 ('plain',
 'English version is bellow
 
-Oznámení o zrušení domény <?cs var:domain ?>
+Oznámení o vyřazení domény <?cs var:domain ?> z DNS
 
 Vážený technický správce,
 
 vzhledem k tomu, že jste vedený jako technický kontakt u sady nameserverů
 <?cs var:nsset ?>, která je přiřazena k doménovému jménu <?cs var:domain ?>,
 dovolujeme si Vás upozornit, že toto doménové jméno bylo ke dni
-<?cs var:exdate ?> vyřazeno z DNS / zrušeno.
+<?cs var:exdate ?> vyřazeno z DNS.
 
                                                  S pozdravem
                                                  podpora <?cs var:defaults.company ?>
@@ -317,6 +317,39 @@ e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (6, 6);
+
+INSERT INTO mail_type (name, subject) VALUES ('expiration_register_tech', 'Oznámení o zrušení domény <?cs var:domain ?>');
+INSERT INTO mail_templates (contenttype, template) VALUES
+('plain',
+'English version is bellow
+
+Oznámení o zrušení domény <?cs var:domain ?>
+
+Vážený technický správce,
+
+vzhledem k tomu, že jste vedený jako technický kontakt u sady nameserverů
+<?cs var:nsset ?>, která je přiřazena k doménovému jménu <?cs var:domain ?>,
+dovolujeme si Vás upozornit, že toto doménové jméno bylo ke dni
+<?cs var:exdate ?> zrušeno.
+
+                                                 S pozdravem
+                                                 podpora <?cs var:defaults.company ?>
+
+
+
+English version is not available
+
+-- 
+<?cs var:defaults.company ?>
+<?cs var:defaults.street ?>
+<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
+---------------------------------
+tel.: <?cs var:defaults.tel ?>
+fax : <?cs var:defaults.fax ?>
+e-mail : <?cs var:defaults.emailsupport ?>
+---------------------------------
+');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (7, 7);
 
 INSERT INTO mail_type (name, subject) VALUES ('expiration_validation', 'Oznámení o vypršení validace enum domény');
 INSERT INTO mail_templates (contenttype, template) VALUES
@@ -361,7 +394,7 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (7, 7);
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (8, 8);
 
 INSERT INTO mail_type (name, subject) VALUES ('notification_create_domain', 'Oznámení o registraci / Registration notification');
 INSERT INTO mail_templates (contenttype, template) VALUES
@@ -396,7 +429,7 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (8, 8);
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (9, 9);
 
 INSERT INTO mail_type (name, subject) VALUES ('notification_create_contact', 'Oznámení o registraci / Registration notification');
 INSERT INTO mail_templates (contenttype, template) VALUES
@@ -430,7 +463,7 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (9, 9);
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (10, 10);
 
 INSERT INTO mail_type (name, subject) VALUES ('notification_create_nsset', 'Oznámení o registraci / Registration notification');
 INSERT INTO mail_templates (contenttype, template) VALUES
@@ -464,7 +497,7 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (10, 10);
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (11, 11);
 
 INSERT INTO mail_type (name, subject) VALUES ('notification_update_domain', 'Oznámení změn / Notification of changes');
 INSERT INTO mail_templates (contenttype, template) VALUES
@@ -492,7 +525,7 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (11, 11);
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (12, 12);
 
 INSERT INTO mail_type (name, subject) VALUES ('notification_update_contact', 'Oznámení změn / Notification of changes');
 INSERT INTO mail_templates (contenttype, template) VALUES
@@ -520,7 +553,7 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (12, 12);
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (13, 13);
 
 INSERT INTO mail_type (name, subject) VALUES ('notification_update_nsset', 'Oznámení změn / Notification of changes');
 INSERT INTO mail_templates (contenttype, template) VALUES
@@ -548,7 +581,7 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (13, 13);
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (14, 14);
 
 INSERT INTO mail_type (name, subject) VALUES ('notification_renew', 'Oznámení o prodloužení platnosti / Domain name renew notification');
 INSERT INTO mail_templates (contenttype, template) VALUES
@@ -575,7 +608,7 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (14, 14);
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (15, 15);
 
 INSERT INTO mail_type (name, subject) VALUES ('notification_unused_contact', 'Oznámení o zrušení / Delete notification');
 INSERT INTO mail_templates (contenttype, template) VALUES
@@ -601,7 +634,7 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (15, 15);
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (16, 16);
 
 INSERT INTO mail_type (name, subject) VALUES ('notification_unused_nsset', 'Oznámení o zrušení / Delete notification');
 INSERT INTO mail_templates (contenttype, template) VALUES
@@ -627,7 +660,7 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (16, 16);
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (17, 17);
 
 INSERT INTO mail_type (name, subject) VALUES ('notification_delete_contact', 'Oznámení o zrušení / Delete notification');
 INSERT INTO mail_templates (contenttype, template) VALUES
@@ -656,7 +689,7 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (17, 17);
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (18, 18);
 
 INSERT INTO mail_type (name, subject) VALUES ('notification_delete_nsset', 'Oznámení o zrušení / Delete notification');
 INSERT INTO mail_templates (contenttype, template) VALUES
@@ -685,5 +718,5 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (18, 18);
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (19, 19);
 

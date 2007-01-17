@@ -45,9 +45,9 @@ h_organization,
 h_contentencoding,
 h_messageidserver)
 VALUES
-('notifications@nic.cz',
-'help-desk@nic.cz',
-'notification-errors@nic.cz',
+('podpora@nic.cz',
+'podpora@nic.cz',
+'podpora@nic.cz',
 'CZ.NIC, z.s.p.o.',
 'charset=UTF-8',
 'nic.cz');
