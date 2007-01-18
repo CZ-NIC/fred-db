@@ -75,3 +75,5 @@ INSERT INTO enum_reason VALUES( 35 ,  'Attribute msgID in element poll is missin
 
 -- blacklist domain
 INSERT INTO enum_reason VALUES( 36 ,  'registratration is prohibited'  , 'registrace je  zakázána' );
+-- nepodarilose zvalidovat XML
+INSERT INTO enum_reason VALUES( 37 ,  'Schemas validity error' , 'Chyba validace XML schemat' );
