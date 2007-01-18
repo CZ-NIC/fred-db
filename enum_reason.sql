@@ -72,3 +72,6 @@ INSERT INTO enum_reason VALUES( 33 ,  'Attribute op in element transfer is missi
 INSERT INTO enum_reason VALUES( 34 ,  'Attribute type in element ident is missing', 'Chybi atribut type u elementu ident' );
 -- chyba z mod_eppd, pokud chybi u elementu poll atribut msgID
 INSERT INTO enum_reason VALUES( 35 ,  'Attribute msgID in element poll is missing', 'Chybi atribut msgID u elementu poll' );
+
+-- blacklist domain
+INSERT INTO enum_reason VALUES( 36 ,  'registratration is prohibited'  , 'registrace je  zakázána' );
