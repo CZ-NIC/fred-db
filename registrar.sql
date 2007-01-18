@@ -87,7 +87,11 @@ INSERT INTO Registrar ( id, handle, name,organization , url , Street1 , PostalCo
 VALUES  (  10 ,  'REG-SWS'     ,  'SW Systems s.r.o.' ,  'SW Systems s.r.o.' , 'www.swsystems.cz' , 
            'Bernolákova 1190/4' ,  '142 00' ,  'Praha 4' , '27218791' , '27218791' , 'CZ27218791' , 'CZ' );
  
+INSERT INTO Registrar ( id, handle, name,organization , url , Street1 , PostalCode , City,ICO,varsymb, DIC , Country )
+VALUES  (  11 ,  'REG-UNITTEST1'     ,  'registrator pro unit testy 1.' ,  'unit testy' , '' , '' ,  '' ,  '' , '' , '' , '' , 'CZ' );
 
+INSERT INTO Registrar ( id, handle, name,organization , url , Street1 , PostalCode , City,ICO,varsymb, DIC , Country )
+VALUES  (  12 ,  'REG-UNITTEST2'     ,  'registrator pro unit testy 2.' ,  'unit testy' , '' , '' ,  '' ,  '' , '' , '' , '' , 'CZ' );
 
 
 -- prace s danou zonou
@@ -110,8 +114,15 @@ INSERT INTO  RegistrarInvoice VALUES ( 8 , 8  , 1 , '2007-01-01' , NULL );
 INSERT INTO  RegistrarInvoice VALUES ( 9 , 9  , 1 , '2007-01-01' , NULL );
 INSERT INTO  RegistrarInvoice VALUES ( 10, 10 , 1 , '2007-01-01' , NULL );
 
+INSERT INTO  RegistrarInvoice VALUES ( 11, 11 , 1 , '2007-01-01' , NULL );
+INSERT INTO  RegistrarInvoice VALUES ( 12, 11 , 3 , '2007-01-01' , NULL );
+INSERT INTO  RegistrarInvoice VALUES ( 13, 12 , 1 , '2007-01-01' , NULL );
+INSERT INTO  RegistrarInvoice VALUES ( 14, 12 , 3 , '2007-01-01' , NULL );
 
 
 -- pro defualt prihlaseni REG-LRR
 INSERT INTO  RegistrarACL values ( 1 , 1 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' , '123456789' );
 
+INSERT INTO  RegistrarACL values ( 2 , 11 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' , '123456789' );
+
+INSERT INTO  RegistrarACL values ( 3 , 12 , 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97' , '123456789' );
