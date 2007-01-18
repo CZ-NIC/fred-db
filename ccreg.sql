@@ -17,7 +17,7 @@ CREATE TABLE OBJECT_registry (
 CREATE INDEX object_registry_name_idx ON Object_registry  (NAME);
 
 CREATE TABLE OBJECT (
-        ID SERIAL PRIMARY KEY  REFERENCES object_registry (id),
+        ID INTEGER PRIMARY KEY  REFERENCES object_registry (id),
         ClID INTEGER NOT NULL REFERENCES Registrar,
         UpID INTEGER REFERENCES Registrar,
         TrDate timestamp DEFAULT NULL,
