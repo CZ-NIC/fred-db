@@ -42,6 +42,8 @@ CREATE TABLE price_list
 -- ENUM  testovaci provoz  zpoplatnene pouze oprarace prodlouzeni domeny
 -- od 22 ledna 14:00  CEST do te doby zadarmo
 INSERT into price_list  values ( 1 , 1 , 2 , '2007-01-22 13:00:00' , NULL , 1.00 , 12 );
+--  cena za operace vytvoreni domeny je nula
+INSERT into price_list  values ( 2 , 1 , 1 , '2007-01-22 13:00:00' , NULL , 0.00 , 12 );
 
 --INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (1, 1 , 1 , '01-01-2007' ,  1 , 12 ); -- registrace
 --INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (2, 1 , 2 , '01-01-2007' ,  50 , 12 ); -- prodlouzeni

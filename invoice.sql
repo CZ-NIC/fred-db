@@ -63,6 +63,7 @@ objectID integer  REFERENCES object_registry (id),
 zone INTEGER REFERENCES Zone (ID),
 registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora 
 operation INTEGER NOT NULL REFERENCES enum_operation, -- typ operace registrace ci prodlouzeni
+period integer default 0, -- pocet jednotek na prodlouzeni ve mesicich
 ExDate date default NULL  -- vysledny ExDate pouze pro RENEW
 );
 
