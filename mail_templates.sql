@@ -5,10 +5,10 @@
 -- we assume that sequence numbers are reset to 1 in this script.
 --
 
-INSERT INTO mail_type (name, subject) VALUES ('sendauthinfo_pif', 'Zaslání autorizační informace');
+INSERT INTO mail_type (name, subject) VALUES ('sendauthinfo_pif', 'Zaslání autorizační informace / Sending authorization information');
 INSERT INTO mail_templates (contenttype, template) VALUES
 ('plain',
-'English version is bellow
+'English version of the e-mail is entered below the Czech version
 
 Zaslání autorizační informace
 
@@ -24,12 +24,28 @@ heslo, příslušející k objektu s identifikátorem <?cs var:handle ?>.
    V případě, že jste tuto žádost nepodali, oznamte prosím tuto
 skutečnost na adresu <?cs var:defaults.emailsupport ?>.
 
-                                                 S pozdravem
-                                                 podpora <?cs var:defaults.company ?>
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
 
 
 
-English version is not available
+Sending authorization information
+
+Dear customer,
+
+   Based on your request submitted via the web form on the <?cs var:wwwpage ?>
+page on <?cs var:reqdate ?>, which received the identification number
+<?cs var:reqid ?>, we are sending you the requested password that belongs
+to the object with the <?cs var:handle ?> identifier.
+
+   The password is: <?cs var:authinfo ?>
+
+   If you did not submit the aforementioned request, please, notify us about
+this fact at the following address <?cs var:defaults.emailsupport ?>.
+
+
+                                             Yours sincerely
+                                             support <?cs var:defaults.company ?>
 
 -- 
 <?cs var:defaults.company ?>
@@ -43,10 +59,10 @@ e-mail : <?cs var:defaults.emailsupport ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (1, 1);
 
-INSERT INTO mail_type (name, subject) VALUES ('sendauthinfo_epp', 'Zaslání autorizační informace');
+INSERT INTO mail_type (name, subject) VALUES ('sendauthinfo_epp', 'Zaslání autorizační informace / Sending authorization information');
 INSERT INTO mail_templates (contenttype, template) VALUES
 ('plain',
-'English version is bellow
+'English version of the e-mail is entered below the Czech version
 
 Zaslání autorizační informace
 
@@ -65,12 +81,30 @@ osoby v Centrálním registru doménových jmen.
 skutečnost na adresu <?cs var:defaults.emailsupport ?>.
 
 
-                                                 S pozdravem
-                                                 podpora <?cs var:defaults.company ?>
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
 
 
 
-English version is not available
+Sending authorization information
+
+Dear customer,
+
+   Based on your request submitted via the registrar <?cs var:registrar ?>,
+which contains your request for sending you the password that belongs to
+the object with the identifier <?cs var:handle ?>.
+
+   The password is: <?cs var:authinfo ?>
+
+   This message is being sent only to the e-mail address that we have on file
+for a particular person in the Central Registry of Domain Names.
+
+   If you did not submit the aforementioned request, please, notify us about
+this fact at the following address <?cs var:defaults.emailsupport ?>.
+
+
+                                             Yours sincerely
+                                             support <?cs var:defaults.company ?>
 
 -- 
 <?cs var:defaults.company ?>
@@ -84,10 +118,10 @@ e-mail : <?cs var:defaults.emailsupport ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (2, 2);
 
-INSERT INTO mail_type (name, subject) VALUES ('expiration_notify', 'Upozornění na nutnost úhrady domény <?cs var:domain ?>');
+INSERT INTO mail_type (name, subject) VALUES ('expiration_notify', 'Upozornění na nutnost úhrady domény / Reminder of the need to settle fees for the domain');
 INSERT INTO mail_templates (contenttype, template) VALUES
 ('plain',
-'English version is bellow
+'English version of the e-mail is entered below the Czech version
 
 Upozornění na nutnost úhrady domény <?cs var:domain ?>
 
@@ -122,9 +156,8 @@ Vzhledem k této situaci máte nyní následující možnosti:
    registrátorů najdete na www.nic.cz (Seznam registratoru)
 
 
-
-                                                 S pozdravem
-                                                 podpora <?cs var:defaults.company ?>
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
 
 
 
@@ -133,12 +166,12 @@ Reminder of the need to settle fees for the <?cs var:domain ?> domain name
 Dear customer,
 
 We would like to inform you that as of <?cs var:checkdatetime ?>,
-the registration of the domain name <?cs var:domain ?>
-has not been extended. Concerning the fact that the fee for the domain name
-in question has been paid only for a period ended on <?cs var:exdate ?>,
-your domain name has now entered the so-called protective period. Unless
-a registrar of your choice extends your registration, the following steps
-will be adopted in accordance with the Domain Name Registration Rules:
+the registration of the domain name <?cs var:domain ?> has not been
+extended. Concerning the fact that the fee for the domain name in question
+has been paid only for a period ended on <?cs var:exdate ?>, your domain
+name has now entered the so-called protective period. Unless a registrar
+of your choice extends your registration, the following steps will be adopted
+in accordance with the Domain Name Registration Rules:
 
 <?cs var:dnsdate ?> - The domain name will not be accessible (exclusion from DNS).
 <?cs var:exregdate ?> - Final cancellation of the domain name registration.
@@ -163,9 +196,8 @@ one of the following:
    (List of Registrars)
 
 
-
-                                                 Yours sincerely
-                                                 support <?cs var:defaults.company ?>
+                                             Yours sincerely
+                                             support <?cs var:defaults.company ?>
 
 -- 
 <?cs var:defaults.company ?>
@@ -180,10 +212,10 @@ e-mail : <?cs var:defaults.emailsupport ?>
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (3, 3);
 
 
-INSERT INTO mail_type (name, subject) VALUES ('expiration_dns_owner', 'Oznámení o vyřazení domény <?cs var:domain?> z DNS');
+INSERT INTO mail_type (name, subject) VALUES ('expiration_dns_owner', 'Oznámení o vyřazení domény z DNS / Notification about inactivation of the domain from DNS');
 INSERT INTO mail_templates (contenttype, template) VALUES
 ('plain',
-'English version is bellow
+'English version of the e-mail is entered below the Czech version
 
 Oznámení o vyřazení domény <?cs var:domain?> z DNS
 
@@ -223,12 +255,52 @@ Administrátorský kontakt: <?cs var:item ?>
 <?cs /each ?>
 
 
-                                                 S pozdravem
-                                                 podpora <?cs var:defaults.company ?>
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
 
 
 
-English version is not available
+Notification about inactivation of the <?cs var:domain?> domain from DNS
+
+Dear customer,
+
+We would like to notify you that the payment for extension of the domain name
+<?cs var:domain ?> has not been received yet. With regard to that fact
+and in accordance with Rules for domain names registrations, <?cs var:defaults.company ?>
+is suspending the domain name registration and is withdrawing it from the
+<?cs var:zone ?> zone.
+
+In case that by <?cs var:exdate ?>, <?cs var:defaults.company ?> will not receive
+the payment for extension of the domain name from your registrar, your domain
+name will be definitely released for a use by another applicant on
+<?cs var:exregdate ?>.
+
+Please, contact your designated registrar <?cs var:registrator ?>
+for a purpose of extension of the domain name.
+
+If you believe that the payment was made, please, check first if the payment
+was made with the correct variable symbol, to the correct account number, and
+with the correct amount, and convey this information to your designated
+registrar.
+
+Time-schedule of planned events:
+
+<?cs var:dnsdate ?> - Domain name blocking (withdrawal from DNS).
+<?cs var:exregdate ?> - Definitive cancellation of the domain name registration.
+
+At this moment, we have the following information about the domain in our
+records:
+
+Domain name: <?cs var:domain ?>
+Owner: <?cs var:owner ?>
+Registrar: <?cs var:registrator ?>
+<?cs each:item = administrators ?>
+Administrator contact: <?cs var:item ?>
+<?cs /each ?>
+
+
+                                             Yours sincerely
+                                             support <?cs var:defaults.company ?>
 
 -- 
 <?cs var:defaults.company ?>
@@ -243,10 +315,10 @@ e-mail : <?cs var:defaults.emailsupport ?>
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (4, 4);
 
 
-INSERT INTO mail_type (name, subject) VALUES ('expiration_register_owner', 'Oznámení o zrušení domény <?cs var:domain ?>');
+INSERT INTO mail_type (name, subject) VALUES ('expiration_register_owner', 'Oznámení o zrušení domény / Notification about cancellation of the domain');
 INSERT INTO mail_templates (contenttype, template) VALUES
 ('plain',
-'English version is bellow
+'English version of the e-mail is entered below the Czech version
 
 Oznámení o zrušení domény <?cs var:domain ?>
 
@@ -254,24 +326,27 @@ Vážený zákazníku,
 
 dovolujeme si Vás upozornit, že nebylo provedeno prodloužení registrace
 pro doménové jméno <?cs var:domain ?>. Vzhledem k této skutečnosti
-a na základě Pravidel registrace doménových jmen , <?cs var:defaults.company ?> ruší
-registraci doménového jména.
-
-                                                 S pozdravem
-                                                 podpora <?cs var:defaults.company ?>
+a na základě Pravidel registrace doménových jmen, <?cs var:defaults.company ?>
+ruší registraci doménového jména.
 
 
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
+
+
+
+Notification about cancellation of the domain <?cs var:domain ?>
 
 Dear customer,
 
-we would like to inform you that the registration extension has not yet
-been implemented for the domain name <?cs var:domain ?>. Due to
-this fact and based on the Domain Name Registration Rules (Pravidla
-registrace domenovych jmen), <?cs var:defaults.company ?> is cancelling the domain
-name registration.
+we would like to inform you that the registration extension has not yet been
+implemented for the domain name <?cs var:domain ?>. Due to this fact and
+based on the Domain Name Registration Rules (Pravidla registrace domenovych
+jmen), <?cs var:defaults.company ?> is cancelling the domain name registration.
 
-                                                 Yours sincerely
-                                                 support <?cs var:defaults.company ?>
+
+                                             Yours sincerely
+                                             support <?cs var:defaults.company ?>
 
 -- 
 <?cs var:defaults.company ?>
@@ -285,10 +360,10 @@ e-mail : <?cs var:defaults.emailsupport ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (5, 5);
 
-INSERT INTO mail_type (name, subject) VALUES ('expiration_dns_tech', 'Oznámení o vyřazení domény <?cs var:domain?> z DNS');
+INSERT INTO mail_type (name, subject) VALUES ('expiration_dns_tech', 'Oznámení o vyřazení domény z DNS / Notification about withdrawal of the domain from DNS');
 INSERT INTO mail_templates (contenttype, template) VALUES
 ('plain',
-'English version is bellow
+'English version of the e-mail is entered below the Czech version
 
 Oznámení o vyřazení domény <?cs var:domain ?> z DNS
 
@@ -299,12 +374,24 @@ vzhledem k tomu, že jste vedený jako technický kontakt u sady nameserverů
 dovolujeme si Vás upozornit, že toto doménové jméno bylo ke dni
 <?cs var:exdate ?> vyřazeno z DNS.
 
-                                                 S pozdravem
-                                                 podpora <?cs var:defaults.company ?>
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
 
 
 
-English version is not available
+Notification about withdrawal of the domain <?cs var:domain ?> from DNS
+
+Dear technical administrator,
+
+With regard to the fact that you are named the technical contact for the set
+<?cs var:nsset ?> of nameservers, which is assigned to the <?cs var:domain ?>
+domain name, we would like to notify you that the aforementioned domain name
+was withdrawn from DNS as of <?cs var:exdate ?>.
+
+
+                                             Yours sincerely
+                                             support <?cs var:defaults.company ?>
 
 -- 
 <?cs var:defaults.company ?>
@@ -318,10 +405,10 @@ e-mail : <?cs var:defaults.emailsupport ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (6, 6);
 
-INSERT INTO mail_type (name, subject) VALUES ('expiration_register_tech', 'Oznámení o zrušení domény <?cs var:domain ?>');
+INSERT INTO mail_type (name, subject) VALUES ('expiration_register_tech', 'Oznámení o zrušení domény / Notification about cancellation of the domain');
 INSERT INTO mail_templates (contenttype, template) VALUES
 ('plain',
-'English version is bellow
+'English version of the e-mail is entered below the Czech version
 
 Oznámení o zrušení domény <?cs var:domain ?>
 
@@ -332,12 +419,23 @@ vzhledem k tomu, že jste vedený jako technický kontakt u sady nameserverů
 dovolujeme si Vás upozornit, že toto doménové jméno bylo ke dni
 <?cs var:exdate ?> zrušeno.
 
-                                                 S pozdravem
-                                                 podpora <?cs var:defaults.company ?>
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
 
 
 
-English version is not available
+Notification about cancellation of the domain <?cs var:domain ?>
+
+Dear technical administrator,
+
+With regard to the fact that you are named the technical contact for the set
+of <?cs var:nsset ?> nameservers, which is assigned to the <?cs var:domain ?>
+domain name, we would like to notify you that the aforementioned domain name
+was cancelled as of <?cs var:exdate ?>.
+
+
+                                             Yours sincerely
+                                             support <?cs var:defaults.company ?>
 
 -- 
 <?cs var:defaults.company ?>
@@ -351,10 +449,10 @@ e-mail : <?cs var:defaults.emailsupport ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (7, 7);
 
-INSERT INTO mail_type (name, subject) VALUES ('expiration_validation', 'Oznámení o vypršení validace enum domény');
+INSERT INTO mail_type (name, subject) VALUES ('expiration_validation', 'Oznámení o vypršení validace enum domény / Notification about expiration of the enum domain validation');
 INSERT INTO mail_templates (contenttype, template) VALUES
 ('plain',
-'English version is bellow
+'English version of the e-mail is entered below the Czech version
 
 Oznámení o vypršení validace enum domény.
 
@@ -377,12 +475,36 @@ Registrátor: <?cs var:registrator ?>
 Administrátorský kontakt: <?cs var:item ?>
 <?cs /each ?>                               
 
-                                                 S pozdravem
-                                                 podpora <?cs var:defaults.company ?>
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
 
 
 
-English version is not available
+Notification about expiration of the enum domain validation
+
+Dear customer,
+
+We would like to notify you that as of <?cs var:checkdatetime ?>, extension of
+the <?cs var:domain ?> domain name validation has not been made, yet.
+With regard to this fact and in accordance with Rules for domain names
+registrations, <?cs var:defaults.company ?> is withdrawing it from the zone.
+The domain name continues to be registered. If you plan to renew validation
+of the aforementioned domain name, please, contact your registrar, and together
+execute the extension of validation of your domain name.
+
+At this moment, we have the following information about the domain in our
+records:
+
+Domain name: <?cs var:domain ?>
+Owner: <?cs var:owner ?>
+Registrar: <?cs var:registrator ?>
+<?cs each:item = administrators ?>
+Administrator contact: <?cs var:item ?>
+<?cs /each ?>                               
+
+
+                                             Yours sincerely
+                                             support <?cs var:defaults.company ?>
 
 -- 
 <?cs var:defaults.company ?>
@@ -412,12 +534,8 @@ Registrátor / Registrar : <?cs var:registrar ?>
 The request was completed successfully, required registration was done. 
 
 
-                                                 S pozdravem
-                                                 podpora <?cs var:defaults.company ?>
-
-
-
-English version is not available
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
 
 -- 
 <?cs var:defaults.company ?>
@@ -447,11 +565,8 @@ Registrátor / Registrar : <?cs var:registrar ?>
 The request was completed successfully, required registration was done. 
 
 
-                                                 S pozdravem
-                                                 podpora <?cs var:defaults.company ?>
-
-
-English version is not available
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
 
 -- 
 <?cs var:defaults.company ?>
@@ -481,11 +596,8 @@ Registrátor / Registrar : <?cs var:registrar ?>
 The request was completed successfully, required registration was done. 
 
 
-                                                 S pozdravem
-                                                 podpora <?cs var:defaults.company ?>
-
-
-English version is not available
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
 
 -- 
 <?cs var:defaults.company ?>
@@ -588,14 +700,14 @@ INSERT INTO mail_templates (contenttype, template) VALUES
 ('plain',
 '
 =====================================================================
-Oznámení o prodloužení platnosti / Renew notification
+Oznámení o prodloužení platnosti / Notification about renewal
 ===================================================================== 
-Dne <?cs var:renewdate ?> bylo provedeno prodloužení platnosti doménového
-jména <?cs var:domain ?>
-Doménové jméno je prodlouženo do <?cs var:exdate ?>
+Dne <?cs var:renewdate ?> bylo provedeno prodloužení platnosti
+doménového jména <?cs var:domain ?>. Doménové jméno je prodlouženo
+do <?cs var:exdate ?>.
 
-English version is not available
-
+On <?cs var:renewdate ?>, the <?cs var:domain ?> domain name was
+renewed. The domain name validity is extended until <?cs var:exdate ?>.
 =====================================================================
 
 --
@@ -621,8 +733,12 @@ Vzhledem ke skutečnosti, že kontaktní osoba <?cs var:handle ?>
 <?cs var:name ?> nebyla po dobu stanovenou v Pravidlech registrace
 aktivní, <?cs var:defaults.company ?> na základě Pravidel registrace
 ruší ke dni <?cs var:deldate ?> uvedenou kontaktní osobu.
-=====================================================================
 
+With regard to the fact that the contact <?cs var:handle ?>
+<?cs var:name ?> was not active during the past 2 months,
+<?cs var:defaults.company ?> is cancelling the aforementioned contact
+as of <?cs var:deldate ?>.
+=====================================================================
 
 --
 <?cs var:defaults.company ?>
@@ -647,8 +763,12 @@ Vzhledem ke skutečnosti, že sada nameserverů <?cs var:handle ?>
 nebyla po dobu stanovenou v Pravidlech registrace aktivní,
 <?cs var:defaults.company ?> na základě Pravidel registrace ruší ke dni
 <?cs var:deldate ?> uvedenou sadu nameserverů.
-=====================================================================
 
+With regard to the fact that the set <?cs var:handle ?> of the
+nameservers was not active during the past 2 months,
+<?cs var:defaults.company ?> is cancelling the aforementioned set
+of nameservers as of <?cs var:deldate ?>.
+=====================================================================
 
 --
 <?cs var:defaults.company ?>
