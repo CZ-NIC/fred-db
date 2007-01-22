@@ -12,14 +12,14 @@ prefix integer -- citac s prefixem ciselne rady fakrru
 
 -- zona enum
 -- zalohove
-insert into invoice_prefix values ( 1 , 3 ,  0 , 2007 , 110700001 );
+insert into invoice_prefix values ( 1 , 1 ,  0 , 2007 , 110700001 );
 -- vyuctovaci 
-insert into invoice_prefix values ( 2 , 3 ,  1 , 2007 , 120700001 );
+insert into invoice_prefix values ( 2 , 1 ,  1 , 2007 , 120700001 );
 -- zona CZ
 -- zalohove
-insert into invoice_prefix values ( 3 , 1 ,  0 , 2007 , 130700001 );
+insert into invoice_prefix values ( 3 , 3 ,  0 , 2007 , 130700001 );
 -- vyuctovaci
-insert into invoice_prefix values ( 4 , 1 ,  1 , 2007 , 140700001 );
+insert into invoice_prefix values ( 4 , 3 ,  1 , 2007 , 140700001 );
  
  
 
