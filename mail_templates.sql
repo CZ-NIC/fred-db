@@ -68,7 +68,7 @@ Zaslání autorizační informace
 
 Vážený zákazníku,
 
-   na základě Vaší žádosti podané prostřednictvím registrátora 
+   na základě Vaší žádosti podané prostřednictvím registrátora
 <?cs var:registrar ?>, jejímž obsahem je žádost o zaslání hesla
 příslušející k objektu s identifikátorem <?cs var:handle ?>.
 
@@ -473,7 +473,7 @@ Držitel: <?cs var:owner ?>
 Registrátor: <?cs var:registrator ?>
 <?cs each:item = administrators ?>
 Administrátorský kontakt: <?cs var:item ?>
-<?cs /each ?>                               
+<?cs /each ?>
 
                                              S pozdravem
                                              podpora <?cs var:defaults.company ?>
@@ -498,9 +498,8 @@ records:
 Domain name: <?cs var:domain ?>
 Owner: <?cs var:owner ?>
 Registrar: <?cs var:registrator ?>
-<?cs each:item = administrators ?>
-Administrator contact: <?cs var:item ?>
-<?cs /each ?>                               
+<?cs each:item = administrators ?>Administrator contact: <?cs var:item ?>
+<?cs /each ?>
 
 
                                              Yours sincerely
@@ -627,7 +626,7 @@ Registrátor / Registrar : <?cs var:registrar ?>
 Žádost byla úspešně zpracována, požadované změny byly provedeny. 
 The request was completed successfully, required changes were done. 
  
---
+-- 
 <?cs var:defaults.company ?>
 <?cs var:defaults.street ?>
 <?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
@@ -655,7 +654,7 @@ Registrátor / Registrar : <?cs var:registrar ?>
 Žádost byla úspešně zpracována, požadované změny byly provedeny. 
 The request was completed successfully, required changes were done. 
  
---
+-- 
 <?cs var:defaults.company ?>
 <?cs var:defaults.street ?>
 <?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
@@ -683,7 +682,7 @@ Registrátor / Registrar : <?cs var:registrar ?>
 Žádost byla úspešně zpracována, požadované změny byly provedeny. 
 The request was completed successfully, required changes were done. 
  
---
+-- 
 <?cs var:defaults.company ?>
 <?cs var:defaults.street ?>
 <?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
@@ -710,7 +709,7 @@ On <?cs var:renewdate ?>, the <?cs var:domain ?> domain name was
 renewed. The domain name validity is extended until <?cs var:exdate ?>.
 =====================================================================
 
---
+-- 
 <?cs var:defaults.company ?>
 <?cs var:defaults.street ?>
 <?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
@@ -740,7 +739,7 @@ With regard to the fact that the contact <?cs var:handle ?>
 as of <?cs var:deldate ?>.
 =====================================================================
 
---
+-- 
 <?cs var:defaults.company ?>
 <?cs var:defaults.street ?>
 <?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
@@ -770,7 +769,7 @@ nameservers was not active during the past 2 months,
 of nameservers as of <?cs var:deldate ?>.
 =====================================================================
 
---
+-- 
 <?cs var:defaults.company ?>
 <?cs var:defaults.street ?>
 <?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
@@ -799,7 +798,7 @@ The request was completed successfully, required delete was done. 
  
 =====================================================================
 
---
+-- 
 <?cs var:defaults.company ?>
 <?cs var:defaults.street ?>
 <?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
@@ -828,7 +827,7 @@ The request was completed successfully, required delete was done. 
  
 =====================================================================
 
---
+-- 
 <?cs var:defaults.company ?>
 <?cs var:defaults.street ?>
 <?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
@@ -839,4 +838,29 @@ e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (19, 19);
+
+INSERT INTO mail_type (name, subject) VALUES ('techcheck', 'Oznámení o neúspěšném technickém testu sady nameserverů / xxx');
+INSERT INTO mail_templates (contenttype, template) VALUES
+('plain',
+'
+Oznámení o neúspěšném technickém testu sady nameserverů <?cs var:handle ?>
+xxx
+
+=====================================================================
+<?cs each:item = tests ?>Název neúspěšného testu / xxx : <?cs var:item.name ?>
+Doplňující informace / xxx : <?cs var:item.data ?>
+=====================================================================
+<?cs /each ?>
+
+-- 
+<?cs var:defaults.company ?>
+<?cs var:defaults.street ?>
+<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
+---------------------------------
+tel.: <?cs var:defaults.tel ?>
+fax : <?cs var:defaults.fax ?>
+e-mail : <?cs var:defaults.emailsupport ?>
+---------------------------------
+');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (20, 20);
 
