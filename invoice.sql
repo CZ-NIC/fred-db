@@ -26,6 +26,18 @@ insert into invoice_prefix values ( 4 , 3 ,  1 , 2007 , 140700001 );
 
 -- taulka fakturaci ucetnich faltur od do a id faktury pokud je NULL neni vyuctovaci faktura vystavena
 
+-- generovani faktur
+CREATE TABLE invoice_generation
+(
+id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
+FromDate timestamp NOT  NULL , -- datum zuctovaciho odobi od-do
+ToDate timestamp NOT NULL DEFAULT now() , -- do datumu
+registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora
+Zone INTEGER REFERENCES Zone (ID),
+InvoiceID INTEGER REFERENCES Invoice (ID) -- id vyuctovaci faktury
+);
+
+
 -- invoice  Zalohove faktury 
 CREATE TABLE invoice
 (
@@ -33,19 +45,30 @@ id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
 Zone INTEGER REFERENCES Zone (ID),
 CrDate timestamp NOT NULL DEFAULT now(),  -- datum a cas vytvoreni faktury
 TaxDate date  , -- datum zdanitelneho plneni ( kdy prisla platba u zalohove FA)
-FromDate timestamp default NULL , -- datum zuctovaciho odobi od-do
-ToDate timestamp default NULL , -- do datumu
-typ integer default 0, --  typ faktury 0 zalohova 1 vyuctovaci 2 vypis sluzeb za obdobi 
+prefix_type INTEGER REFERENCES invoice_prefix(ID), --  typ faktury z jakeho je roku a jakeho je typu dle prefixu
 prefix integer UNIQUE default NULL , -- deviti mistne  cislo faktury z invoice_prefix.prefix pocitano dle TaxDate
                                      -- pokud je NULL je to vypis vyuctovani za sluzby  vyuctovaci faktura se neuvadi je to typ 2 
 registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora
 -- TODO registrarhistoryID pro odkazy na spravne adresy ICO a DIC
 Credit numeric(10,2)  DEFAULT 0.0, -- kredit ze ktereho se cerpa az do nuly pokud NULL je to vyctovaci faktura
 Price numeric(10,2)  DEFAULT 0.0, -- vyse faktury i s dani
-VAT integer   DEFAULT 19, -- vyse dane 19%
-total numeric(10,2)  DEFAULT 0.0,  -- castka bez dane
-totalVAT numeric(10,2)  DEFAULT 0.0  -- odvedena dan
+VAT integer   DEFAULT 19, -- vyse dane 19% (0) pro vyctovaci
+total numeric(10,2)  DEFAULT 0.0,  -- castka bez dane ( pro vyctvovaci stejny jako price=total castka bez dane);
+totalVAT numeric(10,2)  DEFAULT 0.0  -- odvedena dan ( 0 pro vyctovaci dan je odvedena na zalohovych FA )
 );
+
+--  tabulka vyuctovani zalohovych Faktur
+CREATE TABLE invoice_credit_payment_map
+(
+invoiceID INTEGER REFERENCES Invoice (ID) , -- id vyuctovaci faktury
+ainvoiceID INTEGER REFERENCES Invoice (ID) , -- id zalohove faktury
+credit numeric(10,2)  DEFAULT 0.0, -- strzeny  kredit
+balance numeric(10,2)  DEFAULT 0.0, -- aktualni zustatek dane zalohova FAKTURY
+PRIMARY KEY (invoiceID, ainvoiceID)
+);
+
+
+
 
 
 
@@ -73,7 +96,7 @@ CREATE TABLE invoice_object_registry_price_map
 id INTEGER REFERENCES invoice_object_registry(ID),
 InvoiceID INTEGER REFERENCES Invoice (ID), -- id zalohove faktury
 price numeric(10,2) NOT NULL default 0 , -- cena za operaci
-price_balance numeric(10,2) NOT NULL default 0 , aktualni  zustatek creditu na dane zalohove FA
+price_balance numeric(10,2) NOT NULL default 0 , -- aktualni  zustatek creditu na dane zalohove FA
 PRIMARY KEY (id ,  InvoiceID  ) -- unikatni klic
 );
 
