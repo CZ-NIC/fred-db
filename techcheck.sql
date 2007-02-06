@@ -69,7 +69,9 @@ CREATE TABLE check_nsset (
 	overallstatus SMALLINT NOT NULL,
 	-- Here are stored fqdns of domains which were tested with nsset and
 	-- are not part of register
-	extra_fqdns VARCHAR(300)[]
+	extra_fqdns VARCHAR(300)[],
+	-- if domains associated with nsset were also tested
+	dig BOOLEAN NOT NULL
 );
 
 CREATE TABLE check_result (

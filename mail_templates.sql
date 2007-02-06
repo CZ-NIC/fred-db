@@ -142,8 +142,7 @@ V této chvíli evidujeme následující údaje o doméně:
 Doménové jméno: <?cs var:domain ?>
 Držitel: <?cs var:owner ?>
 Registrátor: <?cs var:registrator ?>
-<?cs each:item = administrators ?>
-Administrativní kontakt: <?cs var:item ?>
+<?cs each:item = administrators ?>Administrativní kontakt: <?cs var:item ?>
 <?cs /each ?>
 
 Vzhledem k této situaci máte nyní následující možnosti:
@@ -181,8 +180,7 @@ At present, our database includes the following details concerning your domain:
 Domain name: <?cs var:domain ?>
 Holder: <?cs var:owner ?>
 Registrar: <?cs var:registrator ?>
-<?cs each:item = administrators ?>
-Admin contact: <?cs var:item ?>
+<?cs each:item = administrators ?>Admin contact: <?cs var:item ?>
 <?cs /each ?>
 
 To ensure adequate remedy of the existing situation, you can choose
@@ -250,8 +248,7 @@ V této chvíli evidujeme následující údaje o doméně:
 Doménové jméno: <?cs var:domain ?>
 Držitel: <?cs var:owner ?>
 Registrátor: <?cs var:registrator ?>
-<?cs each:item = administrators ?>
-Administrativní kontakt: <?cs var:item ?>
+<?cs each:item = administrators ?>Administrativní kontakt: <?cs var:item ?>
 <?cs /each ?>
 
 
@@ -294,8 +291,7 @@ records:
 Domain name: <?cs var:domain ?>
 Owner: <?cs var:owner ?>
 Registrar: <?cs var:registrator ?>
-<?cs each:item = administrators ?>
-Admin contact: <?cs var:item ?>
+<?cs each:item = administrators ?>Admin contact: <?cs var:item ?>
 <?cs /each ?>
 
 
@@ -471,8 +467,7 @@ V této chvíli evidujeme následující údaje o doméně:
 Doménové jméno: <?cs var:domain ?>
 Držitel: <?cs var:owner ?>
 Registrátor: <?cs var:registrator ?>
-<?cs each:item = administrators ?>
-Administrativní kontakt: <?cs var:item ?>
+<?cs each:item = administrators ?>Administrativní kontakt: <?cs var:item ?>
 <?cs /each ?>
 
                                              S pozdravem
@@ -876,17 +871,16 @@ Vážený zákazníku,
 dovolujeme si Vás upozornit, že k <?cs var:checkdatetime ?> dosud nedošlo k
 prodloužení validace doménového jména <?cs var:domain ?>, která je platná do 
 <?cs var:validation ?>. 
-V případě, že hodláte obnovit validaci uvedeného
-doménového jména, kontaktujte prosím svého registrátora a ve spolupráci
-s ním zajistěte prodloužení validace vašeho doménového jména před tímto datem.
+V případě, že hodláte obnovit validaci uvedeného doménového jména, kontaktujte
+prosím svého registrátora a ve spolupráci s ním zajistěte prodloužení validace
+vašeho doménového jména před tímto datem.
 
 V této chvíli evidujeme následující údaje o doméně:
 
 Doménové jméno: <?cs var:domain ?>
 Držitel: <?cs var:owner ?>
 Registrátor: <?cs var:registrator ?>
-<?cs each:item = administrators ?>
-Administrativní kontakt: <?cs var:item ?>
+<?cs each:item = administrators ?>Administrativní kontakt: <?cs var:item ?>
 <?cs /each ?>
 
                                              S pozdravem
@@ -901,9 +895,9 @@ Dear customer,
 We would like to notify you that as of <?cs var:checkdatetime ?>, extension of
 the <?cs var:domain ?> domain name validation has not been made, yet. Validation 
 will expire on <?cs var:validation ?>.
-If you plan to renew validation
-of the aforementioned domain name, please, contact your registrar, and together
-execute the extension of validation of your domain name before this date.
+If you plan to renew validation of the aforementioned domain name, please,
+contact your registrar, and together execute the extension of validation of
+your domain name before this date.
 
 At this moment, we have the following information about the domain in our
 records:
