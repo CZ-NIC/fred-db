@@ -143,7 +143,7 @@ Doménové jméno: <?cs var:domain ?>
 Držitel: <?cs var:owner ?>
 Registrátor: <?cs var:registrator ?>
 <?cs each:item = administrators ?>
-Administrátorský kontakt: <?cs var:item ?>
+Administrativní kontakt: <?cs var:item ?>
 <?cs /each ?>
 
 Vzhledem k této situaci máte nyní následující možnosti:
@@ -251,7 +251,7 @@ Doménové jméno: <?cs var:domain ?>
 Držitel: <?cs var:owner ?>
 Registrátor: <?cs var:registrator ?>
 <?cs each:item = administrators ?>
-Administrátorský kontakt: <?cs var:item ?>
+Administrativní kontakt: <?cs var:item ?>
 <?cs /each ?>
 
 
@@ -295,7 +295,7 @@ Domain name: <?cs var:domain ?>
 Owner: <?cs var:owner ?>
 Registrar: <?cs var:registrator ?>
 <?cs each:item = administrators ?>
-Administrator contact: <?cs var:item ?>
+Admin contact: <?cs var:item ?>
 <?cs /each ?>
 
 
@@ -461,7 +461,7 @@ Vážený zákazníku,
 dovolujeme si Vás upozornit, že k <?cs var:checkdatetime ?> dosud nedošlo k
 prodloužení validace doménového jména <?cs var:domain ?>.
 Vzhledem k této skutečnosti a na základě Pravidel registrace doménových
-jmen, <?cs var:defaults.company ?> ji vyřazuje ze zóny. Doménové jméno je
+jmen, ji <?cs var:defaults.company ?> vyřazuje ze zóny. Doménové jméno je
 i nadále registrováno. V případě, že hodláte obnovit validaci uvedeného
 doménového jména, kontaktujte prosím svého registrátora a ve spolupráci
 s ním zajistěte prodloužení validace vašeho doménového jména.
@@ -472,7 +472,7 @@ Doménové jméno: <?cs var:domain ?>
 Držitel: <?cs var:owner ?>
 Registrátor: <?cs var:registrator ?>
 <?cs each:item = administrators ?>
-Administrátorský kontakt: <?cs var:item ?>
+Administrativní kontakt: <?cs var:item ?>
 <?cs /each ?>
 
                                              S pozdravem
@@ -498,7 +498,7 @@ records:
 Domain name: <?cs var:domain ?>
 Owner: <?cs var:owner ?>
 Registrar: <?cs var:registrator ?>
-<?cs each:item = administrators ?>Administrator contact: <?cs var:item ?>
+<?cs each:item = administrators ?>Admin contact: <?cs var:item ?>
 <?cs /each ?>
 
 
@@ -523,7 +523,7 @@ INSERT INTO mail_templates (contenttype, template) VALUES
 '
 Oznámení o registraci / Registration notification
 ======================================================================
-Založení domény / Domain create 
+Registrace domény / Domain create 
 Identifikátor domény / Domain handle : <?cs var:handle ?>
 Číslo žádosti / Ticket :  <?cs var:ticket ?>
 Registrátor / Registrar : <?cs var:registrar ?>
@@ -554,7 +554,7 @@ INSERT INTO mail_templates (contenttype, template) VALUES
 '
 Oznámení o registraci / Registration notification
 ======================================================================
-Založení kontaktu / Contact person create 
+Registrace kontaktu / Contact person create 
 Identifikátor kontaktu / Person handle : <?cs var:handle ?>
 Číslo žádosti / Ticket :  <?cs var:ticket ?>
 Registrátor / Registrar : <?cs var:registrar ?>
@@ -585,7 +585,7 @@ INSERT INTO mail_templates (contenttype, template) VALUES
 '
 Oznámení o registraci / Registration notification
 ======================================================================
-Založení sady nameserverů / NS set create 
+Registrace sady nameserverů / NS set create 
 Identifikátor sady nameserverů / NS set handle : <?cs var:handle ?>
 Číslo žádosti / Ticket :  <?cs var:ticket ?>
 Registrátor / Registrar : <?cs var:registrar ?>
@@ -729,8 +729,8 @@ INSERT INTO mail_templates (contenttype, template) VALUES
 Oznámení o zrušení / Delete notification 
 =====================================================================
 Vzhledem ke skutečnosti, že kontaktní osoba <?cs var:handle ?>
-<?cs var:name ?> nebyla po dobu stanovenou v Pravidlech registrace
-aktivní, <?cs var:defaults.company ?> na základě Pravidel registrace
+<?cs var:name ?> nebyla po stanovenou dobu aktivní,
+ <?cs var:defaults.company ?> na základě Pravidel registrace
 ruší ke dni <?cs var:deldate ?> uvedenou kontaktní osobu.
 
 With regard to the fact that the contact <?cs var:handle ?>
@@ -759,7 +759,7 @@ INSERT INTO mail_templates (contenttype, template) VALUES
 Oznámení o zrušení / Delete notification 
 =====================================================================
 Vzhledem ke skutečnosti, že sada nameserverů <?cs var:handle ?>
-nebyla po dobu stanovenou v Pravidlech registrace aktivní,
+nebyla po stanovenou dobu aktivní,
 <?cs var:defaults.company ?> na základě Pravidel registrace ruší ke dni
 <?cs var:deldate ?> uvedenou sadu nameserverů.
 
@@ -864,3 +864,68 @@ e-mail : <?cs var:defaults.emailsupport ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (20, 20);
 
+INSERT INTO mail_type (name, subject) VALUES ('expiration_validation_before', 'Oznámení vypršení validace enum domény / Notification about expiration of the enum domain validation');
+INSERT INTO mail_templates (contenttype, template) VALUES
+('plain',
+'English version of the e-mail is entered below the Czech version
+
+Oznámení o blížícím se vypršení validace enum domény.
+
+Vážený zákazníku,
+
+dovolujeme si Vás upozornit, že k <?cs var:checkdatetime ?> dosud nedošlo k
+prodloužení validace doménového jména <?cs var:domain ?>, která je platná do 
+<?cs var:validation ?>. 
+V případě, že hodláte obnovit validaci uvedeného
+doménového jména, kontaktujte prosím svého registrátora a ve spolupráci
+s ním zajistěte prodloužení validace vašeho doménového jména před tímto datem.
+
+V této chvíli evidujeme následující údaje o doméně:
+
+Doménové jméno: <?cs var:domain ?>
+Držitel: <?cs var:owner ?>
+Registrátor: <?cs var:registrator ?>
+<?cs each:item = administrators ?>
+Administrativní kontakt: <?cs var:item ?>
+<?cs /each ?>
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
+
+
+
+Notification about approaching expiration of the enum domain validation
+
+Dear customer,
+
+We would like to notify you that as of <?cs var:checkdatetime ?>, extension of
+the <?cs var:domain ?> domain name validation has not been made, yet. Validation 
+will expire on <?cs var:validation ?>.
+If you plan to renew validation
+of the aforementioned domain name, please, contact your registrar, and together
+execute the extension of validation of your domain name before this date.
+
+At this moment, we have the following information about the domain in our
+records:
+
+Domain name: <?cs var:domain ?>
+Owner: <?cs var:owner ?>
+Registrar: <?cs var:registrator ?>
+<?cs each:item = administrators ?>Admin contact: <?cs var:item ?>
+<?cs /each ?>
+
+
+                                             Yours sincerely
+                                             support <?cs var:defaults.company ?>
+
+-- 
+<?cs var:defaults.company ?>
+<?cs var:defaults.street ?>
+<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
+---------------------------------
+tel.: <?cs var:defaults.tel ?>
+fax : <?cs var:defaults.fax ?>
+e-mail : <?cs var:defaults.emailsupport ?>
+---------------------------------
+');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (21, 21);
