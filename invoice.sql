@@ -26,16 +26,6 @@ insert into invoice_prefix values ( 4 , 3 ,  1 , 2007 , 140700001 );
 
 -- taulka fakturaci ucetnich faltur od do a id faktury pokud je NULL neni vyuctovaci faktura vystavena
 
--- generovani faktur
-CREATE TABLE invoice_generation
-(
-id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
-FromDate timestamp NOT  NULL , -- datum zuctovaciho odobi od-do
-ToDate timestamp NOT NULL DEFAULT now() , -- do datumu
-registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora
-Zone INTEGER REFERENCES Zone (ID),
-InvoiceID INTEGER REFERENCES Invoice (ID) -- id vyuctovaci faktury
-);
 
 
 -- invoice  Zalohove faktury 
@@ -51,10 +41,21 @@ prefix integer UNIQUE default NULL , -- deviti mistne  cislo faktury z invoice_p
 registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora
 -- TODO registrarhistoryID pro odkazy na spravne adresy ICO a DIC
 Credit numeric(10,2)  DEFAULT 0.0, -- kredit ze ktereho se cerpa az do nuly pokud NULL je to vyctovaci faktura
-Price numeric(10,2)  DEFAULT 0.0, -- vyse faktury i s dani
-VAT integer   DEFAULT 19, -- vyse dane 19% (0) pro vyctovaci
-total numeric(10,2)  DEFAULT 0.0,  -- castka bez dane ( pro vyctvovaci stejny jako price=total castka bez dane);
-totalVAT numeric(10,2)  DEFAULT 0.0  -- odvedena dan ( 0 pro vyctovaci dan je odvedena na zalohovych FA )
+Price numeric(10,2) NOT NULL DEFAULT 0.0, -- vyse faktury i s dani
+VAT integer NOT NULL  DEFAULT 19, -- vyse dane 19% (0) pro vyctovaci
+total numeric(10,2) NOT NULL  DEFAULT 0.0 ,  -- castka bez dane ( pro vyctvovaci stejny jako price=total castka bez dane);
+totalVAT numeric(10,2)  NOT NULL DEFAULT 0.0  -- odvedena dan ( 0 pro vyctovaci dan je odvedena na zalohovych FA )
+);
+
+-- generovani faktur
+CREATE TABLE invoice_generation
+(
+id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
+FromDate timestamp NOT  NULL , -- datum zuctovaciho odobi od-do
+ToDate timestamp NOT NULL DEFAULT now() , -- do datumu
+registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora
+Zone INTEGER REFERENCES Zone (ID),
+InvoiceID INTEGER REFERENCES Invoice (ID) -- id vyuctovaci faktury
 );
 
 --  tabulka vyuctovani zalohovych Faktur
@@ -62,8 +63,8 @@ CREATE TABLE invoice_credit_payment_map
 (
 invoiceID INTEGER REFERENCES Invoice (ID) , -- id vyuctovaci faktury
 ainvoiceID INTEGER REFERENCES Invoice (ID) , -- id zalohove faktury
-credit numeric(10,2)  DEFAULT 0.0, -- strzeny  kredit
-balance numeric(10,2)  DEFAULT 0.0, -- aktualni zustatek dane zalohova FAKTURY
+credit numeric(10,2)  NOT NULL DEFAULT 0.0, -- strzeny  kredit
+balance numeric(10,2)  NOT NULL DEFAULT 0.0, -- aktualni zustatek dane zalohova FAKTURY
 PRIMARY KEY (invoiceID, ainvoiceID)
 );
 
