@@ -834,18 +834,85 @@ e-mail : <?cs var:defaults.emailsupport ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (19, 19);
 
-INSERT INTO mail_type (name, subject) VALUES ('techcheck', 'Oznámení o neúspěšném technickém testu sady nameserverů / xxx');
+INSERT INTO mail_type (name, subject) VALUES ('techcheck', 'Výsledek technického testu / Technical check result');
 INSERT INTO mail_templates (contenttype, template) VALUES
 ('plain',
 '
-Oznámení o neúspěšném technickém testu sady nameserverů <?cs var:handle ?>
-xxx
+Výsledek technické kontroly sady nameserverů <?cs var:handle ?>
+Result of technical check on NS set <?cs var:handle ?>
 
+Datum kontroly / Date of the check: <?cs var:checkdate ?>
+Číslo žádosti / Ticket: <?cs var:ticket ?>
+
+<?cs def:printtest(par_test) ?>
+  <?cs if:par_test.name == "existance" ?>
+Následující nameservery v sadě nameserverů nejsou dosažitelné:
+Following nameservers in NS set are not reachable:
+    <?cs each:ns = par_test.ns ?><?cs var:ns ?><?cs /each ?>
+  <?cs /if ?>
+
+  <?cs if:par_test.name == "autonomous" ?>
+Sada nameserverů neobsahuje minimálně dva nameservery v různých
+autonomních systémech.
+In NS set are no two nameservers in different autonomous systems.
+  <?cs /if ?>
+
+  <?cs if:par_test.name == "presence" ?>
+    <?cs each:ns = par_test.ns ?>
+Nameserver <?cs var:ns ?> neobsahuje záznam pro domény:
+Nameserver <?cs var:ns ?> does not contain record for domains:
+      <?cs each:fqdn = ns.fqdn ?><?cs var:fqdn ?>
+      <?cs /each ?>
+      <?cs if:ns.overfull ?>...<?cs /if ?>
+    <?cs /each ?>
+  <?cs /if ?>
+
+  <?cs if:par_test.name == "authoritative" ?>
+    <?cs each:ns = par_test.ns ?>
+Nameserver <?cs var:ns ?> není autoritativní pro domény:
+Nameserver <?cs var:ns ?> is not authoritative for domains:
+      <?cs each:fqdn = ns.fqdn ?><?cs var:fqdn ?>
+      <?cs /each ?>
+      <?cs if:ns.overfull ?>...<?cs /if ?>
+    <?cs /each ?>
+  <?cs /if ?>
+
+  <?cs if:par_test.name == "heterogenous" ?>
+Všechny nameservery v sadě nameserverů používají stejnou implementaci
+DNS serveru.
+All nameservers in NS set use the same implementation of DNS server.
+  <?cs /if ?>
+
+  <?cs if:par_test.name == "recursive" ?>
+Následující nameservery v sadě nameserverů jsou rekurzivní:
+Following nameservers in NS set are recursive:
+    <?cs each:ns = par_test.ns ?><?cs var:ns ?>
+    <?cs /each ?>
+  <?cs /if ?>
+
+  <?cs if:par_test.name == "recursive4all" ?>
+Následující nameservery v sadě nameserverů zodpověděli rekurzivně dotaz:
+Following nameservers in NS set answered recursively a query:
+    <?cs each:ns = par_test.ns ?><?cs var:ns ?>
+    <?cs /each ?>
+  <?cs /if ?>
+<?cs /def ?>
 =====================================================================
-<?cs each:item = tests ?>Název neúspěšného testu / xxx : <?cs var:item.name ?>
-Doplňující informace / xxx : <?cs var:item.data ?>
-=====================================================================
+Chyby / Errors:
+<?cs each:item = tests ?>
+  <?cs if:item.type == "error" ?><?cs call:printtest(item) ?><?cs /if ?>
 <?cs /each ?>
+=====================================================================
+Varování / Warnings:
+<?cs each:item = tests ?>
+  <?cs if:item.type == "warning" ?><?cs call:printtest(item) ?><?cs /if ?>
+<?cs /each ?>
+=====================================================================
+Upozornění / Notice:
+<?cs each:item = tests ?>
+  <?cs if:item.type == "notice" ?><?cs call:printtest(item) ?><?cs /if ?>
+<?cs /each ?>
+=====================================================================
 
 -- 
 <?cs var:defaults.company ?>

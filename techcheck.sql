@@ -81,7 +81,7 @@ CREATE TABLE check_result (
 	-- tri-state logic (0=passed, 1=failed, 2=unknown)
 	--    unknown occurs if script failed for unknown reason
 	status SMALLINT NOT NULL,
-	note VARCHAR(300), -- output of test script (stderr)
-	data VARCHAR(300)  -- test-specific text data (stdout)
+	note TEXT, -- output of test script (stderr)
+	data TEXT  -- test-specific text data (stdout)
 );
 
