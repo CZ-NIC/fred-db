@@ -97,7 +97,6 @@ CREATE TABLE invoice_object_registry_price_map
 id INTEGER REFERENCES invoice_object_registry(ID),
 InvoiceID INTEGER REFERENCES Invoice (ID), -- id zalohove faktury
 price numeric(10,2) NOT NULL default 0 , -- cena za operaci
-price_balance numeric(10,2) NOT NULL default 0 , -- aktualni  zustatek creditu na dane zalohove FA
 PRIMARY KEY (id ,  InvoiceID  ) -- unikatni klic
 );
 
