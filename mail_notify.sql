@@ -27,6 +27,22 @@ INSERT INTO mail_defaults (name, value) VALUES ('tel', '+420 222 745 104');
 INSERT INTO mail_defaults (name, value) VALUES ('fax', '+420 222 745 112');
 INSERT INTO mail_defaults (name, value) VALUES ('emailsupport', 'support@nic.cz');
 
+CREATE TABLE mail_footer (
+	id integer PRIMARY KEY,
+	footer text NOT NULL
+);
+INSERT INTO mail_footer (id, footer) VALUES (1,
+'-- 
+<?cs var:defaults.company ?>
+<?cs var:defaults.street ?>
+<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
+---------------------------------
+tel.: <?cs var:defaults.tel ?>
+fax : <?cs var:defaults.fax ?>
+e-mail : <?cs var:defaults.emailsupport ?>
+---------------------------------
+');
+
 CREATE TABLE mail_header_defaults (
 	id SERIAL PRIMARY KEY,
 	h_from varchar(300),
@@ -55,7 +71,8 @@ VALUES
 CREATE TABLE mail_templates (
 	id SERIAL PRIMARY KEY,
 	contenttype varchar(100) NOT NULL,
-	template text NOT NULL
+	template text NOT NULL,
+	footer integer REFERENCES mail_footer(id)
 	);
 
 CREATE TABLE mail_type (

@@ -6,8 +6,8 @@
 --
 
 INSERT INTO mail_type (name, subject) VALUES ('sendauthinfo_pif', 'Zaslání autorizační informace / Sending authorization information');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
 'English version of the e-mail is entered below the Czech version
 
 Zaslání autorizační informace
@@ -17,7 +17,7 @@ Vážený zákazníku,
    na základě Vaší žádosti podané prostřednictvím webového formuláře
 na stránce <?cs var:wwwpage ?> dne <?cs var:reqdate ?>, které
 bylo přiděleno identifikační číslo <?cs var:reqid ?>, Vám zasíláme požadované
-heslo, příslušející k objektu s identifikátorem <?cs var:handle ?>.
+heslo, příslušející <?cs if:type == #3 ?>k doméně<?cs elif:type == #1 ?>ke kontaktu s identifikátorem<?cs elif:type == #2 ?>k sadě nameserverů s identifikátorem<?cs /if ?> <?cs var:handle ?>.
 
    Heslo je: <?cs var:authinfo ?>
 
@@ -36,7 +36,7 @@ Dear customer,
    Based on your request submitted via the web form on the <?cs var:wwwpage ?>
 page on <?cs var:reqdate ?>, which received the identification number
 <?cs var:reqid ?>, we are sending you the requested password that belongs
-to the object with the <?cs var:handle ?> identifier.
+to the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs /if ?> <?cs var:handle ?>.
 
    The password is: <?cs var:authinfo ?>
 
@@ -46,22 +46,12 @@ this fact at the following address <?cs var:defaults.emailsupport ?>.
 
                                              Yours sincerely
                                              support <?cs var:defaults.company ?>
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (1, 1);
 
 INSERT INTO mail_type (name, subject) VALUES ('sendauthinfo_epp', 'Zaslání autorizační informace / Sending authorization information');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
 'English version of the e-mail is entered below the Czech version
 
 Zaslání autorizační informace
@@ -70,7 +60,7 @@ Vážený zákazníku,
 
    na základě Vaší žádosti podané prostřednictvím registrátora
 <?cs var:registrar ?>, jejímž obsahem je žádost o zaslání hesla
-příslušející k objektu s identifikátorem <?cs var:handle ?>.
+příslušející <?cs if:type == #3 ?>k doméně<?cs elif:type == #1 ?>ke kontaktu s identifikátorem<?cs elif:type == #2 ?>k sadě nameserverů s identifikátorem<?cs /if ?> <?cs var:handle ?>.
 
    Heslo je: <?cs var:authinfo ?>
 
@@ -92,7 +82,7 @@ Dear customer,
 
    Based on your request submitted via the registrar <?cs var:registrar ?>,
 which contains your request for sending you the password that belongs to
-the object with the identifier <?cs var:handle ?>.
+the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs /if ?> <?cs var:handle ?>.
 
    The password is: <?cs var:authinfo ?>
 
@@ -105,22 +95,12 @@ this fact at the following address <?cs var:defaults.emailsupport ?>.
 
                                              Yours sincerely
                                              support <?cs var:defaults.company ?>
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (2, 2);
 
 INSERT INTO mail_type (name, subject) VALUES ('expiration_notify', 'Upozornění na nutnost úhrady domény / Reminder of the need to settle fees for the domain');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
 'English version of the e-mail is entered below the Czech version
 
 Upozornění na nutnost úhrady domény <?cs var:domain ?>
@@ -196,23 +176,13 @@ one of the following:
 
                                              Yours sincerely
                                              support <?cs var:defaults.company ?>
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (3, 3);
 
 
 INSERT INTO mail_type (name, subject) VALUES ('expiration_dns_owner', 'Oznámení o vyřazení domény z DNS / Notification about inactivation of the domain from DNS');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
 'English version of the e-mail is entered below the Czech version
 
 Oznámení o vyřazení domény <?cs var:domain?> z DNS
@@ -297,23 +267,13 @@ Registrar: <?cs var:registrator ?>
 
                                              Yours sincerely
                                              support <?cs var:defaults.company ?>
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (4, 4);
 
 
 INSERT INTO mail_type (name, subject) VALUES ('expiration_register_owner', 'Oznámení o zrušení domény / Notification about cancellation of the domain');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
 'English version of the e-mail is entered below the Czech version
 
 Oznámení o zrušení domény <?cs var:domain ?>
@@ -343,22 +303,12 @@ jmen), <?cs var:defaults.company ?> is cancelling the domain name registration.
 
                                              Yours sincerely
                                              support <?cs var:defaults.company ?>
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (5, 5);
 
 INSERT INTO mail_type (name, subject) VALUES ('expiration_dns_tech', 'Oznámení o vyřazení domény z DNS / Notification about withdrawal of the domain from DNS');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
 'English version of the e-mail is entered below the Czech version
 
 Oznámení o vyřazení domény <?cs var:domain ?> z DNS
@@ -388,22 +338,12 @@ was withdrawn from DNS as of <?cs var:exdate ?>.
 
                                              Yours sincerely
                                              support <?cs var:defaults.company ?>
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (6, 6);
 
 INSERT INTO mail_type (name, subject) VALUES ('expiration_register_tech', 'Oznámení o zrušení domény / Notification about cancellation of the domain');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
 'English version of the e-mail is entered below the Czech version
 
 Oznámení o zrušení domény <?cs var:domain ?>
@@ -432,22 +372,67 @@ was cancelled as of <?cs var:exdate ?>.
 
                                              Yours sincerely
                                              support <?cs var:defaults.company ?>
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (7, 7);
 
+INSERT INTO mail_type (name, subject) VALUES ('expiration_validation_before', 'Oznámení vypršení validace enum domény / Notification about expiration of the enum domain validation');
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
+'English version of the e-mail is entered below the Czech version
+
+Oznámení o blížícím se vypršení validace enum domény.
+
+Vážený zákazníku,
+
+dovolujeme si Vás upozornit, že k <?cs var:checkdatetime ?> dosud nedošlo k
+prodloužení validace doménového jména <?cs var:domain ?>, která je platná do 
+<?cs var:validation ?>. 
+V případě, že hodláte obnovit validaci uvedeného doménového jména, kontaktujte
+prosím svého registrátora a ve spolupráci s ním zajistěte prodloužení validace
+vašeho doménového jména před tímto datem.
+
+V této chvíli evidujeme následující údaje o doméně:
+
+Doménové jméno: <?cs var:domain ?>
+Držitel: <?cs var:owner ?>
+Registrátor: <?cs var:registrator ?>
+<?cs each:item = administrators ?>Administrativní kontakt: <?cs var:item ?>
+<?cs /each ?>
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
+
+
+
+Notification about approaching expiration of the enum domain validation
+
+Dear customer,
+
+We would like to notify you that as of <?cs var:checkdatetime ?>, extension of
+the <?cs var:domain ?> domain name validation has not been made, yet. Validation 
+will expire on <?cs var:validation ?>.
+If you plan to renew validation of the aforementioned domain name, please,
+contact your registrar, and together execute the extension of validation of
+your domain name before this date.
+
+At this moment, we have the following information about the domain in our
+records:
+
+Domain name: <?cs var:domain ?>
+Owner: <?cs var:owner ?>
+Registrar: <?cs var:registrator ?>
+<?cs each:item = administrators ?>Admin contact: <?cs var:item ?>
+<?cs /each ?>
+
+
+                                             Yours sincerely
+                                             support <?cs var:defaults.company ?>
+');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (8, 8);
+
 INSERT INTO mail_type (name, subject) VALUES ('expiration_validation', 'Oznámení o vypršení validace enum domény / Notification about expiration of the enum domain validation');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
 'English version of the e-mail is entered below the Czech version
 
 Oznámení o vypršení validace enum domény.
@@ -499,58 +484,24 @@ Registrar: <?cs var:registrator ?>
 
                                              Yours sincerely
                                              support <?cs var:defaults.company ?>
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (8, 8);
-
-INSERT INTO mail_type (name, subject) VALUES ('notification_create_domain', 'Oznámení o registraci / Registration notification');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
-'
-Oznámení o registraci / Registration notification
-======================================================================
-Registrace domény / Domain create 
-Identifikátor domény / Domain handle : <?cs var:handle ?>
-Číslo žádosti / Ticket :  <?cs var:ticket ?>
-Registrátor / Registrar : <?cs var:registrar ?>
-======================================================================
-
-Žádost byla úspešně zpracována, požadovaná registrace byla provedena. 
-The request was completed successfully, required registration was done. 
-
-
-                                             S pozdravem
-                                             podpora <?cs var:defaults.company ?>
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (9, 9);
 
-INSERT INTO mail_type (name, subject) VALUES ('notification_create_contact', 'Oznámení o registraci / Registration notification');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
+INSERT INTO mail_type (name, subject) VALUES ('notification_create', 'Oznámení o registraci / Registration notification');
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
 '
+<?cs def:typesubst(lang) ?>
+<?cs if:lang == "cs" ?>
+<?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?>
+<?cs elif:lang == "en" ?>
+<?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs /if ?>
+<?cs /if ?>
+
 Oznámení o registraci / Registration notification
 ======================================================================
-Registrace kontaktu / Contact person create 
-Identifikátor kontaktu / Person handle : <?cs var:handle ?>
+Registrace <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> create 
+Identifikátor <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> handle : <?cs var:handle ?>
 Číslo žádosti / Ticket :  <?cs var:ticket ?>
 Registrátor / Registrar : <?cs var:registrar ?>
 ======================================================================
@@ -561,137 +512,62 @@ The request was completed successfully, required registration was done. 
 
                                              S pozdravem
                                              podpora <?cs var:defaults.company ?>
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (10, 10);
 
-INSERT INTO mail_type (name, subject) VALUES ('notification_create_nsset', 'Oznámení o registraci / Registration notification');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
+INSERT INTO mail_type (name, subject) VALUES ('notification_update', 'Oznámení změn / Notification of changes');
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
 '
-Oznámení o registraci / Registration notification
-======================================================================
-Registrace sady nameserverů / NS set create 
-Identifikátor sady nameserverů / NS set handle : <?cs var:handle ?>
+<?cs def:typesubst(lang) ?>
+<?cs if:lang == "cs" ?>
+<?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?>
+<?cs elif:lang == "en" ?>
+<?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs /if ?>
+<?cs /if ?>
+
+=====================================================================
+Oznámení změn / Notification of changes 
+=====================================================================
+Změna údajů <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> data change 
+Identifikátor <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> handle : <?cs var:handle ?>
 Číslo žádosti / Ticket :  <?cs var:ticket ?>
 Registrátor / Registrar : <?cs var:registrar ?>
-======================================================================
-
-Žádost byla úspešně zpracována, požadovaná registrace byla provedena. 
-The request was completed successfully, required registration was done. 
-
-
-                                             S pozdravem
-                                             podpora <?cs var:defaults.company ?>
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
+=====================================================================
+ 
+Žádost byla úspešně zpracována, požadované změny byly provedeny. 
+The request was completed successfully, required changes were done. 
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (11, 11);
 
-INSERT INTO mail_type (name, subject) VALUES ('notification_update_domain', 'Oznámení změn / Notification of changes');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
+INSERT INTO mail_type (name, subject) VALUES ('notification_transfer', 'Oznámení o transferu / Transfer notification');
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
 '
+<?cs def:typesubst(lang) ?>
+<?cs if:lang == "cs" ?>
+<?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?>
+<?cs elif:lang == "en" ?>
+<?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs /if ?>
+<?cs /if ?>
+
 =====================================================================
-Oznámení změn / Notification of changes 
+Oznámení o transferu / Transfer notification
 =====================================================================
-Změna údajů domény / Domain data change 
-Identifikátor domény / Domain handle : <?cs var:handle ?>
+Transfer <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> transfer
+Identifikátor <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> handle : <?cs var:handle ?>
 Číslo žádosti / Ticket :  <?cs var:ticket ?>
 Registrátor / Registrar : <?cs var:registrar ?>
 =====================================================================
  
-Žádost byla úspešně zpracována, požadované změny byly provedeny. 
-The request was completed successfully, required changes were done. 
- 
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
+Žádost byla úspešně zpracována, transfer byl proveden. 
+The request was completed successfully, transfer was completed. 
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (12, 12);
 
-INSERT INTO mail_type (name, subject) VALUES ('notification_update_contact', 'Oznámení změn / Notification of changes');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
-'
-=====================================================================
-Oznámení změn / Notification of changes 
-=====================================================================
-Změna údajů kontaktu / Contact person data change 
-Identifikátor kontaktu / Contact handle : <?cs var:handle ?>
-Číslo žádosti / Ticket :  <?cs var:ticket ?>
-Registrátor / Registrar : <?cs var:registrar ?>
-=====================================================================
- 
-Žádost byla úspešně zpracována, požadované změny byly provedeny. 
-The request was completed successfully, required changes were done. 
- 
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (13, 13);
-
-INSERT INTO mail_type (name, subject) VALUES ('notification_update_nsset', 'Oznámení změn / Notification of changes');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
-'
-=====================================================================
-Oznámení změn / Notification of changes 
-=====================================================================
-Změna údajů sady nameserverů / NS set data change 
-Identifikátor sady nameserverů / NS set handle : <?cs var:handle ?>
-Číslo žádosti / Ticket :  <?cs var:ticket ?>
-Registrátor / Registrar : <?cs var:registrar ?>
-=====================================================================
- 
-Žádost byla úspešně zpracována, požadované změny byly provedeny. 
-The request was completed successfully, required changes were done. 
- 
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (14, 14);
-
 INSERT INTO mail_type (name, subject) VALUES ('notification_renew', 'Oznámení o prodloužení platnosti / Domain name renew notification');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
 '
 =====================================================================
 Oznámení o prodloužení platnosti / Notification about renewal
@@ -703,87 +579,44 @@ do <?cs var:exdate ?>.
 On <?cs var:renewdate ?>, the <?cs var:domain ?> domain name was
 renewed. The domain name validity is extended until <?cs var:exdate ?>.
 =====================================================================
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
 ');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (15, 15);
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (13, 13);
 
-INSERT INTO mail_type (name, subject) VALUES ('notification_unused_contact', 'Oznámení o zrušení / Delete notification');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
+INSERT INTO mail_type (name, subject) VALUES ('notification_unused', 'Oznámení o zrušení / Delete notification');
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
 '
 =====================================================================
 Oznámení o zrušení / Delete notification 
 =====================================================================
-Vzhledem ke skutečnosti, že kontaktní osoba <?cs var:handle ?>
+Vzhledem ke skutečnosti, že <?cs if:type == #1 ?>kontaktní osoba<?cs elif:type == #2 ?>sada nameserverů<?cs /if ?> <?cs var:handle ?>
 <?cs var:name ?> nebyla po stanovenou dobu aktivní,
  <?cs var:defaults.company ?> na základě Pravidel registrace
-ruší ke dni <?cs var:deldate ?> uvedenou kontaktní osobu.
+ruší ke dni <?cs var:deldate ?> uvedenou <?cs if:type == #1 ?>kontaktní osobu<?cs elif:type == #2 ?>sadu nameserverů<?cs /if ?>.
 
-With regard to the fact that the contact <?cs var:handle ?>
+With regard to the fact that the <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>NS set<?cs /if ?> <?cs var:handle ?>
 <?cs var:name ?> was not active during the past 2 months,
-<?cs var:defaults.company ?> is cancelling the aforementioned contact
+<?cs var:defaults.company ?> is cancelling the aforementioned <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>set of nameservers<?cs /if ?>
 as of <?cs var:deldate ?>.
 =====================================================================
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
 ');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (16, 16);
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (14, 14);
 
-INSERT INTO mail_type (name, subject) VALUES ('notification_unused_nsset', 'Oznámení o zrušení / Delete notification');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
+INSERT INTO mail_type (name, subject) VALUES ('notification_delete', 'Oznámení o zrušení / Delete notification');
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
 '
-=====================================================================
+<?cs def:typesubst(lang) ?>
+<?cs if:lang == "cs" ?>
+<?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?>
+<?cs elif:lang == "en" ?>
+<?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs /if ?>
+<?cs /if ?>
+
 Oznámení o zrušení / Delete notification 
 =====================================================================
-Vzhledem ke skutečnosti, že sada nameserverů <?cs var:handle ?>
-nebyla po stanovenou dobu aktivní,
-<?cs var:defaults.company ?> na základě Pravidel registrace ruší ke dni
-<?cs var:deldate ?> uvedenou sadu nameserverů.
-
-With regard to the fact that the set <?cs var:handle ?> of the
-nameservers was not active during the past 2 months,
-<?cs var:defaults.company ?> is cancelling the aforementioned set
-of nameservers as of <?cs var:deldate ?>.
-=====================================================================
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (17, 17);
-
-INSERT INTO mail_type (name, subject) VALUES ('notification_delete_contact', 'Oznámení o zrušení / Delete notification');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
-'
-Oznámení o zrušení / Delete notification 
-=====================================================================
-Zrušení kontaktu / Contact person data delete
-Identifikator kontaktu / person handle : <?cs var:handle ?>
+Zrušení <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> deletion
+Identifikator <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> handle : <?cs var:handle ?>
 Cislo zadosti / Ticket :  <?cs var:ticket ?>
 Registrator / Registrar : <?cs var:registrar ?>
 =====================================================================
@@ -792,51 +625,12 @@ Registrator / Registrar : <?cs var:registrar ?>
 The request was completed successfully, required delete was done. 
  
 =====================================================================
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
 ');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (18, 18);
-
-INSERT INTO mail_type (name, subject) VALUES ('notification_delete_nsset', 'Oznámení o zrušení / Delete notification');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
-'
-Oznámení o zrušení / Delete notification 
-=====================================================================
-Zrušení sady nameserverů / NS set data delete
-Identifikátor sady nameserverů / NS set handle : <?cs var:handle ?>
-Číslo žádosti / Ticket :  <?cs var:ticket ?>
-Registrátor / Registrar : <?cs var:registrar ?>
-=====================================================================
- 
-Žádost byla úspěšně zpracována, požadované zrušení bylo provedeno. 
-The request was completed successfully, required delete was done. 
- 
-=====================================================================
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (19, 19);
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (15, 15);
 
 INSERT INTO mail_type (name, subject) VALUES ('techcheck', 'Výsledek technického testu / Technical check result');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
 '
 Výsledek technické kontroly sady nameserverů <?cs var:handle ?>
 Result of technical check on NS set <?cs var:handle ?>
@@ -924,69 +718,80 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (20, 20);
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (16, 16);
 
-INSERT INTO mail_type (name, subject) VALUES ('expiration_validation_before', 'Oznámení vypršení validace enum domény / Notification about expiration of the enum domain validation');
-INSERT INTO mail_templates (contenttype, template) VALUES
-('plain',
+INSERT INTO mail_type (name, subject) VALUES ('invoice_deposit', 'Přijatá záloha / xxx');
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
 'English version of the e-mail is entered below the Czech version
 
-Oznámení o blížícím se vypršení validace enum domény.
+Zaslání potvrzení o přijaté záloze
 
-Vážený zákazníku,
+Vážený obchodní přátelé,
 
-dovolujeme si Vás upozornit, že k <?cs var:checkdatetime ?> dosud nedošlo k
-prodloužení validace doménového jména <?cs var:domain ?>, která je platná do 
-<?cs var:validation ?>. 
-V případě, že hodláte obnovit validaci uvedeného doménového jména, kontaktujte
-prosím svého registrátora a ve spolupráci s ním zajistěte prodloužení validace
-vašeho doménového jména před tímto datem.
-
-V této chvíli evidujeme následující údaje o doméně:
-
-Doménové jméno: <?cs var:domain ?>
-Držitel: <?cs var:owner ?>
-Registrátor: <?cs var:registrator ?>
-<?cs each:item = administrators ?>Administrativní kontakt: <?cs var:item ?>
-<?cs /each ?>
+  v příloze zasíláme daňový doklad na přijatou zálohu. Tento daňový doklad 
+slouží k uplatnění nároku na odpočet DPH přijaté zálohy
 
                                              S pozdravem
                                              podpora <?cs var:defaults.company ?>
 
 
 
-Notification about approaching expiration of the enum domain validation
-
-Dear customer,
-
-We would like to notify you that as of <?cs var:checkdatetime ?>, extension of
-the <?cs var:domain ?> domain name validation has not been made, yet. Validation 
-will expire on <?cs var:validation ?>.
-If you plan to renew validation of the aforementioned domain name, please,
-contact your registrar, and together execute the extension of validation of
-your domain name before this date.
-
-At this moment, we have the following information about the domain in our
-records:
-
-Domain name: <?cs var:domain ?>
-Owner: <?cs var:owner ?>
-Registrar: <?cs var:registrator ?>
-<?cs each:item = administrators ?>Admin contact: <?cs var:item ?>
-<?cs /each ?>
-
+English version is not available yet.
 
                                              Yours sincerely
                                              support <?cs var:defaults.company ?>
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
 ');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (21, 21);
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (17, 17);
+
+INSERT INTO mail_type (name, subject) VALUES ('invoice_audit', 'Měsíční vyúčtování / xxx');
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
+'English version of the e-mail is entered below the Czech version
+
+Zaslání měsíčního vyúčtování
+
+Vážený obchodní přátelé,
+
+  v příloze zasíláme daňový doklad za služby registrací doménových jmen a 
+udržování záznamů o doménových jménech za období od <?cs var:fromdate ?>
+do <?cs var:todate ?>.
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
+
+
+
+English version is not available yet.
+
+                                             Yours sincerely
+                                             support <?cs var:defaults.company ?>
+');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (18, 18);
+
+INSERT INTO mail_type (name, subject) VALUES ('invoice_noaudit', 'Měsíční vyúčtování / xxx');
+INSERT INTO mail_templates (contenttype, footer, template) VALUES
+('plain', 1,
+'English version of the e-mail is entered below the Czech version
+
+Zaslání měsíčního vyúčtování
+
+Vážený obchodní přátelé,
+
+  jelikož v období od <?cs var:fromdate ?> do <?cs var:todate ?> Vaše
+společnost neprovedla žádnou registraci doménového jména ani prodloužení
+platnosti doménového jména a nedošlo tak k čerpání žádných placených služeb,
+nebude pro toto období vystaven daňový doklad.
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
+
+
+
+English version is not available yet.
+
+                                             Yours sincerely
+                                             support <?cs var:defaults.company ?>
+');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (19, 19);
+
