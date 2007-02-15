@@ -77,3 +77,6 @@ INSERT INTO enum_reason VALUES( 35 ,  'Attribute msgID in element poll is missin
 INSERT INTO enum_reason VALUES( 36 ,  'registratration is prohibited'  , 'registrace je  zakázána' );
 -- nepodarilose zvalidovat XML
 INSERT INTO enum_reason VALUES( 37 ,  'Schemas validity error' , 'Chyba validace XML schemat' );
+
+-- duplicitni kontak pro tech ci admin 
+INSERT INTO enum_reason VALUES(  38 , 'Duplicity contact' , 'Duplicitnitni kontakt' );
