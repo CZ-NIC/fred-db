@@ -33,10 +33,10 @@ Sending authorization information
 
 Dear customer,
 
-   Based on your request submitted via the web form on the <?cs var:wwwpage ?>
-page on <?cs var:reqdate ?>, which received the identification number
-<?cs var:reqid ?>, we are sending you the requested password that belongs
-to the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs /if ?> <?cs var:handle ?>.
+   Based on your request submitted via the web form on the
+<?cs var:wwwpage ?> page on <?cs var:reqdate ?>, which received
+the identification number <?cs var:reqid ?>, we are sending you the requested
+password that belongs to the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs /if ?> <?cs var:handle ?>.
 
    The password is: <?cs var:authinfo ?>
 
@@ -107,12 +107,12 @@ Upozornění na nutnost úhrady domény <?cs var:domain ?>
 
 Vážený zákazníku,
 
-dovolujeme si Vás upozornit, že k <?cs var:checkdatetime ?> dosud nedošlo
-k prodloužení registrace doménového jména <?cs var:domain ?>.
-Vzhledem k tomu, že doménové jméno bylo za uplynulé období zaplaceno pouze
-do <?cs var:exdate ?>, nachází se nyní v takzvané ochranné lhůtě.
-V případě, že doménové jméno nebude včas uhrazeno, budou v souladu
-s Pravidly registrace doménových jmen nasledovat tyto kroky:
+dovolujeme si Vás upozornit, že k <?cs var:checkdate ?> dosud nedošlo k prodloužení
+registrace doménového jména <?cs var:domain ?>. Vzhledem k tomu, že doménové
+jméno bylo za uplynulé období zaplaceno pouze do <?cs var:exdate ?>, nachází se
+nyní v takzvané ochranné lhůtě. V případě, že doménové jméno nebude včas
+uhrazeno, budou v souladu s Pravidly registrace doménových jmen nasledovat
+tyto kroky:
 
 <?cs var:dnsdate ?> - Znefunkčnění doménového jména (vyřazení z DNS).
 <?cs var:exregdate ?> - Definitivní zrušení registrace doménového jména.
@@ -121,10 +121,9 @@ V této chvíli evidujeme následující údaje o doméně:
 
 Doménové jméno: <?cs var:domain ?>
 Držitel: <?cs var:owner ?>
-Registrátor: <?cs var:registrator ?>
+Registrátor: <?cs var:registrar ?>
 <?cs each:item = administrators ?>Administrativní kontakt: <?cs var:item ?>
 <?cs /each ?>
-
 Vzhledem k této situaci máte nyní následující možnosti:
 
 1. Kontaktujte prosím svého registrátora a ve spolupráci s ním zajistěte
@@ -132,7 +131,7 @@ Vzhledem k této situaci máte nyní následující možnosti:
 
 2. Nebo si vyberte jiného určeného registrátora a jeho prostřednictvím
    zajistěte prodloužení registrace vašeho doménového jména. Seznam
-   registrátorů najdete na www.nic.cz (Seznam registratoru)
+   registrátorů najdete na www.nic.cz (Seznam registrátorů)
 
 
                                              S pozdravem
@@ -144,13 +143,13 @@ Reminder of the need to settle fees for the <?cs var:domain ?> domain name
 
 Dear customer,
 
-We would like to inform you that as of <?cs var:checkdatetime ?>,
-the registration of the domain name <?cs var:domain ?> has not been
-extended. Concerning the fact that the fee for the domain name in question
-has been paid only for a period ended on <?cs var:exdate ?>, your domain
-name has now entered the so-called protective period. Unless a registrar
-of your choice extends your registration, the following steps will be adopted
-in accordance with the Domain Name Registration Rules:
+We would like to inform you that as of <?cs var:checkdate ?>, the registration
+of the domain name <?cs var:domain ?> has not been extended. Concerning
+the fact that the fee for the domain name in question has been paid only
+for a period ended on <?cs var:exdate ?>, your domain name has now entered
+the so-called protective period. Unless a registrar of your choice extends
+your registration, the following steps will be adopted in accordance with
+the Domain Name Registration Rules:
 
 <?cs var:dnsdate ?> - The domain name will not be accessible (exclusion from DNS).
 <?cs var:exregdate ?> - Final cancellation of the domain name registration.
@@ -159,10 +158,9 @@ At present, our database includes the following details concerning your domain:
 
 Domain name: <?cs var:domain ?>
 Holder: <?cs var:owner ?>
-Registrar: <?cs var:registrator ?>
+Registrar: <?cs var:registrar ?>
 <?cs each:item = administrators ?>Admin contact: <?cs var:item ?>
 <?cs /each ?>
-
 To ensure adequate remedy of the existing situation, you can choose
 one of the following:
 
@@ -190,17 +188,17 @@ Oznámení o vyřazení domény <?cs var:domain?> z DNS
 Vážený zákazníku,
 
 dovolujeme si Vás tímto upozornit, že doposud nebyla uhrazena platba
-za prodloužení doménového jména <?cs var:domain ?>.
-Vzhledem k této skutečnosti a na základě Pravidel registrace doménových
-jmen, <?cs var:defaults.company ?> pozastavuje registraci doménového jména
-a vyřazuje ji ze zóny <?cs var:zone ?>.
+za prodloužení doménového jména <?cs var:domain ?>. Vzhledem k této
+skutečnosti a na základě Pravidel registrace doménových jmen,
+<?cs var:defaults.company ?> pozastavuje registraci doménového jména a vyřazuje
+ji ze zóny <?cs var:zone ?>.
 
-V případě, že do dne <?cs var:exdate ?> neobdrží <?cs var:defaults.company ?>
-od vašeho registrátora platbu za prodloužení platnosti doménového jména,
-bude doménové jméno definitivně uvolněno pro použití dalším zájemcem, a to
+V případě, že do dne <?cs var:exdate ?> neobdrží <?cs var:defaults.company ?> od vašeho
+registrátora platbu za prodloužení platnosti doménového jména, bude
+doménové jméno definitivně uvolněno pro použití dalším zájemcem, a to
 ke dni <?cs var:exregdate ?>.
 
-Prosíme kontaktujte Vašeho Určeného registrátora <?cs var:registrator ?>
+Prosíme kontaktujte Vašeho Určeného registrátora <?cs var:registrar ?>
 za účelem prodloužení doménového jména.
 
 V případě, že se domníváte, že platba byla provedena, prověřte nejdříve,
@@ -217,10 +215,9 @@ V této chvíli evidujeme následující údaje o doméně:
 
 Doménové jméno: <?cs var:domain ?>
 Držitel: <?cs var:owner ?>
-Registrátor: <?cs var:registrator ?>
+Registrátor: <?cs var:registrar ?>
 <?cs each:item = administrators ?>Administrativní kontakt: <?cs var:item ?>
 <?cs /each ?>
-
 
                                              S pozdravem
                                              podpora <?cs var:defaults.company ?>
@@ -237,12 +234,11 @@ and in accordance with Rules for domain names registrations, <?cs var:defaults.c
 is suspending the domain name registration and is withdrawing it from the
 <?cs var:zone ?> zone.
 
-In case that by <?cs var:exdate ?>, <?cs var:defaults.company ?> will not receive
-the payment for extension of the domain name from your registrar, your domain
-name will be definitely released for a use by another applicant on
-<?cs var:exregdate ?>.
+In case that by <?cs var:exdate ?>, <?cs var:defaults.company ?> will not receive the payment
+for extension of the domain name from your registrar, your domain name will
+be definitely released for a use by another applicant on <?cs var:exregdate ?>.
 
-Please, contact your designated registrar <?cs var:registrator ?>
+Please, contact your designated registrar <?cs var:registrar ?>
 for a purpose of extension of the domain name.
 
 If you believe that the payment was made, please, check first if the payment
@@ -260,10 +256,9 @@ records:
 
 Domain name: <?cs var:domain ?>
 Owner: <?cs var:owner ?>
-Registrar: <?cs var:registrator ?>
+Registrar: <?cs var:registrar ?>
 <?cs each:item = administrators ?>Admin contact: <?cs var:item ?>
 <?cs /each ?>
-
 
                                              Yours sincerely
                                              support <?cs var:defaults.company ?>
@@ -353,7 +348,8 @@ Vážený technický správce,
 vzhledem k tomu, že jste vedený jako technický kontakt u sady nameserverů
 <?cs var:nsset ?>, která je přiřazena k doménovému jménu <?cs var:domain ?>,
 dovolujeme si Vás upozornit, že toto doménové jméno bylo ke dni
-<?cs var:exdate ?> zrušeno.
+<?cs var:exregdate ?> zrušeno.
+
 
                                              S pozdravem
                                              podpora <?cs var:defaults.company ?>
@@ -367,7 +363,7 @@ Dear technical administrator,
 With regard to the fact that you are named the technical contact for the set
 of <?cs var:nsset ?> nameservers, which is assigned to the <?cs var:domain ?>
 domain name, we would like to notify you that the aforementioned domain name
-was cancelled as of <?cs var:exdate ?>.
+was cancelled as of <?cs var:exregdate ?>.
 
 
                                              Yours sincerely
@@ -384,9 +380,8 @@ Oznámení o blížícím se vypršení validace enum domény.
 
 Vážený zákazníku,
 
-dovolujeme si Vás upozornit, že k <?cs var:checkdatetime ?> dosud nedošlo k
-prodloužení validace doménového jména <?cs var:domain ?>, která je platná do 
-<?cs var:validation ?>. 
+dovolujeme si Vás upozornit, že k <?cs var:checkdate ?> dosud nedošlo k prodloužení
+validace doménového jména <?cs var:domain ?>, která je platná do <?cs var:valdate ?>.
 V případě, že hodláte obnovit validaci uvedeného doménového jména, kontaktujte
 prosím svého registrátora a ve spolupráci s ním zajistěte prodloužení validace
 vašeho doménového jména před tímto datem.
@@ -395,7 +390,7 @@ V této chvíli evidujeme následující údaje o doméně:
 
 Doménové jméno: <?cs var:domain ?>
 Držitel: <?cs var:owner ?>
-Registrátor: <?cs var:registrator ?>
+Registrátor: <?cs var:registrar ?>
 <?cs each:item = administrators ?>Administrativní kontakt: <?cs var:item ?>
 <?cs /each ?>
 
@@ -408,22 +403,21 @@ Notification about approaching expiration of the enum domain validation
 
 Dear customer,
 
-We would like to notify you that as of <?cs var:checkdatetime ?>, extension of
-the <?cs var:domain ?> domain name validation has not been made, yet. Validation 
-will expire on <?cs var:validation ?>.
-If you plan to renew validation of the aforementioned domain name, please,
-contact your registrar, and together execute the extension of validation of
-your domain name before this date.
+We would like to notify you that as of <?cs var:checkdate ?>, extension of
+the <?cs var:domain ?> domain name validation has not been made, yet.
+Validation will expire on <?cs var:valdate ?>. If you plan to renew validation
+of the aforementioned domain name, please, contact your registrar, and
+together execute the extension of validation of your domain name before
+this date.
 
 At this moment, we have the following information about the domain in our
 records:
 
 Domain name: <?cs var:domain ?>
 Owner: <?cs var:owner ?>
-Registrar: <?cs var:registrator ?>
+Registrar: <?cs var:registrar ?>
 <?cs each:item = administrators ?>Admin contact: <?cs var:item ?>
 <?cs /each ?>
-
 
                                              Yours sincerely
                                              support <?cs var:defaults.company ?>
@@ -439,19 +433,19 @@ Oznámení o vypršení validace enum domény.
 
 Vážený zákazníku,
 
-dovolujeme si Vás upozornit, že k <?cs var:checkdatetime ?> dosud nedošlo k
-prodloužení validace doménového jména <?cs var:domain ?>.
-Vzhledem k této skutečnosti a na základě Pravidel registrace doménových
-jmen, ji <?cs var:defaults.company ?> vyřazuje ze zóny. Doménové jméno je
-i nadále registrováno. V případě, že hodláte obnovit validaci uvedeného
-doménového jména, kontaktujte prosím svého registrátora a ve spolupráci
-s ním zajistěte prodloužení validace vašeho doménového jména.
+dovolujeme si Vás upozornit, že k <?cs var:checkdate ?> dosud nedošlo k prodloužení
+validace doménového jména <?cs var:domain ?>. Vzhledem k této skutečnosti
+a na základě Pravidel registrace doménových jmen, ji <?cs var:defaults.company ?>
+vyřazuje ze zóny. Doménové jméno je i nadále registrováno. V případě, že
+hodláte obnovit validaci uvedeného doménového jména, kontaktujte prosím svého
+registrátora a ve spolupráci s ním zajistěte prodloužení validace vašeho
+doménového jména.
 
 V této chvíli evidujeme následující údaje o doméně:
 
 Doménové jméno: <?cs var:domain ?>
 Držitel: <?cs var:owner ?>
-Registrátor: <?cs var:registrator ?>
+Registrátor: <?cs var:registrar ?>
 <?cs each:item = administrators ?>Administrativní kontakt: <?cs var:item ?>
 <?cs /each ?>
 
@@ -464,12 +458,12 @@ Notification about expiration of the enum domain validation
 
 Dear customer,
 
-We would like to notify you that as of <?cs var:checkdatetime ?>, extension of
+We would like to notify you that as of <?cs var:checkdate ?>, extension of
 the <?cs var:domain ?> domain name validation has not been made, yet.
 With regard to this fact and in accordance with Rules for domain names
-registrations, <?cs var:defaults.company ?> is withdrawing it from the zone.
-The domain name continues to be registered. If you plan to renew validation
-of the aforementioned domain name, please, contact your registrar, and together
+registrations, <?cs var:defaults.company ?> is withdrawing it from the zone. The domain
+name continues to be registered. If you plan to renew validation of the
+aforementioned domain name, please, contact your registrar, and together
 execute the extension of validation of your domain name.
 
 At this moment, we have the following information about the domain in our
@@ -477,7 +471,7 @@ records:
 
 Domain name: <?cs var:domain ?>
 Owner: <?cs var:owner ?>
-Registrar: <?cs var:registrator ?>
+Registrar: <?cs var:registrar ?>
 <?cs each:item = administrators ?>Admin contact: <?cs var:item ?>
 <?cs /each ?>
 
@@ -490,14 +484,8 @@ INSERT INTO mail_type_template_map (typeid, templateid) VALUES (9, 9);
 INSERT INTO mail_type (name, subject) VALUES ('notification_create', 'Oznámení o registraci / Registration notification');
 INSERT INTO mail_templates (contenttype, footer, template) VALUES
 ('plain', 1,
-'
-<?cs def:typesubst(lang) ?>
-<?cs if:lang == "cs" ?>
-<?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?>
-<?cs elif:lang == "en" ?>
-<?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs /if ?>
-<?cs /if ?>
-
+'<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs /if ?><?cs /if ?><?cs /def ?>
+======================================================================
 Oznámení o registraci / Registration notification
 ======================================================================
 Registrace <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> create 
@@ -518,14 +506,7 @@ INSERT INTO mail_type_template_map (typeid, templateid) VALUES (10, 10);
 INSERT INTO mail_type (name, subject) VALUES ('notification_update', 'Oznámení změn / Notification of changes');
 INSERT INTO mail_templates (contenttype, footer, template) VALUES
 ('plain', 1,
-'
-<?cs def:typesubst(lang) ?>
-<?cs if:lang == "cs" ?>
-<?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?>
-<?cs elif:lang == "en" ?>
-<?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs /if ?>
-<?cs /if ?>
-
+'<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs /if ?><?cs /if ?><?cs /def ?>
 =====================================================================
 Oznámení změn / Notification of changes 
 =====================================================================
@@ -543,14 +524,7 @@ INSERT INTO mail_type_template_map (typeid, templateid) VALUES (11, 11);
 INSERT INTO mail_type (name, subject) VALUES ('notification_transfer', 'Oznámení o transferu / Transfer notification');
 INSERT INTO mail_templates (contenttype, footer, template) VALUES
 ('plain', 1,
-'
-<?cs def:typesubst(lang) ?>
-<?cs if:lang == "cs" ?>
-<?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?>
-<?cs elif:lang == "en" ?>
-<?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs /if ?>
-<?cs /if ?>
-
+'<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs /if ?><?cs /if ?><?cs /def ?>
 =====================================================================
 Oznámení o transferu / Transfer notification
 =====================================================================
@@ -572,13 +546,14 @@ INSERT INTO mail_templates (contenttype, footer, template) VALUES
 =====================================================================
 Oznámení o prodloužení platnosti / Notification about renewal
 ===================================================================== 
-Dne <?cs var:renewdate ?> bylo provedeno prodloužení platnosti
-doménového jména <?cs var:domain ?>. Doménové jméno je prodlouženo
-do <?cs var:exdate ?>.
-
-On <?cs var:renewdate ?>, the <?cs var:domain ?> domain name was
-renewed. The domain name validity is extended until <?cs var:exdate ?>.
+Obnovení domény / Domain renew
+Domény / Domain : <?cs var:handle ?>
+Číslo žádosti / Ticket :  <?cs var:ticket ?>
+Registrátor / Registrar : <?cs var:registrar ?>
 =====================================================================
+
+Žádost byla úspešně zpracována, prodloužení platnosti bylo provedeno. 
+The request was completed successfully, domain was renewed. 
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (13, 13);
 
@@ -590,14 +565,13 @@ INSERT INTO mail_templates (contenttype, footer, template) VALUES
 Oznámení o zrušení / Delete notification 
 =====================================================================
 Vzhledem ke skutečnosti, že <?cs if:type == #1 ?>kontaktní osoba<?cs elif:type == #2 ?>sada nameserverů<?cs /if ?> <?cs var:handle ?>
-<?cs var:name ?> nebyla po stanovenou dobu aktivní,
- <?cs var:defaults.company ?> na základě Pravidel registrace
-ruší ke dni <?cs var:deldate ?> uvedenou <?cs if:type == #1 ?>kontaktní osobu<?cs elif:type == #2 ?>sadu nameserverů<?cs /if ?>.
+<?cs var:name ?> nebyla po stanovenou dobu aktivní, <?cs var:defaults.company ?>
+na základě Pravidel registrace ruší ke dni <?cs var:deldate ?> uvedenou
+<?cs if:type == #1 ?>kontaktní osobu<?cs elif:type == #2 ?>sadu nameserverů<?cs /if ?>.
 
 With regard to the fact that the <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>NS set<?cs /if ?> <?cs var:handle ?>
-<?cs var:name ?> was not active during the past 2 months,
-<?cs var:defaults.company ?> is cancelling the aforementioned <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>set of nameservers<?cs /if ?>
-as of <?cs var:deldate ?>.
+<?cs var:name ?> was not active during the past 2 months, <?cs var:defaults.company ?>
+is cancelling the aforementioned <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>set of nameservers<?cs /if ?> as of <?cs var:deldate ?>.
 =====================================================================
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (14, 14);
@@ -605,14 +579,8 @@ INSERT INTO mail_type_template_map (typeid, templateid) VALUES (14, 14);
 INSERT INTO mail_type (name, subject) VALUES ('notification_delete', 'Oznámení o zrušení / Delete notification');
 INSERT INTO mail_templates (contenttype, footer, template) VALUES
 ('plain', 1,
-'
-<?cs def:typesubst(lang) ?>
-<?cs if:lang == "cs" ?>
-<?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?>
-<?cs elif:lang == "en" ?>
-<?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs /if ?>
-<?cs /if ?>
-
+'<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs /if ?><?cs /if ?><?cs /def ?>
+=====================================================================
 Oznámení o zrušení / Delete notification 
 =====================================================================
 Zrušení <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> deletion
@@ -638,85 +606,41 @@ Result of technical check on NS set <?cs var:handle ?>
 Datum kontroly / Date of the check: <?cs var:checkdate ?>
 Číslo žádosti / Ticket: <?cs var:ticket ?>
 
-<?cs def:printtest(par_test) ?>
-  <?cs if:par_test.name == "existance" ?>
-Následující nameservery v sadě nameserverů nejsou dosažitelné:
+<?cs def:printtest(par_test) ?><?cs if:par_test.name == "existance" ?>Následující nameservery v sadě nameserverů nejsou dosažitelné:
 Following nameservers in NS set are not reachable:
-    <?cs each:ns = par_test.ns ?><?cs var:ns ?><?cs /each ?>
-  <?cs /if ?>
-
-  <?cs if:par_test.name == "autonomous" ?>
-Sada nameserverů neobsahuje minimálně dva nameservery v různých
+    <?cs each:ns = par_test.ns ?><?cs var:ns ?>
+<?cs /each ?><?cs /if ?><?cs if:par_test.name == "autonomous" ?>Sada nameserverů neobsahuje minimálně dva nameservery v různých
 autonomních systémech.
-In NS set are no two nameservers in different autonomous systems.
-  <?cs /if ?>
-
-  <?cs if:par_test.name == "presence" ?>
-    <?cs each:ns = par_test.ns ?>
-Nameserver <?cs var:ns ?> neobsahuje záznam pro domény:
+In NS set are no two nameservers in different autonomous systems.<?cs /if ?><?cs if:par_test.name == "presence" ?><?cs each:ns = par_test.ns ?>Nameserver <?cs var:ns ?> neobsahuje záznam pro domény:
 Nameserver <?cs var:ns ?> does not contain record for domains:
       <?cs each:fqdn = ns.fqdn ?><?cs var:fqdn ?>
-      <?cs /each ?>
-      <?cs if:ns.overfull ?>...<?cs /if ?>
-    <?cs /each ?>
-  <?cs /if ?>
-
-  <?cs if:par_test.name == "authoritative" ?>
-    <?cs each:ns = par_test.ns ?>
-Nameserver <?cs var:ns ?> není autoritativní pro domény:
+      <?cs /each ?><?cs if:ns.overfull ?>...<?cs /if ?>
+<?cs /each ?><?cs /if ?><?cs if:par_test.name == "authoritative" ?><?cs each:ns = par_test.ns ?>Nameserver <?cs var:ns ?> není autoritativní pro domény:
 Nameserver <?cs var:ns ?> is not authoritative for domains:
       <?cs each:fqdn = ns.fqdn ?><?cs var:fqdn ?>
-      <?cs /each ?>
-      <?cs if:ns.overfull ?>...<?cs /if ?>
-    <?cs /each ?>
-  <?cs /if ?>
-
-  <?cs if:par_test.name == "heterogenous" ?>
-Všechny nameservery v sadě nameserverů používají stejnou implementaci
+      <?cs /each ?><?cs if:ns.overfull ?>...<?cs /if ?>
+<?cs /each ?><?cs /if ?><?cs if:par_test.name == "heterogenous" ?>Všechny nameservery v sadě nameserverů používají stejnou implementaci
 DNS serveru.
-All nameservers in NS set use the same implementation of DNS server.
-  <?cs /if ?>
-
-  <?cs if:par_test.name == "recursive" ?>
-Následující nameservery v sadě nameserverů jsou rekurzivní:
+All nameservers in NS set use the same implementation of DNS server.<?cs /if ?><?cs if:par_test.name == "recursive" ?>Následující nameservery v sadě nameserverů jsou rekurzivní:
 Following nameservers in NS set are recursive:
     <?cs each:ns = par_test.ns ?><?cs var:ns ?>
-    <?cs /each ?>
-  <?cs /if ?>
-
-  <?cs if:par_test.name == "recursive4all" ?>
-Následující nameservery v sadě nameserverů zodpověděli rekurzivně dotaz:
+    <?cs /each ?><?cs /if ?><?cs if:par_test.name == "recursive4all" ?>Následující nameservery v sadě nameserverů zodpověděli rekurzivně dotaz:
 Following nameservers in NS set answered recursively a query:
     <?cs each:ns = par_test.ns ?><?cs var:ns ?>
-    <?cs /each ?>
-  <?cs /if ?>
-<?cs /def ?>
+    <?cs /each ?><?cs /if ?><?cs /def ?>
 =====================================================================
 Chyby / Errors:
-<?cs each:item = tests ?>
-  <?cs if:item.type == "error" ?><?cs call:printtest(item) ?><?cs /if ?>
+<?cs each:item = tests ?><?cs if:item.type == "error" ?><?cs call:printtest(item) ?><?cs /if ?>
 <?cs /each ?>
 =====================================================================
 Varování / Warnings:
-<?cs each:item = tests ?>
-  <?cs if:item.type == "warning" ?><?cs call:printtest(item) ?><?cs /if ?>
+<?cs each:item = tests ?><?cs if:item.type == "warning" ?><?cs call:printtest(item) ?><?cs /if ?>
 <?cs /each ?>
 =====================================================================
 Upozornění / Notice:
-<?cs each:item = tests ?>
-  <?cs if:item.type == "notice" ?><?cs call:printtest(item) ?><?cs /if ?>
+<?cs each:item = tests ?><?cs if:item.type == "notice" ?><?cs call:printtest(item) ?><?cs /if ?>
 <?cs /each ?>
 =====================================================================
-
--- 
-<?cs var:defaults.company ?>
-<?cs var:defaults.street ?>
-<?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
----------------------------------
-tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
-e-mail : <?cs var:defaults.emailsupport ?>
----------------------------------
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (16, 16);
 
@@ -778,10 +702,10 @@ Zaslání měsíčního vyúčtování
 
 Vážený obchodní přátelé,
 
-  jelikož v období od <?cs var:fromdate ?> do <?cs var:todate ?> Vaše
-společnost neprovedla žádnou registraci doménového jména ani prodloužení
-platnosti doménového jména a nedošlo tak k čerpání žádných placených služeb,
-nebude pro toto období vystaven daňový doklad.
+  jelikož v období od <?cs var:fromdate ?> do <?cs var:todate ?> Vaše společnost neprovedla
+žádnou registraci doménového jména ani prodloužení platnosti doménového
+jména a nedošlo tak k čerpání žádných placených služeb, nebude pro toto
+období vystaven daňový doklad.
 
                                              S pozdravem
                                              podpora <?cs var:defaults.company ?>
