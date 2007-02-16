@@ -14,9 +14,9 @@ CREATE TABLE zone_soa (
 --
 -- Default values for zone soa
 --
-INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn) VALUES (1, 86400, 'hostmaster@nic.cz', NULL, 43200, 900, 1814400, 10800, 'a.ns.nic.cz');
-INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn) VALUES (2, 86400, 'hostmaster@nic.cz', NULL, 43200, 900, 1814400, 10800, 'a.ns.nic.cz');
-INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn) VALUES (3, 86400, 'hostmaster@nic.cz', NULL, 43200, 900, 1814400, 10800, 'ns.tld.cz');
+INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn) VALUES (1, 18000, 'hostmaster@nic.cz', NULL, 10600, 3600, 1209600, 7200, 'a.ns.nic.cz');
+INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn) VALUES (2, 18000, 'hostmaster@nic.cz', NULL, 10600, 3600, 1209600, 7200, 'a.ns.nic.cz');
+INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn) VALUES (3, 18000, 'hostmaster@nic.cz', NULL, 10600, 3600, 1209600, 7200, 'ns.tld.cz');
 
 -- Nameservers for a zone
 CREATE TABLE zone_ns (
