@@ -15,7 +15,7 @@ Zaslání autorizační informace
 Vážený zákazníku,
 
    na základě Vaší žádosti podané prostřednictvím webového formuláře
-na stránce <?cs var:wwwpage ?> dne <?cs var:reqdate ?>, které
+na stránce <?cs var:defaults.wwwpage ?> dne <?cs var:reqdate ?>, které
 bylo přiděleno identifikační číslo <?cs var:reqid ?>, Vám zasíláme požadované
 heslo, příslušející <?cs if:type == #3 ?>k doméně<?cs elif:type == #1 ?>ke kontaktu s identifikátorem<?cs elif:type == #2 ?>k sadě nameserverů s identifikátorem<?cs /if ?> <?cs var:handle ?>.
 
@@ -34,7 +34,7 @@ Sending authorization information
 Dear customer,
 
    Based on your request submitted via the web form on the
-<?cs var:wwwpage ?> page on <?cs var:reqdate ?>, which received
+<?cs var:defaults.wwwpage ?> page on <?cs var:reqdate ?>, which received
 the identification number <?cs var:reqid ?>, we are sending you the requested
 password that belongs to the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs /if ?> <?cs var:handle ?>.
 
