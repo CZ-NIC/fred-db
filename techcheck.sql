@@ -71,7 +71,9 @@ CREATE TABLE check_nsset (
 	-- are not part of register
 	extra_fqdns VARCHAR(300)[],
 	-- if domains associated with nsset were also tested
-	dig BOOLEAN NOT NULL
+	dig BOOLEAN NOT NULL,
+	-- what attempt it is (1th, 2nd or 3rd)
+	attempt SMALLINT NOT NULL DEFAULT 1
 );
 
 CREATE TABLE check_result (
