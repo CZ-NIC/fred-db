@@ -15,7 +15,7 @@ Zaslání autorizační informace
 Vážený zákazníku,
 
    na základě Vaší žádosti podané prostřednictvím webového formuláře
-na stránce <?cs var:defaults.wwwpage ?> dne <?cs var:reqdate ?>, které
+na stránce <?cs var:defaults.authinfopage ?> dne <?cs var:reqdate ?>, které
 bylo přiděleno identifikační číslo <?cs var:reqid ?>, Vám zasíláme požadované
 heslo, příslušející <?cs if:type == #3 ?>k doméně<?cs elif:type == #1 ?>ke kontaktu s identifikátorem<?cs elif:type == #2 ?>k sadě nameserverů s identifikátorem<?cs /if ?> <?cs var:handle ?>.
 
@@ -34,7 +34,7 @@ Sending authorization information
 Dear customer,
 
    Based on your request submitted via the web form on the
-<?cs var:defaults.wwwpage ?> page on <?cs var:reqdate ?>, which received
+<?cs var:defaults.authinfopage ?> page on <?cs var:reqdate ?>, which received
 the identification number <?cs var:reqid ?>, we are sending you the requested
 password that belongs to the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs /if ?> <?cs var:handle ?>.
 
@@ -497,6 +497,9 @@ Registrátor / Registrar : <?cs var:registrar ?>
 Žádost byla úspešně zpracována, požadovaná registrace byla provedena. 
 The request was completed successfully, required registration was done. 
 
+Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:whoispage ?>.
+For detail information about <?cs call:typesubst("en") ?> visit <?cs var:whoispage ?>.
+
 
                                              S pozdravem
                                              podpora <?cs var:defaults.company ?>
@@ -518,6 +521,13 @@ Registrátor / Registrar : <?cs var:registrar ?>
  
 Žádost byla úspešně zpracována, požadované změny byly provedeny. 
 The request was completed successfully, required changes were done. 
+
+Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:whoispage ?>.
+For detail information about <?cs call:typesubst("en") ?> visit <?cs var:whoispage ?>.
+
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (11, 11);
 
@@ -536,6 +546,13 @@ Registrátor / Registrar : <?cs var:registrar ?>
  
 Žádost byla úspešně zpracována, transfer byl proveden. 
 The request was completed successfully, transfer was completed. 
+
+Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:whoispage ?>.
+For detail information about <?cs call:typesubst("en") ?> visit <?cs var:whoispage ?>.
+
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (12, 12);
 
@@ -554,6 +571,13 @@ Registrátor / Registrar : <?cs var:registrar ?>
 
 Žádost byla úspešně zpracována, prodloužení platnosti bylo provedeno. 
 The request was completed successfully, domain was renewed. 
+
+Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:whoispage ?>.
+For detail information about <?cs call:typesubst("en") ?> visit <?cs var:whoispage ?>.
+
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (13, 13);
 
@@ -573,6 +597,10 @@ With regard to the fact that the <?cs if:type == #1 ?>contact<?cs elif:type == #
 <?cs var:name ?> was not active during the past 2 months, <?cs var:defaults.company ?>
 is cancelling the aforementioned <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>set of nameservers<?cs /if ?> as of <?cs var:deldate ?>.
 =====================================================================
+
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (14, 14);
 
@@ -593,6 +621,10 @@ Registrator / Registrar : <?cs var:registrar ?>
 The request was completed successfully, required delete was done. 
  
 =====================================================================
+
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (15, 15);
 

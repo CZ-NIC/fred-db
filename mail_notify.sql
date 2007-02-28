@@ -26,7 +26,8 @@ INSERT INTO mail_defaults (name, value) VALUES ('city', 'Praha 2');
 INSERT INTO mail_defaults (name, value) VALUES ('tel', '+420 222 745 104');
 INSERT INTO mail_defaults (name, value) VALUES ('fax', '+420 222 745 112');
 INSERT INTO mail_defaults (name, value) VALUES ('emailsupport', 'support@nic.cz');
-INSERT INTO mail_defaults (name, value) VALUES ('wwwpage', 'enum.nic.cz');
+INSERT INTO mail_defaults (name, value) VALUES ('authinfopage', 'http://enum.nic.cz/');
+INSERT INTO mail_defaults (name, value) VALUES ('whoispage', 'http://whois.enum.nic.cz/');
 
 CREATE TABLE mail_footer (
 	id integer PRIMARY KEY,
