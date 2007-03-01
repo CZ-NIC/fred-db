@@ -208,7 +208,6 @@ sdělte.
 
 Harmonogram plánovaných akcí:
 
-<?cs var:dnsdate ?> - Znefunkčnění doménového jména (vyřazení z DNS).
 <?cs var:exregdate ?> - Definitivní zrušení registrace doménového jména.
 
 V této chvíli evidujeme následující údaje o doméně:
@@ -248,7 +247,6 @@ registrar.
 
 Time-schedule of planned events:
 
-<?cs var:dnsdate ?> - Domain name blocking (withdrawal from DNS).
 <?cs var:exregdate ?> - Definitive cancellation of the domain name registration.
 
 At this moment, we have the following information about the domain in our
