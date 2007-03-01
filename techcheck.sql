@@ -78,7 +78,7 @@ CREATE TABLE check_nsset (
 
 CREATE TABLE check_result (
 	id SERIAL PRIMARY KEY,
-	checkid INTEGER references check_nsset(id),
+	checkid INTEGER references check_nsset(id) ON DELETE CASCADE,
 	testid INTEGER references check_test(id),
 	-- tri-state logic (0=passed, 1=failed, 2=unknown)
 	--    unknown occurs if script failed for unknown reason

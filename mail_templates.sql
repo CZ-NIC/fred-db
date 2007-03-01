@@ -662,17 +662,18 @@ Following nameservers in NS set answered recursively a query:
     <?cs /each ?><?cs /if ?><?cs /def ?>
 =====================================================================
 Chyby / Errors:
-<?cs each:item = tests ?><?cs if:item.type == "error" ?><?cs call:printtest(item) ?><?cs /if ?>
-<?cs /each ?>
+<?cs each:item = tests ?><?cs if:item.type == "error" ?><?cs call:printtest(item) ?><?cs /if ?><?cs /each ?>
 =====================================================================
 Varování / Warnings:
-<?cs each:item = tests ?><?cs if:item.type == "warning" ?><?cs call:printtest(item) ?><?cs /if ?>
-<?cs /each ?>
+<?cs each:item = tests ?><?cs if:item.type == "warning" ?><?cs call:printtest(item) ?><?cs /if ?><?cs /each ?>
 =====================================================================
 Upozornění / Notice:
-<?cs each:item = tests ?><?cs if:item.type == "notice" ?><?cs call:printtest(item) ?><?cs /if ?>
-<?cs /each ?>
+<?cs each:item = tests ?><?cs if:item.type == "notice" ?><?cs call:printtest(item) ?><?cs /if ?><?cs /each ?>
 =====================================================================
+
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (16, 16);
 
