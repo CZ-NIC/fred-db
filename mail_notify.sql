@@ -71,14 +71,14 @@ VALUES
 'nic.cz');
 
 CREATE TABLE mail_templates (
-	id SERIAL PRIMARY KEY,
+	id integer PRIMARY KEY,
 	contenttype varchar(100) NOT NULL,
 	template text NOT NULL,
 	footer integer REFERENCES mail_footer(id)
 	);
 
 CREATE TABLE mail_type (
-	id SERIAL PRIMARY KEY,
+	id integer PRIMARY KEY,
 	name varchar(100) UNIQUE NOT NULL,
 	subject varchar(300) NOT NULL
 	);
