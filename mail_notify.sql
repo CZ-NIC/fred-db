@@ -84,9 +84,9 @@ CREATE TABLE mail_type (
 	);
 
 CREATE TABLE mail_type_template_map (
-	id SERIAL PRIMARY KEY,
 	typeid integer references mail_type(id),
-	templateid integer references mail_templates(id)
+	templateid integer references mail_templates(id),
+        PRIMARY KEY (  typeid  , templateid  )
 	);
 
 CREATE TABLE mail_archive (
