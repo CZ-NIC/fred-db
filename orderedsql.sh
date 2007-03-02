@@ -25,6 +25,8 @@ cat filemanager.sql
 #mailer
 cat mail_notify.sql
 cat mail_templates.sql
+#notify  mailer
+cat notify.sql
 #authinfo
 cat authinfo.sql
 # banking
