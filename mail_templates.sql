@@ -193,7 +193,7 @@ skutečnosti a na základě Pravidel registrace doménových jmen,
 <?cs var:defaults.company ?> pozastavuje registraci doménového jména a vyřazuje
 ji ze zóny <?cs var:zone ?>.
 
-V případě, že do dne <?cs var:exdate ?> neobdrží <?cs var:defaults.company ?> od vašeho
+V případě, že do dne <?cs var:exregdate ?> neobdrží <?cs var:defaults.company ?> od vašeho
 registrátora platbu za prodloužení platnosti doménového jména, bude
 doménové jméno definitivně uvolněno pro použití dalším zájemcem, a to
 ke dni <?cs var:exregdate ?>.
@@ -233,7 +233,7 @@ and in accordance with Rules for domain names registrations, <?cs var:defaults.c
 is suspending the domain name registration and is withdrawing it from the
 <?cs var:zone ?> zone.
 
-In case that by <?cs var:exdate ?>, <?cs var:defaults.company ?> will not receive the payment
+In case that by <?cs var:exregdate ?>, <?cs var:defaults.company ?> will not receive the payment
 for extension of the domain name from your registrar, your domain name will
 be definitely released for a use by another applicant on <?cs var:exregdate ?>.
 
