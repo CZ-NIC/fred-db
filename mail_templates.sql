@@ -495,8 +495,8 @@ Registrátor / Registrar : <?cs var:registrar ?>
 Žádost byla úspešně zpracována, požadovaná registrace byla provedena. 
 The request was completed successfully, required registration was done. 
 
-Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:whoispage ?>.
-For detail information about <?cs call:typesubst("en") ?> visit <?cs var:whoispage ?>.
+Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>.
+For detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>.
 
 
                                              S pozdravem
@@ -520,8 +520,8 @@ Registrátor / Registrar : <?cs var:registrar ?>
 Žádost byla úspešně zpracována, požadované změny byly provedeny. 
 The request was completed successfully, required changes were done. 
 
-Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:whoispage ?>.
-For detail information about <?cs call:typesubst("en") ?> visit <?cs var:whoispage ?>.
+Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>.
+For detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>.
 
 
                                              S pozdravem
@@ -545,8 +545,8 @@ Registrátor / Registrar : <?cs var:registrar ?>
 Žádost byla úspešně zpracována, transfer byl proveden. 
 The request was completed successfully, transfer was completed. 
 
-Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:whoispage ?>.
-For detail information about <?cs call:typesubst("en") ?> visit <?cs var:whoispage ?>.
+Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>.
+For detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>.
 
 
                                              S pozdravem
@@ -570,8 +570,8 @@ Registrátor / Registrar : <?cs var:registrar ?>
 Žádost byla úspešně zpracována, prodloužení platnosti bylo provedeno. 
 The request was completed successfully, domain was renewed. 
 
-Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:whoispage ?>.
-For detail information about <?cs call:typesubst("en") ?> visit <?cs var:whoispage ?>.
+Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>.
+For detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>.
 
 
                                              S pozdravem
