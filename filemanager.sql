@@ -3,8 +3,10 @@ CREATE TABLE enum_filetype (
 	name varchar(300)
 );
 
-INSERT INTO enum_filetype (id, name) VALUES (1, 'faktura');
-INSERT INTO enum_filetype (id, name) VALUES (2, 'bankovni vypis');
+INSERT INTO enum_filetype (id, name) VALUES (1, 'invoice pdf');
+INSERT INTO enum_filetype (id, name) VALUES (2, 'invoice xml');
+INSERT INTO enum_filetype (id, name) VALUES (3, 'accounting xml');
+INSERT INTO enum_filetype (id, name) VALUES (4, 'banking statement');
 
 CREATE TABLE files (
 	id SERIAL PRIMARY KEY,
