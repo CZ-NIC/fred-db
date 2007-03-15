@@ -45,6 +45,8 @@ Price numeric(10,2) NOT NULL DEFAULT 0.0, -- vyse faktury i s dani
 VAT integer NOT NULL  DEFAULT 19, -- vyse dane 19% (0) pro vyctovaci
 total numeric(10,2) NOT NULL  DEFAULT 0.0 ,  -- castka bez dane ( pro vyctvovaci stejny jako price=total castka bez dane);
 totalVAT numeric(10,2)  NOT NULL DEFAULT 0.0  -- odvedena dan ( 0 pro vyctovaci dan je odvedena na zalohovych FA )
+file INTEGER REFERENCES files; -- odkaz na vygenerovane PDF (muze byt null nez se vygeneruje)
+fileXML INTEGER REFERENCES files; -- odkaz na vygenerovane XML (muze byt null nez se vygeneruje)
 );
 
 -- generovani faktur
@@ -100,3 +102,10 @@ price numeric(10,2) NOT NULL default 0 , -- cena za operaci
 PRIMARY KEY (id ,  InvoiceID  ) -- unikatni klic
 );
 
+CREATE TABLE invoice_mails
+(
+id SERIAL NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
+invoiceid INTEGER REFERENCES invoice, -- odkaz na faktury
+genid INTEGER REFERENCES invoice_generation, -- odkaz na faktury
+mailid INTEGER NOT NULL REFERENCES mail_archive -- mail obsahujici tuto fakturu
+);
