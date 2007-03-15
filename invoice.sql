@@ -53,8 +53,8 @@ fileXML INTEGER REFERENCES files; -- odkaz na vygenerovane XML (muze byt null ne
 CREATE TABLE invoice_generation
 (
 id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
-FromDate timestamp NOT  NULL , -- datum zuctovaciho odobi od-do
-ToDate timestamp NOT NULL DEFAULT now() , -- do datumu
+FromDate date NOT  NULL , -- lokalni datum zuctovaciho odobi od bere se 00:00:00
+ToDate date NOT NULL  , -- do datumu bere se 23:59:59
 registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora
 Zone INTEGER REFERENCES Zone (ID),
 InvoiceID INTEGER REFERENCES Invoice (ID) -- id vyuctovaci faktury

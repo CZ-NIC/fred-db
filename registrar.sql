@@ -34,8 +34,8 @@ CREATE TABLE RegistrarInvoice (
         ID SERIAL PRIMARY KEY,
         RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- id registratora
         Zone integer REFERENCES Zone,  --  zona pro kterou ma registratrio pristup
-        FromDate timestamp DEFAULT NULL , -- datum kdy zacal registrator pracovat v dane zone
-        LastDate timestamp DEFAULT NULL  -- datum kdy byla naposledy vyvorena faktura
+        FromDate date DEFAULT NULL , -- datum kdy zacal registrator pracovat v dane zone
+        LastDate date DEFAULT NULL  -- datum kdy byla naposledy vyvorena faktura
         );
 
 
