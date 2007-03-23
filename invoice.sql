@@ -44,9 +44,9 @@ Credit numeric(10,2)  DEFAULT 0.0, -- kredit ze ktereho se cerpa az do nuly poku
 Price numeric(10,2) NOT NULL DEFAULT 0.0, -- vyse faktury i s dani
 VAT integer NOT NULL  DEFAULT 19, -- vyse dane 19% (0) pro vyctovaci
 total numeric(10,2) NOT NULL  DEFAULT 0.0 ,  -- castka bez dane ( pro vyctvovaci stejny jako price=total castka bez dane);
-totalVAT numeric(10,2)  NOT NULL DEFAULT 0.0  -- odvedena dan ( 0 pro vyctovaci dan je odvedena na zalohovych FA )
-file INTEGER REFERENCES files; -- odkaz na vygenerovane PDF (muze byt null nez se vygeneruje)
-fileXML INTEGER REFERENCES files; -- odkaz na vygenerovane XML (muze byt null nez se vygeneruje)
+totalVAT numeric(10,2)  NOT NULL DEFAULT 0.0 , -- odvedena dan ( 0 pro vyctovaci dan je odvedena na zalohovych FA )
+file INTEGER REFERENCES files ,-- odkaz na vygenerovane PDF (muze byt null nez se vygeneruje)
+fileXML INTEGER REFERENCES files -- odkaz na vygenerovane XML (muze byt null nez se vygeneruje)
 );
 
 -- generovani faktur
