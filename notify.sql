@@ -4,7 +4,7 @@
 -- ciselnik notify operaci
 -- DROP TABLE enum_notify CASCADE;
 CREATE TABLE enum_notify  (
-        id SERIAL PRIMARY KEY,
+        id INTEGER PRIMARY KEY,
         notify varchar(64) UNIQUE NOT NULL
         );
 
