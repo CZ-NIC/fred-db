@@ -638,26 +638,26 @@ Datum kontroly / Date of the check: <?cs var:checkdate ?>
 
 <?cs def:printtest(par_test) ?><?cs if:par_test.name == "existance" ?>Následující nameservery v sadě nameserverů nejsou dosažitelné:
 Following nameservers in NS set are not reachable:
-    <?cs each:ns = par_test.ns ?><?cs var:ns ?>
+<?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
 <?cs /each ?><?cs /if ?><?cs if:par_test.name == "autonomous" ?>Sada nameserverů neobsahuje minimálně dva nameservery v různých
 autonomních systémech.
 In NS set are no two nameservers in different autonomous systems.<?cs /if ?><?cs if:par_test.name == "presence" ?><?cs each:ns = par_test.ns ?>Nameserver <?cs var:ns ?> neobsahuje záznam pro domény:
 Nameserver <?cs var:ns ?> does not contain record for domains:
-      <?cs each:fqdn = ns.fqdn ?><?cs var:fqdn ?>
-      <?cs /each ?><?cs if:ns.overfull ?>...<?cs /if ?>
+<?cs each:fqdn = ns.fqdn ?>    <?cs var:fqdn ?>
+<?cs /each ?><?cs if:ns.overfull ?>...<?cs /if ?>
 <?cs /each ?><?cs /if ?><?cs if:par_test.name == "authoritative" ?><?cs each:ns = par_test.ns ?>Nameserver <?cs var:ns ?> není autoritativní pro domény:
 Nameserver <?cs var:ns ?> is not authoritative for domains:
-      <?cs each:fqdn = ns.fqdn ?><?cs var:fqdn ?>
-      <?cs /each ?><?cs if:ns.overfull ?>...<?cs /if ?>
+<?cs each:fqdn = ns.fqdn ?>    <?cs var:fqdn ?>
+<?cs /each ?><?cs if:ns.overfull ?>...<?cs /if ?>
 <?cs /each ?><?cs /if ?><?cs if:par_test.name == "heterogenous" ?>Všechny nameservery v sadě nameserverů používají stejnou implementaci
 DNS serveru.
 All nameservers in NS set use the same implementation of DNS server.<?cs /if ?><?cs if:par_test.name == "recursive" ?>Následující nameservery v sadě nameserverů jsou rekurzivní:
 Following nameservers in NS set are recursive:
-    <?cs each:ns = par_test.ns ?><?cs var:ns ?>
-    <?cs /each ?><?cs /if ?><?cs if:par_test.name == "recursive4all" ?>Následující nameservery v sadě nameserverů zodpověděli rekurzivně dotaz:
+<?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
+<?cs /each ?><?cs /if ?><?cs if:par_test.name == "recursive4all" ?>Následující nameservery v sadě nameserverů zodpověděli rekurzivně dotaz:
 Following nameservers in NS set answered recursively a query:
-    <?cs each:ns = par_test.ns ?><?cs var:ns ?>
-    <?cs /each ?><?cs /if ?><?cs /def ?>
+<?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
+<?cs /each ?><?cs /if ?><?cs /def ?>
 =====================================================================
 Chyby / Errors:
 <?cs each:item = tests ?><?cs if:item.type == "error" ?><?cs call:printtest(item) ?><?cs /if ?><?cs /each ?>

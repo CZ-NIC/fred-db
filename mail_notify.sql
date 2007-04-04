@@ -45,6 +45,25 @@ e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
 
+CREATE TABLE mail_vcard (
+	vcard text NOT NULL
+);
+INSERT INTO mail_vcard (vcard) VALUES
+('BEGIN:VCARD
+VERSION:2.1
+N:podpora CZ. NIC, z.s.p.o.
+FN:podpora CZ. NIC, z.s.p.o.
+ORG:CZ.NIC, z.s.p.o.
+TITLE:zakaznicka podpora
+TEL;WORK;VOICE:+420 222 745 104
+TEL;WORK;FAX:+420 222 745 112
+ADR;WORK:;;Americka 23;Praha 2;;120 00;Česká republika
+URL;WORK:http://www.nic.cz
+EMAIL;PREF;INTERNET:podpora@nic.cz
+REV:20070403T143928Z
+END:VCARD
+');
+
 CREATE TABLE mail_header_defaults (
 	id SERIAL PRIMARY KEY,
 	h_from varchar(300),
