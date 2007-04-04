@@ -13,6 +13,7 @@ INSERT INTO enum_notify   VALUES( 2 , 'domain DNS after'); -- domena je vyrazena
 INSERT INTO enum_notify   VALUES( 3 , 'domain DEL' ); -- domena je definitivne smazana 
 INSERT INTO enum_notify   VALUES( 4 , 'domain valexDate before' ); -- domena je tesne pres uplynutim datumu validace
 INSERT INTO enum_notify   VALUES( 5 , 'domain valexDate  after'); -- domena  je po uplynuti datumu validace
+INSERT INTO enum_notify   VALUES( 6 , 'domain exDate before'); -- domena je tesne pred uplynutim expirace
 
 CREATE TABLE  object_status_notifications 
 (
