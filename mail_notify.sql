@@ -46,6 +46,7 @@ e-mail : <?cs var:defaults.emailsupport ?>
 ');
 
 CREATE TABLE mail_vcard (
+	id SERIAL PRIMARY KEY,
 	vcard text NOT NULL
 );
 INSERT INTO mail_vcard (vcard) VALUES
