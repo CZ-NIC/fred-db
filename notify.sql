@@ -30,5 +30,7 @@ CREATE TABLE  object_status_notifications_mail_map
 (
 id INTEGER REFERENCES object_status_notifications(id) , -- odkaz do tabulky
 mail_type  integer   REFERENCES  mail_type(id)  , -- typ  email notifikace 
-mailid integer references mail_archive(id) -- id odeslaneho mailu
+mailid integer references mail_archive(id), -- id odeslaneho mailu
+PRIMARY KEY(id,mail_type,mailid)
 );
+
