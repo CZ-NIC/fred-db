@@ -118,8 +118,8 @@ CREATE TABLE mail_archive (
 	crdate timestamp NOT NULL DEFAULT now(),  -- date of insertion in table
 	moddate timestamp,    -- date of sending (even if unsuccesfull)
 	-- status value has following meanings:
-	--    0: The email is ready to be sent
-	--    1: The email was successfully sent
+	--    0: The email was successfully sent
+	--    1: The email is ready to be sent
 	--    x: The email waits for manual confirmation which should change
 	--       status value to 0 when the email is desired to be sent.
 	--       x represents any value different from 0 and 1 (convention is
