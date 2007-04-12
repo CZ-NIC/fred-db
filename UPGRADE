@@ -1,0 +1,5 @@
+
+ *) mail_archive table has new column attempt which counts failed attempts
+    to send email.
+    SQL: ALTER TABLE mail_archive ADD COLUMN attempt smallint NOT NULL DEFAULT 0;
+

@@ -125,6 +125,7 @@ CREATE TABLE mail_archive (
 	--       x represents any value different from 0 and 1 (convention is
 	--       number 2).
 	status integer,
+	attempt smallint NOT NULL DEFAULT 0, -- failed attempts to send email
 	message text NOT NULL -- message to be sent including headers (except
 	                      -- date and msgid header), without non-templated
 	                      -- attachments.
