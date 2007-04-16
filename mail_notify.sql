@@ -38,8 +38,8 @@ e-mail : <?cs var:defaults.emailsupport ?>
 --   in future it should be templated as footer is, in order to minimize
 --   duplicated information
 CREATE TABLE mail_vcard (
-	id SERIAL PRIMARY KEY,
-	vcard text NOT NULL
+	vcard text NOT NULL,
+	id SERIAL PRIMARY KEY
 );
 INSERT INTO mail_vcard (vcard) VALUES
 ('BEGIN:VCARD

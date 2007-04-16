@@ -35,7 +35,6 @@ id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
 Zone INTEGER REFERENCES Zone (ID),
 CrDate timestamp NOT NULL DEFAULT now(),  -- datum a cas vytvoreni faktury
 TaxDate date  , -- datum zdanitelneho plneni ( kdy prisla platba u zalohove FA)
-prefix_type INTEGER REFERENCES invoice_prefix(ID), --  typ faktury z jakeho je roku a jakeho je typu dle prefixu
 prefix integer UNIQUE default NULL , -- deviti mistne  cislo faktury z invoice_prefix.prefix pocitano dle TaxDate
                                      -- pokud je NULL je to vypis vyuctovani za sluzby  vyuctovaci faktura se neuvadi je to typ 2 
 registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora
@@ -45,6 +44,7 @@ Price numeric(10,2) NOT NULL DEFAULT 0.0, -- vyse faktury i s dani
 VAT integer NOT NULL  DEFAULT 19, -- vyse dane 19% (0) pro vyctovaci
 total numeric(10,2) NOT NULL  DEFAULT 0.0 ,  -- castka bez dane ( pro vyctvovaci stejny jako price=total castka bez dane);
 totalVAT numeric(10,2)  NOT NULL DEFAULT 0.0 , -- odvedena dan ( 0 pro vyctovaci dan je odvedena na zalohovych FA )
+prefix_type INTEGER REFERENCES invoice_prefix(ID), --  typ faktury z jakeho je roku a jakeho je typu dle prefixu
 file INTEGER REFERENCES files ,-- odkaz na vygenerovane PDF (muze byt null nez se vygeneruje)
 fileXML INTEGER REFERENCES files -- odkaz na vygenerovane XML (muze byt null nez se vygeneruje)
 );
@@ -89,8 +89,8 @@ objectID integer  REFERENCES object_registry (id),
 zone INTEGER REFERENCES Zone (ID),
 registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora 
 operation INTEGER NOT NULL REFERENCES enum_operation, -- typ operace registrace ci prodlouzeni
-period integer default 0, -- pocet jednotek na prodlouzeni ve mesicich
-ExDate date default NULL  -- vysledny ExDate pouze pro RENEW
+ExDate date default NULL,  -- vysledny ExDate pouze pro RENEW
+period integer default 0 -- pocet jednotek na prodlouzeni ve mesicich
 );
 
 

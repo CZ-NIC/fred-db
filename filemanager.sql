@@ -13,8 +13,8 @@ CREATE TABLE files (
 	name varchar(300) NOT NULL,
 	path varchar(300) NOT NULL,
 	mimetype varchar(100) NOT NULL DEFAULT 'application/octet-stream',
-	filetype smallint REFERENCES enum_filetype(id),
 	crdate timestamp NOT NULL DEFAULT now(),
-	filesize integer NOT NULL
+	filesize integer NOT NULL,
+	filetype smallint REFERENCES enum_filetype(id)
 );
 
