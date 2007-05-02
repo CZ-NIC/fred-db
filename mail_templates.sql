@@ -675,7 +675,7 @@ Upozornění / Notice:
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (16, 16);
 
-INSERT INTO mail_type (id, name, subject) VALUES (17, 'invoice_deposit', 'Přijatá záloha / xxx');
+INSERT INTO mail_type (id, name, subject) VALUES (17, 'invoice_deposit', 'Přijatá záloha / Accepted advance payment');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (17, 'plain', 1,
 'English version of the e-mail is entered below the Czech version
@@ -692,14 +692,20 @@ slouží k uplatnění nároku na odpočet DPH přijaté zálohy
 
 
 
-English version is not available yet.
+Accepted Advance Payment Confirmation
+
+Dear business partners,
+
+  Enclosed with this letter, we are sending a tax document for the advance
+payment accepted. This tax document can be used to claim VAT deduction for
+the advance payment.
 
                                              Yours sincerely
                                              support <?cs var:defaults.company ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (17, 17);
 
-INSERT INTO mail_type (id, name, subject) VALUES (18, 'invoice_audit', 'Měsíční vyúčtování / xxx');
+INSERT INTO mail_type (id, name, subject) VALUES (18, 'invoice_audit', 'Měsíční vyúčtování / Monthly billing');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (18, 'plain', 1,
 'English version of the e-mail is entered below the Czech version
@@ -717,14 +723,20 @@ do <?cs var:todate ?>.
 
 
 
-English version is not available yet.
+Monthly Bill Dispatching
+
+Dear business partners,
+
+  Enclosed with this letter, we are sending a tax document for the domain name
+registration services and the maintenance of domain name records for the period
+from <?cs var:fromdate ?> to <?cs var:todate ?>.
 
                                              Yours sincerely
                                              support <?cs var:defaults.company ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (18, 18);
 
-INSERT INTO mail_type (id, name, subject) VALUES (19, 'invoice_noaudit', 'Měsíční vyúčtování / xxx');
+INSERT INTO mail_type (id, name, subject) VALUES (19, 'invoice_noaudit', 'Měsíční vyúčtování / Monthly billing');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (19, 'plain', 1,
 'English version of the e-mail is entered below the Czech version
@@ -743,7 +755,14 @@ období vystaven daňový doklad.
 
 
 
-English version is not available yet.
+Monthly Bill Dispatching
+
+Dear business partners,
+
+  Since your company has not performed any domain name registration or domain
+name validity extension in the period from <?cs var:fromdate ?> to <?cs var:todate ?>,
+hence not drawing any paid services, no tax document will be issued for this
+period.
 
                                              Yours sincerely
                                              support <?cs var:defaults.company ?>
