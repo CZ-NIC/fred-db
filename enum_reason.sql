@@ -50,10 +50,10 @@ INSERT INTO enum_reason VALUES(  22 , 'Can not add nameserver'  , 'nelze přidat
 INSERT INTO enum_reason VALUES(  23 ,  'Can not remove  technical contact'  , 'nelze vymazat  technický kontakt'  );
 
 INSERT INTO enum_reason VALUES(  24 , 'Technical contact is already set to this nsset.'  , 'technický kontakt je již přiřazen k  sadě jmených servrů' );
-INSERT INTO enum_reason VALUES(  25 , 'Technical contact is not set to this nsset.' ,  'technický kontak není přiřazen k sadě jmených servrů'   );
+INSERT INTO enum_reason VALUES(  25 , 'Technical contact is not set to this nsset.' ,  'technický kontakt není přiřazen k sadě jmených servrů'   );
 
 INSERT INTO enum_reason VALUES(  26 , 'Administrative contact is already set to this domain.'  , 'administrátorký kontakt je již přiřazen k doméně' );
-INSERT INTO enum_reason VALUES(  27 , 'Administravite contact is not set to this domain.' ,  'administrátorký kontak není přiřazen k doméně'   );
+INSERT INTO enum_reason VALUES(  27 , 'Administravite contact is not set to this domain.' ,  'administrátorký kontakt není přiřazen k doméně'   );
  
 -- pro domenu kdyz neexistuje vlastnik ci nsset
 INSERT INTO enum_reason VALUES( 28 ,  'handle of nsset does not exist.' , 'sada jmených servrů není vytvořena' );
@@ -78,5 +78,5 @@ INSERT INTO enum_reason VALUES( 36 ,  'registratration is prohibited'  , 'regist
 -- nepodarilose zvalidovat XML
 INSERT INTO enum_reason VALUES( 37 ,  'Schemas validity error: ' , 'Chyba validace XML schemat: ' );
 
--- duplicitni kontak pro tech ci admin 
+-- duplicitni kontakt pro tech ci admin 
 INSERT INTO enum_reason VALUES(  38 , 'Duplicity contact' , 'Duplicitnitni kontakt' );
