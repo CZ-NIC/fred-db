@@ -58,8 +58,9 @@ CREATE TABLE domain_contact_map_history  (
         historyID INTEGER REFERENCES History,       
         DomainID INTEGER  REFERENCES object_registry (id),
         ContactID INTEGER REFERENCES object_registry (id),
+        Role INTEGER NOT NULL DEFAULT 1,
 -- TODO         ContactHistoryID INTEGER REFERENCES  History(id) --  Contact ve stavu jakem byl pri zmene 
-       PRIMARY KEY(historyID,DomainID,ContactID)
+       PRIMARY KEY(historyID,DomainID,ContactID,Role)
         );
 
 -- DROP TABLE NSSet_history  CASCADE;

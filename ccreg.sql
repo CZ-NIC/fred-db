@@ -111,7 +111,8 @@ CREATE INDEX domain_id_idx ON Domain (ID);
 CREATE TABLE domain_contact_map (
         DomainID INTEGER REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
         ContactID INTEGER REFERENCES Contact ON UPDATE CASCADE NOT NULL,
-        PRIMARY KEY (DomainID, ContactID)
+        Role INTEGER NOT NULL DEFAULT 1,
+        PRIMARY KEY (DomainID, ContactID, Role)
         );
 CREATE INDEX domain_contact_map_domainid_idx ON domain_contact_map (DomainID);
 

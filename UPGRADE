@@ -7,3 +7,17 @@
     SQL: UPDATE mail_templates SET template = '...' WHERE id = 17;
     SQL: UPDATE mail_templates SET template = '...' WHERE id = 18;
     SQL: UPDATE mail_templates SET template = '...' WHERE id = 19;
+
+ version 1.4
+
+ *) adding role
+    SQL: ALTER TABLE domain_contact_map ADD role integer not null default 1;
+    SQL: ALTER TABLE domain_contact_map DROP constraint domain_contact_map_pkey;
+    SQL: ALTER TABLE domain_contact_map ADD PRIMARY KEY(domainid,contactid,role);
+    SQL: ALTER TABLE domain_contact_map_history ADD role integer not null default 1;
+    SQL: ALTER TABLE domain_contact_map_history DROP constraint domain_contact_map_history_pkey;
+    SQL: ALTER TABLE domain_contact_map_history ADD PRIMARY KEY(historyid,domainid,contactid,role);
+    
+ *) repairing message
+    SQL: UPDATE enum_reason SET reason_cs='administrátorký kontakt není přiřazen k doméně' WHERE id=27;
+    SQL: UPDATE 
