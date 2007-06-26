@@ -36,3 +36,4 @@ cat invoice.sql
 cat bank.sql
 #tech-check
 cat techcheck.sql
+cat info_bufer.sql

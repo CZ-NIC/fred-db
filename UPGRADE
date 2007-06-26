@@ -17,7 +17,41 @@
     SQL: ALTER TABLE domain_contact_map_history ADD role integer not null default 1;
     SQL: ALTER TABLE domain_contact_map_history DROP constraint domain_contact_map_history_pkey;
     SQL: ALTER TABLE domain_contact_map_history ADD PRIMARY KEY(historyid,domainid,contactid,role);
+
+-- 1.4->1.5
+
+CREATE TABLE epp_info_buffer_content (
+	id INTEGER NOT NULL, 
+	registrar_id INTEGER NOT NULL REFERENCES registrar (id), 
+	object_id INTEGER NOT NULL REFERENCES object_registry (id), 
+	PRIMARY KEY (id,registrar_id)
+);
+
+CREATE TABLE epp_info_buffer (
+	registrar_id INTEGER NOT NULL REFERENCES registrar (id),
+	current INTEGER, 
+	FOREIGN KEY (registrar_id, current) REFERENCES epp_info_buffer_content (registrar_id, id)
+);
+
+INSERT INTO enum_action (  status , id )  VALUES(  'Info'  , 1104 );
+INSERT INTO enum_action (  status , id )  VALUES(  'GetInfoResults' ,  1105 );
     
- *) repairing message
-    SQL: UPDATE enum_reason SET reason_cs='administrátorký kontakt není přiřazen k doméně' WHERE id=27;
-    SQL: UPDATE 
+DROP INDEX object_registry_name_idx;
+CREATE INDEX object_registry_upper_name_1_idx 
+ ON object_registry (UPPER(name)) WHERE type=1;
+CREATE INDEX object_registry_upper_name_2_idx 
+ ON object_registry (UPPER(name)) WHERE type=2;
+CREATE INDEX object_registry_name_3_idx 
+ ON object_registry  (NAME) WHERE type=3;
+
+ALTER TABLE contact 
+  ADD DiscloseVAT boolean DEFAULT False,
+  ADD DiscloseIdent boolean DEFAULT False,
+  ADD DiscloseNotifyEmail boolean DEFAULT False;
+ALTER TABLE contact_history
+  ADD DiscloseVAT boolean DEFAULT False,
+  ADD DiscloseIdent boolean DEFAULT False,
+  ADD DiscloseNotifyEmail boolean DEFAULT False;
+
+INSERT INTO enum_ssntype  VALUES(6 , 'BIRTHDAY' , 'day of birth');
+

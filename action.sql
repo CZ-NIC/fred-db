@@ -56,6 +56,9 @@ INSERT INTO enum_action (  status , id )  VALUES(  'ContactSendAuthInfo' ,  1101
 INSERT INTO enum_action (  status , id )  VALUES(  'NSSetSendAuthInfo'  , 1102 );
 INSERT INTO enum_action (  status , id )  VALUES(  'DomainSendAuthInfo' ,  1103 );
 
+-- info fce
+INSERT INTO enum_action (  status , id )  VALUES(  'Info'  , 1104 );
+INSERT INTO enum_action (  status , id )  VALUES(  'GetInfoResults' ,  1105 );
 
  
 

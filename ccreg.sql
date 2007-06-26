@@ -14,7 +14,12 @@ CREATE TABLE OBJECT_registry (
        );
 
 -- index
-CREATE INDEX object_registry_name_idx ON Object_registry  (NAME);
+CREATE INDEX object_registry_upper_name_1_idx 
+ ON object_registry (UPPER(name)) WHERE type=1;
+CREATE INDEX object_registry_upper_name_2_idx 
+ ON object_registry (UPPER(name)) WHERE type=2;
+CREATE INDEX object_registry_name_3_idx 
+ ON object_registry  (NAME) WHERE type=3;
 
 CREATE TABLE OBJECT (
         ID INTEGER PRIMARY KEY  REFERENCES object_registry (id),
@@ -50,6 +55,9 @@ CREATE TABLE Contact (
         DiscloseTelephone boolean DEFAULT False,
         DiscloseFax boolean DEFAULT False,
         DiscloseEmail boolean DEFAULT False,
+        DiscloseVAT boolean DEFAULT False,
+        DiscloseIdent boolean DEFAULT False,
+        DiscloseNotifyEmail boolean DEFAULT False,
         NotifyEmail varchar(1024),
         VAT varchar(32),
         SSN varchar(32),

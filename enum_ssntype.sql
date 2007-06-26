@@ -7,8 +7,9 @@ CREATE TABLE enum_ssntype (
         );
 
 -- prihlasovaci funkce
-INSERT INTO enum_ssntype  VALUES(1 , 'RC' , 'rodne cislo');
-INSERT INTO enum_ssntype  VALUES(2 , 'OP' , 'cislo obcanky');
-INSERT INTO enum_ssntype  VALUES(3 , 'PASS' , 'cislo pasu');
-INSERT INTO enum_ssntype  VALUES(4 , 'ICO' , 'ico');
-INSERT INTO enum_ssntype  VALUES(5 , 'MPSV' , 'identifikator ministerstva prace s soc. veci');
+INSERT INTO enum_ssntype  VALUES(1 , 'RC' , 'born number');
+INSERT INTO enum_ssntype  VALUES(2 , 'OP' , 'identity card number');
+INSERT INTO enum_ssntype  VALUES(3 , 'PASS' , 'passwport');
+INSERT INTO enum_ssntype  VALUES(4 , 'ICO' , 'organization identification number');
+INSERT INTO enum_ssntype  VALUES(5 , 'MPSV' , 'social system identification');
+INSERT INTO enum_ssntype  VALUES(6 , 'BIRTHDAY' , 'day of birth');
