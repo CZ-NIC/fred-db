@@ -32,6 +32,8 @@ CREATE TABLE OBJECT (
 
 -- indexy
 CREATE INDEX object_id_idx ON Object (ID);
+CREATE INDEX object_upid_idx ON "object" (upid);
+CREATE INDEX object_clid_idx ON "object" (clid);
 
 
 -- DROP TABLE Contact CASCADE;
@@ -46,8 +48,8 @@ CREATE TABLE Contact (
         StateOrProvince varchar(1024),
         PostalCode varchar(32),
         Country char(2) REFERENCES enum_country,
-        Telephone varchar(32),
-        Fax varchar(32),
+        Telephone varchar(64),
+        Fax varchar(64),
         Email varchar(1024),
         DiscloseName boolean DEFAULT False,
         DiscloseOrganization boolean DEFAULT False,
@@ -60,7 +62,7 @@ CREATE TABLE Contact (
         DiscloseNotifyEmail boolean DEFAULT False,
         NotifyEmail varchar(1024),
         VAT varchar(32),
-        SSN varchar(32),
+        SSN varchar(64),
 	SSNtype INTEGER REFERENCES enum_ssntype
         );
 CREATE INDEX contact_id_idx ON Contact (ID);
@@ -113,7 +115,8 @@ CREATE TABLE Domain (
         Exdate timestamp NOT NULL
         );
 CREATE INDEX domain_zone_idx ON Domain (Zone);
-CREATE INDEX domain_id_idx ON Domain (ID);
+CREATE INDEX domain_registrant_idx ON Domain (registrant);
+CREATE INDEX domain_nsset_idx ON Domain (nsset);
 
 -- DROP TABLE domain_contact_map CASCADE;
 CREATE TABLE domain_contact_map (

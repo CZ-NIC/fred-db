@@ -25,8 +25,8 @@ CREATE TABLE Contact_History (
         StateOrProvince varchar(1024),
         PostalCode varchar(32),
         Country char(2) REFERENCES enum_country,
-        Telephone varchar(32),
-        Fax varchar(32),
+        Telephone varchar(64),
+        Fax varchar(64),
         Email varchar(1024),
         DiscloseName boolean DEFAULT False,
         DiscloseOrganization boolean DEFAULT False,
@@ -39,7 +39,7 @@ CREATE TABLE Contact_History (
         DiscloseNotifyEmail boolean DEFAULT False,
         NotifyEmail varchar(1024),
         VAT varchar(32),
-        SSN varchar(32),
+        SSN varchar(64),
         SSNtype integer REFERENCES enum_ssntype
 );
 

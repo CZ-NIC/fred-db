@@ -75,3 +75,7 @@ CREATE TABLE genzone_domain_history (
     last boolean NOT NULL DEFAULT True 
 );
 
+CREATE INDEX genzone_domain_history_domain_hid_idx 
+  ON genzone_domain_history (domain_hid);
+CREATE INDEX genzone_domain_history_domain_id_idx 
+  ON genzone_domain_history (domain_id);

@@ -1,4 +1,3 @@
-\encoding       UTF8
 
 --
 -- This script may be called only on just created mail tables, because

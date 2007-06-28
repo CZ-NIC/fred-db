@@ -43,15 +43,30 @@ CREATE INDEX object_registry_upper_name_2_idx
  ON object_registry (UPPER(name)) WHERE type=2;
 CREATE INDEX object_registry_name_3_idx 
  ON object_registry  (NAME) WHERE type=3;
+CREATE INDEX domain_registrant_idx ON Domain (registrant);
+CREATE INDEX domain_nsset_idx ON Domain (nsset);
+CREATE INDEX object_upid_idx ON "object" (upid);
+CREATE INDEX object_clid_idx ON "object" (upid);
+DROP index domain_id_idx;
+CREATE INDEX genzone_domain_history_domain_hid_idx 
+  ON genzone_domain_history (domain_hid);
+CREATE INDEX genzone_domain_history_domain_id_idx 
+  ON genzone_domain_history (domain_id);
 
 ALTER TABLE contact 
   ADD DiscloseVAT boolean DEFAULT False,
   ADD DiscloseIdent boolean DEFAULT False,
-  ADD DiscloseNotifyEmail boolean DEFAULT False;
+  ADD DiscloseNotifyEmail boolean DEFAULT False,
+  ALTER telephone TYPE varchar(64),
+  ALTER fax TYPE varchar(64),
+  ALTER ssn TYPE varchar(64);
 ALTER TABLE contact_history
   ADD DiscloseVAT boolean DEFAULT False,
   ADD DiscloseIdent boolean DEFAULT False,
-  ADD DiscloseNotifyEmail boolean DEFAULT False;
+  ADD DiscloseNotifyEmail boolean DEFAULT False,
+  ALTER telephone TYPE varchar(64),
+  ALTER fax TYPE varchar(64),
+  ALTER ssn TYPE varchar(64);
 
 INSERT INTO enum_ssntype  VALUES(6 , 'BIRTHDAY' , 'day of birth');
 
