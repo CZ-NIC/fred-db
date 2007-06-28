@@ -9,7 +9,7 @@ CREATE TABLE "user"
 CREATE TABLE domain_blacklist
 (
   id serial NOT NULL, -- primary key
-  regexp varchar(255) NOT NULL, -- regularni vyraz ktery blokujeme
+  regexp varchar(255) NOT NULL, -- regular expression which is blocked
   valid_from timestamp NOT NULL, -- from when bloc is valid
   valid_to timestamp, -- till when bloc is valid, if it is NULL, it isn't restricted
   reason varchar(255) NOT NULL, -- reason why is domain blocked
