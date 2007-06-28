@@ -3,14 +3,14 @@
 
 CREATE TABLE OBJECT_registry (
        ID SERIAL PRIMARY KEY,
-       ROID varchar(255) UNIQUE NOT NULL , -- unikatni roid
-       type smallint , -- typ objektu 1 kontakt 2 nsset 3 domena
-       NAME varchar(255)  NOT NULL , -- handle ci FQDN
+       ROID varchar(255) UNIQUE NOT NULL , -- unique roid
+       type smallint , -- object type 1 contact 2 nsset 3 domain
+       NAME varchar(255)  NOT NULL , -- handle or FQDN
        CrID INTEGER NOT NULL REFERENCES Registrar,
        CrDate timestamp NOT NULL DEFAULT now(),
        ErDate timestamp DEFAULT NULL, -- erase date 
-       CrhistoryID INTEGER  REFERENCES History, -- odkaz do historie vytvoreni
-       historyID integer REFERENCES history -- odkaz na posledni zmenu v historii                 
+       CrhistoryID INTEGER  REFERENCES History, -- link into create history
+       historyID integer REFERENCES history -- link to last change in history                 
        );
 
 -- index
@@ -27,10 +27,10 @@ CREATE TABLE OBJECT (
         UpID INTEGER REFERENCES Registrar,
         TrDate timestamp DEFAULT NULL,
         UpDate timestamp DEFAULT NULL,
-        AuthInfoPw varchar(300) -- dle Honzy v XML schematech
+        AuthInfoPw varchar(300) -- in XML schemas
         );
 
--- indexy
+-- index
 CREATE INDEX object_upid_idx ON "object" (upid);
 CREATE INDEX object_clid_idx ON "object" (clid);
 
@@ -85,8 +85,8 @@ CREATE INDEX nsset_contact_map_contactid_idx ON nsset_contact_map (ContactID);
 CREATE TABLE Host (
         ID SERIAL PRIMARY KEY,
         NSSetID INTEGER REFERENCES NSSet ON UPDATE CASCADE,
-        FQDN VARCHAR(255)   NOT NULL,  -- nemuze byt UNIQUE pro dva ruzne nssety stejny dns host
-        UNIQUE (NSSetID, FQDN ) -- unikatni klic
+        FQDN VARCHAR(255)   NOT NULL,  -- it cannot be UNIQUE for two different NSSET same dns host 
+        UNIQUE (NSSetID, FQDN ) -- unique key
         );
 
 
@@ -98,7 +98,7 @@ CREATE TABLE host_ipaddr_map (
            ID SERIAL PRIMARY KEY,
            HostID  INTEGER NOT NULL REFERENCES HOST ON UPDATE CASCADE ON DELETE CASCADE,
            NSSetID INTEGER NOT NULL REFERENCES NSSET ON UPDATE CASCADE ON DELETE CASCADE, 
-           IpAddr INET NOT NULL -- ip adresa
+           IpAddr INET NOT NULL -- IP address
          );
 
 
@@ -107,7 +107,7 @@ CREATE TABLE Domain (
         ID INTEGER PRIMARY KEY REFERENCES object (ID),
         Zone INTEGER REFERENCES Zone (ID),
         Registrant INTEGER NOT NULL REFERENCES Contact,
-        NSSet INTEGER NULL REFERENCES NSSet, -- odkaz na nsset muze by i NULL lze zaregistrovat domenu bez nssetu
+        NSSet INTEGER NULL REFERENCES NSSet, -- link to nsset can be also NULL, it can register domain without nsset
         Exdate timestamp NOT NULL
         );
 CREATE INDEX domain_zone_idx ON Domain (Zone);
