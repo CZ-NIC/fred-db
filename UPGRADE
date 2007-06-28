@@ -53,6 +53,13 @@ CREATE INDEX genzone_domain_history_domain_hid_idx
 CREATE INDEX genzone_domain_history_domain_id_idx 
   ON genzone_domain_history (domain_id);
 
+DROP INDEX object_id_idx;
+DROP INDEX contact_id_idx;
+DROP INDEX nsset_id_idx;
+
+CREATE INDEX nsset_contact_map_contactid_idx ON nsset_contact_map (ContactID);
+CREATE INDEX domain_contact_map_contactid_idx ON domain_contact_map (ContactID);
+
 ALTER TABLE contact 
   ADD DiscloseVAT boolean DEFAULT False,
   ADD DiscloseIdent boolean DEFAULT False,

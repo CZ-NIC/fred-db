@@ -31,7 +31,6 @@ CREATE TABLE OBJECT (
         );
 
 -- indexy
-CREATE INDEX object_id_idx ON Object (ID);
 CREATE INDEX object_upid_idx ON "object" (upid);
 CREATE INDEX object_clid_idx ON "object" (clid);
 
@@ -65,16 +64,12 @@ CREATE TABLE Contact (
         SSN varchar(64),
 	SSNtype INTEGER REFERENCES enum_ssntype
         );
-CREATE INDEX contact_id_idx ON Contact (ID);
-
-
 
 -- DROP TABLE NSSet CASCADE;
 CREATE TABLE NSSet (
         ID INTEGER PRIMARY KEY REFERENCES object (id),
         checklevel smallint default 0
         );
-CREATE INDEX nsset_id_idx ON NSSet (ID);
 
 -- DROP TABLE nsset_contact_map CASCADE;
 CREATE TABLE nsset_contact_map (
@@ -83,6 +78,7 @@ CREATE TABLE nsset_contact_map (
         PRIMARY KEY (NSSetID, ContactID)
         );
 CREATE INDEX nsset_contact_map_nssetid_idx ON nsset_contact_map (NSSetID);
+CREATE INDEX nsset_contact_map_contactid_idx ON nsset_contact_map (ContactID);
 
 
 -- DROP TABLE Host CASCADE;
@@ -126,6 +122,7 @@ CREATE TABLE domain_contact_map (
         PRIMARY KEY (DomainID, ContactID, Role)
         );
 CREATE INDEX domain_contact_map_domainid_idx ON domain_contact_map (DomainID);
+CREATE INDEX domain_contact_map_contactid_idx ON domain_contact_map (ContactID);
 
 
 
