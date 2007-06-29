@@ -1,13 +1,13 @@
--- login tabulka pro pihlasovani clientu
+-- login table for clients login
 -- DROP TABLE Login CASCADE;
 CREATE TABLE Login (
-        ID SERIAL PRIMARY KEY, -- vraci se jako clientID z CORBA funkce Login
-	RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- id registratora
-        LoginDate timestamp NOT NULL DEFAULT now(), -- datum a cas prihlaseni do systemu
-        loginTRID varchar(128) NOT NULL, -- cislo prihlasovaci transakce
-	LogoutDate timestamp, -- datum a cas odhlaseni
-        logoutTRID varchar(128), -- cislo odhlasovaci transakce
-        lang  varchar(2) NOT NULL DEFAULT 'en' -- jazyk ve kterem se vraceji chybove zpravy
+        ID SERIAL PRIMARY KEY, -- return as clientID from CORBA Login function
+	RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- registrar id 
+        LoginDate timestamp NOT NULL DEFAULT now(), -- login date and time into system
+        loginTRID varchar(128) NOT NULL, -- login transaction number
+	LogoutDate timestamp, -- logout date and time
+        logoutTRID varchar(128), -- logout transaction number 
+        lang  varchar(2) NOT NULL DEFAULT 'en' -- language, in which return error messages
         );
 
 
