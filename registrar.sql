@@ -1,10 +1,10 @@
 -- DROP TABLE Registrar CASCADE;
 CREATE TABLE Registrar (
   ID SERIAL PRIMARY KEY,
-  ICO  char(10), -- ICO registratora 
-  DIC  char(15), -- DIC registratora
-  varsymb  char(10)  , -- parovaci variabilni symbol (ico )
-  VAT boolean DEFAULT True, --jestli se ma zapocitavat DPH pri fakturaci
+  ICO  char(10), -- ICO of registrar
+  DIC  char(15), -- DIC of registrar
+  varsymb  char(10)  , -- coupling variable symbol ( ico )
+  VAT boolean DEFAULT True, -- whether VAT should be count by invoicing 
   Handle varchar(255) UNIQUE NOT NULL,
   Name varchar(1024),
   Organization varchar(1024),
@@ -32,10 +32,10 @@ CREATE TABLE RegistrarACL (
 
 CREATE TABLE RegistrarInvoice (       
   ID SERIAL PRIMARY KEY,
-  RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- id registratora
-  Zone integer REFERENCES Zone,  --  zona pro kterou ma registratrio pristup
-  FromDate date DEFAULT NULL , -- datum kdy zacal registrator pracovat v dane zone
-  LastDate date DEFAULT NULL  -- datum kdy byla naposledy vyvorena faktura
+  RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- registrar id 
+  Zone integer REFERENCES Zone,  --  zone for which has registrar an access
+  FromDate date DEFAULT NULL , -- date when began registrar work in a zone
+  LastDate date DEFAULT NULL  -- date when was last created an invoice 
 );
 
 -- testing registrar
@@ -54,7 +54,7 @@ INSERT INTO  RegistrarInvoice VALUES ( 2 , 1  , 3 , '2007-01-01' , NULL );
 INSERT INTO  RegistrarInvoice VALUES ( 3 , 2  , 1 , '2007-01-01' , NULL );
 INSERT INTO  RegistrarInvoice VALUES ( 4 , 2  , 3 , '2007-01-01' , NULL ); 
 
--- pro defualt prihlaseni REG-LRR
+-- for default login REG-LRR
 INSERT INTO  RegistrarACL 
 VALUES (1, 1, 'AE:B3:5F:FA:38:80:DB:37:53:6A:3E:D4:55:E2:91:97', '123456789');
 INSERT INTO  RegistrarACL 
