@@ -1,17 +1,17 @@
--- kodovani
+-- encoding
 \encoding       LATIN2
 
--- ciselnik chybovych hlaseni
+-- error message classifier
 -- DROP TABLE enum_error  CASCADE;
 CREATE TABLE enum_error (
         id integer PRIMARY KEY,
         status varchar(128) UNIQUE NOT NULL,
-        status_cs varchar(128) UNIQUE NOT NULL -- cesky preklad
+        status_cs varchar(128) UNIQUE NOT NULL -- czech translation
         );
                         
                         
 
--- chybove zpravy EN a CS
+-- error message EN and CS
 
 
 INSERT INTO enum_error VALUES(  1000 , 'Command completed successfully',    'Pøíkaz úspì¹nì proveden');
@@ -88,7 +88,7 @@ INSERT INTO enum_status (id , status) VALUES( 305 , 'pendingUpdate');
 CREATE TABLE enum_country (
         id char(2) PRIMARY KEY,
         country varchar(1024) UNIQUE NOT NULL,
-        country_cs  varchar(1024) UNIQUE -- volitelne cesky nazev 
+        country_cs  varchar(1024) UNIQUE -- optional czech name 
         );
 
 
@@ -138,12 +138,12 @@ CREATE TABLE Contact (
         Handle varchar(255) UNIQUE NOT NULL,
         ROID varchar(255) UNIQUE NOT NULL,
         Status smallint[], -- TODO: create trigger to check values agains enum_status
--- zruseno         ClID INTEGER NOT NULL REFERENCES Registrar,
+-- canceled         ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL DEFAULT now(),
         UpID INTEGER REFERENCES Registrar,
         UpDatex timestamp,
--- zruseno        TrDate timestamp,
+-- canceled        TrDate timestamp,
         Name varchar(1024),
         Organization varchar(1024),
         Street1 varchar(1024),
@@ -162,7 +162,7 @@ CREATE TABLE Contact (
         DiscloseTelephone boolean DEFAULT False,
         DiscloseFax boolean DEFAULT False,
         DiscloseEmail boolean DEFAULT False,
--- zruseno       AuthInfoPw varchar(32),
+-- canceled       AuthInfoPw varchar(32),
         NotifyEmail varchar(1024),
         VAT varchar(32),
         SSN varchar(32)
@@ -219,14 +219,14 @@ CREATE INDEX nsset_contact_map_nssetid_idx ON nsset_contact_map (NSSetID);
 CREATE TABLE Host (
         ID SERIAL PRIMARY KEY,
         NSSetID INTEGER REFERENCES NSSet ON UPDATE CASCADE,
-        FQDN VARCHAR(255)   NOT NULL,  -- nemuze byt UNIQUE pro dva ruzne nssety stejny dns host
+        FQDN VARCHAR(255)   NOT NULL,  -- same dns host can not be UNIQUE for two different nssets 
 --        ClID INTEGER NOT NULL REFERENCES Registrar ON UPDATE CASCADE,
--- zruseno        CrDate TIMESTAMP NOT NULL,
--- duplicitni    UpID INTEGER NOT NULL REFERENCES Registrar ON UPDATE CASCADE ON DELETE SET NULL,
--- udaje         UpDate TIMESTAMP NOT NULL,
+-- canceled        CrDate TIMESTAMP NOT NULL,
+-- duplicate     UpID INTEGER NOT NULL REFERENCES Registrar ON UPDATE CASCADE ON DELETE SET NULL,
+-- data         UpDate TIMESTAMP NOT NULL,
 -- s nsset       Status INTEGER[], -- TODO: write trigger to check values
         IpAddr INET[] NOT NULL,  -- NOTE: we don't have to store IP version, since it's obvious from address
-        UNIQUE (NSSetID, FQDN ) -- unikatni klic
+        UNIQUE (NSSetID, FQDN ) -- unique key
         );
 
 CREATE INDEX host_nsset_idx ON Host (NSSetID);
@@ -303,49 +303,49 @@ CREATE TABLE Message (
         );
 CREATE INDEX message_clid_idx ON message (clid);
 CREATE INDEX message_seen_idx ON message (clid,seen,crdate,exdate);
--- login tabulka pro pihlasovani clientu
+-- login table for client login
 -- DROP TABLE Login CASCADE;
 CREATE TABLE Login (
-        ID SERIAL PRIMARY KEY, -- vraci se jako clientID z CORBA funkce Login
-	RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- id registratora
-        LoginDate timestamp NOT NULL DEFAULT now(), -- datum a cas prihlaseni do systemu
-        loginTRID varchar(128) NOT NULL, -- cislo prihlasovaci transakce
-	LogoutDate timestamp, -- datum a cas odhlaseni
-        logoutTRID varchar(128), -- cislo odhlasovaci transakce
-        lang  varchar(2) NOT NULL DEFAULT 'en' -- jazyk ve kterem se vraceji chybove zpravy
+        ID SERIAL PRIMARY KEY, -- it returns as clientID from CORBA login function
+	RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- id of registrar
+        LoginDate timestamp NOT NULL DEFAULT now(), -- login date and time into system
+        loginTRID varchar(128) NOT NULL, -- login transaction number
+	LogoutDate timestamp, -- logout date and time 
+        logoutTRID varchar(128), -- logout transaction number
+        lang  varchar(2) NOT NULL DEFAULT 'en' -- language, which is used for returning errot messages
         );
 
 
--- ciselnik funkci
+-- function classifier
 -- DROP TABLE enum_action CASCADE;
 CREATE TABLE enum_action (
         id integer PRIMARY KEY,
         status varchar(64) UNIQUE NOT NULL
         );
 
--- prihlasovaci funkce
+-- login function
 INSERT INTO enum_action (id , status) VALUES(100 , 'ClientLogin');
 INSERT INTO enum_action (id , status) VALUES(101 , 'ClientLogout');
--- poll funkce
+-- poll function
 INSERT INTO enum_action (id , status) VALUES(  120 , 'PollAcknowledgement' );
 INSERT INTO enum_action (id , status) VALUES(  121 ,  'PollResponse' );
 
  
--- funkce pro praci s kontakty
+-- function for work with contact
 INSERT INTO enum_action (id , status) VALUES(200 , 'ContactCheck');
 INSERT INTO enum_action (id , status) VALUES(201 , 'ContactInfo');
 INSERT INTO enum_action (id , status) VALUES(202 , 'ContactDelete');
 INSERT INTO enum_action (id , status) VALUES(203 , 'ContactUpdate');
 INSERT INTO enum_action (id , status) VALUES(204 , 'ContactCreate');
 
--- funkce pro hosty
+-- function for hosts
 INSERT INTO enum_action (id , status) VALUES(300 , 'HostCheck');
 INSERT INTO enum_action (id , status) VALUES(301 , 'HostInfo');
 INSERT INTO enum_action (id , status) VALUES(302 , 'HostDelete');
 INSERT INTO enum_action (id , status) VALUES(303 , 'HostUpdate');
 INSERT INTO enum_action (id , status) VALUES(304 , 'HostCreate');
 
--- funkce pro NSSET
+-- function for NSSET
 INSERT INTO enum_action (id , status) VALUES(400 , 'NSsetCheck');
 INSERT INTO enum_action (id , status) VALUES(401 , 'NSsetInfo');
 INSERT INTO enum_action (id , status) VALUES(402 , 'NSsetDelete');
@@ -353,7 +353,7 @@ INSERT INTO enum_action (id , status) VALUES(403 , 'NSsetUpdate');
 INSERT INTO enum_action (id , status) VALUES(404 , 'NSsetCreate');
 INSERT INTO enum_action (id , status) VALUES(405 , 'NSsetTransfer');
 
--- funkce pro domeny
+-- function for domain
 INSERT INTO enum_action (id , status) VALUES(500 , 'DomainCheck');
 INSERT INTO enum_action (id , status) VALUES(501 , 'DomainInfo');
 INSERT INTO enum_action (id , status) VALUES(502 , 'DomainDelete');
@@ -363,31 +363,31 @@ INSERT INTO enum_action (id , status) VALUES(505 , 'DomainTransfer');
 INSERT INTO enum_action (id , status) VALUES(506 , 'DomainRenew');
 INSERT INTO enum_action (id , status) VALUES(507 , 'DomainTrade');
 
--- funkce nezadana
+-- non entered function
 INSERT INTO enum_action (id , status) VALUES( 1000 , 'UnknowAction');
 
---  tabulka pro zapis transakci
+--  table for transactions recording
 -- DROP TABLE Action CASCADE;
 CREATE TABLE Action (
-        ID SERIAL PRIMARY KEY, -- id zaznamu
-	clientID INTEGER REFERENCES Login, -- id clienta z tabulky Login moznost i nula
-	action INTEGER NOT NULL REFERENCES enum_action, -- typ funkce z enum cisleniku
-        response  INTEGER  REFERENCES enum_error, -- navratovt kod funkce 
-        StartDate timestamp NOT NULL DEFAULT now(), -- datum a cas prihlaseni do systemu
-        clientTRID varchar(128) NOT NULL, -- cislo prihlasovaci transakce
-	EndDate timestamp, -- datum a cas uknceni funkce
-        serverTRID varchar(128) UNIQUE   -- cislo transakce ze servru 
+        ID SERIAL PRIMARY KEY, -- id record
+	clientID INTEGER REFERENCES Login, -- id of client from tabel login possibility also null
+	action INTEGER NOT NULL REFERENCES enum_action, -- function type from enum classifier
+        response  INTEGER  REFERENCES enum_error, -- returning code of function 
+        StartDate timestamp NOT NULL DEFAULT now(), -- login date und time into system
+        clientTRID varchar(128) NOT NULL, -- login transaction number
+	EndDate timestamp, -- date and time of ending function
+        serverTRID varchar(128) UNIQUE   -- transaction number from server 
         );
 
--- tabulky pro ukladani hostorie
--- ukladaji se pouze operace DELETE UPDATE TRANSFER 
--- CREATE neni treba ukladat
+-- tabel for saving history
+-- only operations DELETE UPDATE TRANSFER are saved
+-- CREATE it isn't need to save
 
 -- DROP TABLE History CASCADE;
 CREATE TABLE History (
         ID SERIAL PRIMARY KEY,
-        action INTEGER NOT NULL REFERENCES action, -- odkaz to tabulky action         
-        ModDate timestamp NOT NULL DEFAULT now() -- datum a cas provedene zmeny
+        action INTEGER NOT NULL REFERENCES action, -- link to action table         
+        ModDate timestamp NOT NULL DEFAULT now() -- date and time of realized change
         );
         
 
@@ -399,12 +399,12 @@ CREATE TABLE Contact_History (
         Handle varchar(255)  NOT NULL,
         ROID varchar(255)  NOT NULL,
         Status smallint[], -- TODO: create trigger to check values agains enum_status
--- zruseno        ClID INTEGER NOT NULL REFERENCES Registrar,
+-- canceled        ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL, -- DEFAULT now(),
         UpID INTEGER REFERENCES Registrar,
         UpDatex timestamp,
--- zruseno       TrDate timestamp,
+-- canceled       TrDate timestamp,
         Name varchar(1024),
         Organization varchar(1024),
         Street1 varchar(1024),
@@ -423,7 +423,7 @@ CREATE TABLE Contact_History (
         DiscloseTelephone boolean DEFAULT False,
         DiscloseFax boolean DEFAULT False,
         DiscloseEmail boolean DEFAULT False,
--- zruseno       AuthInfoPw varchar(32),
+-- canceled       AuthInfoPw varchar(32),
         NotifyEmail varchar(1024),
         VAT varchar(32),
         SSN varchar(32)
@@ -439,7 +439,7 @@ CREATE TABLE Domain_History (
         ID INTEGER   NOT NULL,
         ROID varchar(255)  NOT NULL,
         FQDN varchar(255)  NOT NULL,
-        Status smallint[], -- TODO: create trigger to check values agains enum_status
+        Status smallint[], -- TODO: create trigger to check values against enum_status
         ClID INTEGER NOT NULL REFERENCES Registrar,
         CrID INTEGER NOT NULL REFERENCES Registrar,
         CrDate timestamp NOT NULL DEFAULT now(),
@@ -448,8 +448,8 @@ CREATE TABLE Domain_History (
         TrDate timestamp,
         AuthInfoPw varchar(32),
         UpDatex timestamp,
-        Registrant INTEGER , -- zrusena reference
-        NSSet INTEGER  -- zruseny reference
+        Registrant INTEGER , -- canceled reference
+        NSSet INTEGER  -- canceled references
         );
 CREATE INDEX domain_History_historyid_idx ON Domain_History (historyID);
 
@@ -464,7 +464,7 @@ CREATE TABLE domain_contact_map_history  (
 
 -- DROP TABLE NSSet_history  CASCADE;
 CREATE TABLE NSSet_history  (
-        historyID integer PRIMARY KEY REFERENCES History, -- pouze jeden nsset 
+        historyID integer PRIMARY KEY REFERENCES History, -- only one nsset 
         ID INTEGER  NOT NULL,
         ROID varchar(255)  NOT NULL,
         Handle varchar(255)  NOT NULL,
@@ -489,7 +489,7 @@ CREATE TABLE nsset_contact_map_history (
 
 -- DROP TABLE Host_history  CASCADE;
 CREATE TABLE Host_history  (
-        historyID integer  REFERENCES History,  -- muze byt vice hostu takze to neni primary key
+        historyID integer  REFERENCES History,  -- there can be more host so that it isn't primary key 
         ID  INTEGER  NOT NULL,
         NSSetID INTEGER NOT NULL, -- REFERENCES NSSet ON UPDATE CASCADE,
         FQDN VARCHAR(255)  NOT NULL,
@@ -500,28 +500,29 @@ CREATE INDEX host_history_historyid_idx ON HOST_History (historyID);
 
 -- DROP TABLE ENUMVal_history  CASCADE;
 CREATE TABLE ENUMVal_history (
-        historyID integer PRIMARY KEY REFERENCES History, -- pouze jeden nsset 
+        historyID integer PRIMARY KEY REFERENCES History, -- only one nsset 
         DomainID INTEGER NOT NULL,
         ExDate timestamp NOT NULL
         );
 
 CREATE INDEX ENUMVal_history_historyid_idx ON ENUMVal_History (historyID);
--- tabulka pro pricitani creditu za operace DomainCreate a DomainReNew
+-- tabel for credit attribution for DomainCreate and DomainReNew operations 
 -- DROP TABLE Credit CASCADE;
 CREATE TABLE Credit (
-        ID SERIAL PRIMARY KEY, -- vraci se jako clientID z CORBA funkce Login
-	RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- id registratora
-	DomainID  INTEGER NOT NULL , -- REFERENCES odkaz do Domain
-        -- tabulky nebo do domain_history pokud je domena vymazana	          
-        Date timestamp NOT NULL DEFAULT now(), -- datum a cas pricteni creditu
-        DomainCreate boolean  DEFAULT true , -- true pokud je opera 
-        period INTEGER   -- perioda prodlozeni platnosti domeny v mesicich
+        ID SERIAL PRIMARY KEY, -- it returns as clientID from CORBA Login function
+	RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- id registrar
+	DomainID  INTEGER NOT NULL , -- REFERENCES link to Domain
+        -- tabels or into domain_history if domain is deleted
+	-- tabulky nebo do domain_history pokud je domena vymazana	          
+        Date timestamp NOT NULL DEFAULT now(), -- date und time of credit attribution
+        DomainCreate boolean  DEFAULT true , -- true if it is opera (true pokud je opera) 
+        period INTEGER   -- period of renewal of domain validity in months 
         );
 
 
--- vymaz vsechny zaznamy 
+-- delete all records  
 DELETE FROM  enum_country ;
--- nacti vsechny staty
+-- read all states
 INSERT INTO enum_country (id,country) VALUES ( 'AF' , 'AFGHANISTAN' );
 INSERT INTO enum_country (id,country) VALUES ( 'AX' , 'ALAND ISLANDS' );
 INSERT INTO enum_country (id,country) VALUES ( 'AL' , 'ALBANIA' );
