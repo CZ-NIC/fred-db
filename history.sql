@@ -1,7 +1,7 @@
 
 
 CREATE TABLE OBJECT_history (
-        historyID INTEGER PRIMARY KEY REFERENCES History, -- odkaz do historie
+        historyID INTEGER PRIMARY KEY REFERENCES History, -- link into history
         ID INTEGER  REFERENCES object_registry (id),
         ClID INTEGER NOT NULL REFERENCES Registrar,
         UpID INTEGER REFERENCES Registrar,
@@ -51,8 +51,8 @@ CREATE TABLE Domain_History (
         Zone INTEGER REFERENCES Zone (ID),
         ID INTEGER   REFERENCES object_registry (id),
         ExDate timestamp NOT NULL,
-        Registrant INTEGER , -- zrusena reference
-        NSSet INTEGER  -- zruseny reference
+        Registrant INTEGER , -- canceled references
+        NSSet INTEGER  -- canceled references
         );
 CREATE INDEX domain_History_historyid_idx ON Domain_History (historyID);
 
