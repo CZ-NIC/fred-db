@@ -8,13 +8,13 @@
 --INSERT INTO check_enum_reason (reason) VALUES ('OTHER');
 
 CREATE TABLE check_test (
-	id INTEGER PRIMARY KEY, -- urcute poradi testu
-	name VARCHAR(100) NOT NULL, -- nazev testu
-	severity SMALLINT NOT NULL, -- uroven testu
-	description VARCHAR(300) NOT NULL, -- textovy popis testu
+	id INTEGER PRIMARY KEY, -- provide test order
+	name VARCHAR(100) NOT NULL, -- test name
+	severity SMALLINT NOT NULL, -- test level
+	description VARCHAR(300) NOT NULL, -- test description
 	disabled BOOLEAN NOT NULL DEFAULT False,
-	script VARCHAR(300) NOT NULL, -- jmeno scriptu ktery realizuje test
-	need_domain BOOLEAN NOT NULL -- zda-li test dava smysl pouze s konkretnim fqdn domeny
+	script VARCHAR(300) NOT NULL, -- script name, which realised test
+	need_domain BOOLEAN NOT NULL -- whether test make sense only with concrete fqdn of domain
 );
 
 INSERT INTO check_test (id, name, severity, description, disabled, script,
@@ -80,7 +80,7 @@ CREATE TABLE check_result (
 	id SERIAL PRIMARY KEY,
 	checkid INTEGER references check_nsset(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	testid INTEGER references check_test(id),
-	-- tri-state logic (0=passed, 1=failed, 2=unknown)
+	-- three-state logic (0=passed, 1=failed, 2=unknown)
 	--    unknown occurs if script failed for unknown reason
 	status SMALLINT NOT NULL,
 	note TEXT, -- output of test script (stderr)
