@@ -1,4 +1,4 @@
--- ciselnik funkci
+-- function classifier
 -- DROP TABLE enum_ssntype CASCADE;
 CREATE TABLE enum_ssntype (
         id SERIAL PRIMARY KEY,
@@ -6,7 +6,7 @@ CREATE TABLE enum_ssntype (
         description varchar(64) UNIQUE NOT NULL
         );
 
--- prihlasovaci funkce
+-- login function
 INSERT INTO enum_ssntype  VALUES(1 , 'RC' , 'born number');
 INSERT INTO enum_ssntype  VALUES(2 , 'OP' , 'identity card number');
 INSERT INTO enum_ssntype  VALUES(3 , 'PASS' , 'passwport');
