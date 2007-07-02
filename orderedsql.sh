@@ -1,5 +1,5 @@
 #!/bin/bash
-# vypsani sql prikazu ve spravnem poradi pro zalozeni nove databaze
+# printing-out sql command in right order to create of new database
 #base system
 cat error.sql
 cat enum_reason.sql
