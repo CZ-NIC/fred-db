@@ -1,9 +1,9 @@
--- ciselnik chybovych hlaseni reason
+-- classifier of error messages reason
 -- DROP TABLE enum_bank_code  CASCADE;
 CREATE TABLE enum_bank_code (
       code char(4) PRIMARY KEY,
-      name_short varchar(4) UNIQUE NOT NULL , -- zkratka
-      name_full varchar(64) UNIQUE  NOT NULL -- uplny nazev
+      name_short varchar(4) UNIQUE NOT NULL , -- short cut 
+      name_full varchar(64) UNIQUE  NOT NULL -- full name
 );
 
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'ABN AMRO BANK N.V.' , 'AMRO'  , '5400' );
