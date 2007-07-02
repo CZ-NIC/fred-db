@@ -1,72 +1,72 @@
 
 
--- TODO dodelat cislenik prefixu pro kazdy rok aby se zvladnul prechod mezi roky
+-- TODO make prefix classifier for every year so that pass between years is available 
 CREATE TABLE invoice_prefix
 (
 id serial NOT NULL PRIMARY KEY, 
 Zone INTEGER REFERENCES Zone (ID),
-typ integer default 0,  -- typ faktury 0 zalohova 1 normalni
-year numeric NOT NULL, --pro jaky rok  
-prefix integer -- citac s prefixem ciselne rady fakrru 
+typ integer default 0,  -- invoice type 0 advanced 1 normal
+year numeric NOT NULL, --for which year  
+prefix integer -- counter with prefix of number line invoice 
 );
 
 -- zona enum
--- zalohove
+-- advance
 insert into invoice_prefix values ( 1 , 1 ,  0 , 2007 , 110700001 );
--- vyuctovaci 
+-- normal 
 insert into invoice_prefix values ( 2 , 1 ,  1 , 2007 , 120700001 );
--- zona CZ
--- zalohove
+-- CZ zone
+-- advance
 insert into invoice_prefix values ( 3 , 3 ,  0 , 2007 , 130700001 );
--- vyuctovaci
+-- normal
 insert into invoice_prefix values ( 4 , 3 ,  1 , 2007 , 140700001 );
  
  
 
 
--- taulka fakturaci ucetnich faltur od do a id faktury pokud je NULL neni vyuctovaci faktura vystavena
+-- tabel of invoices billing from when till when and id of invoice if it is NULL it isn't normal invoice drawn
 
 
 
--- invoice  Zalohove faktury 
+-- advance invoices 
 CREATE TABLE invoice
 (
-id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
+id serial NOT NULL PRIMARY KEY, -- unique primary key
 Zone INTEGER REFERENCES Zone (ID),
-CrDate timestamp NOT NULL DEFAULT now(),  -- datum a cas vytvoreni faktury
-TaxDate date  , -- datum zdanitelneho plneni ( kdy prisla platba u zalohove FA)
-prefix integer UNIQUE default NULL , -- deviti mistne  cislo faktury z invoice_prefix.prefix pocitano dle TaxDate
-                                     -- pokud je NULL je to vypis vyuctovani za sluzby  vyuctovaci faktura se neuvadi je to typ 2 
-registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora
--- TODO registrarhistoryID pro odkazy na spravne adresy ICO a DIC
-Credit numeric(10,2)  DEFAULT 0.0, -- kredit ze ktereho se cerpa az do nuly pokud NULL je to vyctovaci faktura
-Price numeric(10,2) NOT NULL DEFAULT 0.0, -- vyse faktury i s dani
-VAT integer NOT NULL  DEFAULT 19, -- vyse dane 19% (0) pro vyctovaci
-total numeric(10,2) NOT NULL  DEFAULT 0.0 ,  -- castka bez dane ( pro vyctvovaci stejny jako price=total castka bez dane);
-totalVAT numeric(10,2)  NOT NULL DEFAULT 0.0 , -- odvedena dan ( 0 pro vyctovaci dan je odvedena na zalohovych FA )
-prefix_type INTEGER REFERENCES invoice_prefix(ID), --  typ faktury z jakeho je roku a jakeho je typu dle prefixu
-file INTEGER REFERENCES files ,-- odkaz na vygenerovane PDF (muze byt null nez se vygeneruje)
-fileXML INTEGER REFERENCES files -- odkaz na vygenerovane XML (muze byt null nez se vygeneruje)
+CrDate timestamp NOT NULL DEFAULT now(),  -- date and time of invoice creation 
+TaxDate date  , -- date of taxable fulfilment ( when payment cames by advance FA)
+prefix integer UNIQUE default NULL , -- 9 placed number of invoice from invoice_prefix.prefix counted via TaxDate 
+                                     -- if it is NULL it is statement for services normal invoice is not mentioned it is type 2 
+registrarID INTEGER NOT NULL REFERENCES Registrar, -- link to registrar
+-- TODO registrarhistoryID for links to right ICO and DIC  addresses
+Credit numeric(10,2)  DEFAULT 0.0, -- credit from which is taken till zero if it is NULL it is normal invoice 
+Price numeric(10,2) NOT NULL DEFAULT 0.0, -- invoice high also with tax 
+VAT integer NOT NULL  DEFAULT 19, -- VAT high 19% (0) for account
+total numeric(10,2) NOT NULL  DEFAULT 0.0 ,  -- amount without tax ( for accounting is same as price = total amount without tax);
+totalVAT numeric(10,2)  NOT NULL DEFAULT 0.0 , -- tax paid (0 for accounted tax it is paid at advance invoice)
+prefix_type INTEGER REFERENCES invoice_prefix(ID), --  invoice type  from which year is anf which type is according to prefix 
+file INTEGER REFERENCES files ,-- link to generated PDF (it can be null till is generated)
+fileXML INTEGER REFERENCES files -- link to generated XML (it can be null till is generated) 
 );
 
--- generovani faktur
+-- invoices generation
 CREATE TABLE invoice_generation
 (
-id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
-FromDate date NOT  NULL , -- lokalni datum zuctovaciho odobi od bere se 00:00:00
-ToDate date NOT NULL  , -- do datumu bere se 23:59:59
-registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora
+id serial NOT NULL PRIMARY KEY, -- unique primary key
+FromDate date NOT  NULL , -- local date account period from is taken 00:00:00 
+ToDate date NOT NULL  , -- 23:59:59 is taken into date
+registrarID INTEGER NOT NULL REFERENCES Registrar, -- link to registrar
 Zone INTEGER REFERENCES Zone (ID),
-InvoiceID INTEGER REFERENCES Invoice (ID) -- id vyuctovaci faktury
+InvoiceID INTEGER REFERENCES Invoice (ID) -- id of normal invoice
 );
 
---  tabulka vyuctovani zalohovych Faktur
+--  account tabel of advance invoices
 CREATE TABLE invoice_credit_payment_map
 (
-invoiceID INTEGER REFERENCES Invoice (ID) , -- id vyuctovaci faktury
-ainvoiceID INTEGER REFERENCES Invoice (ID) , -- id zalohove faktury
-credit numeric(10,2)  NOT NULL DEFAULT 0.0, -- strzeny  kredit
-balance numeric(10,2)  NOT NULL DEFAULT 0.0, -- aktualni zustatek dane zalohova FAKTURY
+invoiceID INTEGER REFERENCES Invoice (ID) , -- id of normal invoice
+ainvoiceID INTEGER REFERENCES Invoice (ID) , -- id of advance invoice
+credit numeric(10,2)  NOT NULL DEFAULT 0.0, -- seized credit
+balance numeric(10,2)  NOT NULL DEFAULT 0.0, --actual tax balance advance invoice 
 PRIMARY KEY (invoiceID, ainvoiceID)
 );
 
@@ -76,36 +76,36 @@ PRIMARY KEY (invoiceID, ainvoiceID)
 
 
 
--- TODO do normalnich uctovacich faktur udelat zucotvaci obdobi od kdy do kdy.
+-- TODO into normal invoices make account period from when till when.
 
--- pri uctovani se odecitaji ze zalohovych faktur 
--- muze se vyskytnout ze jeden objekt je zuctovan dvakrat pokazde z jinne zalohove faktury
+-- when is billing realized, they are substracted from advanced invoice 
+-- it can occur that one object is billing twice every from different advance invoice
 CREATE TABLE invoice_object_registry
 (
-id serial NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
-invoiceID INTEGER REFERENCES Invoice (ID) , -- id ostre faktury na ktere je polozka vedena
-CrDate timestamp NOT NULL DEFAULT now(),  -- datum a cas zuctovani
+id serial NOT NULL PRIMARY KEY, -- unique primary key
+invoiceID INTEGER REFERENCES Invoice (ID) , -- id of invoice for which is item counted 
+CrDate timestamp NOT NULL DEFAULT now(),  -- billing date and time 
 objectID integer  REFERENCES object_registry (id),
 zone INTEGER REFERENCES Zone (ID),
-registrarID INTEGER NOT NULL REFERENCES Registrar, -- odkaz na registratora 
-operation INTEGER NOT NULL REFERENCES enum_operation, -- typ operace registrace ci prodlouzeni
-ExDate date default NULL,  -- vysledny ExDate pouze pro RENEW
-period integer default 0 -- pocet jednotek na prodlouzeni ve mesicich
+registrarID INTEGER NOT NULL REFERENCES Registrar, -- link to registrar 
+operation INTEGER NOT NULL REFERENCES enum_operation, -- operation type of registration or renew
+ExDate date default NULL,  -- final ExDate only for RENEW 
+period integer default 0 -- number of unit for renew in months
 );
 
 
 CREATE TABLE invoice_object_registry_price_map
 (
 id INTEGER REFERENCES invoice_object_registry(ID),
-InvoiceID INTEGER REFERENCES Invoice (ID), -- id zalohove faktury
-price numeric(10,2) NOT NULL default 0 , -- cena za operaci
-PRIMARY KEY (id ,  InvoiceID  ) -- unikatni klic
+InvoiceID INTEGER REFERENCES Invoice (ID), -- id of advanced invoice
+price numeric(10,2) NOT NULL default 0 , -- cost for operation
+PRIMARY KEY (id ,  InvoiceID  ) -- unique key
 );
 
 CREATE TABLE invoice_mails
 (
-id SERIAL NOT NULL PRIMARY KEY, -- jednoznacny primarni klic
-invoiceid INTEGER REFERENCES invoice, -- odkaz na faktury
-genid INTEGER REFERENCES invoice_generation, -- odkaz na faktury
-mailid INTEGER NOT NULL REFERENCES mail_archive -- mail obsahujici tuto fakturu
+id SERIAL NOT NULL PRIMARY KEY, -- unique primary key
+invoiceid INTEGER REFERENCES invoice, -- link to invoices
+genid INTEGER REFERENCES invoice_generation, -- link to invoices
+mailid INTEGER NOT NULL REFERENCES mail_archive -- e-mail which contains this invoice 
 );
