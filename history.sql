@@ -62,15 +62,15 @@ CREATE TABLE domain_contact_map_history  (
         DomainID INTEGER  REFERENCES object_registry (id),
         ContactID INTEGER REFERENCES object_registry (id),
         Role INTEGER NOT NULL DEFAULT 1,
--- TODO         ContactHistoryID INTEGER REFERENCES  History(id) --  Contact ve stavu jakem byl pri zmene 
+-- TODO         ContactHistoryID INTEGER REFERENCES  History(id) --  Contact in state in which was by the change  
        PRIMARY KEY(historyID,DomainID,ContactID,Role)
         );
 
 -- DROP TABLE NSSet_history  CASCADE;
 CREATE TABLE NSSet_history  (
-        historyID INTEGER PRIMARY KEY REFERENCES History, -- pouze jeden nsset 
+        historyID INTEGER PRIMARY KEY REFERENCES History, -- only one nsset 
         ID INTEGER  REFERENCES object_registry (id),
-        checklevel smallint default 0 -- dopsan check level
+        checklevel smallint default 0 --write up check level
         );
 CREATE INDEX nsset_history_historyid_idx ON NSSet_History (historyID);
 
@@ -85,13 +85,13 @@ CREATE TABLE nsset_contact_map_history (
 
 -- DROP TABLE Host_history  CASCADE;
 CREATE TABLE Host_history  (
-        historyID INTEGER  REFERENCES History,  -- muze byt vice hostu takze to neni primary key
+        historyID INTEGER  REFERENCES History,  -- it can exist more hosts so that it isn't primary key 
         ID  INTEGER  NOT NULL,
         NSSetID INTEGER REFERENCES object_registry (id), -- REFERENCES NSSet ON UPDATE CASCADE,
         FQDN VARCHAR(255)  NOT NULL,
         PRIMARY KEY(historyID,ID)
         );
--- nahrazeno
+-- replaced
 
 CREATE TABLE host_ipaddr_map_history (
 	historyID INTEGER  REFERENCES History,
@@ -106,7 +106,7 @@ CREATE TABLE host_ipaddr_map_history (
 
 -- DROP TABLE ENUMVal_history  CASCADE;
 CREATE TABLE ENUMVal_history (
-        historyID INTEGER PRIMARY KEY REFERENCES History, -- pouze jeden nsset 
+        historyID INTEGER PRIMARY KEY REFERENCES History, -- only one nsset 
         DomainID INTEGER REFERENCES object_registry (id),
         ExDate date NOT NULL
         );
