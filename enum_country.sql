@@ -2,12 +2,12 @@
 CREATE TABLE enum_country (
         id char(2) PRIMARY KEY,
         country varchar(1024) UNIQUE NOT NULL,
-        country_cs  varchar(1024) UNIQUE -- volitelne cesky nazev
+        country_cs  varchar(1024) UNIQUE -- optional czech title
         );
 
--- vymaz vsechny zaznamy 
+-- delete all records 
 DELETE FROM  enum_country ;
--- nacti vsechny staty
+-- read all states
 INSERT INTO enum_country (id,country) VALUES ( 'AF' , 'AFGHANISTAN' );
 INSERT INTO enum_country (id,country) VALUES ( 'AX' , 'ALAND ISLANDS' );
 INSERT INTO enum_country (id,country) VALUES ( 'AL' , 'ALBANIA' );
