@@ -1,14 +1,14 @@
--- ciselnik chybovych hlaseni
+-- error messages classifier
 -- DROP TABLE enum_error  CASCADE;
 CREATE TABLE enum_error (
         id SERIAL PRIMARY KEY,
         status varchar(128) UNIQUE NOT NULL,
-        status_cs varchar(128) UNIQUE NOT NULL -- cesky preklad
+        status_cs varchar(128) UNIQUE NOT NULL -- czech translation
         );
                         
                         
 
--- chybove zpravy EN a CS
+-- error messages EN and CS
 
 
 INSERT INTO enum_error VALUES(  1000 , 'Command completed successfully',    'Příkaz úspěšně proveden');
