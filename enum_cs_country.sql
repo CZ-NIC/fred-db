@@ -1,4 +1,4 @@
--- nazvy zemi v cestine
+-- country names in czech language 
 UPDATE enum_country SET country_cs= 'Afghánistán'  WHERE ID= 'AF' ;
 UPDATE enum_country SET country_cs= 'Albánie'  WHERE ID= 'AL' ;
 UPDATE enum_country SET country_cs= 'Alžírsko'  WHERE ID= 'DZ' ;
