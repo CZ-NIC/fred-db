@@ -5,7 +5,7 @@
 -- drop table BANK_STATEMENT_HEAD;
 -- drop table bank_account;
 
--- classifier bank
+-- bank classifier 
 -- CREATE TABLE enum_bank_code (
 -- code char(4) PRIMARY KEY,
 -- name_short varchar(4) UNIQUE NOT NULL , -- shortcut
@@ -38,7 +38,7 @@ insert into bank_account (  id , Zone , account_number , account_name , bank_cod
 CREATE TABLE BANK_STATEMENT_HEAD 
 (
 id serial NOT NULL PRIMARY KEY, -- unique primary key
-account_id int  REFERENCES bank_account, -- zpracovani pro dany ucet odkaz to tabulky account
+account_id int  REFERENCES bank_account, -- processing for given account link to account tabel
 num int, -- serial number statement
 create_date date NOT NULL, --  create date of a statement
 balance_old_date date NOT NULL , -- date of a last balance
@@ -62,9 +62,9 @@ VarSymb char(10), -- variable symbol
 SpecSymb char(10), -- constant symbol
 price numeric(10,2) NOT NULL,  -- applied amount if a debet is negative amount 
 account_evid varchar(20), -- account evidence 
-account_date date NOT NULL, --  accounting date of credit or sending / datum zuctovani pripsani na ucet ci odeslani
+account_date date NOT NULL, --  accounting date of credit or sending / datum zuctovani pripsani na ucet ci odeslani (czech comment)
 account_memo  varchar(64), -- note
-invoice_ID INTEGER REFERENCES Invoice default NULL -- null if it isn't income payment otherwise link to invoice / nula pokud neni prichozi platba zpracovani jinak odkaz na zalohovou fakturu
+invoice_ID INTEGER REFERENCES Invoice default NULL -- null if it isn't income payment otherwise link to invoice / nula pokud neni prichozi platba zpracovani jinak odkaz na zalohovou fakturu (czech comment)
 );
 
 
@@ -84,7 +84,7 @@ VarSymb char(10), -- variable symbol of payment
 memo  varchar(64), -- note
 name varchar(64), -- account name from which came a payment 
 Ident char(10) UNIQUE, -- unique identifier of payment
-invoice_ID INTEGER REFERENCES Invoice default NULL -- null if it isn't income payment otherwise link to invoice / nula pokud neni prichozi platba zpracovani jinak odkaz na zalohovou faktu$
+invoice_ID INTEGER REFERENCES Invoice default NULL -- null if it isn't income payment otherwise link to advanced invoice / nula pokud neni prichozi platba zpracovani jinak odkaz na zalohovou faktu$
 );
 
 
