@@ -25,12 +25,12 @@ historyid integer  REFERENCES  history(id) ,  --  recording of status, in which 
 messageid integer  REFERENCES  message(id)  -- if it is also EPP message distributed  
 );
 
--- vazebni tabulka rozslanych e-mailu
+-- coupling tabel of sended e-mails
 CREATE TABLE  object_status_notifications_mail_map
 (
 id INTEGER REFERENCES object_status_notifications(id) , -- link to table
-mail_type  integer   REFERENCES  mail_type(id)  , -- typ  email notifikace 
-mailid integer references mail_archive(id), -- id odeslaneho mailu
+mail_type  integer   REFERENCES  mail_type(id)  , -- type of email notification  
+mailid integer references mail_archive(id), -- id of sended e-mail
 PRIMARY KEY(id,mail_type,mailid)
 );
 
