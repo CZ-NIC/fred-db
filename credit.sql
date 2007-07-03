@@ -29,7 +29,7 @@ INSERT INTO price_vat  VALUES ( 2 , NULL , 0.1597 , 19 );
 CREATE TABLE price_list
 (
   id serial PRIMARY KEY, -- primary key
-  zone integer not null  REFERENCES  zone , -- link to zone, for which is price list valid if it is domain (if it isn't domain then it is NULL) / odkaz na zonu pro kterou cenik plati pokud se jedna o domenu, pokud ne je to NULL
+  zone integer not null  REFERENCES  zone , -- link to zone, for which is price list valid if it is domain (if it isn't domain then it is NULL)
   operation integer NOT NULL REFERENCES  enum_operation, -- for which action is a price connected  
   valid_from timestamp NOT NULL, -- from when is record valid 
   valid_to timestamp default NULL, -- till when is record valid, if it is NULL, it isn't limited

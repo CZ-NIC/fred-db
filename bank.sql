@@ -62,9 +62,9 @@ VarSymb char(10), -- variable symbol
 SpecSymb char(10), -- constant symbol
 price numeric(10,2) NOT NULL,  -- applied amount if a debet is negative amount 
 account_evid varchar(20), -- account evidence 
-account_date date NOT NULL, --  accounting date of credit or sending / datum zuctovani pripsani na ucet ci odeslani (czech comment)
+account_date date NOT NULL, --  accounting date of credit or sending 
 account_memo  varchar(64), -- note
-invoice_ID INTEGER REFERENCES Invoice default NULL -- null if it isn't income payment otherwise link to invoice / nula pokud neni prichozi platba zpracovani jinak odkaz na zalohovou fakturu (czech comment)
+invoice_ID INTEGER REFERENCES Invoice default NULL -- null if it isn't income payment of process otherwise link to advance invoice
 );
 
 
@@ -76,7 +76,7 @@ CREATE TABLE BANK_EBANKA_LIST
 id serial NOT NULL PRIMARY KEY, -- unique primary key
 account_id int  REFERENCES bank_account, -- current account
 price numeric(10,2) NOT NULL,  -- transfer amount
-CrDate  timestamp NOT NULL DEFAULT now(),  -- date and time of transfer transfered into UTC / datum a cas prevodu prevedeneho uz do UTC
+CrDate  timestamp NOT NULL DEFAULT now(),  -- date and time of transfer transfered into UTC 
 account_number char(16)  NOT NULL , -- countra-account number from which came or was sent a payment 
 bank_code char(4)  REFERENCES enum_bank_code,   -- bank code of payer
 KonstSym char(10), -- constant symbol of payment 
@@ -84,7 +84,7 @@ VarSymb char(10), -- variable symbol of payment
 memo  varchar(64), -- note
 name varchar(64), -- account name from which came a payment 
 Ident char(10) UNIQUE, -- unique identifier of payment
-invoice_ID INTEGER REFERENCES Invoice default NULL -- null if it isn't income payment otherwise link to advanced invoice / nula pokud neni prichozi platba zpracovani jinak odkaz na zalohovou faktu$
+invoice_ID INTEGER REFERENCES Invoice default NULL -- null if it isn't income payment process otherwise link to advanced invoice 
 );
 
 

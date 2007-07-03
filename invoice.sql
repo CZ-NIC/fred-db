@@ -38,7 +38,7 @@ TaxDate date  , -- date of taxable fulfilment ( when payment cames by advance FA
 prefix integer UNIQUE default NULL , -- 9 placed number of invoice from invoice_prefix.prefix counted via TaxDate 
                                      -- if it is NULL it is statement for services normal invoice is not mentioned it is type 2 
 registrarID INTEGER NOT NULL REFERENCES Registrar, -- link to registrar
--- TODO registrarhistoryID for links to right ICO and DIC  addresses
+-- TODO registrarhistoryID for links to right ICO and DIC addresses
 Credit numeric(10,2)  DEFAULT 0.0, -- credit from which is taken till zero if it is NULL it is normal invoice 
 Price numeric(10,2) NOT NULL DEFAULT 0.0, -- invoice high also with tax 
 VAT integer NOT NULL  DEFAULT 19, -- VAT high 19% (0) for account
@@ -66,7 +66,7 @@ CREATE TABLE invoice_credit_payment_map
 invoiceID INTEGER REFERENCES Invoice (ID) , -- id of normal invoice
 ainvoiceID INTEGER REFERENCES Invoice (ID) , -- id of advance invoice
 credit numeric(10,2)  NOT NULL DEFAULT 0.0, -- seized credit
-balance numeric(10,2)  NOT NULL DEFAULT 0.0, --actual tax balance advance invoice 
+balance numeric(10,2)  NOT NULL DEFAULT 0.0, -- actual tax balance advance invoice 
 PRIMARY KEY (invoiceID, ainvoiceID)
 );
 
