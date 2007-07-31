@@ -11,12 +11,13 @@
  version 1.4
 
  *) adding role
-    SQL: ALTER TABLE domain_contact_map ADD role integer not null default 1;
-    SQL: ALTER TABLE domain_contact_map DROP constraint domain_contact_map_pkey;
-    SQL: ALTER TABLE domain_contact_map ADD PRIMARY KEY(domainid,contactid,role);
-    SQL: ALTER TABLE domain_contact_map_history ADD role integer not null default 1;
-    SQL: ALTER TABLE domain_contact_map_history DROP constraint domain_contact_map_history_pkey;
-    SQL: ALTER TABLE domain_contact_map_history ADD PRIMARY KEY(historyid,domainid,contactid,role);
+
+ALTER TABLE domain_contact_map ADD role integer not null default 1;
+ALTER TABLE domain_contact_map DROP constraint domain_contact_map_pkey;
+ALTER TABLE domain_contact_map ADD PRIMARY KEY(domainid,contactid,role);
+ALTER TABLE domain_contact_map_history ADD role integer not null default 1;
+ALTER TABLE domain_contact_map_history DROP constraint domain_contact_map_history_pkey;
+ALTER TABLE domain_contact_map_history ADD PRIMARY KEY(historyid,domainid,contactid,role);
 
 -- 1.4->1.5
 
@@ -52,6 +53,8 @@ CREATE INDEX genzone_domain_history_domain_hid_idx
   ON genzone_domain_history (domain_hid);
 CREATE INDEX genzone_domain_history_domain_id_idx 
   ON genzone_domain_history (domain_id);
+CREATE INDEX host_ipaddr_map_hostid_idx ON host_ipaddr_map (hostid);
+CREATE INDEX host_ipaddr_map_nssetid_idx ON host_ipaddr_map (nssetid);
 
 DROP INDEX object_id_idx;
 DROP INDEX contact_id_idx;

@@ -101,6 +101,9 @@ CREATE TABLE host_ipaddr_map (
            IpAddr INET NOT NULL -- IP address
          );
 
+CREATE INDEX host_ipaddr_map_hostid_idx ON host_ipaddr_map (hostid);
+CREATE INDEX host_ipaddr_map_nssetid_idx ON host_ipaddr_map (nssetid);
+
 
 -- DROP TABLE Domain CASCADE;
 CREATE TABLE Domain (
