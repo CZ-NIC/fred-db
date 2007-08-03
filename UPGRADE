@@ -80,3 +80,9 @@ ALTER TABLE contact_history
 
 INSERT INTO enum_ssntype  VALUES(6 , 'BIRTHDAY' , 'day of birth');
 
+
+1.6 -> 1.7
+
+-- archiving of notifications about undelivered emails
+ALTER TABLE mail_archive ADD COLUMN response text;
+

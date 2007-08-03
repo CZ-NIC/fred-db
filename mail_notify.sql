@@ -126,9 +126,11 @@ CREATE TABLE mail_archive (
 	--       number 2).
 	status integer,
 	attempt smallint NOT NULL DEFAULT 0, -- failed attempts to send email
-	message text NOT NULL -- message to be sent including headers (except
-	                      -- date and msgid header), without non-templated
-	                      -- attachments.
+	-- message to be sent including headers (except date and msgid header), 	-- without non-templated attachments.
+	message text NOT NULL,
+	-- text of email which is assummed to be notification about undelivered
+	-- mail.
+	response text
 	);
 
 -- List of attachment ids bound to email in mail_archive
