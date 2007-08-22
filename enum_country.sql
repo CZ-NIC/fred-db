@@ -248,3 +248,6 @@ INSERT INTO enum_country (id,country) VALUES ( 'EH' , 'WESTERN SAHARA' );
 INSERT INTO enum_country (id,country) VALUES ( 'YE' , 'YEMEN' );
 INSERT INTO enum_country (id,country) VALUES ( 'ZM' , 'ZAMBIA' );
 INSERT INTO enum_country (id,country) VALUES ( 'ZW' , 'ZIMBABWE' );
+INSERT INTO enum_country (id,country) VALUES ( 'YU' , 'YUGOSLAVIA' );
+INSERT INTO enum_country (id,country) VALUES ( 'RS' , 'SERBIA' );
+INSERT INTO enum_country (id,country) VALUES ( 'ME' , 'MONTENEGRO' );

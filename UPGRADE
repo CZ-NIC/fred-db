@@ -80,6 +80,9 @@ ALTER TABLE contact_history
 
 INSERT INTO enum_ssntype  VALUES(6 , 'BIRTHDAY' , 'day of birth');
 
+INSERT INTO enum_country (id,country) VALUES ( 'YU' , 'YUGOSLAVIA' );
+INSERT INTO enum_country (id,country) VALUES ( 'RS' , 'SERBIA' );
+INSERT INTO enum_country (id,country) VALUES ( 'ME' , 'MONTENEGRO' );
 
 1.6 -> 1.7
 
