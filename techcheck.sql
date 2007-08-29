@@ -19,6 +19,9 @@ CREATE TABLE check_test (
 
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
+VALUES (0,  'glue',          1, '', False, '', True);
+INSERT INTO check_test (id, name, severity, description, disabled, script,
+	need_domain)
 VALUES (1,  'existance',     1, '', False, 'existance.py', False);
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)

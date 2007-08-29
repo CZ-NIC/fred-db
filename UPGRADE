@@ -89,3 +89,6 @@ INSERT INTO enum_country (id,country) VALUES ( 'ME' , 'MONTENEGRO' );
 -- archiving of notifications about undelivered emails
 ALTER TABLE mail_archive ADD COLUMN response text;
 
+-- new technical test
+INSERT INTO check_test (id, name, severity, description, disabled, script, need_domain) VALUES (0, 'glue', 1, '', False, '', True);
+
