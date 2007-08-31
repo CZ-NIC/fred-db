@@ -7,7 +7,7 @@ id serial NOT NULL PRIMARY KEY,
 Zone INTEGER REFERENCES Zone (ID),
 typ integer default 0,  -- invoice type 0 advanced 1 normal
 year numeric NOT NULL, --for which year  
-prefix integer -- counter with prefix of number line invoice 
+prefix bigint -- counter with prefix of number line invoice 
 );
 
 -- zona enum
@@ -35,7 +35,7 @@ id serial NOT NULL PRIMARY KEY, -- unique primary key
 Zone INTEGER NOT NULL REFERENCES Zone (ID),
 CrDate timestamp NOT NULL DEFAULT now(),  -- date and time of invoice creation 
 TaxDate date NOT NULL, -- date of taxable fulfilment ( when payment cames by advance FA)
-prefix integer UNIQUE NOT NULL , -- 9 placed number of invoice from invoice_prefix.prefix counted via TaxDate 
+prefix bigint UNIQUE NOT NULL , -- 9 placed number of invoice from invoice_prefix.prefix counted via TaxDate 
 registrarID INTEGER NOT NULL REFERENCES Registrar, -- link to registrar
 -- TODO registrarhistoryID for links to right ICO and DIC addresses
 Credit numeric(10,2) DEFAULT 0.0, -- credit from which is taken till zero if it is NULL it is normal invoice 

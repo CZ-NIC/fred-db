@@ -82,11 +82,15 @@ ALTER TABLE invoice
   ALTER zone SET NOT NULL,
   ALTER taxdate SET NOT NULL,
   ALTER prefix SET NOT NULL,
+  ALTER prefix TYPE bigint,
   ALTER prefix_type SET NOT NULL,
   ALTER price SET NOT NULL,
   ALTER vat SET NOT NULL,
   ALTER total SET NOT NULL,
   ALTER totalvat SET NOT NULL;
+  
+ALTER TABLE invoice_prefix
+  ALTER prefix TYPE bigint;
 
 ALTER TABLE registrarinvoice
   ALTER zone SET NOT NULL,
