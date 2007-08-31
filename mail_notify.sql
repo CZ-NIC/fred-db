@@ -128,8 +128,9 @@ CREATE TABLE mail_archive (
 	message text NOT NULL,
 	-- text of email which is assummed to be notification about undelivered
 	-- mail.
-    attempt smallint NOT NULL DEFAULT 0, -- failed attempts to send email
-    -- message to be sent including headers (except date and msgid header),     -- without non-templated attachments.
+        attempt smallint NOT NULL DEFAULT 0, -- failed attempts to send email
+        -- message to be sent including headers (except date and msgid header),
+        -- without non-templated attachments.
 	response text
 	);
 
