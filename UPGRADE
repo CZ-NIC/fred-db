@@ -92,3 +92,11 @@ ALTER TABLE mail_archive ADD COLUMN response text;
 -- new technical test
 INSERT INTO check_test (id, name, severity, description, disabled, script, need_domain) VALUES (0, 'glue', 1, '', False, '', True);
 
+-- new dependecies on new technical test
+INSERT INTO check_dependance (addictid, testid) VALUES ( 1, 0);
+INSERT INTO check_dependance (addictid, testid) VALUES (10, 0);
+INSERT INTO check_dependance (addictid, testid) VALUES (20, 0);
+INSERT INTO check_dependance (addictid, testid) VALUES (30, 0);
+INSERT INTO check_dependance (addictid, testid) VALUES (40, 0);
+INSERT INTO check_dependance (addictid, testid) VALUES (50, 0);
+INSERT INTO check_dependance (addictid, testid) VALUES (60, 0);

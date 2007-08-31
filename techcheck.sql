@@ -48,6 +48,13 @@ CREATE TABLE check_dependance (
 	testid INTEGER REFERENCES check_test (id)
 );
 
+INSERT INTO check_dependance (addictid, testid) VALUES ( 1, 0);
+INSERT INTO check_dependance (addictid, testid) VALUES (10, 0);
+INSERT INTO check_dependance (addictid, testid) VALUES (20, 0);
+INSERT INTO check_dependance (addictid, testid) VALUES (30, 0);
+INSERT INTO check_dependance (addictid, testid) VALUES (40, 0);
+INSERT INTO check_dependance (addictid, testid) VALUES (50, 0);
+INSERT INTO check_dependance (addictid, testid) VALUES (60, 0);
 INSERT INTO check_dependance (addictid, testid) VALUES (10, 1);
 INSERT INTO check_dependance (addictid, testid) VALUES (20, 1);
 INSERT INTO check_dependance (addictid, testid) VALUES (30, 1);
