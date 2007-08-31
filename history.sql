@@ -34,13 +34,13 @@ CREATE TABLE Contact_History (
         DiscloseTelephone boolean DEFAULT False,
         DiscloseFax boolean DEFAULT False,
         DiscloseEmail boolean DEFAULT False,
-        DiscloseVAT boolean DEFAULT False,
-        DiscloseIdent boolean DEFAULT False,
-        DiscloseNotifyEmail boolean DEFAULT False,
         NotifyEmail varchar(1024),
         VAT varchar(32),
         SSN varchar(64),
-        SSNtype integer REFERENCES enum_ssntype
+        SSNtype integer REFERENCES enum_ssntype,
+        DiscloseVAT boolean DEFAULT False,
+        DiscloseIdent boolean DEFAULT False,
+        DiscloseNotifyEmail boolean DEFAULT False
 );
 
 
