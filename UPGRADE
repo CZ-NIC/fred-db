@@ -19,7 +19,7 @@ ALTER TABLE domain_contact_map_history ADD role integer not null default 1;
 ALTER TABLE domain_contact_map_history DROP constraint domain_contact_map_history_pkey;
 ALTER TABLE domain_contact_map_history ADD PRIMARY KEY(historyid,domainid,contactid,role);
 
--- 1.4->1.5
+-- 1.5->1.6
 
 CREATE TABLE epp_info_buffer_content (
 	id INTEGER NOT NULL, 
@@ -91,6 +91,11 @@ ALTER TABLE invoice
 ALTER TABLE registrarinvoice
   ALTER zone SET NOT NULL,
   ALTER fromdate SET NOT NULL;
+
+ALTER TABLE domain_contact_map DROP constraint domain_contact_map_pkey;
+ALTER TABLE domain_contact_map ADD PRIMARY KEY(domainid,contactid);
+ALTER TABLE domain_contact_map_history DROP constraint domain_contact_map_history_pkey;
+ALTER TABLE domain_contact_map_history ADD PRIMARY KEY(historyid,domainid,contactid);
     
 INSERT INTO enum_ssntype  VALUES(6 , 'BIRTHDAY' , 'day of birth');
 
