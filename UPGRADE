@@ -47,7 +47,7 @@ CREATE INDEX object_registry_name_3_idx
 CREATE INDEX domain_registrant_idx ON Domain (registrant);
 CREATE INDEX domain_nsset_idx ON Domain (nsset);
 CREATE INDEX object_upid_idx ON "object" (upid);
-CREATE INDEX object_clid_idx ON "object" (upid);
+CREATE INDEX object_clid_idx ON "object" (clid);
 DROP index domain_id_idx;
 CREATE INDEX genzone_domain_history_domain_hid_idx 
   ON genzone_domain_history (domain_hid);
@@ -77,7 +77,21 @@ ALTER TABLE contact_history
   ALTER telephone TYPE varchar(64),
   ALTER fax TYPE varchar(64),
   ALTER ssn TYPE varchar(64);
+  
+ALTER TABLE invoice
+  ALTER zone SET NOT NULL,
+  ALTER taxdate SET NOT NULL,
+  ALTER prefix SET NOT NULL,
+  ALTER prefix_type SET NOT NULL,
+  ALTER price SET NOT NULL,
+  ALTER vat SET NOT NULL,
+  ALTER total SET NOT NULL,
+  ALTER totalvat SET NOT NULL;
 
+ALTER TABLE registrarinvoice
+  ALTER zone SET NOT NULL,
+  ALTER fromdate SET NOT NULL;
+    
 INSERT INTO enum_ssntype  VALUES(6 , 'BIRTHDAY' , 'day of birth');
 
 INSERT INTO enum_country (id,country) VALUES ( 'YU' , 'YUGOSLAVIA' );

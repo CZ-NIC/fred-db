@@ -32,19 +32,18 @@ insert into invoice_prefix values ( 4 , 3 ,  1 , 2007 , 140700001 );
 CREATE TABLE invoice
 (
 id serial NOT NULL PRIMARY KEY, -- unique primary key
-Zone INTEGER REFERENCES Zone (ID),
+Zone INTEGER NOT NULL REFERENCES Zone (ID),
 CrDate timestamp NOT NULL DEFAULT now(),  -- date and time of invoice creation 
-TaxDate date  , -- date of taxable fulfilment ( when payment cames by advance FA)
-prefix integer UNIQUE default NULL , -- 9 placed number of invoice from invoice_prefix.prefix counted via TaxDate 
-                                     -- if it is NULL it is statement for services normal invoice is not mentioned it is type 2 
+TaxDate date NOT NULL, -- date of taxable fulfilment ( when payment cames by advance FA)
+prefix integer UNIQUE NOT NULL , -- 9 placed number of invoice from invoice_prefix.prefix counted via TaxDate 
 registrarID INTEGER NOT NULL REFERENCES Registrar, -- link to registrar
 -- TODO registrarhistoryID for links to right ICO and DIC addresses
-Credit numeric(10,2)  DEFAULT 0.0, -- credit from which is taken till zero if it is NULL it is normal invoice 
+Credit numeric(10,2) DEFAULT 0.0, -- credit from which is taken till zero if it is NULL it is normal invoice 
 Price numeric(10,2) NOT NULL DEFAULT 0.0, -- invoice high also with tax 
 VAT integer NOT NULL  DEFAULT 19, -- VAT high 19% (0) for account
 total numeric(10,2) NOT NULL  DEFAULT 0.0 ,  -- amount without tax ( for accounting is same as price = total amount without tax);
 totalVAT numeric(10,2)  NOT NULL DEFAULT 0.0 , -- tax paid (0 for accounted tax it is paid at advance invoice)
-prefix_type INTEGER REFERENCES invoice_prefix(ID), --  invoice type  from which year is anf which type is according to prefix 
+prefix_type INTEGER NOT NULL REFERENCES invoice_prefix(ID), --  invoice type  from which year is anf which type is according to prefix 
 file INTEGER REFERENCES files ,-- link to generated PDF (it can be null till is generated)
 fileXML INTEGER REFERENCES files -- link to generated XML (it can be null till is generated) 
 );
