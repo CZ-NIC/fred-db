@@ -149,15 +149,3 @@ CREATE TABLE ENUMVal (
         ExDate date NOT NULL
         );
 
--- DROP TABLE Message;
-CREATE TABLE Message (
-        ID SERIAL PRIMARY KEY,
-        ClID INTEGER NOT NULL REFERENCES Registrar ON UPDATE CASCADE,
-        CrDate timestamp NOT NULL DEFAULT now(),
-        ExDate TIMESTAMP,
-        Seen BOOLEAN NOT NULL DEFAULT false,
-        Message TEXT NOT NULL
-        );
-CREATE INDEX message_clid_idx ON message (clid);
-CREATE INDEX message_seen_idx ON message (clid,seen,crdate,exdate);
-

@@ -22,6 +22,9 @@ cat genzone.sql
 cat admin.sql  
 #filemanager
 cat filemanager.sql
+# state and poll
+cat state.sql
+cat poll.sql
 #mailer
 cat mail_notify.sql
 cat mail_templates.sql

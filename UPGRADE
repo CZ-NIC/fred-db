@@ -124,3 +124,16 @@ INSERT INTO check_dependance (addictid, testid) VALUES (30, 0);
 INSERT INTO check_dependance (addictid, testid) VALUES (40, 0);
 INSERT INTO check_dependance (addictid, testid) VALUES (50, 0);
 INSERT INTO check_dependance (addictid, testid) VALUES (60, 0);
+
+--
+-- COPY the content of state.sql file here
+--
+
+-- The original status table must be dropped
+DROP TABLE enum_status;
+
+ALTER TABLE message DROP COLUMN message;
+
+--
+-- COPY the content of poll.sql file here
+--
