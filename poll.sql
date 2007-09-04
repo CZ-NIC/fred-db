@@ -2,6 +2,7 @@ CREATE TABLE MessageType (
         ID INTEGER PRIMARY KEY,
 	name VARCHAR(30) NOT NULL
 );
+-- do not change the number codes - current code depends on it!
 INSERT INTO MessageType VALUES (1, 'credit');
 INSERT INTO MessageType VALUES (2, 'techcheck');
 INSERT INTO MessageType VALUES (3, 'eppaction');
