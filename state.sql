@@ -66,7 +66,7 @@ CREATE TABLE object_state_request (
 CREATE VIEW object_state_request_now AS
 SELECT object_id, array_accum(state_id) AS states
 FROM object_state_request
-WHERE valid_from>=CURRENT_TIMESTAMP AND (valid_to ISNULL OR valid_to>=CURRENT_TIMESTAMP) AND canceled ISNULL
+WHERE valid_from<=CURRENT_TIMESTAMP AND (valid_to ISNULL OR valid_to>=CURRENT_TIMESTAMP) AND canceled ISNULL
 GROUP BY object_id;
 
 CREATE VIEW domain_states AS
@@ -74,18 +74,30 @@ SELECT
   d.id AS object_id,
   COALESCE(osr.states,'{}') ||
   CASE WHEN d.exdate - INTERVAL '30 days' <= CURRENT_DATE THEN ARRAY[8] ELSE '{}' END ||
-  CASE WHEN d.exdate <= CURRENT_DATE THEN ARRAY[9] ELSE '{}' END ||
-  CASE WHEN d.exdate + INTERVAL '30 days' + INTERVAL '14 hours' <= CURRENT_TIMESTAMP THEN ARRAY[10] ELSE '{}' END ||
-  CASE WHEN e.exdate - INTERVAL '30 days' <= CURRENT_DATE THEN ARRAY[11] ELSE '{}' END ||
-  CASE WHEN e.exdate - INTERVAL '15 days' <= CURRENT_DATE THEN ARRAY[12] ELSE '{}' END ||
-  CASE WHEN e.exdate + INTERVAL '14 hours' <= CURRENT_TIMESTAMP THEN ARRAY[13] ELSE '{}' END ||
-  CASE WHEN d.nsset ISNULL THEN ARRAY[14] ELSE '{}' END ||
+  CASE WHEN d.exdate <= CURRENT_DATE 
+       THEN ARRAY[9] ELSE '{}' END ||
+  CASE WHEN d.exdate + INTERVAL '30 days' + 
+            INTERVAL '14 hours' <= CURRENT_TIMESTAMP 
+       THEN ARRAY[10] ELSE '{}' END ||
+  CASE WHEN e.exdate - INTERVAL '30 days' <= CURRENT_DATE 
+       THEN ARRAY[11] ELSE '{}' END ||
+  CASE WHEN e.exdate - INTERVAL '15 days' <= CURRENT_DATE 
+       THEN ARRAY[12] ELSE '{}' END ||
+  CASE WHEN e.exdate + INTERVAL '14 hours' <= CURRENT_TIMESTAMP 
+       THEN ARRAY[13] ELSE '{}' END ||
+  CASE WHEN d.nsset ISNULL 
+       THEN ARRAY[14] ELSE '{}' END ||
   CASE WHEN
     d.nsset ISNULL OR
-    5 = ANY(osr.states) OR
-    ( d.exdate + INTERVAL '30 days' + INTERVAL '14 hours' <= CURRENT_TIMESTAMP OR
-      e.exdate + INTERVAL '14 hours' <= CURRENT_TIMESTAMP ) AND NOT (6 = ANY(osr.states)) THEN ARRAY[15] ELSE '{}' END ||
-  CASE WHEN d.exdate + INTERVAL '45 days' + INTERVAL '14 hours' <= CURRENT_TIMESTAMP THEN ARRAY[17] ELSE '{}' END AS states
+    5 = ANY(COALESCE(osr.states,'{}')) OR
+    ( d.exdate + INTERVAL '30 days' + 
+      INTERVAL '14 hours' <= CURRENT_TIMESTAMP OR
+      e.exdate + INTERVAL '14 hours' <= CURRENT_TIMESTAMP ) AND 
+      NOT (6 = ANY(COALESCE(osr.states,'{}'))) 
+      THEN ARRAY[15] ELSE '{}' END ||
+  CASE WHEN d.exdate + INTERVAL '45 days' + 
+            INTERVAL '14 hours' <= CURRENT_TIMESTAMP 
+       THEN ARRAY[17] ELSE '{}' END AS states
 FROM
   domain d
   LEFT JOIN enumval e ON (d.id=e.domainid)
