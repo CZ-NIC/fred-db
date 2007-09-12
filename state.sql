@@ -212,45 +212,34 @@ CREATE OR REPLACE FUNCTION status_update_object_state() RETURNS TRIGGER AS $$
     _num INTEGER;
     _states INTEGER[];
   BEGIN
-    IF NEW.state_id != 15 THEN -- stop RECURSION !!!
-      _states := NULL;
-      IF TG_OP = 'INSERT' AND NEW.valid_to IS NULL THEN
-        SELECT array_accum(state_id) || NEW.state_id INTO _states
-            FROM object_state
-            WHERE valid_to IS NULL AND object_id = NEW.object_id
-            GROUP BY object_id;
-      ELSIF TG_OP = 'UPDATE' AND NEW.valid_to IS NOT NULL THEN
-        SELECT array_accum(state_id) INTO _states FROM object_state
-            WHERE valid_to IS NULL AND object_id = NEW.object_id AND
-            state_id <> OLD.state_id GROUP BY object_id;
-      END IF;
-  
-      IF _states IS NOT NULL THEN
-        SELECT count(*) INTO _num FROM object_state
-            WHERE state_id = 15 AND object_id = NEW.object_id
-            AND valid_to IS NULL;
-        IF NOT (6 = ANY (_states)) AND -- not serverInzoneManual
-          ((14 = ANY (_states)) OR -- nsset is null
-           (10 = ANY (_states)) OR -- unguarded
-           (13 = ANY (_states)) OR -- not validated
-           (5  = ANY (_states)))   -- serverOutzoneManual
-        THEN
-          IF _num = 0 THEN
-            INSERT INTO object_state (object_id, state_id, valid_from)
-                VALUES (NEW.id, 15, CURRENT_TIMESTAMP);
-          END IF;
-        ELSE
-          IF _num > 0 THEN
-              UPDATE object_state SET valid_to = CURRENT_TIMESTAMP
-                  WHERE state_id = 15 AND valid_to IS NULL AND object_id=NEW.id;
-          END IF;
+    IF NEW.state_id = ANY (ARRAY[5,6,10,13,14]) THEN -- stop RECURSION !!!
+      SELECT array_accum(state_id) INTO _states FROM object_state
+          WHERE valid_to IS NULL AND object_id = NEW.object_id
+          GROUP BY object_id;
+
+      SELECT count(*) INTO _num FROM object_state
+          WHERE state_id = 15 AND object_id = NEW.object_id AND valid_to ISNULL;
+      IF (14 = ANY (_states)) OR -- nsset is null
+         (5  = ANY (_states)) OR -- serverOutzoneManual
+        (NOT (6 = ANY (_states)) AND -- not serverInzoneManual
+        ((10 = ANY (_states)) OR -- unguarded
+         (13 = ANY (_states))))  -- not validated
+      THEN
+        IF _num = 0 THEN
+          INSERT INTO object_state (object_id, state_id, valid_from)
+              VALUES (NEW.id, 15, CURRENT_TIMESTAMP);
+        END IF;
+      ELSE
+        IF _num > 0 THEN
+          UPDATE object_state SET valid_to = CURRENT_TIMESTAMP
+              WHERE state_id = 15 AND valid_to IS NULL AND object_id=NEW.id;
         END IF;
       END IF;
     END IF;
   END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_object_state BEFORE INSERT OR UPDATE
+CREATE TRIGGER trigger_object_state AFTER INSERT OR UPDATE
   ON object_state FOR EACH ROW EXECUTE PROCEDURE status_update_object_state();
 
 CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
