@@ -207,3 +207,320 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION status_update_object_state() RETURNS TRIGGER AS $$
+  DECLARE
+    _num INTEGER;
+    _states INTEGER[];
+  BEGIN
+    IF NEW.state_id != 15 THEN -- stop RECURSION !!!
+      _states := NULL;
+      IF TG_OP = 'INSERT' AND NEW.valid_to IS NULL THEN
+        SELECT array_accum(state_id) || NEW.state_id INTO _states
+            FROM object_state
+            WHERE valid_to IS NULL AND object_id = NEW.object_id
+            GROUP BY object_id;
+      ELSIF TG_OP = 'UPDATE' AND NEW.valid_to IS NOT NULL THEN
+        SELECT array_accum(state_id) INTO _states FROM object_state
+            WHERE valid_to IS NULL AND object_id = NEW.object_id AND
+            state_id <> OLD.state_id GROUP BY object_id;
+      END IF;
+  
+      IF _states IS NOT NULL THEN
+        SELECT count(*) INTO _num FROM object_state
+            WHERE state_id = 15 AND object_id = NEW.object_id
+            AND valid_to IS NULL;
+        IF NOT (6 = ANY (_states)) AND -- not serverInzoneManual
+          ((14 = ANY (_states)) OR -- nsset is null
+           (10 = ANY (_states)) OR -- unguarded
+           (13 = ANY (_states)) OR -- not validated
+           (5  = ANY (_states)))   -- serverOutzoneManual
+        THEN
+          IF _num = 0 THEN
+            INSERT INTO object_state (object_id, state_id, valid_from)
+                VALUES (NEW.id, 15, CURRENT_TIMESTAMP);
+          END IF;
+        ELSE
+          IF _num > 0 THEN
+              UPDATE object_state SET valid_to = CURRENT_TIMESTAMP
+                  WHERE state_id = 15 AND valid_to IS NULL AND object_id=NEW.id;
+          END IF;
+        END IF;
+      END IF;
+    END IF;
+  END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_object_state BEFORE INSERT OR UPDATE
+  ON object_state FOR EACH ROW EXECUTE PROCEDURE status_update_object_state();
+
+CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
+  DECLARE
+    _num INTEGER;
+    _nsset_old INTEGER;
+    _registrant_old INTEGER;
+    _nsset_new INTEGER;
+    _registrant_new INTEGER;
+  BEGIN
+    _nsset_old := NULL;
+    _registrant_old := NULL;
+    _nsset_new := NULL;
+    _registrant_new := NULL;
+    -- is it INSERT operation
+    IF TG_OP = 'INSERT' THEN
+      _registrant_new := NEW.registrant;
+      _nsset_new := NEW.nsset;
+      -- we ignore exdate, for new domain it shouldn't influence its state
+    -- is it UPDATE operation
+    ELSIF TG_OP = 'UPDATE' THEN
+      IF NEW.registrant <> OLD.registrant THEN
+        _registrant_old := OLD.registrant;
+        _registrant_new := NEW.registrant;
+      END IF;
+      IF NEW.nsset <> OLD.nsset THEN
+        _nsset_old := OLD.nsset;
+        _nsset_new := NEW.nsset;
+      END IF;
+      -- take care of all domain statuses
+      IF NEW.exdate <> OLD.exdate THEN
+        -- state: expiration warning
+        SELECT count(*) INTO _num FROM object_state
+            WHERE state_id = 8 AND valid_to IS NULL AND object_id = NEW.id;
+        IF NEW.exdate - INTERVAL '30 days' <= CURRENT_DATE THEN
+          IF _num = 0 THEN
+            INSERT INTO object_state (object_id, state_id, valid_from)
+                VALUES (NEW.id, 8, CURRENT_TIMESTAMP);
+          END IF;
+        ELSE
+          IF _num > 0 THEN
+            UPDATE object_state SET valid_to = CURRENT_TIMESTAMP
+                WHERE state_id = 8 AND valid_to IS NULL AND object_id = OLD.id;
+          END IF;
+        END IF;
+        -- state: expired
+        SELECT count(*) INTO _num FROM object_state
+            WHERE state_id = 9 AND valid_to IS NULL AND object_id = NEW.id;
+        IF NEW.exdate <= CURRENT_DATE THEN
+          IF _num = 0 THEN
+            INSERT INTO object_state (object_id, state_id, valid_from)
+                VALUES (NEW.id, 9, CURRENT_TIMESTAMP);
+          END IF;
+        ELSE
+          IF _num > 0 THEN
+            UPDATE object_state SET valid_to = CURRENT_TIMESTAMP
+                WHERE state_id = 9 AND valid_to IS NULL AND object_id = OLD.id;
+          END IF;
+        END IF;
+        -- state: unguarded
+        SELECT count(*) INTO _num FROM object_state
+            WHERE state_id = 10 AND valid_to IS NULL AND object_id = NEW.id;
+        IF NEW.exdate + INTERVAL '30 days' + INTERVAL '14 hours' <= CURRENT_TIMESTAMP THEN
+          IF _num = 0 THEN
+            INSERT INTO object_state (object_id, state_id, valid_from)
+                VALUES (NEW.id, 10, CURRENT_TIMESTAMP);
+          END IF;
+        ELSE
+          IF _num > 0 THEN
+            UPDATE object_state SET valid_to = CURRENT_TIMESTAMP
+                WHERE state_id = 10 AND valid_to IS NULL AND object_id = OLD.id;
+          END IF;
+        END IF;
+        -- state: nsset missing
+        SELECT count(*) INTO _num FROM object_state
+            WHERE state_id = 14 AND valid_to IS NULL AND object_id = NEW.id;
+        IF NEW.nsset ISNULL THEN
+          IF _num = 0 THEN
+            INSERT INTO object_state (object_id, state_id, valid_from)
+                VALUES (NEW.id, 14, CURRENT_TIMESTAMP);
+          END IF;
+        ELSE
+          IF _num > 0 THEN
+            UPDATE object_state SET valid_to = CURRENT_TIMESTAMP
+                WHERE state_id = 14 AND valid_to IS NULL AND object_id = OLD.id;
+          END IF;
+        END IF;
+        -- state: delete candidate
+        SELECT count(*) INTO _num FROM object_state
+            WHERE state_id = 17 AND valid_to IS NULL AND object_id = NEW.id;
+        IF NEW.exdate + INTERVAL '45 days' + INTERVAL '14 hours' <= CURRENT_TIMESTAMP THEN
+          IF _num = 0 THEN
+            INSERT INTO object_state (object_id, state_id, valid_from)
+                VALUES (NEW.id, 17, CURRENT_TIMESTAMP);
+          END IF;
+        ELSE
+          IF _num > 0 THEN
+            UPDATE object_state SET valid_to = CURRENT_TIMESTAMP
+                WHERE state_id = 17 AND valid_to IS NULL AND object_id = OLD.id;
+          END IF;
+        END IF;
+      END IF;
+    -- is it DELETE operation
+    ELSIF TG_OP = 'DELETE' THEN
+      _registrant_old := OLD.registrant;
+      _nsset_old := OLD.nsset; -- may be NULL!
+      -- exdate is meaningless when deleting (probably)
+    END IF;
+
+    -- add registrant's linked status if there is none
+    IF _registrant_new IS NOT NULL THEN
+      SELECT count(*) INTO _num FROM object_state
+          WHERE valid_to IS NULL AND state_id = 16 AND
+              object_id = _registrant_new;
+      IF _num = 0 THEN
+        INSERT INTO object_state (object_id, state_id, valid_from)
+            VALUES (NEW.registrant, 16, CURRENT_TIMESTAMP);
+      END IF;
+    END IF;
+    -- add nsset's linked status if there is none
+    IF _nsset_new IS NOT NULL THEN
+      SELECT count(*) INTO _num FROM object_state
+          WHERE valid_to IS NULL AND state_id = 16 AND
+            object_id = NEW.nsset;
+      IF _num = 0 THEN
+        INSERT INTO object_state (object_id, state_id, valid_from)
+          VALUES (NEW.nsset, 16, CURRENT_TIMESTAMP);
+      END IF;
+    END IF;
+    -- remove registrant's linked status if not bound
+    IF _registrant_old IS NOT NULL THEN
+      SELECT count(*) INTO _num FROM domain
+          WHERE registrant = OLD.registrant;
+      IF _num = 0 THEN
+        SELECT count(*) INTO _num FROM domain_contact_map
+            WHERE contactid = OLD.registrant;
+        IF _num = 0 THEN
+          SELECT count(*) INTO _num FROM nsset_contact_map
+              WHERE contactid = OLD.registrant;
+          IF _num = 0 THEN
+            UPDATE object_state SET valid_to = CURRENT_TIMESTAMP
+                WHERE object_id = OLD.registrant AND state_id = 16 AND
+                    valid_to IS NULL;
+          END IF;
+        END IF;
+      END IF;
+    END IF;
+    -- remove nsset's linked status if not bound
+    IF _nsset_old IS NOT NULL THEN
+      SELECT count(*) INTO _num FROM domain WHERE nsset = OLD.nsset;
+      IF _num = 0 THEN
+        UPDATE object_state SET valid_to = CURRENT_TIMESTAMP
+            WHERE object_id = OLD.nsset AND state_id = 16 AND valid_to IS NULL;
+      END IF;
+    END IF;
+  END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_domain AFTER INSERT OR DELETE OR UPDATE
+  ON domain FOR EACH ROW EXECUTE PROCEDURE status_update_domain();
+
+CREATE OR REPLACE FUNCTION status_update_enumval() RETURNS TRIGGER AS $$
+  DECLARE
+    _num INTEGER;
+  BEGIN
+    -- is it UPDATE operation
+    IF TG_OP = 'UPDATE' AND NEW.exdate <> OLD.exdate THEN
+      -- state: validation warning 1
+      SELECT count(*) INTO _num FROM object_state
+          WHERE state_id = 11 AND valid_to IS NULL AND object_id = NEW.domainid;
+      IF NEW.exdate - INTERVAL '30 days' <= CURRENT_DATE THEN
+        IF _num = 0 THEN
+          INSERT INTO object_state (object_id, state_id, valid_from)
+              VALUES (NEW.domainid, 11, CURRENT_TIMESTAMP);
+        END IF;
+      ELSE
+        IF _num > 0 THEN
+          UPDATE object_state SET valid_to = CURRENT_TIMESTAMP
+              WHERE state_id = 11 AND valid_to IS NULL AND object_id = OLD.domainid;
+        END IF;
+      END IF;
+      -- state: validation warning 2
+      SELECT count(*) INTO _num FROM object_state
+          WHERE state_id = 12 AND valid_to IS NULL AND object_id = NEW.domainid;
+      IF NEW.exdate - INTERVAL '15 days' <= CURRENT_DATE THEN
+        IF _num = 0 THEN
+          INSERT INTO object_state (object_id, state_id, valid_from)
+              VALUES (NEW.domainid, 12, CURRENT_TIMESTAMP);
+        END IF;
+      ELSE
+        IF _num > 0 THEN
+          UPDATE object_state SET valid_to = CURRENT_TIMESTAMP
+              WHERE state_id = 12 AND valid_to IS NULL AND object_id = OLD.domainid;
+        END IF;
+      END IF;
+      -- state: not validated
+      SELECT count(*) INTO _num FROM object_state
+          WHERE state_id = 13 AND valid_to IS NULL AND object_id = NEW.domainid;
+      IF NEW.exdate + INTERVAL '14 hours' <= CURRENT_TIMESTAMP THEN
+        IF _num = 0 THEN
+          INSERT INTO object_state (object_id, state_id, valid_from)
+              VALUES (NEW.domainid, 13, CURRENT_TIMESTAMP);
+        END IF;
+      ELSE
+        IF _num > 0 THEN
+          UPDATE object_state SET valid_to = CURRENT_TIMESTAMP
+              WHERE state_id = 13 AND valid_to IS NULL AND object_id = OLD.domainid;
+        END IF;
+      END IF;
+    END IF;
+  END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_enumval AFTER UPDATE ON enumval
+    FOR EACH ROW EXECUTE PROCEDURE status_update_enumval();
+
+CREATE OR REPLACE FUNCTION status_update_contact_map() RETURNS TRIGGER AS $$
+  DECLARE
+    _num INTEGER;
+    _contact_old INTEGER;
+    _contact_new INTEGER;
+  BEGIN
+    _contact_old := NULL;
+    _contact_new := NULL;
+    -- is it INSERT operation
+    IF TG_OP = 'INSERT' THEN
+      _contact_new := NEW.contactid;
+    -- is it UPDATE operation
+    ELSIF TG_OP = 'UPDATE' THEN
+      IF NEW.contactid <> OLD.contactid THEN
+        _contact_old := OLD.contactid;
+        _contact_new := NEW.contactid;
+      END IF;
+    -- is it DELETE operation
+    ELSIF TG_OP = 'DELETE' THEN
+      _contact_old := OLD.contactid;
+    END IF;
+
+    -- add contact's linked status if there is none
+    IF _contact_new IS NOT NULL THEN
+      SELECT count(*) INTO _num FROM object_state
+          WHERE valid_to IS NULL AND state_id = 16 AND object_id = _contact_new;
+      IF _num = 0 THEN
+        INSERT INTO object_state (object_id, state_id, valid_from)
+            VALUES (NEW.contactid, 16, CURRENT_TIMESTAMP);
+      END IF;
+    END IF;
+    -- remove contact's linked status if not bound
+    IF _contact_old IS NOT NULL THEN
+      SELECT count(*) INTO _num FROM domain WHERE registrant = OLD.contactid;
+      IF _num = 0 THEN
+        SELECT count(*) INTO _num FROM domain_contact_map
+            WHERE contactid = OLD.contactid;
+        IF _num = 0 THEN
+          SELECT count(*) INTO _num FROM nsset_contact_map
+              WHERE contactid = OLD.contactid;
+          IF _num = 0 THEN
+            UPDATE object_state SET valid_to = CURRENT_TIMESTAMP
+                WHERE object_id = OLD.contactid AND state_id = 16 AND
+                    valid_to IS NULL;
+          END IF;
+        END IF;
+      END IF;
+    END IF;
+  END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_domain_contact_map AFTER INSERT OR DELETE OR UPDATE
+  ON domain_contact_map FOR EACH ROW EXECUTE PROCEDURE status_update_contact_map();
+
+CREATE TRIGGER trigger_nsset_contact_map AFTER INSERT OR DELETE OR UPDATE
+  ON nsset_contact_map FOR EACH ROW EXECUTE PROCEDURE status_update_contact_map();
+
