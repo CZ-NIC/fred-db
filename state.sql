@@ -1,8 +1,15 @@
+
+-- all supported status types
 CREATE TABLE enum_object_states (
+  -- id of status
   id INTEGER PRIMARY KEY,
+  -- code name for status
   name CHAR(50) NOT NULL,
+  -- what types of objects can have this status (object_registry.type list)
   types INTEGER[] NOT NULL,
+  -- if this status is set manualy
   manual BOOLEAN NOT NULL,
+  -- if this status is exported to public
   external BOOLEAN NOT NULL
 );
 
@@ -45,9 +52,13 @@ INSERT INTO enum_object_states
 INSERT INTO enum_object_states 
   VALUES (19,'deleteWarning','{3}','f','f');
 
+-- descriptions fo states in different languages 
 CREATE TABLE enum_object_states_desc (
+  -- id of status
   state_id INTEGER NOT NULL REFERENCES enum_object_states (id),
+  -- char code of language
   lang CHAR(2) NOT NULL,
+  -- descriptive text
   description VARCHAR(255),
   PRIMARY KEY (state_id,lang)
 );
@@ -125,20 +136,29 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (18,'EN','Registrant change is forbidden');
 INSERT INTO enum_object_states_desc 
-  VALUES (19,'CZ','Registrace domény bude zrušena za 5 dní');
+  VALUES (19,'CZ','Registrace domény bude zrušena za 11 dní');
 INSERT INTO enum_object_states_desc 
-  VALUES (19,'EN','Domain will be deleted in 5 days');
+  VALUES (19,'EN','Domain will be deleted in 11 days');
 
+-- main table of object states and their changes
 CREATE TABLE object_state (
+  -- id of moment when object gain status
   id SERIAL PRIMARY KEY,
+  -- id of object that has this new status
   object_id INTEGER NOT NULL REFERENCES object_registry (id),
+  -- id of status
   state_id INTEGER NOT NULL REFERENCES enum_object_states (id),
+  -- timestamp when object entered state
   valid_from TIMESTAMP NOT NULL,
+  -- timestamp when object leaved state or null if still has status
   valid_to TIMESTAMP,
-  ohid_from INTEGER NOT NULL REFERENCES object_history (hid),
-  ohid_to INTEGER REFERENCES object_history (hid)
+  -- history id of object in the moment of entering state
+  ohid_from INTEGER NOT NULL REFERENCES object_history (historyid),
+  -- history id of object in the moment of leaving state or null
+  ohid_to INTEGER REFERENCES object_history (historyid)
 );
 
+-- aggregate function for accumulation of elements into array
 CREATE AGGREGATE array_accum (
   BASETYPE = anyelement,
   sfunc = array_append,
@@ -146,17 +166,24 @@ CREATE AGGREGATE array_accum (
   initcond = '{}'
 );
 
+-- simple view for all active states of object
 CREATE VIEW object_state_now AS
 SELECT object_id, array_accum(state_id) AS states
 FROM object_state
 WHERE valid_to ISNULL
 GROUP BY object_id;
 
+-- request for setting manual state
 CREATE TABLE object_state_request (
+  -- id of request
   id SERIAL PRIMARY KEY,
+  -- id of object gaining requested state
   object_id INTEGER NOT NULL REFERENCES object_registry (id),
+  -- id of requested state
   state_id INTEGER NOT NULL REFERENCES enum_object_states (id),
+  -- when object should enter requested state
   valid_from TIMESTAMP NOT NULL,
+  -- when object should leave requested state
   valid_to TIMESTAMP,
   -- could be pointer to some list of administration actions
   crdate TIMESTAMP NOT NULL, 
@@ -164,6 +191,7 @@ CREATE TABLE object_state_request (
   canceled TIMESTAMP 
 );
 
+-- simple view for all active requests for state change
 CREATE VIEW object_state_request_now AS
 SELECT object_id, array_accum(state_id) AS states
 FROM object_state_request
@@ -171,6 +199,7 @@ WHERE valid_from<=CURRENT_TIMESTAMP
 AND (valid_to ISNULL OR valid_to>=CURRENT_TIMESTAMP) AND canceled ISNULL
 GROUP BY object_id;
 
+-- view for actual domain states
 CREATE VIEW domain_states AS
 SELECT
   d.id AS object_id,
@@ -200,12 +229,16 @@ SELECT
       THEN ARRAY[15] ELSE '{}' END ||
   CASE WHEN d.exdate + INTERVAL '45 days' + 
             INTERVAL '14 hours' <= CURRENT_TIMESTAMP 
-       THEN ARRAY[17] ELSE '{}' END AS states
+       THEN ARRAY[17] ELSE '{}' END ||
+  CASE WHEN d.exdate + INTERVAL '34 days' <= CURRENT_DATE 
+       THEN ARRAY[19] ELSE '{}' END
+  AS states
 FROM
-  domain d, object_registry
+  domain d 
   LEFT JOIN enumval e ON (d.id=e.domainid)
   LEFT JOIN object_state_request_now osr ON (d.id=osr.object_id);
 
+-- view for actual nsset states
 CREATE VIEW nsset_states AS
 SELECT
   n.id AS object_id,
@@ -229,6 +262,7 @@ FROM
 WHERE
   o.type=2 AND o.id=n.id;
 
+-- view for actual contact states
 CREATE VIEW contact_states AS
 SELECT
   c.id AS object_id,
@@ -338,6 +372,24 @@ CREATE OR REPLACE FUNCTION status_update_state(
  END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION status_set_state(
+  _cond BOOL, _state_id INTEGER, _object_id INTEGER
+) RETURNS VOID AS $$
+ DECLARE
+   _num INTEGER;
+ BEGIN
+   IF _cond THEN
+     SELECT COUNT(*) INTO _num FROM object_state
+     WHERE valid_to IS NULL AND state_id = _state_id 
+     AND object_id = _object_id;
+     IF _num = 0 THEN
+       INSERT INTO object_state (object_id, state_id, valid_from)
+       VALUES (_object_id, _state_id, CURRENT_TIMESTAMP);
+     END IF;
+   END IF;
+ END;
+$$ LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION status_update_object_state() RETURNS TRIGGER AS $$
   DECLARE
     _states INTEGER[];
@@ -421,6 +473,10 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
           NEW.exdate + INTERVAL '30 days' 
                      + INTERVAL '14 hours' <= CURRENT_TIMESTAMP, 10, NEW.id
         );
+        -- state: deleteWarning
+        EXECUTE status_update_state(
+          NEW.exdate + INTERVAL '34 days' <= CURRENT_DATE, 19, NEW.id
+        );
         -- state: delete candidate (seems useless - cannot switch after del)
         EXECUTE status_update_state(
           NEW.exdate + INTERVAL '45 days' 
@@ -441,25 +497,13 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
     END IF;
 
     -- add registrant's linked status if there is none
-    IF _registrant_new IS NOT NULL THEN
-      SELECT count(*) INTO _num FROM object_state
-          WHERE valid_to IS NULL AND state_id = 16 AND
-              object_id = _registrant_new;
-      IF _num = 0 THEN
-        INSERT INTO object_state (object_id, state_id, valid_from)
-            VALUES (NEW.registrant, 16, CURRENT_TIMESTAMP);
-      END IF;
-    END IF;
+    EXECUTE status_set_state(
+      _registrant_new IS NOT NULL, 16, _registrant_new
+    );
     -- add nsset's linked status if there is none
-    IF _nsset_new IS NOT NULL THEN
-      SELECT count(*) INTO _num FROM object_state
-          WHERE valid_to IS NULL AND state_id = 16 AND
-            object_id = NEW.nsset;
-      IF _num = 0 THEN
-        INSERT INTO object_state (object_id, state_id, valid_from)
-          VALUES (NEW.nsset, 16, CURRENT_TIMESTAMP);
-      END IF;
-    END IF;
+    EXECUTE status_set_state(
+      _nsset_new IS NOT NULL, 16, _nsset_new
+    );
     -- remove registrant's linked status if not bound
     IF _registrant_old IS NOT NULL THEN
       SELECT count(*) INTO _num FROM domain
@@ -541,15 +585,9 @@ CREATE OR REPLACE FUNCTION status_update_contact_map() RETURNS TRIGGER AS $$
     END IF;
 
     -- add contact's linked status if there is none
-    IF _contact_new IS NOT NULL THEN
-      SELECT count(*) INTO _num FROM object_state
-        WHERE valid_to IS NULL AND state_id = 16 
-        AND object_id = _contact_new;
-      IF _num = 0 THEN
-        INSERT INTO object_state (object_id, state_id, valid_from)
-            VALUES (NEW.contactid, 16, CURRENT_TIMESTAMP);
-      END IF;
-    END IF;
+    EXECUTE status_set_state(
+      _contact_new IS NOT NULL, 16, _contact_new
+    );
     -- remove contact's linked status if not bound
     IF _contact_old IS NOT NULL THEN
       SELECT count(*) INTO _num FROM domain WHERE registrant = OLD.contactid;
