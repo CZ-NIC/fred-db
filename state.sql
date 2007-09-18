@@ -606,6 +606,7 @@ CREATE OR REPLACE FUNCTION status_update_contact_map() RETURNS TRIGGER AS $$
         END IF;
       END IF;
     END IF;
+    RETURN NULL;
   END;
 $$ LANGUAGE plpgsql;
 
