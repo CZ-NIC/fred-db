@@ -1,3 +1,6 @@
+-- must be superuser
+CREATE LANGUAGE 'plpgsql';
+
 -- 
 --  create temporary table and if temporary table already
 --  exists truncate it for immediate usage

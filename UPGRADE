@@ -130,8 +130,14 @@ INSERT INTO check_dependance (addictid, testid) VALUES (50, 0);
 INSERT INTO check_dependance (addictid, testid) VALUES (60, 0);
 
 --
+-- COPY the content of func.sql file here
+--
+\i func.sql
+
+--
 -- COPY the content of state.sql file here
 --
+\i state.sql
 
 -- The original status table must be dropped
 DROP TABLE enum_status;
