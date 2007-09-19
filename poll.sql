@@ -28,7 +28,7 @@ CREATE TABLE poll_credit (
 
 CREATE TABLE poll_eppaction (
   msgid INTEGER PRIMARY KEY REFERENCES message (id),
-  objid INTEGER REFERENCES object_history (id)
+  objid INTEGER REFERENCES object_history (historyid)
 );
 
 CREATE TABLE poll_techcheck (
