@@ -110,6 +110,10 @@ INSERT INTO enum_country (id,country) VALUES ( 'ME' , 'MONTENEGRO' );
 
 1.6 -> 1.7
 
+INSERT INTO enum_country (id,country) VALUES ( 'GG' , 'GUERNSEY' );
+INSERT INTO enum_country (id,country) VALUES ( 'IM' , 'ISLE OF MAN' );
+INSERT INTO enum_country (id,country) VALUES ( 'JE' , 'JERSEY' );
+
 -- archiving of notifications about undelivered emails
 ALTER TABLE mail_archive ADD COLUMN response text;
 
