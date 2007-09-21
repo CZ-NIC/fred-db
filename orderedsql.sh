@@ -22,14 +22,9 @@ cat genzone.sql
 cat admin.sql  
 #filemanager
 cat filemanager.sql
-# state and poll
-cat state.sql
-cat poll.sql
 #mailer
 cat mail_notify.sql
 cat mail_templates.sql
-#notify  mailer
-cat notify.sql
 #authinfo
 cat authinfo.sql
 # banking
@@ -40,3 +35,10 @@ cat bank.sql
 #tech-check
 cat techcheck.sql
 cat info_buffer.sql
+# common functions
+cat func.sql
+# state and poll
+cat state.sql
+cat poll.sql
+#notify  mailer
+cat notify.sql
