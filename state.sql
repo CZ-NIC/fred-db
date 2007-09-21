@@ -203,6 +203,7 @@ GROUP BY object_id;
 CREATE VIEW domain_states AS
 SELECT
   d.id AS object_id,
+  o.historyid AS object_hid,
   COALESCE(osr.states,'{}') ||
   CASE WHEN d.exdate - INTERVAL '30 days' <= CURRENT_DATE 
        THEN ARRAY[8] ELSE '{}' END ||
@@ -234,14 +235,17 @@ SELECT
        THEN ARRAY[19] ELSE '{}' END
   AS states
 FROM
-  domain d 
+  object_registry o,
+  domain d
   LEFT JOIN enumval e ON (d.id=e.domainid)
-  LEFT JOIN object_state_request_now osr ON (d.id=osr.object_id);
+  LEFT JOIN object_state_request_now osr ON (d.id=osr.object_id)
+WHERE d.id=o.id;
 
 -- view for actual nsset states
 CREATE VIEW nsset_states AS
 SELECT
   n.id AS object_id,
+  o.historyid AS object_hid,
   COALESCE(osr.states,'{}') ||
   CASE WHEN NOT(d.nsset ISNULL) THEN ARRAY[16] ELSE '{}' END ||
   CASE WHEN n.id ISNULL AND
@@ -266,6 +270,7 @@ WHERE
 CREATE VIEW contact_states AS
 SELECT
   c.id AS object_id,
+  o.historyid AS object_hid,
   COALESCE(osr.states,'{}') ||
   CASE WHEN NOT(cl.cid ISNULL) THEN ARRAY[16] ELSE '{}' END ||
   CASE WHEN cl.cid ISNULL AND
@@ -314,6 +319,7 @@ BEGIN
   THEN
     CREATE TEMPORARY TABLE tmp_object_state_change (
       object_id INTEGER,
+      object_hid INTEGER,
       new_states INTEGER[],
       old_states INTEGER[]
     );
@@ -323,7 +329,7 @@ BEGIN
 
   INSERT INTO tmp_object_state_change
   SELECT
-    st.object_id, st.states AS new_states, 
+    st.object_id, st.object_hid, st.states AS new_states, 
     COALESCE(o.states,'{}') AS old_states
   FROM (
     SELECT * FROM domain_states
@@ -335,12 +341,12 @@ BEGIN
   LEFT JOIN object_state_now o ON (st.object_id=o.object_id)
   WHERE array_sort_dist(st.states)!=COALESCE(array_sort_dist(o.states),'{}');
 
-  INSERT INTO object_state (object_id,state_id,valid_from)
-  SELECT c.object_id,e.id,CURRENT_TIMESTAMP
+  INSERT INTO object_state (object_id,state_id,valid_from,ohid_from)
+  SELECT c.object_id,e.id,CURRENT_TIMESTAMP,c.object_hid
   FROM tmp_object_state_change c, enum_object_states e
   WHERE e.id = ANY(c.new_states) AND e.id != ALL(c.old_states);
 
-  UPDATE object_state SET valid_to=CURRENT_TIMESTAMP
+  UPDATE object_state SET valid_to=CURRENT_TIMESTAMP, ohid_to=c.object_hid
   FROM enum_object_states e, tmp_object_state_change c
   WHERE e.id = ANY(c.old_states) AND e.id != ALL(c.new_states)
   AND e.id=object_state.state_id and c.object_id=object_state.object_id 
