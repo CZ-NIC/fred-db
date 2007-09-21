@@ -3,10 +3,19 @@ CREATE TABLE MessageType (
 	name VARCHAR(30) NOT NULL
 );
 -- do not change the number codes - current code depends on it!
-INSERT INTO MessageType VALUES (1, 'credit');
-INSERT INTO MessageType VALUES (2, 'techcheck');
-INSERT INTO MessageType VALUES (3, 'eppaction');
-INSERT INTO MessageType VALUES (4, 'statechange');
+INSERT INTO MessageType VALUES (01, 'credit');
+INSERT INTO MessageType VALUES (02, 'techcheck');
+INSERT INTO MessageType VALUES (03, 'transfer_contact');
+INSERT INTO MessageType VALUES (04, 'transfer_nsset');
+INSERT INTO MessageType VALUES (05, 'transfer_domain');
+INSERT INTO MessageType VALUES (06, 'delete_contact');
+INSERT INTO MessageType VALUES (07, 'delete_nsset');
+INSERT INTO MessageType VALUES (08, 'delete_domain');
+INSERT INTO MessageType VALUES (09, 'imp_expiration');
+INSERT INTO MessageType VALUES (10, 'expiration');
+INSERT INTO MessageType VALUES (11, 'imp_validation');
+INSERT INTO MessageType VALUES (12, 'validation');
+INSERT INTO MessageType VALUES (13, 'outzone');
 
 CREATE TABLE Message (
         ID SERIAL PRIMARY KEY,
