@@ -51,6 +51,8 @@ INSERT INTO enum_object_states
   VALUES (18,'serverRegistrantChangeProhibited','{3}','t','t');
 INSERT INTO enum_object_states 
   VALUES (19,'deleteWarning','{3}','f','f');
+INSERT INTO enum_object_states 
+  VALUES (19,'outzoneUnguarded','{3}','f','f');
 
 -- descriptions fo states in different languages 
 CREATE TABLE enum_object_states_desc (
@@ -139,6 +141,10 @@ INSERT INTO enum_object_states_desc
   VALUES (19,'CS','Registrace domény bude zrušena za 11 dní');
 INSERT INTO enum_object_states_desc 
   VALUES (19,'EN','Domain will be deleted in 11 days');
+INSERT INTO enum_object_states_desc 
+  VALUES (20,'CS','Doména vyřazena ze zóny po skončení ochranné lhůty');
+INSERT INTO enum_object_states_desc 
+  VALUES (20,'EN','Domain is out of zone after guarding period');
 
 -- main table of object states and their changes
 CREATE TABLE object_state (
@@ -232,7 +238,11 @@ SELECT
             INTERVAL '14 hours' <= CURRENT_TIMESTAMP 
        THEN ARRAY[17] ELSE '{}' END ||
   CASE WHEN d.exdate + INTERVAL '34 days' <= CURRENT_DATE 
-       THEN ARRAY[19] ELSE '{}' END
+       THEN ARRAY[19] ELSE '{}' END ||
+  CASE WHEN d.exdate + INTERVAL '30 days' + 
+            INTERVAL '14 hours' <= CURRENT_TIMESTAMP AND
+            NOT (6 = ANY(COALESCE(osr.states,'{}')))
+       THEN ARRAY[20] ELSE '{}' END
   AS states
 FROM
   object_registry o,
@@ -409,7 +419,12 @@ CREATE OR REPLACE FUNCTION status_update_object_state() RETURNS TRIGGER AS $$
         (NOT (6 = ANY (_states)) AND -- not serverInzoneManual
           ((10 = ANY (_states)) OR -- unguarded
            (13 = ANY (_states)))),  -- not validated
-        15, NEW.object_id
+        15, NEW.object_id -- => set outzone
+      );
+      EXECUTE status_update_state(
+        NOT (6 = ANY (_states)) AND -- not serverInzoneManual
+            (10 = ANY (_states)), -- unguarded
+        20, NEW.object_id -- => set ouzoneUnguarded
       );
     END IF;
     RETURN NEW;
