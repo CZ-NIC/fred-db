@@ -52,7 +52,7 @@ INSERT INTO enum_object_states
 INSERT INTO enum_object_states 
   VALUES (19,'deleteWarning','{3}','f','f');
 INSERT INTO enum_object_states 
-  VALUES (19,'outzoneUnguarded','{3}','f','f');
+  VALUES (20,'outzoneUnguarded','{3}','f','f');
 
 -- descriptions fo states in different languages 
 CREATE TABLE enum_object_states_desc (
