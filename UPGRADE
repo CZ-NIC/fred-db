@@ -129,6 +129,10 @@ INSERT INTO check_dependance (addictid, testid) VALUES (40, 0);
 INSERT INTO check_dependance (addictid, testid) VALUES (50, 0);
 INSERT INTO check_dependance (addictid, testid) VALUES (60, 0);
 
+
+-- must be done as superuser 
+CREATE LANGUAGE 'plpgsql';
+
 --
 -- COPY the content of func.sql file here
 --
@@ -146,10 +150,19 @@ CREATE TABLE MessageType (
         ID INTEGER PRIMARY KEY,
 	name VARCHAR(30) NOT NULL
 );
-INSERT INTO MessageType VALUES (1, 'credit');
-INSERT INTO MessageType VALUES (2, 'techcheck');
-INSERT INTO MessageType VALUES (3, 'eppaction');
-INSERT INTO MessageType VALUES (4, 'statechange');
+INSERT INTO MessageType VALUES (01, 'credit');
+INSERT INTO MessageType VALUES (02, 'techcheck');
+INSERT INTO MessageType VALUES (03, 'transfer_contact');
+INSERT INTO MessageType VALUES (04, 'transfer_nsset');
+INSERT INTO MessageType VALUES (05, 'transfer_domain');
+INSERT INTO MessageType VALUES (06, 'delete_contact');
+INSERT INTO MessageType VALUES (07, 'delete_nsset');
+INSERT INTO MessageType VALUES (08, 'delete_domain');
+INSERT INTO MessageType VALUES (09, 'imp_expiration');
+INSERT INTO MessageType VALUES (10, 'expiration');
+INSERT INTO MessageType VALUES (11, 'imp_validation');
+INSERT INTO MessageType VALUES (12, 'validation');
+INSERT INTO MessageType VALUES (13, 'outzone');
 
 ALTER TABLE message DROP COLUMN message;
 ALTER TABLE message ADD COLUMN msgType INTEGER REFERENCES messagetype (id);
