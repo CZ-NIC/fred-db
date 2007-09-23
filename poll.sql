@@ -35,6 +35,11 @@ CREATE TABLE poll_credit (
   credit INTEGER NOT NULL
 );
 
+CREATE TABLE poll_credit_zone_limit (
+  zone INTEGER NOT NULL REFERENCES zone(id),
+  credlimit INTEGER NOT NULL
+);
+
 CREATE TABLE poll_eppaction (
   msgid INTEGER PRIMARY KEY REFERENCES message (id),
   objid INTEGER REFERENCES object_history (historyid)
