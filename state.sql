@@ -158,8 +158,8 @@ CREATE TABLE object_state (
   valid_from TIMESTAMP NOT NULL,
   -- timestamp when object leaved state or null if still has status
   valid_to TIMESTAMP,
-  -- history id of object in the moment of entering state
-  ohid_from INTEGER NOT NULL REFERENCES object_history (historyid),
+  -- history id of object in the moment of entering state  (may be NULL)
+  ohid_from INTEGER REFERENCES object_history (historyid),
   -- history id of object in the moment of leaving state or null
   ohid_to INTEGER REFERENCES object_history (historyid)
 );
@@ -234,8 +234,9 @@ SELECT
       e.exdate + INTERVAL '14 hours' <= CURRENT_TIMESTAMP ) AND 
       NOT (6 = ANY(COALESCE(osr.states,'{}'))) 
       THEN ARRAY[15] ELSE '{}' END ||
-  CASE WHEN d.exdate + INTERVAL '45 days' + 
-            INTERVAL '14 hours' <= CURRENT_TIMESTAMP 
+  CASE WHEN (d.exdate + INTERVAL '45 days' + 
+            INTERVAL '14 hours' <= CURRENT_TIMESTAMP) AND
+            NOT (1 = ANY(COALESCE(osr.states,'{}')))
        THEN ARRAY[17] ELSE '{}' END ||
   CASE WHEN d.exdate + INTERVAL '34 days' <= CURRENT_DATE 
        THEN ARRAY[19] ELSE '{}' END ||
@@ -261,6 +262,7 @@ SELECT
   CASE WHEN n.id ISNULL AND
             CAST(COALESCE(l.last_linked,o.crdate) AS DATE) 
             + INTERVAL '6 month' + INTERVAL '14 hours' <= CURRENT_TIMESTAMP
+            AND NOT (1 = ANY(COALESCE(osr.states,'{}')))
        THEN ARRAY[17] ELSE '{}' END AS states
 FROM
   object_registry o, nsset n
@@ -286,6 +288,7 @@ SELECT
   CASE WHEN cl.cid ISNULL AND
             CAST(COALESCE(l.last_linked,o.crdate) AS DATE) 
             + INTERVAL '6 month' + INTERVAL '14 hours' <= CURRENT_TIMESTAMP
+            AND NOT (1 = ANY(COALESCE(osr.states,'{}')))
        THEN ARRAY[17] ELSE '{}' END AS states
 FROM
   object_registry o, contact c
@@ -469,6 +472,10 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
       _registrant_new := NEW.registrant;
       _nsset_new := NEW.nsset;
       -- we ignore exdate, for new domain it shouldn't influence its state
+      -- state: nsset missing
+      EXECUTE status_update_state(
+        NEW.nsset ISNULL, 14, NEW.id
+      );
     -- is it UPDATE operation
     ELSIF TG_OP = 'UPDATE' THEN
       IF NEW.registrant <> OLD.registrant THEN
@@ -499,10 +506,11 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
           NEW.exdate + INTERVAL '34 days' <= CURRENT_DATE, 19, NEW.id
         );
         -- state: delete candidate (seems useless - cannot switch after del)
-        EXECUTE status_update_state(
-          NEW.exdate + INTERVAL '45 days' 
-                     + INTERVAL '14 hours' <= CURRENT_TIMESTAMP, 17, NEW.id
-        );
+        -- for now delete state will be set only globaly
+--        EXECUTE status_update_state(
+--          NEW.exdate + INTERVAL '45 days' 
+--                     + INTERVAL '14 hours' <= CURRENT_TIMESTAMP, 17, NEW.id
+--        );
       END IF; -- change in exdate
       IF COALESCE(NEW.nsset,0) <> COALESCE(OLD.nsset,0) THEN
         -- state: nsset missing
@@ -638,3 +646,21 @@ CREATE TRIGGER trigger_domain_contact_map AFTER INSERT OR DELETE OR UPDATE
 CREATE TRIGGER trigger_nsset_contact_map AFTER INSERT OR DELETE OR UPDATE
   ON nsset_contact_map FOR EACH ROW 
   EXECUTE PROCEDURE status_update_contact_map();
+
+-- object history tables are filled after normal object tables (i.e. domain)
+-- and so when new state is generated as result of new row in normal 
+-- table, no history table is available to reference in ohid_from
+-- this trigger fix this be filling unfilled ohid_from after insert
+-- into history
+CREATE OR REPLACE FUNCTION object_history_insert() RETURNS TRIGGER AS $$
+  BEGIN
+    UPDATE object_state SET ohid_from=NEW.historyid 
+    WHERE ohid_from ISNULL AND object_id=NEW.id;
+    RETURN NEW;
+  END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_object_history AFTER INSERT
+  ON object_history FOR EACH ROW 
+  EXECUTE PROCEDURE object_history_insert();
+
