@@ -194,3 +194,7 @@ CREATE TABLE poll_stateChange (
   stateid INTEGER REFERENCES object_state (id)
 );
 
+--
+-- COPY the content of notify_new.sql file here
+--
+\i notify_new.sql

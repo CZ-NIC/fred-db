@@ -42,3 +42,4 @@ cat state.sql
 cat poll.sql
 #notify  mailer
 cat notify.sql
+cat notify_new.sql
