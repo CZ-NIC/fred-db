@@ -34,7 +34,11 @@ BEGIN
  VALUES (
   iid,
   (ARRAY['C','N','D'])[otype] || LPAD(iid,10,'0') || '-CZ' ,
-  oname,
+  CASE
+   WHEN otype=1 THEN UPPER(oname)
+   WHEN otype=2 THEN UPPER(oname)
+   WHEN otype=3 THEN LOWER(oname)
+  END,
   otype,
   crregid
  );
