@@ -164,6 +164,9 @@ CREATE TABLE object_state (
   ohid_to INTEGER REFERENCES object_history (historyid)
 );
 
+CREATE UNIQUE INDEX object_state_now_idx ON object_state (object_id, state_id)
+WHERE valid_to ISNULL;
+
 -- aggregate function for accumulation of elements into array
 CREATE AGGREGATE array_accum (
   BASETYPE = anyelement,
