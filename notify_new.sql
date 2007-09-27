@@ -49,3 +49,12 @@ CREATE TABLE notify_statechange (
   mail_id INTEGER NOT NULL REFERENCES mail_archive (id),
   PRIMARY KEY (state_id, type)
 );
+
+-- notifications about deleteWarning state by PDF letter
+-- multiple states is stored in one PDF document
+CREATE TABLE notify_letters (
+  -- which statechange triggered notification
+  state_id INTEGER  PRIMARY KEY REFERENCES object_state (id),
+  -- file with pdf about notification
+  file_id INTEGER NOT NULL REFERENCES files (id)
+);
