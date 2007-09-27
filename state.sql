@@ -94,17 +94,17 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (07,'EN','Domain is blocked');
 INSERT INTO enum_object_states_desc 
-  VALUES (08,'CS','Registrace skončí za 30 dní');
+  VALUES (08,'CS','Doména expiruje za 30 dní');
 INSERT INTO enum_object_states_desc 
-  VALUES (08,'EN','Registration expire in 30 days');
+  VALUES (08,'EN','Domain expire in 30 days');
 INSERT INTO enum_object_states_desc 
-  VALUES (09,'CS','Registrace vypršela');
+  VALUES (09,'CS','Doména je po expiraci');
 INSERT INTO enum_object_states_desc 
-  VALUES (09,'EN','Registration expired');
+  VALUES (09,'EN','Domain expired');
 INSERT INTO enum_object_states_desc 
-  VALUES (10,'CS','Doména již není v ochranné lhůtě');
+  VALUES (10,'CS','Doména je 30 dnů po expiraci');
 INSERT INTO enum_object_states_desc 
-  VALUES (10,'EN','Domain is not in guarded period');
+  VALUES (10,'EN','Domain is 30 days after expiration');
 INSERT INTO enum_object_states_desc 
   VALUES (11,'CS','Validace domény skončí za 30 dní');
 INSERT INTO enum_object_states_desc 
