@@ -318,12 +318,12 @@ WHERE
 CREATE OR REPLACE FUNCTION array_sort_dist (ANYARRAY)
 RETURNS ANYARRAY LANGUAGE SQL
 AS $$
-SELECT ARRAY(
+SELECT COALESCE(ARRAY(
     SELECT DISTINCT $1[s.i] AS "sort"
     FROM
         generate_series(array_lower($1,1), array_upper($1,1)) AS s(i)
     ORDER BY sort
-);
+),'{}');
 $$ IMMUTABLE;
 
 -- CREATE LANGUAGE plpgsql;
