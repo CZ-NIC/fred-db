@@ -256,43 +256,47 @@ FROM
 WHERE d.id=o.id;
 
 -- view for actual nsset states
+-- for NOW they are not deleted
 CREATE VIEW nsset_states AS
 SELECT
   n.id AS object_id,
   o.historyid AS object_hid,
   COALESCE(osr.states,'{}') ||
-  CASE WHEN NOT(d.nsset ISNULL) THEN ARRAY[16] ELSE '{}' END ||
-  CASE WHEN n.id ISNULL AND
-            CAST(COALESCE(l.last_linked,o.crdate) AS DATE) 
-            + INTERVAL '6 month' + INTERVAL '14 hours' <= CURRENT_TIMESTAMP
-            AND NOT (1 = ANY(COALESCE(osr.states,'{}')))
-       THEN ARRAY[17] ELSE '{}' END AS states
+  CASE WHEN NOT(d.nsset ISNULL) THEN ARRAY[16] ELSE '{}' END  -- ||
+--  CASE WHEN n.id ISNULL AND
+--            CAST(COALESCE(l.last_linked,o.crdate) AS DATE) 
+--            + INTERVAL '6 month' + INTERVAL '14 hours' <= CURRENT_TIMESTAMP
+--            AND NOT (1 = ANY(COALESCE(osr.states,'{}')))
+--       THEN ARRAY[17] ELSE '{}' END 
+  AS states
 FROM
   object_registry o, nsset n
   LEFT JOIN (
     SELECT DISTINCT nsset FROM domain
   ) AS d ON (d.nsset=n.id)
-  LEFT JOIN (
-    SELECT object_id, MAX(valid_to) AS last_linked
-    FROM object_state
-    WHERE state_id=16 GROUP BY object_id
-  ) AS l ON (n.id=l.object_id)
+--  LEFT JOIN (
+--    SELECT object_id, MAX(valid_to) AS last_linked
+--    FROM object_state
+--    WHERE state_id=16 GROUP BY object_id
+--  ) AS l ON (n.id=l.object_id)
   LEFT JOIN object_state_request_now osr ON (n.id=osr.object_id)
 WHERE
   o.type=2 AND o.id=n.id;
 
 -- view for actual contact states
+-- for NOW they are not deleted
 CREATE VIEW contact_states AS
 SELECT
   c.id AS object_id,
   o.historyid AS object_hid,
   COALESCE(osr.states,'{}') ||
-  CASE WHEN NOT(cl.cid ISNULL) THEN ARRAY[16] ELSE '{}' END ||
-  CASE WHEN cl.cid ISNULL AND
-            CAST(COALESCE(l.last_linked,o.crdate) AS DATE) 
-            + INTERVAL '6 month' + INTERVAL '14 hours' <= CURRENT_TIMESTAMP
-            AND NOT (1 = ANY(COALESCE(osr.states,'{}')))
-       THEN ARRAY[17] ELSE '{}' END AS states
+  CASE WHEN NOT(cl.cid ISNULL) THEN ARRAY[16] ELSE '{}' END --||
+--  CASE WHEN cl.cid ISNULL AND
+--            CAST(COALESCE(l.last_linked,o.crdate) AS DATE) 
+--            + INTERVAL '6 month' + INTERVAL '14 hours' <= CURRENT_TIMESTAMP
+--            AND NOT (1 = ANY(COALESCE(osr.states,'{}')))
+--       THEN ARRAY[17] ELSE '{}' END 
+  AS states
 FROM
   object_registry o, contact c
   LEFT JOIN (
@@ -302,12 +306,12 @@ FROM
     UNION
     SELECT contactid AS cid FROM nsset_contact_map
   ) AS cl ON (c.id=cl.cid)
-  LEFT JOIN (
-    SELECT object_id, MAX(valid_to) AS last_linked
-    FROM object_state
-    WHERE state_id=16 GROUP BY object_id
-  ) AS l ON (c.id=l.object_id)
-  LEFT JOIN object_state_request_now osr ON (c.id=osr.object_id)
+--  LEFT JOIN (
+--    SELECT object_id, MAX(valid_to) AS last_linked
+--    FROM object_state
+--    WHERE state_id=16 GROUP BY object_id
+--  ) AS l ON (c.id=l.object_id)
+    LEFT JOIN object_state_request_now osr ON (c.id=osr.object_id)
 WHERE
   o.type=1 AND o.id=c.id;
 
