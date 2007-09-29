@@ -214,36 +214,36 @@ SELECT
   d.id AS object_id,
   o.historyid AS object_hid,
   COALESCE(osr.states,'{}') ||
-  CASE WHEN d.exdate - INTERVAL '30 days' <= CURRENT_DATE 
+  CASE WHEN d.exdate::date - INTERVAL '30 days' <= CURRENT_DATE 
        THEN ARRAY[8] ELSE '{}' END ||
-  CASE WHEN d.exdate <= CURRENT_DATE 
+  CASE WHEN d.exdate::date <= CURRENT_DATE 
        THEN ARRAY[9] ELSE '{}' END ||
-  CASE WHEN d.exdate + INTERVAL '30 days' + 
+  CASE WHEN d.exdate::date + INTERVAL '30 days' + 
             INTERVAL '14 hours' <= CURRENT_TIMESTAMP 
        THEN ARRAY[10] ELSE '{}' END ||
-  CASE WHEN e.exdate - INTERVAL '30 days' <= CURRENT_DATE 
+  CASE WHEN e.exdate::date - INTERVAL '30 days' <= CURRENT_DATE 
        THEN ARRAY[11] ELSE '{}' END ||
-  CASE WHEN e.exdate - INTERVAL '15 days' <= CURRENT_DATE 
+  CASE WHEN e.exdate::date - INTERVAL '15 days' <= CURRENT_DATE 
        THEN ARRAY[12] ELSE '{}' END ||
-  CASE WHEN e.exdate + INTERVAL '14 hours' <= CURRENT_TIMESTAMP 
+  CASE WHEN e.exdate::date + INTERVAL '14 hours' <= CURRENT_TIMESTAMP 
        THEN ARRAY[13] ELSE '{}' END ||
   CASE WHEN d.nsset ISNULL 
        THEN ARRAY[14] ELSE '{}' END ||
   CASE WHEN
     d.nsset ISNULL OR
     5 = ANY(COALESCE(osr.states,'{}')) OR
-    ( d.exdate + INTERVAL '30 days' + 
+    ( d.exdate::date + INTERVAL '30 days' + 
       INTERVAL '14 hours' <= CURRENT_TIMESTAMP OR
-      e.exdate + INTERVAL '14 hours' <= CURRENT_TIMESTAMP ) AND 
+      e.exdate::date + INTERVAL '14 hours' <= CURRENT_TIMESTAMP ) AND 
       NOT (6 = ANY(COALESCE(osr.states,'{}'))) 
       THEN ARRAY[15] ELSE '{}' END ||
-  CASE WHEN (d.exdate + INTERVAL '45 days' + 
+  CASE WHEN (d.exdate::date + INTERVAL '45 days' + 
             INTERVAL '14 hours' <= CURRENT_TIMESTAMP) AND
             NOT (1 = ANY(COALESCE(osr.states,'{}')))
        THEN ARRAY[17] ELSE '{}' END ||
-  CASE WHEN d.exdate + INTERVAL '34 days' <= CURRENT_DATE 
+  CASE WHEN d.exdate::date + INTERVAL '34 days' <= CURRENT_DATE 
        THEN ARRAY[19] ELSE '{}' END ||
-  CASE WHEN d.exdate + INTERVAL '30 days' + 
+  CASE WHEN d.exdate::date + INTERVAL '30 days' + 
             INTERVAL '14 hours' <= CURRENT_TIMESTAMP AND
             NOT (6 = ANY(COALESCE(osr.states,'{}')))
        THEN ARRAY[20] ELSE '{}' END
@@ -497,25 +497,25 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
       IF NEW.exdate <> OLD.exdate THEN
         -- state: expiration warning
         EXECUTE status_update_state(
-          NEW.exdate - INTERVAL '30 days' <= CURRENT_DATE, 8, NEW.id
+          NEW.exdate::date - INTERVAL '30 days' <= CURRENT_DATE, 8, NEW.id
         );
         -- state: expired
         EXECUTE status_update_state(
-          NEW.exdate <= CURRENT_DATE, 9, NEW.id
+          NEW.exdate::date <= CURRENT_DATE, 9, NEW.id
         );
         -- state: unguarded
         EXECUTE status_update_state(
-          NEW.exdate + INTERVAL '30 days' 
+          NEW.exdate::date + INTERVAL '30 days' 
                      + INTERVAL '14 hours' <= CURRENT_TIMESTAMP, 10, NEW.id
         );
         -- state: deleteWarning
         EXECUTE status_update_state(
-          NEW.exdate + INTERVAL '34 days' <= CURRENT_DATE, 19, NEW.id
+          NEW.exdate::date + INTERVAL '34 days' <= CURRENT_DATE, 19, NEW.id
         );
         -- state: delete candidate (seems useless - cannot switch after del)
         -- for now delete state will be set only globaly
 --        EXECUTE status_update_state(
---          NEW.exdate + INTERVAL '45 days' 
+--          NEW.exdate::date + INTERVAL '45 days' 
 --                     + INTERVAL '14 hours' <= CURRENT_TIMESTAMP, 17, NEW.id
 --        );
       END IF; -- change in exdate
@@ -581,15 +581,15 @@ CREATE OR REPLACE FUNCTION status_update_enumval() RETURNS TRIGGER AS $$
     IF TG_OP = 'UPDATE' AND NEW.exdate <> OLD.exdate THEN
       -- state: validation warning 1
       EXECUTE status_update_state(
-        NEW.exdate - INTERVAL '30 days' <= CURRENT_DATE, 11, NEW.domainid
+        NEW.exdate::date - INTERVAL '30 days' <= CURRENT_DATE, 11, NEW.domainid
       );
       -- state: validation warning 2
       EXECUTE status_update_state(
-        NEW.exdate - INTERVAL '15 days' <= CURRENT_DATE, 12, NEW.domainid
+        NEW.exdate::date - INTERVAL '15 days' <= CURRENT_DATE, 12, NEW.domainid
       );
       -- state: not validated
       EXECUTE status_update_state(
-        NEW.exdate + INTERVAL '14 hours' <= CURRENT_TIMESTAMP, 13, NEW.domainid
+        NEW.exdate::date + INTERVAL '14 hours' <= CURRENT_TIMESTAMP, 13, NEW.domainid
       );
     END IF;
     RETURN NULL;
