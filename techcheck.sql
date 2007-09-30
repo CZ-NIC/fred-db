@@ -22,7 +22,7 @@ INSERT INTO check_test (id, name, severity, description, disabled, script,
 VALUES (0,  'glue_ok',          1, '', False, '', True);
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
-VALUES (1,  'existence',     1, '', False, 'existance.py', False);
+VALUES (1,  'existence',     1, '', False, 'existance.py', True);
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
 VALUES (10, 'autonomous',    5, '', False, 'autonomous.py', False);
@@ -37,7 +37,7 @@ INSERT INTO check_test (id, name, severity, description, disabled, script,
 VALUES (40, 'heterogenous',  6, '', False, 'heterogenous.py', False);
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
-VALUES (50, 'notrecursive',     4, '', False, 'recursive.py', False);
+VALUES (50, 'notrecursive',     4, '', False, 'recursive.py', True);
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
 VALUES (60, 'notrecursive4all', 4, '', False, 'recursive4all.py', False);

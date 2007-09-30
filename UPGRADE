@@ -206,5 +206,9 @@ UPDATE check_test SET name = 'existence' WHERE name = 'existance';
 UPDATE check_test SET name = 'glue_ok' WHERE name = 'glue';
 UPDATE check_test SET name = 'notrecursive' WHERE name = 'recursive';
 UPDATE check_test SET name = 'notrecursive4all' WHERE name = 'recursive4all';
-
+--
+-- change whether test requires domains on stdin or not
+--
+UPDATE check_test SET need_domain = 't' WHERE name = 'existence';
+UPDATE check_test SET need_domain = 't' WHERE name = 'recursive';
 
