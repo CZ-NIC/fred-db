@@ -198,3 +198,13 @@ CREATE TABLE poll_stateChange (
 -- COPY the content of notify_new.sql file here
 --
 \i notify_new.sql
+
+--
+-- renaming of technical tests
+--
+UPDATE check_test SET name = 'existence' WHERE name = 'existance';
+UPDATE check_test SET name = 'glue_ok' WHERE name = 'glue';
+UPDATE check_test SET name = 'notrecursive' WHERE name = 'recursive';
+UPDATE check_test SET name = 'notrecursive4all' WHERE name = 'recursive4all';
+
+

@@ -19,10 +19,10 @@ CREATE TABLE check_test (
 
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
-VALUES (0,  'glue',          1, '', False, '', True);
+VALUES (0,  'glue_ok',          1, '', False, '', True);
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
-VALUES (1,  'existance',     1, '', False, 'existance.py', False);
+VALUES (1,  'existence',     1, '', False, 'existance.py', False);
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
 VALUES (10, 'autonomous',    5, '', False, 'autonomous.py', False);
@@ -37,10 +37,10 @@ INSERT INTO check_test (id, name, severity, description, disabled, script,
 VALUES (40, 'heterogenous',  6, '', False, 'heterogenous.py', False);
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
-VALUES (50, 'recursive',     4, '', False, 'recursive.py', False);
+VALUES (50, 'notrecursive',     4, '', False, 'recursive.py', False);
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
-VALUES (60, 'recursive4all', 4, '', False, 'recursive4all.py', False);
+VALUES (60, 'notrecursive4all', 4, '', False, 'recursive4all.py', False);
 
 CREATE TABLE check_dependance (
 	id SERIAL PRIMARY KEY,
