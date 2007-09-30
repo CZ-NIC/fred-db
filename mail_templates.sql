@@ -310,7 +310,7 @@ Vážený technický správce,
 vzhledem k tomu, že jste vedený jako technický kontakt u sady nameserverů
 <?cs var:nsset ?>, která je přiřazena k doménovému jménu <?cs var:domain ?>,
 dovolujeme si Vás upozornit, že toto doménové jméno bylo ke dni
-<?cs var:exdate ?> vyřazeno z DNS.
+<?cs var:dnsdate ?> vyřazeno z DNS.
 
 
                                              S pozdravem
@@ -325,7 +325,7 @@ Dear technical administrator,
 With regard to the fact that you are named the technical contact for the set
 <?cs var:nsset ?> of nameservers, which is assigned to the <?cs var:domain ?>
 domain name, we would like to notify you that the aforementioned domain name
-was withdrawn from DNS as of <?cs var:exdate ?>.
+was withdrawn from DNS as of <?cs var:dnsdate ?>.
 
 
                                              Yours sincerely
