@@ -10,7 +10,7 @@ INSERT INTO mail_defaults (name, value) VALUES ('company', 'CZ.NIC, z.s.p.o');
 INSERT INTO mail_defaults (name, value) VALUES ('street', 'Americka 23');
 INSERT INTO mail_defaults (name, value) VALUES ('postalcode', '120 00');
 INSERT INTO mail_defaults (name, value) VALUES ('city', 'Praha 2');
-INSERT INTO mail_defaults (name, value) VALUES ('tel', '+420 222 745 104');
+INSERT INTO mail_defaults (name, value) VALUES ('tel', '+420 222 745 111');
 INSERT INTO mail_defaults (name, value) VALUES ('fax', '+420 222 745 112');
 INSERT INTO mail_defaults (name, value) VALUES ('emailsupport', 'support@nic.cz');
 INSERT INTO mail_defaults (name, value) VALUES ('authinfopage', 'http://enum.nic.cz/');
@@ -48,7 +48,7 @@ N:podpora CZ. NIC, z.s.p.o.
 FN:podpora CZ. NIC, z.s.p.o.
 ORG:CZ.NIC, z.s.p.o.
 TITLE:zákaznická podpora
-TEL;WORK;VOICE:+420 222 745 104
+TEL;WORK;VOICE:+420 222 745 111
 TEL;WORK;FAX:+420 222 745 112
 ADR;WORK:;;Americká 23;Praha 2;;120 00;Česká republika
 URL;WORK:http://www.nic.cz

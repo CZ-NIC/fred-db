@@ -212,3 +212,24 @@ UPDATE check_test SET name = 'notrecursive4all' WHERE name = 'recursive4all';
 UPDATE check_test SET need_domain = 't' WHERE name = 'existence';
 UPDATE check_test SET need_domain = 't' WHERE name = 'notrecursive';
 
+1.7.0 -> 1.7.1
+
+--
+-- update telephone number in mail footer and vcard attachment
+--
+UPDATE mail_defaults SET value = '+420 222 745 111' WHERE name = 'tel';
+UPDATE mail_vcard SET vcard =
+'BEGIN:VCARD
+VERSION:2.1
+N:podpora CZ. NIC, z.s.p.o.
+FN:podpora CZ. NIC, z.s.p.o.
+ORG:CZ.NIC, z.s.p.o.
+TITLE:zákaznická podpora
+TEL;WORK;VOICE:+420 222 745 111
+TEL;WORK;FAX:+420 222 745 112
+ADR;WORK:;;Americká 23;Praha 2;;120 00;Česká republika
+URL;WORK:http://www.nic.cz
+EMAIL;PREF;INTERNET:podpora@nic.cz
+REV:20070403T143928Z
+END:VCARD
+';
