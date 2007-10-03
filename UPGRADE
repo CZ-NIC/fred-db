@@ -233,3 +233,4 @@ EMAIL;PREF;INTERNET:podpora@nic.cz
 REV:20070403T143928Z
 END:VCARD
 ';
+UPDATE mail_defaults SET value = 'podpora@nic.cz' WHERE name = 'emailsupport';
