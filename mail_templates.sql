@@ -14,7 +14,7 @@ Zaslání autorizační informace
 Vážený zákazníku,
 
    na základě Vaší žádosti podané prostřednictvím webového formuláře
-na stránce <?cs var:defaults.authinfopage ?> dne <?cs var:reqdate ?>, které
+na stránkách sdružení dne <?cs var:reqdate ?>, které
 bylo přiděleno identifikační číslo <?cs var:reqid ?>, Vám zasíláme požadované
 heslo, příslušející <?cs if:type == #3 ?>k doméně<?cs elif:type == #1 ?>ke kontaktu s identifikátorem<?cs elif:type == #2 ?>k sadě nameserverů s identifikátorem<?cs /if ?> <?cs var:handle ?>.
 
@@ -32,8 +32,8 @@ Sending authorization information
 
 Dear customer,
 
-   Based on your request submitted via the web form on the
-<?cs var:defaults.authinfopage ?> page on <?cs var:reqdate ?>, which received
+   Based on your request submitted via the web form on the association
+pages on <?cs var:reqdate ?>, which received
 the identification number <?cs var:reqid ?>, we are sending you the requested
 password that belongs to the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs /if ?> <?cs var:handle ?>.
 
@@ -569,8 +569,8 @@ Registrátor / Registrar : <?cs var:registrar ?>
 Žádost byla úspešně zpracována, prodloužení platnosti bylo provedeno. 
 The request was completed successfully, domain was renewed. 
 
-Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>.
-For detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>.
+Detail domény najdete na <?cs var:defaults.whoispage ?>.
+For detail information about domain visit <?cs var:defaults.whoispage ?>.
 
 
                                              S pozdravem
