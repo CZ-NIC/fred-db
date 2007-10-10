@@ -45,8 +45,8 @@ CREATE TABLE notify_statechange (
   state_id INTEGER NOT NULL REFERENCES object_state (id),
   -- what notificaton was done
   type INTEGER NOT NULL REFERENCES notify_statechange_map (id),
-  -- email with result of notification
-  mail_id INTEGER NOT NULL REFERENCES mail_archive (id),
+  -- email with result of notification (null if contacts have no email)
+  mail_id INTEGER REFERENCES mail_archive (id),
   PRIMARY KEY (state_id, type)
 );
 
@@ -55,6 +55,6 @@ CREATE TABLE notify_statechange (
 CREATE TABLE notify_letters (
   -- which statechange triggered notification
   state_id INTEGER  PRIMARY KEY REFERENCES object_state (id),
-  -- file with pdf about notification
-  file_id INTEGER NOT NULL REFERENCES files (id)
+  -- file with pdf about notification (null for old)
+  file_id INTEGER REFERENCES files (id)
 );
