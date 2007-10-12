@@ -212,8 +212,6 @@ UPDATE check_test SET name = 'notrecursive4all' WHERE name = 'recursive4all';
 UPDATE check_test SET need_domain = 't' WHERE name = 'existence';
 UPDATE check_test SET need_domain = 't' WHERE name = 'notrecursive';
 
-1.7.0 -> 1.7.1
-
 --
 -- update telephone number in mail footer and vcard attachment
 --
@@ -283,3 +281,95 @@ Following nameservers in NS set answered recursively a query:
                                              S pozdravem
                                              podpora <?cs var:defaults.company ?>
 ' WHERE id = 16;
+
+UPDATE mail_defaults SET value = 'http://whois.nic.cz' WHERE name = 'whoispage';
+
+UPDATE mail_templates SET template =
+'English version of the e-mail is entered below the Czech version
+
+Zaslání autorizační informace
+
+Vážený zákazníku,
+
+   na základě Vaší žádosti podané prostřednictvím webového formuláře
+na stránkách sdružení dne <?cs var:reqdate ?>, které
+bylo přiděleno identifikační číslo <?cs var:reqid ?>, Vám zasíláme požadované
+heslo, příslušející <?cs if:type == #3 ?>k doméně<?cs elif:type == #1 ?>ke kontaktu s identifikátorem<?cs elif:type == #2 ?>k sadě nameserverů s identifikátorem<?cs /if ?> <?cs var:handle ?>.
+
+   Heslo je: <?cs var:authinfo ?>
+
+   V případě, že jste tuto žádost nepodali, oznamte prosím tuto
+skutečnost na adresu <?cs var:defaults.emailsupport ?>.
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
+
+
+
+Sending authorization information
+
+Dear customer,
+
+   Based on your request submitted via the web form on the association
+pages on <?cs var:reqdate ?>, which received
+the identification number <?cs var:reqid ?>, we are sending you the requested
+password that belongs to the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs /if ?> <?cs var:handle ?>.
+
+   The password is: <?cs var:authinfo ?>
+
+   If you did not submit the aforementioned request, please, notify us about
+this fact at the following address <?cs var:defaults.emailsupport ?>.
+
+
+                                             Yours sincerely
+                                             support <?cs var:defaults.company ?>
+');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (1, 1);
+
+INSERT INTO mail_type (id, name, subject) VALUES (2, 'sendauthinfo_epp', 'Zaslání autorizační informace / Sending authorization information');
+INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
+(2, 'plain', 1,
+'English version of the e-mail is entered below the Czech version
+
+Zaslání autorizační informace
+
+Vážený zákazníku,
+
+   na základě Vaší žádosti podané prostřednictvím registrátora
+<?cs var:registrar ?>, jejímž obsahem je žádost o zaslání hesla
+příslušející <?cs if:type == #3 ?>k doméně<?cs elif:type == #1 ?>ke kontaktu s identifikátorem<?cs elif:type == #2 ?>k sadě nameserverů s identifikátorem<?cs /if ?> <?cs var:handle ?>.
+
+   Heslo je: <?cs var:authinfo ?>
+
+   Tato zpráva je zaslána pouze na e-mailovou adresu uvedenou u příslušné
+osoby v Centrálním registru doménových jmen.
+
+   V případě, že jste tuto žádost nepodali, oznamte prosím tuto
+skutečnost na adresu <?cs var:defaults.emailsupport ?>.
+
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
+
+
+
+Sending authorization information
+
+Dear customer,
+
+   Based on your request submitted via the registrar <?cs var:registrar ?>,
+which contains your request for sending you the password that belongs to
+the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs /if ?> <?cs var:handle ?>.
+
+   The password is: <?cs var:authinfo ?>
+
+   This message is being sent only to the e-mail address that we have on file
+for a particular person in the Central Registry of Domain Names.
+
+   If you did not submit the aforementioned request, please, notify us about
+this fact at the following address <?cs var:defaults.emailsupport ?>.
+
+
+                                             Yours sincerely
+                                             support <?cs var:defaults.company ?>
+'  WHERE id = 1;
