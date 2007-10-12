@@ -7,6 +7,7 @@ INSERT INTO enum_filetype (id, name) VALUES (1, 'invoice pdf');
 INSERT INTO enum_filetype (id, name) VALUES (2, 'invoice xml');
 INSERT INTO enum_filetype (id, name) VALUES (3, 'accounting xml');
 INSERT INTO enum_filetype (id, name) VALUES (4, 'banking statement');
+INSERT INTO enum_filetype (id, name) VALUES (5, 'expiration warning letter');
 
 CREATE TABLE files (
 	id SERIAL PRIMARY KEY,

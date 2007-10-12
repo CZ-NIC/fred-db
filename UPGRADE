@@ -373,3 +373,5 @@ this fact at the following address <?cs var:defaults.emailsupport ?>.
                                              Yours sincerely
                                              support <?cs var:defaults.company ?>
 '  WHERE id = 1;
+
+INSERT INTO enum_filetype (id, name) VALUES (5, 'expiration warning letter');
