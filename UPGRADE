@@ -326,3 +326,17 @@ this fact at the following address <?cs var:defaults.emailsupport ?>.
 '  WHERE id = 1;
 
 INSERT INTO enum_filetype (id, name) VALUES (5, 'expiration warning letter');
+
+--
+-- New logic in domain dependant technical tests requires change to db schema
+--
+ALTER TABLE check_test DROP COLUMN need_domain;
+ALTER TABLE check_test ADD COLUMN need_domain SMALLINT NOT NULL DEFAULT 0;
+UPDATE check_test SET need_domain = 1 WHERE
+	name = 'presence' OR
+	name = 'authoritative';
+UPDATE check_test SET need_domain = 2 WHERE
+	name = 'existence' OR
+	name = 'glue_ok' OR
+	name = 'notrecursive';
+
