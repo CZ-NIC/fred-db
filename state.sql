@@ -167,6 +167,8 @@ CREATE TABLE object_state (
 CREATE UNIQUE INDEX object_state_now_idx ON object_state (object_id, state_id)
 WHERE valid_to ISNULL;
 
+CREATE INDEX object_state_object_id_idx ON object_state (object_id) WHERE valid_to ISNULL;
+
 -- aggregate function for accumulation of elements into array
 CREATE AGGREGATE array_accum (
   BASETYPE = anyelement,
