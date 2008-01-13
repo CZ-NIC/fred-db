@@ -1,45 +1,46 @@
 #!/bin/bash
 # printing-out sql command in right order to create of new database
 #base system
-cat error.sql
-cat enum_reason.sql
-cat enum_status.sql
-cat enum_ssntype.sql
-cat enum_country.sql
-cat enum_cs_country.sql
-cat zone.sql
+DIR=$(dirname $0)/sql
+cat $DIR/error.sql
+cat $DIR/enum_reason.sql
+cat $DIR/enum_status.sql
+cat $DIR/enum_ssntype.sql
+cat $DIR/enum_country.sql
+cat $DIR/enum_cs_country.sql
+cat $DIR/zone.sql
 #registar and registraracl  tables
-cat registrar.sql
+cat $DIR/registrar.sql
 #login and action table plus history table
-cat login.sql
-cat action.sql
+cat $DIR/login.sql
+cat $DIR/action.sql
 # object table
-cat ccreg.sql
-cat history.sql
+cat $DIR/ccreg.sql
+cat $DIR/history.sql
 #zone generator
-cat genzone.sql
+cat $DIR/genzone.sql
 #adif
-cat admin.sql  
+cat $DIR/admin.sql  
 #filemanager
-cat filemanager.sql
+cat $DIR/filemanager.sql
 #mailer
-cat mail_notify.sql
-cat mail_templates.sql
+cat $DIR/mail_notify.sql
+cat $DIR/mail_templates.sql
 #authinfo
-cat authinfo.sql
+cat $DIR/authinfo.sql
 # banking
-cat enum_bank_code.sql
-cat credit.sql
-cat invoice.sql
-cat bank.sql
+cat $DIR/enum_bank_code.sql
+cat $DIR/credit.sql
+cat $DIR/invoice.sql
+cat $DIR/bank.sql
 #tech-check
-cat techcheck.sql
-cat info_buffer.sql
+cat $DIR/techcheck.sql
+cat $DIR/info_buffer.sql
 # common functions
-cat func.sql
+cat $DIR/func.sql
 # state and poll
-cat state.sql
-cat poll.sql
+cat $DIR/state.sql
+cat $DIR/poll.sql
 #notify  mailer
-cat notify.sql
-cat notify_new.sql
+cat $DIR/notify.sql
+cat $DIR/notify_new.sql
