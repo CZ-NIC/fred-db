@@ -69,11 +69,10 @@ balance numeric(10,2)  NOT NULL DEFAULT 0.0, -- actual tax balance advance invoi
 PRIMARY KEY (invoiceID, ainvoiceID)
 );
 
-
-
-
-
-
+CREATE INDEX invoice_credit_payment_map_invoiceid_idx
+       ON invoice_credit_payment_map (invoiceid);
+CREATE INDEX invoice_credit_payment_map_ainvoiceid_idx
+       ON invoice_credit_payment_map (ainvoiceid);
 
 -- TODO into normal invoices make account period from when till when.
 
@@ -92,6 +91,8 @@ ExDate date default NULL,  -- final ExDate only for RENEW
 period integer default 0 -- number of unit for renew in months
 );
 
+CREATE INDEX invoice_object_registry_objectid_idx
+       ON invoice_object_registry (objectid);
 
 CREATE TABLE invoice_object_registry_price_map
 (
@@ -100,6 +101,9 @@ InvoiceID INTEGER REFERENCES Invoice (ID), -- id of advanced invoice
 price numeric(10,2) NOT NULL default 0 , -- cost for operation
 PRIMARY KEY (id ,  InvoiceID  ) -- unique key
 );
+
+CREATE INDEX invoice_object_registry_price_map_invoiceid_idx
+       ON invoice_object_registry_price_map (invoiceid);
 
 CREATE TABLE invoice_mails
 (

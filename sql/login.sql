@@ -10,4 +10,5 @@ CREATE TABLE Login (
         lang  varchar(2) NOT NULL DEFAULT 'en' -- language, in which return error messages
         );
 
+CREATE INDEX login_registrarid_idx ON login (registrarid);
 

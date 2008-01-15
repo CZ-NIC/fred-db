@@ -37,13 +37,13 @@ CREATE TABLE price_list
   period integer default 12 -- if it isn't periodic operation NULL 
 );
 
--- testing records 
+-- testing records (all testing records are disabled for unittesting)
 -- prices for enum domains only DomainRenew 
 -- ENUM trial working only renew operations are priced 
 -- from 22 January 14:00  CEST, till when is free
-INSERT into price_list  values ( 1 , 1 , 2 , '2007-01-22 13:00:00' , NULL , 1.00 , 12 );
+--INSERT into price_list  values ( 1 , 1 , 2 , '2007-01-22 13:00:00' , NULL , 1.00 , 12 );
 --  price for domain create operations are zero
-INSERT into price_list  values ( 2 , 1 , 1 , '2007-01-22 13:00:00' , NULL , 0.00 , 12 );
+--INSERT into price_list  values ( 2 , 1 , 1 , '2007-01-22 13:00:00' , NULL , 0.00 , 12 );
 
 --INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (1, 1 , 1 , '01-01-2007' ,  1 , 12 ); -- registration
 --INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (2, 1 , 2 , '01-01-2007' ,  50 , 12 ); -- renew

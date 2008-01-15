@@ -75,10 +75,17 @@ CREATE TABLE Action (
         serverTRID varchar(128) UNIQUE   -- number of transaction from server 
         );
 
+CREATE INDEX action_clientid_idx ON action (clientid);
+CREATE INDEX action_response_idx ON action (response);
+CREATE INDEX action_startdate_idx ON action (startdate);
+CREATE INDEX action_action_idx ON action (action);
+
 CREATE TABLE History (
         ID SERIAL PRIMARY KEY,
         action INTEGER NOT NULL REFERENCES action -- link into table action
         );
+
+CREATE INDEX history_action_idx ON history (action);
 
 -- DROP TABLE  action_xml CASCADE;
 CREATE TABLE action_xml( actionID INTEGER PRIMARY KEY REFERENCES action, xml text not NULL  , xml_out text );

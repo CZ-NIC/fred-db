@@ -340,3 +340,20 @@ UPDATE check_test SET need_domain = 2 WHERE
 	name = 'glue_ok' OR
 	name = 'notrecursive';
 
+1-7 ->
+
+CREATE INDEX action_clientid_idx ON action (clientid);
+CREATE INDEX action_response_idx ON action (response);
+CREATE INDEX action_startdate_idx ON action (startdate);
+CREATE INDEX action_action_idx ON action (action);
+CREATE INDEX history_action_idx ON history (action);
+CREATE INDEX login_registrarid_idx ON login (registrarid);
+
+CREATE INDEX invoice_object_registry_objectid_idx 
+       ON invoice_object_registry (objectid);
+CREATE INDEX invoice_object_registry_price_map_invoiceid_idx 
+       ON invoice_object_registry_price_map (invoiceid);
+CREATE INDEX invoice_credit_payment_map_invoiceid_idx 
+       ON invoice_credit_payment_map (invoiceid);
+CREATE INDEX invoice_credit_payment_map_ainvoiceid_idx 
+       ON invoice_credit_payment_map (ainvoiceid);
