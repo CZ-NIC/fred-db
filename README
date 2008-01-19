@@ -3,7 +3,7 @@ It is necessity for creating database to call scripts in the right order.
 For this purpose serves orderedsql.sh script, which print out sql commands
 how they should go. For creating database call
 
-./orderedsql.sh | psql databaze 
+./orderedsql.sh | psql fred -U fred
 
 Then it's necessity to have some records in registrar and registracacl tables.
-registrar.sql a registracl.sql scripts are enough for testing.
+registrar.sql script is enough for testing.
