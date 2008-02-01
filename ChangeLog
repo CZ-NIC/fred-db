@@ -1,3 +1,16 @@
+2008-02-01  Jaromír Talíř <jaromir.talir@nic.cz>
+
+    * new directory with distinct upgrade sql files for every change
+
+    * new table with top level domains
+
+    * refactoring and fixing state.sql
+        - states setting parameters moved to parameters table
+        - exdate states dependant on serverRenewProhibited
+        - proper handling of shared linked state updates (locking)
+
+    * new parameter table with system configuration
+
 2008-01-19	Jaromír Talíř <jaromir.talir@nic.cz>
 
 	* autotooling package with a lot of structural changes

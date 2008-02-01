@@ -1,214 +1,346 @@
+-- system operational parametr
+-- parameters are accessed through their id not name, so proper
+-- numbering is essential
 
--- all supported status types
-CREATE TABLE enum_object_states (
-  -- id of status
-  id INTEGER PRIMARY KEY,
-  -- code name for status
-  name VARCHAR(50) NOT NULL,
-  -- what types of objects can have this status (object_registry.type list)
-  types INTEGER[] NOT NULL,
-  -- if this status is set manualy
-  manual BOOLEAN NOT NULL,
-  -- if this status is exported to public
-  external BOOLEAN NOT NULL
+CREATE TABLE enum_parameters (
+  id INTEGER PRIMARY KEY, -- primary identification 
+  name VARCHAR(100) NOT NULL UNIQUE, -- descriptive name (informational)
+  val VARCHAR(100) NOT NULL -- value of parameter
 );
 
-INSERT INTO enum_object_states 
-  VALUES (01,'serverDeleteProhibited','{1,2,3}','t','t');
-INSERT INTO enum_object_states 
-  VALUES (02,'serverRenewProhibited ','{3}','t','t');
-INSERT INTO enum_object_states 
-  VALUES (03,'serverTransferProhibited','{1,2,3}','t','t');
-INSERT INTO enum_object_states 
-  VALUES (04,'serverUpdateProhibited','{1,2,3}','t','t');
-INSERT INTO enum_object_states 
-  VALUES (05,'serverOutzoneManual','{3}','t','t');
-INSERT INTO enum_object_states 
-  VALUES (06,'serverInzoneManual','{3}','t','t');
-INSERT INTO enum_object_states 
-  VALUES (07,'serverBlocked','{3}','t','t');
-INSERT INTO enum_object_states 
-  VALUES (08,'expirationWarning','{3}','f','f');
-INSERT INTO enum_object_states 
-  VALUES (09,'expired','{3}','f','t');
-INSERT INTO enum_object_states 
-  VALUES (10,'unguarded','{3}','f','f');
-INSERT INTO enum_object_states 
-  VALUES (11,'validationWarning1','{3}','f','f');
-INSERT INTO enum_object_states 
-  VALUES (12,'validationWarning2','{3}','f','f');
-INSERT INTO enum_object_states 
-  VALUES (13,'notValidated','{3}','f','t');
-INSERT INTO enum_object_states 
-  VALUES (14,'nssetMissing','{3}','f','f');
-INSERT INTO enum_object_states 
-  VALUES (15,'outzone','{3}','f','t');
-INSERT INTO enum_object_states 
-  VALUES (16,'linked','{1,2}','f','t');
-INSERT INTO enum_object_states 
-  VALUES (17,'deleteCandidate','{1,2,3}','f','f');
-INSERT INTO enum_object_states 
-  VALUES (18,'serverRegistrantChangeProhibited','{3}','t','t');
-INSERT INTO enum_object_states 
-  VALUES (19,'deleteWarning','{3}','f','f');
-INSERT INTO enum_object_states 
-  VALUES (20,'outzoneUnguarded','{3}','f','f');
+-- parametr 1 is for checking data model version and for applying upgrade
+-- scripts
+INSERT INTO enum_parameters (id, name, val) 
+VALUES (1, 'model_version', '1.8');
+-- parametr 2 is for updating table enum_tlds by data from url
+-- http://data.iana.org/TLD/tlds-alpha-by-domain.txt
+INSERT INTO enum_parameters (id, name, val) 
+VALUES (2, 'tld_list_version', '2008013001');
+-- parametr 3 is used to change state of domain to unguarded and remove
+-- this domain from DNS. value is number of dates relative to date 
+-- domain.exdate 
+INSERT INTO enum_parameters (id, name, val) 
+VALUES (3, 'expiration_notify_period', '-30');
+-- parametr 4 is used to change state of domain to unguarded and remove
+-- this domain from DNS. value is number of dates relative to date 
+-- domain.exdate 
+INSERT INTO enum_parameters (id, name, val) 
+VALUES (4, 'expiration_dns_protection_period', '30');
+-- parametr 5 is used to change state of domain to deleteWarning and 
+-- generate letter with warning. value number of dates relative to date 
+-- domain.exdate 
+INSERT INTO enum_parameters (id, name, val) 
+VALUES (5, 'expiration_letter_warning_period', '34');
+-- parametr 6 is used to change state of domain to deleteCandidate and 
+-- unregister domain from system. value is number of dates relative to date 
+-- domain.exdate 
+INSERT INTO enum_parameters (id, name, val) 
+VALUES (6, 'expiration_registration_protection_period', '45');
+-- parametr 7 is used to change state of domain to validationWarning1 and 
+-- send poll message to registrar. value is number of dates relative to date 
+-- domain.exdate 
+INSERT INTO enum_parameters (id, name, val) 
+VALUES (7, 'validation_notify1_period', '-30');
+-- parametr 8 is used to change state of domain to validationWarning2 and 
+-- send email to registrant. value is number of dates relative to date 
+-- domain.exdate 
+INSERT INTO enum_parameters (id, name, val) 
+VALUES (8, 'validation_notify2_period', '-15');
+-- parametr 9 is used to identify hour when objects are deleted 
+-- and domains are moving outzone. value is number of hours relative to date 
+-- of operation
+INSERT INTO enum_parameters (id, name, val) 
+VALUES (9, 'regular_day_procedure_period', '14');
+-- parametr 10 is used to identify time zone in which parameter 9 is specified  
+INSERT INTO enum_parameters (id, name, val) 
+VALUES (10, 'regular_day_procedure_zone', 'CET');
 
--- descriptions fo states in different languages 
-CREATE TABLE enum_object_states_desc (
-  -- id of status
-  state_id INTEGER NOT NULL REFERENCES enum_object_states (id),
-  -- char code of language
-  lang CHAR(2) NOT NULL,
-  -- descriptive text
-  description VARCHAR(255),
-  PRIMARY KEY (state_id,lang)
+-- list of available tlds for checking of dns host tld
+CREATE TABLE enum_tlds (
+  tld VARCHAR(64) NOT NULL PRIMARY KEY
 );
 
-INSERT INTO enum_object_states_desc 
-  VALUES (01,'CS','Není povoleno smazání');
-INSERT INTO enum_object_states_desc 
-  VALUES (01,'EN','Delete prohibited');
-INSERT INTO enum_object_states_desc 
-  VALUES (02,'CS','Není povoleno prodloužní registrace objektu');
-INSERT INTO enum_object_states_desc 
-  VALUES (02,'EN','Registration renew prohibited');
-INSERT INTO enum_object_states_desc 
-  VALUES (03,'CS','Není povolena změna určeného regsitrátora');
-INSERT INTO enum_object_states_desc 
-  VALUES (03,'EN','Sponsoring registrar change prohibited');
-INSERT INTO enum_object_states_desc 
-  VALUES (04,'CS','Není povolena aktualizace');
-INSERT INTO enum_object_states_desc 
-  VALUES (04,'EN','Update prohibited');
-INSERT INTO enum_object_states_desc 
-  VALUES (05,'CS','Doména je administrativně vyřazena ze zóny');
-INSERT INTO enum_object_states_desc 
-  VALUES (05,'EN','Domain is administartively kept out of zone');
-INSERT INTO enum_object_states_desc 
-  VALUES (06,'CS','Doména je administrativně zařazena do zóny');
-INSERT INTO enum_object_states_desc 
-  VALUES (06,'EN','Domain is administartively kept in zone');
-INSERT INTO enum_object_states_desc 
-  VALUES (07,'CS','Doména je blokována');
-INSERT INTO enum_object_states_desc 
-  VALUES (07,'EN','Domain blocked');
-INSERT INTO enum_object_states_desc 
-  VALUES (08,'CS','Doména expiruje do 30 dní');
-INSERT INTO enum_object_states_desc 
-  VALUES (08,'EN','Expires within 30 days');
-INSERT INTO enum_object_states_desc 
-  VALUES (09,'CS','Doména je po expiraci');
-INSERT INTO enum_object_states_desc 
-  VALUES (09,'EN','Expired');
-INSERT INTO enum_object_states_desc 
-  VALUES (10,'CS','Doména je 30 dnů po expiraci');
-INSERT INTO enum_object_states_desc 
-  VALUES (10,'EN','Domain is 30 days after expiration');
-INSERT INTO enum_object_states_desc 
-  VALUES (11,'CS','Validace domény skončí za 30 dní');
-INSERT INTO enum_object_states_desc 
-  VALUES (11,'EN','Validation of domain expire in 30 days');
-INSERT INTO enum_object_states_desc 
-  VALUES (12,'CS','Validace domény skončí za 15 dní');
-INSERT INTO enum_object_states_desc 
-  VALUES (12,'EN','Validation of domain expire in 15 days');
-INSERT INTO enum_object_states_desc 
-  VALUES (13,'CS','Doména není validována');
-INSERT INTO enum_object_states_desc 
-  VALUES (13,'EN','Domain not validated');
-INSERT INTO enum_object_states_desc 
-  VALUES (14,'CS','Doména nemá přiřazen nsset');
-INSERT INTO enum_object_states_desc 
-  VALUES (14,'EN','Domain has not associated nsset');
-INSERT INTO enum_object_states_desc 
-  VALUES (15,'CS','Doména není generována do zóny');
-INSERT INTO enum_object_states_desc 
-  VALUES (15,'EN','Domain is not generated into zone');
-INSERT INTO enum_object_states_desc 
-  VALUES (16,'CS','Je navázáno na další záznam v registru');
-INSERT INTO enum_object_states_desc 
-  VALUES (16,'EN','Has relation to other records in registry');
-INSERT INTO enum_object_states_desc 
-  VALUES (17,'CS','Objekt bude smazán');
-INSERT INTO enum_object_states_desc 
-  VALUES (17,'EN','Object is going to be deleted');
-INSERT INTO enum_object_states_desc 
-  VALUES (18,'CS','Není povolena změna držitele');
-INSERT INTO enum_object_states_desc 
-  VALUES (18,'EN','Registrant change prohibited');
-INSERT INTO enum_object_states_desc 
-  VALUES (19,'CS','Registrace domény bude zrušena za 11 dní');
-INSERT INTO enum_object_states_desc 
-  VALUES (19,'EN','Domain will be deleted in 11 days');
-INSERT INTO enum_object_states_desc 
-  VALUES (20,'CS','Doména vyřazena ze zóny po 30 dnech od expirace');
-INSERT INTO enum_object_states_desc 
-  VALUES (20,'EN','Domain is out of zone after 30 days from expiration');
-
--- main table of object states and their changes
-CREATE TABLE object_state (
-  -- id of moment when object gain status
-  id SERIAL PRIMARY KEY,
-  -- id of object that has this new status
-  object_id INTEGER NOT NULL REFERENCES object_registry (id),
-  -- id of status
-  state_id INTEGER NOT NULL REFERENCES enum_object_states (id),
-  -- timestamp when object entered state
-  valid_from TIMESTAMP NOT NULL,
-  -- timestamp when object leaved state or null if still has status
-  valid_to TIMESTAMP,
-  -- history id of object in the moment of entering state  (may be NULL)
-  ohid_from INTEGER REFERENCES object_history (historyid),
-  -- history id of object in the moment of leaving state or null
-  ohid_to INTEGER REFERENCES object_history (historyid)
-);
-
-CREATE UNIQUE INDEX object_state_now_idx ON object_state (object_id, state_id)
-WHERE valid_to ISNULL;
-
-CREATE INDEX object_state_object_id_idx ON object_state (object_id) WHERE valid_to ISNULL;
-
--- aggregate function for accumulation of elements into array
-CREATE AGGREGATE array_accum (
-  BASETYPE = anyelement,
-  sfunc = array_append,
-  stype = anyarray,
-  initcond = '{}'
-);
-
--- simple view for all active states of object
-CREATE VIEW object_state_now AS
-SELECT object_id, array_accum(state_id) AS states
-FROM object_state
-WHERE valid_to ISNULL
-GROUP BY object_id;
-
--- request for setting manual state
-CREATE TABLE object_state_request (
-  -- id of request
-  id SERIAL PRIMARY KEY,
-  -- id of object gaining requested state
-  object_id INTEGER NOT NULL REFERENCES object_registry (id),
-  -- id of requested state
-  state_id INTEGER NOT NULL REFERENCES enum_object_states (id),
-  -- when object should enter requested state
-  valid_from TIMESTAMP NOT NULL,
-  -- when object should leave requested state
-  valid_to TIMESTAMP,
-  -- could be pointer to some list of administration actions
-  crdate TIMESTAMP NOT NULL, 
-  -- could be pointer to some list of administration actions
-  canceled TIMESTAMP 
-);
-
--- simple view for all active requests for state change
-CREATE VIEW object_state_request_now AS
-SELECT object_id, array_accum(state_id) AS states
-FROM object_state_request
-WHERE valid_from<=CURRENT_TIMESTAMP 
-AND (valid_to ISNULL OR valid_to>=CURRENT_TIMESTAMP) AND canceled ISNULL
-GROUP BY object_id;
+INSERT INTO enum_tlds (tld) VALUES ('AC');
+INSERT INTO enum_tlds (tld) VALUES ('AD');
+INSERT INTO enum_tlds (tld) VALUES ('AE');
+INSERT INTO enum_tlds (tld) VALUES ('AERO');
+INSERT INTO enum_tlds (tld) VALUES ('AF');
+INSERT INTO enum_tlds (tld) VALUES ('AG');
+INSERT INTO enum_tlds (tld) VALUES ('AI');
+INSERT INTO enum_tlds (tld) VALUES ('AL');
+INSERT INTO enum_tlds (tld) VALUES ('AM');
+INSERT INTO enum_tlds (tld) VALUES ('AN');
+INSERT INTO enum_tlds (tld) VALUES ('AO');
+INSERT INTO enum_tlds (tld) VALUES ('AQ');
+INSERT INTO enum_tlds (tld) VALUES ('AR');
+INSERT INTO enum_tlds (tld) VALUES ('ARPA');
+INSERT INTO enum_tlds (tld) VALUES ('AS');
+INSERT INTO enum_tlds (tld) VALUES ('ASIA');
+INSERT INTO enum_tlds (tld) VALUES ('AT');
+INSERT INTO enum_tlds (tld) VALUES ('AU');
+INSERT INTO enum_tlds (tld) VALUES ('AW');
+INSERT INTO enum_tlds (tld) VALUES ('AX');
+INSERT INTO enum_tlds (tld) VALUES ('AZ');
+INSERT INTO enum_tlds (tld) VALUES ('BA');
+INSERT INTO enum_tlds (tld) VALUES ('BB');
+INSERT INTO enum_tlds (tld) VALUES ('BD');
+INSERT INTO enum_tlds (tld) VALUES ('BE');
+INSERT INTO enum_tlds (tld) VALUES ('BF');
+INSERT INTO enum_tlds (tld) VALUES ('BG');
+INSERT INTO enum_tlds (tld) VALUES ('BH');
+INSERT INTO enum_tlds (tld) VALUES ('BI');
+INSERT INTO enum_tlds (tld) VALUES ('BIZ');
+INSERT INTO enum_tlds (tld) VALUES ('BJ');
+INSERT INTO enum_tlds (tld) VALUES ('BM');
+INSERT INTO enum_tlds (tld) VALUES ('BN');
+INSERT INTO enum_tlds (tld) VALUES ('BO');
+INSERT INTO enum_tlds (tld) VALUES ('BR');
+INSERT INTO enum_tlds (tld) VALUES ('BS');
+INSERT INTO enum_tlds (tld) VALUES ('BT');
+INSERT INTO enum_tlds (tld) VALUES ('BV');
+INSERT INTO enum_tlds (tld) VALUES ('BW');
+INSERT INTO enum_tlds (tld) VALUES ('BY');
+INSERT INTO enum_tlds (tld) VALUES ('BZ');
+INSERT INTO enum_tlds (tld) VALUES ('CA');
+INSERT INTO enum_tlds (tld) VALUES ('CAT');
+INSERT INTO enum_tlds (tld) VALUES ('CC');
+INSERT INTO enum_tlds (tld) VALUES ('CD');
+INSERT INTO enum_tlds (tld) VALUES ('CF');
+INSERT INTO enum_tlds (tld) VALUES ('CG');
+INSERT INTO enum_tlds (tld) VALUES ('CH');
+INSERT INTO enum_tlds (tld) VALUES ('CI');
+INSERT INTO enum_tlds (tld) VALUES ('CK');
+INSERT INTO enum_tlds (tld) VALUES ('CL');
+INSERT INTO enum_tlds (tld) VALUES ('CM');
+INSERT INTO enum_tlds (tld) VALUES ('CN');
+INSERT INTO enum_tlds (tld) VALUES ('CO');
+INSERT INTO enum_tlds (tld) VALUES ('COM');
+INSERT INTO enum_tlds (tld) VALUES ('COOP');
+INSERT INTO enum_tlds (tld) VALUES ('CR');
+INSERT INTO enum_tlds (tld) VALUES ('CU');
+INSERT INTO enum_tlds (tld) VALUES ('CV');
+INSERT INTO enum_tlds (tld) VALUES ('CX');
+INSERT INTO enum_tlds (tld) VALUES ('CY');
+INSERT INTO enum_tlds (tld) VALUES ('CZ');
+INSERT INTO enum_tlds (tld) VALUES ('DE');
+INSERT INTO enum_tlds (tld) VALUES ('DJ');
+INSERT INTO enum_tlds (tld) VALUES ('DK');
+INSERT INTO enum_tlds (tld) VALUES ('DM');
+INSERT INTO enum_tlds (tld) VALUES ('DO');
+INSERT INTO enum_tlds (tld) VALUES ('DZ');
+INSERT INTO enum_tlds (tld) VALUES ('EC');
+INSERT INTO enum_tlds (tld) VALUES ('EDU');
+INSERT INTO enum_tlds (tld) VALUES ('EE');
+INSERT INTO enum_tlds (tld) VALUES ('EG');
+INSERT INTO enum_tlds (tld) VALUES ('ER');
+INSERT INTO enum_tlds (tld) VALUES ('ES');
+INSERT INTO enum_tlds (tld) VALUES ('ET');
+INSERT INTO enum_tlds (tld) VALUES ('EU');
+INSERT INTO enum_tlds (tld) VALUES ('FI');
+INSERT INTO enum_tlds (tld) VALUES ('FJ');
+INSERT INTO enum_tlds (tld) VALUES ('FK');
+INSERT INTO enum_tlds (tld) VALUES ('FM');
+INSERT INTO enum_tlds (tld) VALUES ('FO');
+INSERT INTO enum_tlds (tld) VALUES ('FR');
+INSERT INTO enum_tlds (tld) VALUES ('GA');
+INSERT INTO enum_tlds (tld) VALUES ('GB');
+INSERT INTO enum_tlds (tld) VALUES ('GD');
+INSERT INTO enum_tlds (tld) VALUES ('GE');
+INSERT INTO enum_tlds (tld) VALUES ('GF');
+INSERT INTO enum_tlds (tld) VALUES ('GG');
+INSERT INTO enum_tlds (tld) VALUES ('GH');
+INSERT INTO enum_tlds (tld) VALUES ('GI');
+INSERT INTO enum_tlds (tld) VALUES ('GL');
+INSERT INTO enum_tlds (tld) VALUES ('GM');
+INSERT INTO enum_tlds (tld) VALUES ('GN');
+INSERT INTO enum_tlds (tld) VALUES ('GOV');
+INSERT INTO enum_tlds (tld) VALUES ('GP');
+INSERT INTO enum_tlds (tld) VALUES ('GQ');
+INSERT INTO enum_tlds (tld) VALUES ('GR');
+INSERT INTO enum_tlds (tld) VALUES ('GS');
+INSERT INTO enum_tlds (tld) VALUES ('GT');
+INSERT INTO enum_tlds (tld) VALUES ('GU');
+INSERT INTO enum_tlds (tld) VALUES ('GW');
+INSERT INTO enum_tlds (tld) VALUES ('GY');
+INSERT INTO enum_tlds (tld) VALUES ('HK');
+INSERT INTO enum_tlds (tld) VALUES ('HM');
+INSERT INTO enum_tlds (tld) VALUES ('HN');
+INSERT INTO enum_tlds (tld) VALUES ('HR');
+INSERT INTO enum_tlds (tld) VALUES ('HT');
+INSERT INTO enum_tlds (tld) VALUES ('HU');
+INSERT INTO enum_tlds (tld) VALUES ('ID');
+INSERT INTO enum_tlds (tld) VALUES ('IE');
+INSERT INTO enum_tlds (tld) VALUES ('IL');
+INSERT INTO enum_tlds (tld) VALUES ('IM');
+INSERT INTO enum_tlds (tld) VALUES ('IN');
+INSERT INTO enum_tlds (tld) VALUES ('INFO');
+INSERT INTO enum_tlds (tld) VALUES ('INT');
+INSERT INTO enum_tlds (tld) VALUES ('IO');
+INSERT INTO enum_tlds (tld) VALUES ('IQ');
+INSERT INTO enum_tlds (tld) VALUES ('IR');
+INSERT INTO enum_tlds (tld) VALUES ('IS');
+INSERT INTO enum_tlds (tld) VALUES ('IT');
+INSERT INTO enum_tlds (tld) VALUES ('JE');
+INSERT INTO enum_tlds (tld) VALUES ('JM');
+INSERT INTO enum_tlds (tld) VALUES ('JO');
+INSERT INTO enum_tlds (tld) VALUES ('JOBS');
+INSERT INTO enum_tlds (tld) VALUES ('JP');
+INSERT INTO enum_tlds (tld) VALUES ('KE');
+INSERT INTO enum_tlds (tld) VALUES ('KG');
+INSERT INTO enum_tlds (tld) VALUES ('KH');
+INSERT INTO enum_tlds (tld) VALUES ('KI');
+INSERT INTO enum_tlds (tld) VALUES ('KM');
+INSERT INTO enum_tlds (tld) VALUES ('KN');
+INSERT INTO enum_tlds (tld) VALUES ('KP');
+INSERT INTO enum_tlds (tld) VALUES ('KR');
+INSERT INTO enum_tlds (tld) VALUES ('KW');
+INSERT INTO enum_tlds (tld) VALUES ('KY');
+INSERT INTO enum_tlds (tld) VALUES ('KZ');
+INSERT INTO enum_tlds (tld) VALUES ('LA');
+INSERT INTO enum_tlds (tld) VALUES ('LB');
+INSERT INTO enum_tlds (tld) VALUES ('LC');
+INSERT INTO enum_tlds (tld) VALUES ('LI');
+INSERT INTO enum_tlds (tld) VALUES ('LK');
+INSERT INTO enum_tlds (tld) VALUES ('LR');
+INSERT INTO enum_tlds (tld) VALUES ('LS');
+INSERT INTO enum_tlds (tld) VALUES ('LT');
+INSERT INTO enum_tlds (tld) VALUES ('LU');
+INSERT INTO enum_tlds (tld) VALUES ('LV');
+INSERT INTO enum_tlds (tld) VALUES ('LY');
+INSERT INTO enum_tlds (tld) VALUES ('MA');
+INSERT INTO enum_tlds (tld) VALUES ('MC');
+INSERT INTO enum_tlds (tld) VALUES ('MD');
+INSERT INTO enum_tlds (tld) VALUES ('ME');
+INSERT INTO enum_tlds (tld) VALUES ('MG');
+INSERT INTO enum_tlds (tld) VALUES ('MH');
+INSERT INTO enum_tlds (tld) VALUES ('MIL');
+INSERT INTO enum_tlds (tld) VALUES ('MK');
+INSERT INTO enum_tlds (tld) VALUES ('ML');
+INSERT INTO enum_tlds (tld) VALUES ('MM');
+INSERT INTO enum_tlds (tld) VALUES ('MN');
+INSERT INTO enum_tlds (tld) VALUES ('MO');
+INSERT INTO enum_tlds (tld) VALUES ('MOBI');
+INSERT INTO enum_tlds (tld) VALUES ('MP');
+INSERT INTO enum_tlds (tld) VALUES ('MQ');
+INSERT INTO enum_tlds (tld) VALUES ('MR');
+INSERT INTO enum_tlds (tld) VALUES ('MS');
+INSERT INTO enum_tlds (tld) VALUES ('MT');
+INSERT INTO enum_tlds (tld) VALUES ('MU');
+INSERT INTO enum_tlds (tld) VALUES ('MUSEUM');
+INSERT INTO enum_tlds (tld) VALUES ('MV');
+INSERT INTO enum_tlds (tld) VALUES ('MW');
+INSERT INTO enum_tlds (tld) VALUES ('MX');
+INSERT INTO enum_tlds (tld) VALUES ('MY');
+INSERT INTO enum_tlds (tld) VALUES ('MZ');
+INSERT INTO enum_tlds (tld) VALUES ('NA');
+INSERT INTO enum_tlds (tld) VALUES ('NAME');
+INSERT INTO enum_tlds (tld) VALUES ('NC');
+INSERT INTO enum_tlds (tld) VALUES ('NE');
+INSERT INTO enum_tlds (tld) VALUES ('NET');
+INSERT INTO enum_tlds (tld) VALUES ('NF');
+INSERT INTO enum_tlds (tld) VALUES ('NG');
+INSERT INTO enum_tlds (tld) VALUES ('NI');
+INSERT INTO enum_tlds (tld) VALUES ('NL');
+INSERT INTO enum_tlds (tld) VALUES ('NO');
+INSERT INTO enum_tlds (tld) VALUES ('NP');
+INSERT INTO enum_tlds (tld) VALUES ('NR');
+INSERT INTO enum_tlds (tld) VALUES ('NU');
+INSERT INTO enum_tlds (tld) VALUES ('NZ');
+INSERT INTO enum_tlds (tld) VALUES ('OM');
+INSERT INTO enum_tlds (tld) VALUES ('ORG');
+INSERT INTO enum_tlds (tld) VALUES ('PA');
+INSERT INTO enum_tlds (tld) VALUES ('PE');
+INSERT INTO enum_tlds (tld) VALUES ('PF');
+INSERT INTO enum_tlds (tld) VALUES ('PG');
+INSERT INTO enum_tlds (tld) VALUES ('PH');
+INSERT INTO enum_tlds (tld) VALUES ('PK');
+INSERT INTO enum_tlds (tld) VALUES ('PL');
+INSERT INTO enum_tlds (tld) VALUES ('PM');
+INSERT INTO enum_tlds (tld) VALUES ('PN');
+INSERT INTO enum_tlds (tld) VALUES ('PR');
+INSERT INTO enum_tlds (tld) VALUES ('PRO');
+INSERT INTO enum_tlds (tld) VALUES ('PS');
+INSERT INTO enum_tlds (tld) VALUES ('PT');
+INSERT INTO enum_tlds (tld) VALUES ('PW');
+INSERT INTO enum_tlds (tld) VALUES ('PY');
+INSERT INTO enum_tlds (tld) VALUES ('QA');
+INSERT INTO enum_tlds (tld) VALUES ('RE');
+INSERT INTO enum_tlds (tld) VALUES ('RO');
+INSERT INTO enum_tlds (tld) VALUES ('RS');
+INSERT INTO enum_tlds (tld) VALUES ('RU');
+INSERT INTO enum_tlds (tld) VALUES ('RW');
+INSERT INTO enum_tlds (tld) VALUES ('SA');
+INSERT INTO enum_tlds (tld) VALUES ('SB');
+INSERT INTO enum_tlds (tld) VALUES ('SC');
+INSERT INTO enum_tlds (tld) VALUES ('SD');
+INSERT INTO enum_tlds (tld) VALUES ('SE');
+INSERT INTO enum_tlds (tld) VALUES ('SG');
+INSERT INTO enum_tlds (tld) VALUES ('SH');
+INSERT INTO enum_tlds (tld) VALUES ('SI');
+INSERT INTO enum_tlds (tld) VALUES ('SJ');
+INSERT INTO enum_tlds (tld) VALUES ('SK');
+INSERT INTO enum_tlds (tld) VALUES ('SL');
+INSERT INTO enum_tlds (tld) VALUES ('SM');
+INSERT INTO enum_tlds (tld) VALUES ('SN');
+INSERT INTO enum_tlds (tld) VALUES ('SO');
+INSERT INTO enum_tlds (tld) VALUES ('SR');
+INSERT INTO enum_tlds (tld) VALUES ('ST');
+INSERT INTO enum_tlds (tld) VALUES ('SU');
+INSERT INTO enum_tlds (tld) VALUES ('SV');
+INSERT INTO enum_tlds (tld) VALUES ('SY');
+INSERT INTO enum_tlds (tld) VALUES ('SZ');
+INSERT INTO enum_tlds (tld) VALUES ('TC');
+INSERT INTO enum_tlds (tld) VALUES ('TD');
+INSERT INTO enum_tlds (tld) VALUES ('TEL');
+INSERT INTO enum_tlds (tld) VALUES ('TF');
+INSERT INTO enum_tlds (tld) VALUES ('TG');
+INSERT INTO enum_tlds (tld) VALUES ('TH');
+INSERT INTO enum_tlds (tld) VALUES ('TJ');
+INSERT INTO enum_tlds (tld) VALUES ('TK');
+INSERT INTO enum_tlds (tld) VALUES ('TL');
+INSERT INTO enum_tlds (tld) VALUES ('TM');
+INSERT INTO enum_tlds (tld) VALUES ('TN');
+INSERT INTO enum_tlds (tld) VALUES ('TO');
+INSERT INTO enum_tlds (tld) VALUES ('TP');
+INSERT INTO enum_tlds (tld) VALUES ('TR');
+INSERT INTO enum_tlds (tld) VALUES ('TRAVEL');
+INSERT INTO enum_tlds (tld) VALUES ('TT');
+INSERT INTO enum_tlds (tld) VALUES ('TV');
+INSERT INTO enum_tlds (tld) VALUES ('TW');
+INSERT INTO enum_tlds (tld) VALUES ('TZ');
+INSERT INTO enum_tlds (tld) VALUES ('UA');
+INSERT INTO enum_tlds (tld) VALUES ('UG');
+INSERT INTO enum_tlds (tld) VALUES ('UK');
+INSERT INTO enum_tlds (tld) VALUES ('UM');
+INSERT INTO enum_tlds (tld) VALUES ('US');
+INSERT INTO enum_tlds (tld) VALUES ('UY');
+INSERT INTO enum_tlds (tld) VALUES ('UZ');
+INSERT INTO enum_tlds (tld) VALUES ('VA');
+INSERT INTO enum_tlds (tld) VALUES ('VC');
+INSERT INTO enum_tlds (tld) VALUES ('VE');
+INSERT INTO enum_tlds (tld) VALUES ('VG');
+INSERT INTO enum_tlds (tld) VALUES ('VI');
+INSERT INTO enum_tlds (tld) VALUES ('VN');
+INSERT INTO enum_tlds (tld) VALUES ('VU');
+INSERT INTO enum_tlds (tld) VALUES ('WF');
+INSERT INTO enum_tlds (tld) VALUES ('WS');
+INSERT INTO enum_tlds (tld) VALUES ('XN--0ZWM56D');
+INSERT INTO enum_tlds (tld) VALUES ('XN--11B5BS3A9AJ6G');
+INSERT INTO enum_tlds (tld) VALUES ('XN--80AKHBYKNJ4F');
+INSERT INTO enum_tlds (tld) VALUES ('XN--9T4B11YI5A');
+INSERT INTO enum_tlds (tld) VALUES ('XN--DEBA0AD');
+INSERT INTO enum_tlds (tld) VALUES ('XN--G6W251D');
+INSERT INTO enum_tlds (tld) VALUES ('XN--HGBK6AJ7F53BBA');
+INSERT INTO enum_tlds (tld) VALUES ('XN--HLCJ6AYA9ESC7A');
+INSERT INTO enum_tlds (tld) VALUES ('XN--JXALPDLP');
+INSERT INTO enum_tlds (tld) VALUES ('XN--KGBECHTV');
+INSERT INTO enum_tlds (tld) VALUES ('XN--ZCKZAH');
+INSERT INTO enum_tlds (tld) VALUES ('YE');
+INSERT INTO enum_tlds (tld) VALUES ('YT');
+INSERT INTO enum_tlds (tld) VALUES ('YU');
+INSERT INTO enum_tlds (tld) VALUES ('ZA');
+INSERT INTO enum_tlds (tld) VALUES ('ZM');
+INSERT INTO enum_tlds (tld) VALUES ('ZW');
 
 -- function to test date moved by offset agains current date
 CREATE OR REPLACE FUNCTION date_test(date, varchar)
@@ -236,7 +368,7 @@ $$ IMMUTABLE LANGUAGE SQL;
 
 -- view for actual domain states
 -- ================= DOMAIN ========================
--- DROP VIEW domain_states
+DROP VIEW domain_states;
 CREATE VIEW domain_states AS
 SELECT
   d.id AS object_id,
@@ -297,7 +429,7 @@ WHERE d.id=o.id;
 -- view for actual nsset states
 -- for NOW they are not deleted
 -- ================= NSSET ========================
--- DROP VIEW nsset_states
+DROP VIEW nsset_states;
 CREATE VIEW nsset_states AS
 SELECT
   n.id AS object_id,
@@ -327,7 +459,7 @@ WHERE
 -- view for actual contact states
 -- for NOW they are not deleted
 -- ================= CONTACT ========================
--- DROP VIEW contact_states
+DROP VIEW contact_states;
 CREATE VIEW contact_states AS
 SELECT
   c.id AS object_id,
@@ -529,9 +661,6 @@ CREATE OR REPLACE FUNCTION status_update_object_state() RETURNS TRIGGER AS $$
   END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_object_state AFTER INSERT OR UPDATE
-  ON object_state FOR EACH ROW EXECUTE PROCEDURE status_update_object_state();
-
 -- update history id of object at status opening and closing
 -- it's useful to catch history id of object on state opening and closing
 -- to centralize this setting, it's done by trigger here
@@ -548,9 +677,6 @@ CREATE OR REPLACE FUNCTION status_update_hid() RETURNS TRIGGER AS $$
     RETURN NEW;
   END;
 $$ LANGUAGE plpgsql;
-
-CREATE TRIGGER trigger_object_state_hid BEFORE INSERT OR UPDATE
-  ON object_state FOR EACH ROW EXECUTE PROCEDURE status_update_hid();
 
 -- trigger to update state of domain, fired with every change on
 -- on domain table
@@ -681,9 +807,6 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
   END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_domain AFTER INSERT OR DELETE OR UPDATE
-  ON domain FOR EACH ROW EXECUTE PROCEDURE status_update_domain();
-
 CREATE OR REPLACE FUNCTION status_update_enumval() RETURNS TRIGGER AS $$
   DECLARE
     _num INTEGER;
@@ -706,9 +829,6 @@ CREATE OR REPLACE FUNCTION status_update_enumval() RETURNS TRIGGER AS $$
     RETURN NULL;
   END;
 $$ LANGUAGE plpgsql;
-
-CREATE TRIGGER trigger_enumval AFTER UPDATE ON enumval
-    FOR EACH ROW EXECUTE PROCEDURE status_update_enumval();
 
 CREATE OR REPLACE FUNCTION status_update_contact_map() RETURNS TRIGGER AS $$
   DECLARE
@@ -756,14 +876,6 @@ CREATE OR REPLACE FUNCTION status_update_contact_map() RETURNS TRIGGER AS $$
   END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_domain_contact_map AFTER INSERT OR DELETE OR UPDATE
-  ON domain_contact_map FOR EACH ROW 
-  EXECUTE PROCEDURE status_update_contact_map();
-
-CREATE TRIGGER trigger_nsset_contact_map AFTER INSERT OR DELETE OR UPDATE
-  ON nsset_contact_map FOR EACH ROW 
-  EXECUTE PROCEDURE status_update_contact_map();
-
 -- object history tables are filled after normal object tables (i.e. domain)
 -- and so when new state is generated as result of new row in normal 
 -- table, no history table is available to reference in ohid_from
@@ -776,8 +888,3 @@ CREATE OR REPLACE FUNCTION object_history_insert() RETURNS TRIGGER AS $$
     RETURN NEW;
   END;
 $$ LANGUAGE plpgsql;
-
-CREATE TRIGGER trigger_object_history AFTER INSERT
-  ON object_history FOR EACH ROW 
-  EXECUTE PROCEDURE object_history_insert();
-
