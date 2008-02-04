@@ -27,4 +27,5 @@ WHERE
  AND (a.startdate::timestamptz AT TIME ZONE 'CET')::date < 
   DATE_TRUNC('month',NOW())
  AND (ior.objectid ISNULL OR ig.invoiceid ISNULL OR i.id ISNULL)
-
+ -- added to make check faster
+ AND a.startdate > CURRENT_DATE - INTERVAL '2 month';

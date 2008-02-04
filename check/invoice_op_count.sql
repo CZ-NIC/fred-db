@@ -45,5 +45,6 @@ FROM
    invoice i JOIN invoice_object_registry ior ON (i.id=ior.invoiceid)
   GROUP BY i.id
  ) io ON (i.id=io.id)
-WHERE a.inew!=io.inew OR a.irenew!=io.irenew;
-
+WHERE a.inew!=io.inew OR a.irenew!=io.irenew
+-- added for speedup
+AND i.taxdate > CURRENT_DATE - INTERVAL '2 month';
