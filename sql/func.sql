@@ -1,5 +1,5 @@
 -- must be superuser
-CREATE LANGUAGE 'plpgsql';
+--CREATE LANGUAGE 'plpgsql';
 
 -- 
 --  create temporary table and if temporary table already
