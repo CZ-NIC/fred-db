@@ -1,3 +1,12 @@
+2008-02-09  Jaromir Talir <jaromir.talir@nic.cz> 
+
+    * release 1.8.0
+    
+    * adding action_elements table
+    
+    * setting of sequences for tables registrar,registraracl,
+      zone,registrarinvoice
+
 2008-02-01  Jaromír Talíř <jaromir.talir@nic.cz>
 
     * new directory with distinct upgrade sql files for every change

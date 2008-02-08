@@ -13,3 +13,5 @@ INSERT INTO zone  VALUES(1,'0.2.4.e164.arpa',12,120,6,9,'t');
 INSERT INTO zone  VALUES(2,'0.2.4.c.e164.arpa',12,120,6,9,'t');
 INSERT INTO zone  VALUES(3,'cz',12,120,0,1,'f');
 
+SELECT SETVAL('zone_id_seq',(SELECT MAX(id)+1 FROM zone),'f');
+

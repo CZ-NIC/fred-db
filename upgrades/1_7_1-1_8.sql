@@ -899,3 +899,8 @@ CREATE TABLE action_elements(
 CREATE INDEX action_elements_value_idx ON action_elements (value);
 CREATE INDEX action_elements_elementid_idx ON action_elements (elementid);
 
+SELECT SETVAL('zone_id_seq',(SELECT MAX(id)+1 FROM zone),'f');
+SELECT SETVAL('registrar_id_seq',(SELECT MAX(id)+1 FROM registrar),'f');
+SELECT SETVAL('registraracl_id_seq',(SELECT MAX(id)+1 FROM registraracl),'f');
+SELECT SETVAL('registrarinvoice_id_seq',(SELECT MAX(id)+1 FROM registrarinvoice),'f');
+

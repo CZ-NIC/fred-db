@@ -64,3 +64,8 @@ VALUES (3, 1, '39:D1:0C:CA:05:3A:CC:C0:0B:EC:6F:3F:81:0D:C7:9E', 'passwd');
 INSERT INTO  RegistrarACL 
 VALUES (4, 2, '39:D1:0C:CA:05:3A:CC:C0:0B:EC:6F:3F:81:0D:C7:9E', 'passwd');
 
+
+SELECT SETVAL('registrar_id_seq',(SELECT MAX(id)+1 FROM registrar),'f');
+SELECT SETVAL('registraracl_id_seq',(SELECT MAX(id)+1 FROM registraracl),'f');
+SELECT SETVAL('registrarinvoice_id_seq',(SELECT MAX(id)+1 FROM registrarinvoice),'f');
+
