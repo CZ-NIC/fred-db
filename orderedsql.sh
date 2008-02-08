@@ -38,9 +38,13 @@ cat $DIR/techcheck.sql
 cat $DIR/info_buffer.sql
 # common functions
 cat $DIR/func.sql
+# table with parameters
+cat $DIR/enum_params.sql
 # state and poll
 cat $DIR/state.sql
 cat $DIR/poll.sql
-#notify  mailer
+# notify mailer
 cat $DIR/notify.sql
 cat $DIR/notify_new.sql
+# list of tld domains
+cat $DIR/enum_tlds.sql
