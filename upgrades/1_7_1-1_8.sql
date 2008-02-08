@@ -888,3 +888,14 @@ CREATE OR REPLACE FUNCTION object_history_insert() RETURNS TRIGGER AS $$
     RETURN NEW;
   END;
 $$ LANGUAGE plpgsql;
+
+CREATE TABLE action_elements(
+  id SERIAL PRIMARY KEY,
+  actionid INTEGER REFERENCES action,
+  elementid INTEGER,
+  value VARCHAR(255)
+);
+
+CREATE INDEX action_elements_value_idx ON action_elements (value);
+CREATE INDEX action_elements_elementid_idx ON action_elements (elementid);
+

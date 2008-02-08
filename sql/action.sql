@@ -90,3 +90,14 @@ CREATE INDEX history_action_idx ON history (action);
 -- DROP TABLE  action_xml CASCADE;
 CREATE TABLE action_xml( actionID INTEGER PRIMARY KEY REFERENCES action, xml text not NULL  , xml_out text );
 
+CREATE TABLE action_elements(
+  id SERIAL PRIMARY KEY,
+  actionid INTEGER REFERENCES action,
+  elementid INTEGER,
+  value VARCHAR(255)
+);
+
+CREATE INDEX action_elements_value_idx ON action_elements (value);
+CREATE INDEX action_elements_elementid_idx ON action_elements (elementid);
+
+
