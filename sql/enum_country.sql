@@ -5,6 +5,11 @@ CREATE TABLE enum_country (
         country_cs  varchar(1024) UNIQUE -- optional czech title
         );
 
+comment on table enum_country is 'list of country codes and names';
+comment on column enum_country.id is 'country code (e.g. CZ for Czech republic)';
+comment on column enum_country.country is 'english country name';
+comment on column enum_country.country_cs is 'optional country name in native language';
+
 -- delete all records 
 DELETE FROM  enum_country ;
 -- read all states

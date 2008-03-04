@@ -19,3 +19,10 @@ CREATE TABLE domain_blacklist
       REFERENCES "user" (id) MATCH SIMPLE
       ON UPDATE RESTRICT ON DELETE RESTRICT
 );
+
+comment on column domain_blacklist.regexp is 'regular expression which is blocked';
+comment on column domain_blacklist.valid_from is 'from when is block valid';
+comment on column domain_blacklist.valid_to is 'till when is block valid, if it is NULL, it is not restricted';
+comment on column domain_blacklist.reason is 'reason why is domain blocked';
+comment on column domain_blacklist.creator is 'who created this record. If it is NULL, it is system record created as a part of system configuration';
+

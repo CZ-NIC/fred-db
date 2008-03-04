@@ -55,6 +55,16 @@ INSERT INTO genzone_domain_status VALUES (3,'is without nsset');
 INSERT INTO genzone_domain_status VALUES (4,'expired');
 INSERT INTO genzone_domain_status VALUES (5,'is not validated');
 
+comment on table genzone_domain_status is
+'List of status for domain zone generator classification
+
+id - name
+ 1 - domain is in zone
+ 2 - domain is deleted
+ 3 - domain is without nsset
+ 4 - domain is expired
+ 5 - domain is not validated';
+
 -- History of generation of domain in zone file
 CREATE TABLE genzone_domain_history (
     -- id of record

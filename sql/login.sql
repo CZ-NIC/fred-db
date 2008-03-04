@@ -12,3 +12,15 @@ CREATE TABLE Login (
 
 CREATE INDEX login_registrarid_idx ON login (registrarid);
 
+comment on table Login is
+'records of all epp session
+
+creating - when processing login epp message
+updating - when processing logout epp message';
+comment on column Login.ID is 'return as cliendID from CORBA Login FUNCTION';
+comment on column Login.RegistrarID is 'registrar id';
+comment on column Login.LoginDate is 'login date and time into system';
+comment on column Login.loginTRID is 'login transaction number';
+comment on column Login.LogoutDate is 'logout date and time';
+comment on column Login.logoutTRID is 'logout transaction number';
+comment on column Login.lang is 'language, in which return error messages';

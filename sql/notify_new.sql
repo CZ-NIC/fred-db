@@ -8,6 +8,10 @@ CREATE TABLE notify_statechange_map (
   emails INTEGER
 );
 
+comment on table notify_statechange_map is
+'Notification processing rules - direct notifier what mails need to be send
+and whom upon object state change';
+
 -- state: expiration, obj: domain, 
 -- template: expiration_notify, emails: admins
 INSERT INTO notify_statechange_map VALUES ( 1,  9, 3,  3, 1);
@@ -50,6 +54,11 @@ CREATE TABLE notify_statechange (
   PRIMARY KEY (state_id, type)
 );
 
+comment on table notify_statechange is 'store information about successfull notification';
+comment on column notify_statechange.state_id is 'which statechnage triggered notification';
+comment on column notify_statechange.type is 'what notification was done';
+comment on column notify_statechange.mail_id is 'email with result of notification (null if contact have no email)';
+
 -- notifications about deleteWarning state by PDF letter
 -- multiple states is stored in one PDF document
 CREATE TABLE notify_letters (
@@ -58,3 +67,7 @@ CREATE TABLE notify_letters (
   -- file with pdf about notification (null for old)
   file_id INTEGER REFERENCES files (id)
 );
+
+comment on table notify_letters is 'notification about deleteWarning state by PDF letter, multiple states is stored in one PDF document';
+comment on column notify_letters.state_id is 'which statechange triggered notification';
+comment on column notify_letters.file_id is 'file with pdf about notification (null for old)';

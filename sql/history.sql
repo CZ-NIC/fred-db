@@ -43,6 +43,10 @@ CREATE TABLE Contact_History (
         DiscloseNotifyEmail boolean DEFAULT False
 );
 
+comment on table Contact_History is
+'Historic data from contact table.
+
+creation - actual data will be copied here from original table in case of any change in contact table';
 
 
 -- DROP TABLE Domain_History CASCADE;
@@ -56,6 +60,11 @@ CREATE TABLE Domain_History (
         );
 CREATE INDEX domain_History_historyid_idx ON Domain_History (historyID);
 
+comment on table Domain_History is
+'Historic data from domain table
+
+creation - in case of any change in domain table, including changes in bindings to other tables';
+
 -- DROP TABLE domain_contact_map_history CASCADE;
 CREATE TABLE domain_contact_map_history  (
         historyID INTEGER REFERENCES History,       
@@ -66,6 +75,11 @@ CREATE TABLE domain_contact_map_history  (
        PRIMARY KEY(historyID,DomainID,ContactID)
         );
 
+comment on table domain_contact_map_history is
+'Historic data from domain_contact_map table
+
+creation - all contacts links which are linked to changed domain are copied here';
+
 -- DROP TABLE NSSet_history  CASCADE;
 CREATE TABLE NSSet_history  (
         historyID INTEGER PRIMARY KEY REFERENCES History, -- only one nsset 
@@ -73,6 +87,11 @@ CREATE TABLE NSSet_history  (
         checklevel smallint default 0 --write up check level
         );
 CREATE INDEX nsset_history_historyid_idx ON NSSet_History (historyID);
+
+comment on table NSSet_History is
+'Historic data from domain nsset
+
+creation - in case of any change in nsset table, including changes in bindings to other tables';
 
 -- DROP TABLE nsset_contact_map_history  CASCADE;
 CREATE TABLE nsset_contact_map_history (
@@ -83,6 +102,11 @@ CREATE TABLE nsset_contact_map_history (
         PRIMARY KEY (historyID,NSSetID, ContactID)
         );
 
+comment on table nsset_contact_map_history is
+'Historic data from nsset_contact_map table
+
+creation - all contact links which are linked to changed nsset are copied here';
+
 -- DROP TABLE Host_history  CASCADE;
 CREATE TABLE Host_history  (
         historyID INTEGER  REFERENCES History,  -- it can exist more hosts so that it isn't primary key 
@@ -92,6 +116,11 @@ CREATE TABLE Host_history  (
         PRIMARY KEY(historyID,ID)
         );
 -- replaced
+
+comment on table Host_history is
+'historic data from host table
+
+creation - all entries from host table which exist for given nsset are copied here when nsset is altering';
 
 CREATE TABLE host_ipaddr_map_history (
 	historyID INTEGER  REFERENCES History,

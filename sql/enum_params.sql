@@ -54,3 +54,27 @@ VALUES (9, 'regular_day_procedure_period', '14');
 -- parametr 10 is used to identify time zone in which parameter 9 is specified  
 INSERT INTO enum_parameters (id, name, val) 
 VALUES (10, 'regular_day_procedure_zone', 'CET');
+
+comment on table enum_parameters is
+'Table of system operational parameters.
+Meanings of parameters:
+
+1 - model version - for checking data model version and for applying upgrade scripts
+2 - tld list version - for updating table enum_tlds by data from url
+3 - expiration notify period - used to change state of domain to unguarded and remove domain from DNS,
+    value is number of days relative to date domain.exdate
+4 - expiration dns protection period - same as parameter 3
+5 - expiration letter warning period - used to change state of domain to deleteWarning and generate letter
+    witch warning
+6 - expiration registration protection period - used to change state of domain to deleteCandidate and
+    unregister domain from system
+7 - validation notify 1 period - used to change state of domain to validationWarning1 and send poll
+    message to registrar
+8 - validation notify 2 period - used to change state of domain to validationWarning2 and send
+    email to registrant
+9 - regular day procedure period - used to identify hout when objects are deleted and domains
+    are moving outzone
+10 - regular day procedure zone - used to identify time zone in which parameter 9 is specified';
+comment on column enum_parameters.id is 'primary identification';
+comment on column enum_parameters.name is 'descriptive name of parameter - for information uses only';
+comment on column enum_parameters.val is 'value of parameter';

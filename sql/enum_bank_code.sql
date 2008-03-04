@@ -6,6 +6,11 @@ CREATE TABLE enum_bank_code (
       name_full varchar(64) UNIQUE  NOT NULL -- full name
 );
 
+comment on table enum_bank_code is 'list of bank codes';
+comment on column enum_bank_code.code is 'bank code';
+comment on column enum_bank_code.name_short is 'bank name abbrevation';
+comment on column enum_bank_code.name_full is 'full bank name';
+
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'ABN AMRO BANK N.V.' , 'AMRO'  , '5400' );
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'HVB CZECH REPUBLIC, A. S.' , 'HVB' ,'2700' );
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'BNP-DRESDNER BANK (ČR) A.S.' , 'BNP' , '4000' ); 

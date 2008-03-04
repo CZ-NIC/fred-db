@@ -5,6 +5,46 @@ CREATE TABLE enum_action (
         status varchar(64) UNIQUE NOT NULL
         );
 
+COMMENT ON TABLE enum_action IS 
+'List of action which can be done using epp communication over central registry
+
+id  - status
+100 - ClientLogin
+101 - ClientLogin
+120 - PollAcknowledgement
+121 - PollResponse
+200 - ContactCheck
+201 - ContactInfo
+202 - ContactDelete
+203 - ContactUpdate
+204 - ContactCreate
+205 - ContactTransfer
+400 - NSsetCheck
+401 - NSsetInfo
+402 - NSsetDelete
+403 - NSsetUpdate
+404 - NSsetCreate
+405 - NSsetTransfer
+500 - DomainCheck
+501 - DomainInfo
+502 - DomainDelete
+503 - DomainUpdate
+504 - DomainCreate
+505 - DomainTransfer
+506 - DomainRenew
+507 - DomainTrade
+1000 - UnknowAction
+1002 - ListContact
+1004 - ListNSset
+1005 - ListDomain
+1010 - ClientCredit
+1012 - nssetTest
+1101 - ContactSendAuthInfo
+1102 - NSSetSendAuthInfo
+1103 - DomainSendAuthInfo
+1104 - Info
+1105 - GetInfoResults';
+
 -- login function
 INSERT INTO enum_action (id , status) VALUES(100 , 'ClientLogin');
 INSERT INTO enum_action (id , status) VALUES(101 , 'ClientLogout');
@@ -80,10 +120,30 @@ CREATE INDEX action_response_idx ON action (response);
 CREATE INDEX action_startdate_idx ON action (startdate);
 CREATE INDEX action_action_idx ON action (action);
 
+COMMENT on table action is 
+'Table for transactions record. In this table is logged every operation done over central register
+
+creation - at the beginning of processing any epp message
+update - at the end of processing any epp message';
+COMMENT on COLUMN action.id is 'unique automatically generated identifier';
+comment on column action.clientid is 'id of client from table Login, it is possible have null value here';
+comment on column action.action is 'type of function(action) from classifier';
+comment on column action.response is 'return code of function';
+comment on column action.StartDate is 'date and time when function starts';
+comment on column action.EndDate is 'date and time when function ends';
+comment on column action.clientTRID is 'client transaction identifier, client must care about its unique, server copy it to response';
+comment on column action.serverTRID is 'server transaction identifier';
+
 CREATE TABLE History (
         ID SERIAL PRIMARY KEY,
         action INTEGER NOT NULL REFERENCES action -- link into table action
         );
+comment on table history is
+'Main evidence table with modified data, it join historic tables modified during same operation
+
+create - in case of any change';
+comment on column history.id is 'unique automatically generated identifier';
+comment on column history.action is 'link to action which cause modification';
 
 CREATE INDEX history_action_idx ON history (action);
 

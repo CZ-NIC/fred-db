@@ -17,6 +17,24 @@ INSERT INTO MessageType VALUES (11, 'imp_validation');
 INSERT INTO MessageType VALUES (12, 'validation');
 INSERT INTO MessageType VALUES (13, 'outzone');
 
+comment on table MessageType is
+'table with message number codes and its names
+
+id - name
+01 - credit
+02 - techcheck
+03 - transfer_contact
+04 - transfer_nsset
+05 - transfer_domain
+06 - delete_contact
+07 - delete_nsset
+08 - delete_domain
+09 - imp_expiration
+10 - expiration
+11 - imp_validation
+12 - validation
+13 - outzone';
+
 CREATE TABLE Message (
         ID SERIAL PRIMARY KEY,
         ClID INTEGER NOT NULL REFERENCES Registrar ON UPDATE CASCADE,
@@ -27,6 +45,8 @@ CREATE TABLE Message (
 );
 CREATE INDEX message_clid_idx ON message (clid);
 CREATE INDEX message_seen_idx ON message (clid,seen,crdate,exdate);
+
+comment on table Message is 'Evidence of messages for registrars, which can be picked up by epp poll funcion';
 
 CREATE TABLE poll_credit (
   msgid INTEGER PRIMARY KEY REFERENCES message (id),

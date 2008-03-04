@@ -9,6 +9,10 @@ CREATE TABLE enum_operation (
 INSERT INTO enum_operation  VALUES( 1 , 'CreateDomain'); -- registration fee
 INSERT INTO enum_operation  VALUES( 2 , 'RenewDomain'); -- maintainance fee
 
+comment on table enum_operation is 'list of priced operation';
+comment on column enum_operation.id is 'unique automatically generated identifier';
+comment on column enum_operation.operation is 'operation';
+
 -- tabel of VAT validity (in case that VAT is changing in the future) 
 -- saving of coefficient for VAT recount
 
@@ -23,7 +27,11 @@ CREATE TABLE price_vat
 INSERT INTO price_vat   VALUES ( 1 , '2004-04-30 22:00:00' , 0.1803 ,  22 ); -- to be in UTC CEST +2:00
 INSERT INTO price_vat  VALUES ( 2 , NULL , 0.1597 , 19 );
 
-
+comment on table price_vat is 'Table of VAT validity (in case that VAT is changing in the future. Stores coefficient for VAT recount)';
+comment on column price_vat.id is 'unique automatically generated identifier';
+comment on column price_vat.valid_to is 'date of VAT change realization';
+comment on column price_vat.koef is 'coefficient high for VAT recount';
+comment on column price_vat.VAT is 'VAT high';
      
 -- operation price list 
 CREATE TABLE price_list
@@ -51,3 +59,11 @@ CREATE TABLE price_list
 --INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (3 , 3 , 1 , '01-01-2007' ,  -50 , 12 ); -- registration ( one year only for fifty CZK )
 --INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (4 , 3 , 2 , '01-01-2007' ,  100 , 12 ); -- renew 
 
+comment on table price_list is 'list of operation prices';
+comment on column price_list.id is 'unique automatically generated identifier';
+comment on column price_list.zone is 'link to zone, for which is price list valid if it is domain (if it is not domain then it is NULL)';
+comment on column price_list.operation is 'for which action is price connected';
+comment on column price_list.valid_from is 'from when is record valid';
+comment on column price_list.valid_to is 'till when is record valid, if it is NULL then valid is unlimited';
+comment on column price_list.price is 'cost of operation (for one year-12 months)';
+comment on column price_list.period is 'period (in months) of payment, null if it is not periodic';

@@ -22,3 +22,24 @@ INSERT INTO enum_status (id , status) VALUES( 303 , 'pendingRenew');
 INSERT INTO enum_status (id , status) VALUES( 304 , 'pendingTransfer');
 INSERT INTO enum_status (id , status) VALUES( 305 , 'pendingUpdate');
                        
+comment on table enum_status is
+'id - status
+1   - ok
+2   - inactive
+101 - clientDeleteProhibited
+201 - serverDeleteProhibited
+102 - clientHold
+202 - serverHold
+103 - clientRenewProhibited
+203 - serverRenewProhibited
+104 - clientTransferProhibited
+204 - serverTransferProhibited
+105 - clientUpdateProhibited
+205 - serverUpdateProhibited
+301 - pendingCreate
+302 - pendingDelete
+303 - pendingRenew
+304 - pendingTransfer
+305 - pendingUpdate';
+comment on column enum_status.id is 'status id';
+comment on column enum_status.status is 'status message';

@@ -16,6 +16,12 @@ INSERT INTO mail_defaults (name, value) VALUES ('emailsupport', 'podpora@nic.cz'
 INSERT INTO mail_defaults (name, value) VALUES ('authinfopage', 'http://enum.nic.cz/');
 INSERT INTO mail_defaults (name, value) VALUES ('whoispage', 'http://whois.enum.nic.cz/');
 
+comment on table mail_defaults is 
+'Defaults used in templates which change rarely.
+Default names must be prefixed with ''defaults'' namespace when used in template';
+comment on column mail_defaults.name is 'key of default';
+comment on column mail_defaults.value is 'value of default';
+
 -- mail footer is defined here and not in templates in order to reduce
 -- size of templates
 CREATE TABLE mail_footer (
@@ -33,6 +39,8 @@ fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
+
+comment on table mail_footer is 'Mail footer is defided in this table and not in templates in order to reduce templates size';
 
 -- vcard is attached to every email message
 --   in future it should be templated as footer is, in order to minimize
@@ -56,6 +64,8 @@ EMAIL;PREF;INTERNET:podpora@nic.cz
 REV:20070403T143928Z
 END:VCARD
 ');
+
+comment on table mail_vcard is 'vcard is attached to every email message';
 
 -- some header defaults which are likely not a subject to change are specified 
 -- in database and used in absence
@@ -85,6 +95,15 @@ VALUES
 'charset=UTF-8',
 'nic.cz');
 
+comment on table mail_header_defaults is
+'Some header defaults which are likely not a subject to change are specified in database and used in absence';
+comment on column mail_header_defaults.h_from is '''From:'' header';
+comment on column mail_header_defaults.h_replyto is '''Reply-to:'' header';
+comment on column mail_header_defaults.h_errorsto is '''Errors-to:'' header';
+comment on column mail_header_defaults.h_organization is '''Organization:'' header';
+comment on column mail_header_defaults.h_contentencoding is '''Content-encoding:'' header';
+comment on column mail_header_defaults.h_messageidserver is 'Message id cannot be overriden by client, in db is stored only part after ''@'' character';
+
 -- Here are stored email templates which represent one text attachment of
 -- email message
 CREATE TABLE mail_templates (
@@ -95,12 +114,21 @@ CREATE TABLE mail_templates (
 	                                          -- concatenated with template?
 	);
 
+comment on table mail_templates is 'Here are stored email templates which represent one text attachment of email message';
+comment on column mail_templates.contenttype is 'subtype of content type text';
+comment on column mail_templates.template is 'clearsilver template';
+comment on column mail_templates.footer is 'should footer be concatenated with template?';
+
 -- Type of email gathers templates from which email is composed
 CREATE TABLE mail_type (
 	id integer PRIMARY KEY,
 	name varchar(100) UNIQUE NOT NULL, -- name of type
 	subject varchar(300) NOT NULL      -- template of email subject
 	);
+
+comment on table mail_type is 'Type of email gathers templates from which email is composed';
+comment on column mail_type.name is 'name of type';
+comment on column mail_type.subject is 'template of email subject';
 
 -- One type may consists from multiple templates and one template may be
 -- part of multiple mailtypes. This is binding table.
@@ -134,12 +162,34 @@ CREATE TABLE mail_archive (
 	response text
 	);
 
+comment on table mail_archive is
+'Here are stored emails which are going to be sent and email which have
+already been sent (they differ in status value).';
+comment on column mail_archive.mailtype is 'email type';
+comment on column mail_archive.crdate is 'date and time of insertion in table';
+comment on column mail_archive.moddate is 'date and time of sending (event unsuccesfull)';
+comment on column mail_archive.status is 
+'status value has following meanings:
+ 0 - the email was successfully sent
+ 1 - the email is ready to be sent
+ x - the email wait for manual confirmation which should change status value to 0
+     when the email is desired to be sent. x represent any value different from
+     0 and 1 (convention is number 2)';
+comment on column mail_archive.message is 'text of email which is asssumed to be notificaion about undelivered';
+comment on column mail_archive.attempt is 
+'failed attempt to send email message to be sent including headers
+(except date and msgid header), without non-templated attachments';
+
 -- List of attachment ids bound to email in mail_archive
 CREATE TABLE mail_attachments (
 	id SERIAL PRIMARY KEY,
 	mailid integer references mail_archive(id), -- id of email in archive
 	attachid integer references files(id)       -- Attachment id
 	);
+
+comment on table mail_attachments is 'list of attachment ids bound to email in mail_archive';
+comment on column mail_attachments.mailid is 'id of email in archive';
+comment on column mail_attachments.attachid is 'attachment id';
 
 -- Handles associated with email in mail_archive
 CREATE TABLE mail_handles (
@@ -148,3 +198,6 @@ CREATE TABLE mail_handles (
 	associd varchar(255)                       -- handle of associated object
 	);
 
+comment on table mail_handles is 'handles associated with email in mail_archive';
+comment on column mail_handles.mailid is 'id of email in archive';
+comment on column mail_handles.associd is 'handle of associated object';

@@ -284,3 +284,5 @@ INSERT INTO enum_tlds (tld) VALUES ('YU');
 INSERT INTO enum_tlds (tld) VALUES ('ZA');
 INSERT INTO enum_tlds (tld) VALUES ('ZM');
 INSERT INTO enum_tlds (tld) VALUES ('ZW');
+
+comment on table enum_tlds is 'list of available tlds for checking of dns host tld';

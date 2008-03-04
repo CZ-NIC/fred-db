@@ -13,6 +13,12 @@ CREATE TABLE enum_object_states (
   external BOOLEAN NOT NULL
 );
 
+comment on table enum_object_states is 'list of all supported status types';
+comment on column enum_object_states.name is 'code name for status';
+comment on column enum_object_states.types is 'what types of objects can have this status (object_registry.type list)';
+comment on column enum_object_states.manual is 'if this status is set manualy';
+comment on column enum_object_states.external is 'if this status is exported to public';
+
 INSERT INTO enum_object_states 
   VALUES (01,'serverDeleteProhibited','{1,2,3}','t','t');
 INSERT INTO enum_object_states 
@@ -64,6 +70,10 @@ CREATE TABLE enum_object_states_desc (
   description VARCHAR(255),
   PRIMARY KEY (state_id,lang)
 );
+
+comment on table enum_object_states_desc is 'description for states in different languages';
+comment on column enum_object_states_desc.lang is 'code of language';
+comment on column enum_object_states_desc.description is 'descriptive text';
 
 INSERT INTO enum_object_states_desc 
   VALUES (01,'CS','Není povoleno smazání');
@@ -169,6 +179,14 @@ WHERE valid_to ISNULL;
 
 CREATE INDEX object_state_object_id_idx ON object_state (object_id) WHERE valid_to ISNULL;
 
+comment on table object_state is 'main table of object states and their changes';
+comment on column object_state.object_id is 'id of object that has this new status';
+comment on column object_state.state_id is 'id of status';
+comment on column object_state.valid_from is 'date and time when object entered state';
+comment on column object_state.valid_to is 'date and time when object leaved state or null if still has this status';
+comment on column object_state.ohid_from is 'history id of object in the moment of entering state (may be null)';
+comment on column object_state.ohid_to is 'history id of object in the moment of leaving state or null';
+
 -- aggregate function for accumulation of elements into array
 CREATE AGGREGATE array_accum (
   BASETYPE = anyelement,
@@ -201,6 +219,14 @@ CREATE TABLE object_state_request (
   -- could be pointer to some list of administration actions
   canceled TIMESTAMP 
 );
+
+comment on table object_state_request is 'request for setting manual state';
+comment on column object_state_request.object_id is 'id of object gaining request state';
+comment on column object_state_request.state_id is 'id of requested state';
+comment on column object_state_request.valid_from is 'when object should enter requested state';
+comment on column object_state_request.valid_to is 'when object should leave requested state';
+comment on column object_state_request.crdate is 'could be pointed to some list of administation action';
+comment on column object_state_request.canceled is 'could be pointed to some list of administation action';
 
 -- simple view for all active requests for state change
 CREATE VIEW object_state_request_now AS
