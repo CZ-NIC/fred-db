@@ -100,7 +100,7 @@ INSERT INTO enum_action (  status , id )  VALUES(  'DomainSendAuthInfo' ,  1103 
 INSERT INTO enum_action (  status , id )  VALUES(  'Info'  , 1104 );
 INSERT INTO enum_action (  status , id )  VALUES(  'GetInfoResults' ,  1105 );
 
- 
+select setval('enum_action_id_seq', 1105); 
 
 --  table for transactions record
 -- DROP TABLE Action CASCADE;

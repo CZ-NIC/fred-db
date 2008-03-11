@@ -14,6 +14,8 @@ INSERT INTO enum_ssntype  VALUES(4 , 'ICO' , 'organization identification number
 INSERT INTO enum_ssntype  VALUES(5 , 'MPSV' , 'social system identification');
 INSERT INTO enum_ssntype  VALUES(6 , 'BIRTHDAY' , 'day of birth');
 
+select setval('enum_ssntype_id_seq', 6);
+
 comment on table enum_ssntype is
 'Table of identification number types
 

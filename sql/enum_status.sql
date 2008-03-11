@@ -21,6 +21,8 @@ INSERT INTO enum_status (id , status) VALUES( 302 , 'pendingDelete');
 INSERT INTO enum_status (id , status) VALUES( 303 , 'pendingRenew');
 INSERT INTO enum_status (id , status) VALUES( 304 , 'pendingTransfer');
 INSERT INTO enum_status (id , status) VALUES( 305 , 'pendingUpdate');
+
+select setval('enum_status_id_seq', 305);
                        
 comment on table enum_status is
 'id - status

@@ -81,6 +81,8 @@ INSERT INTO enum_reason VALUES( 37 ,  'Schemas validity error: ' , 'Chyba valida
 -- duplicate contact for tech or admin 
 INSERT INTO enum_reason VALUES(  38 , 'Duplicity contact' , 'Duplicitnitni kontakt' );
 
+select setval('enum_reason_id_seq', 38);
+
 comment on table enum_reason is 'Table of error messages reason';
 comment on column enum_reason.reason is 'reason in english language';
 comment on column enum_reason.reason_cs is 'reason in native language';

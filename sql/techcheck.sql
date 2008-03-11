@@ -63,6 +63,8 @@ INSERT INTO check_dependance (addictid, testid) VALUES (40, 1);
 INSERT INTO check_dependance (addictid, testid) VALUES (50, 1);
 INSERT INTO check_dependance (addictid, testid) VALUES (60, 1);
 
+select setval('check_dependance_id_seq', 14);
+
 CREATE TABLE check_nsset (
 	id SERIAL PRIMARY KEY,
 	-- nsset version, actual in time of record creation

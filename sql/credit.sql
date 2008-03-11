@@ -9,6 +9,8 @@ CREATE TABLE enum_operation (
 INSERT INTO enum_operation  VALUES( 1 , 'CreateDomain'); -- registration fee
 INSERT INTO enum_operation  VALUES( 2 , 'RenewDomain'); -- maintainance fee
 
+select setval('enum_operation_id_seq', 2);
+
 comment on table enum_operation is 'list of priced operation';
 comment on column enum_operation.id is 'unique automatically generated identifier';
 comment on column enum_operation.operation is 'operation';
@@ -26,6 +28,8 @@ CREATE TABLE price_vat
 
 INSERT INTO price_vat   VALUES ( 1 , '2004-04-30 22:00:00' , 0.1803 ,  22 ); -- to be in UTC CEST +2:00
 INSERT INTO price_vat  VALUES ( 2 , NULL , 0.1597 , 19 );
+
+select setval('price_vat_id_seq', 2);
 
 comment on table price_vat is 'Table of VAT validity (in case that VAT is changing in the future. Stores coefficient for VAT recount)';
 comment on column price_vat.id is 'unique automatically generated identifier';

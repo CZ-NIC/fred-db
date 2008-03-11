@@ -32,6 +32,8 @@ last_num int  -- number of last statement
 insert into  bank_account values ( 2 , 3 , '188208275' , 'CZNIC ucet CSOB' , '0300' , '130000' , '2006-11-10' , 161  );
 insert into bank_account (  id , Zone , account_number , account_name , bank_code )  values ( 1 , 1 , '756' , 'ENUM ucet ebanka' , '2400'   );
 
+select setval('bank_account_id_seq', 2);
+
 comment on table bank_account is
 'This table contains information about register administrator bank account';
 comment on column bank_account.id is 'unique automatically generated identifier';

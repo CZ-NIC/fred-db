@@ -55,6 +55,7 @@ INSERT INTO enum_error VALUES( 2500 ,    'Command failed; server closing connect
 INSERT INTO enum_error VALUES( 2501 ,    'Authentication error; server closing connection',    'Chyba ověření identity; server uzavírá spojení');
 INSERT INTO enum_error VALUES( 2502 ,    'Session limit exceeded; server closing connection',    'Limit na počet relací překročen; server uzavírá spojení');
 
+select setval('enum_error_id_seq', 2502);
 
 comment on table enum_error is
 'Table of error messages
