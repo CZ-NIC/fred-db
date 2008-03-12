@@ -14,7 +14,13 @@ fi
 # located in postgresql cluster in PGDATA directory. If located elsewhere
 # run this script with path to pg_hba file as first parametr
 
-PGHBA=@PGHBADIR@/pg_hba.conf
+if [ "$PGDATA" = "" ]
+then
+    PGHBA=@PGHBADIR@/pg_hba.conf
+else
+    PGHBA=$PGDATA/pg_hba.conf
+fi
+
 if [ ! -f $PGHBA ]
 then
     if [ "$1" = "" -o ! -f "$1" ]
@@ -35,17 +41,12 @@ else
     # This file will be modified to allow local connection for user
     # @DBUSER@. If this is not intended modify database access options in
     # server @DBUSER@ server configuration files to suite you needs
-    {
-	echo "# Next three lines were added by script $0"
-	echo "# to allow local connection of user @DBUSER@ to database @DBNAME@ "
-	echo "local @DBNAME@ @DBUSER@ @METHOD@"
-	echo "host @DBNAME@ @DBUSER@ @CIDRIPV4@ @METHOD@"
-	echo "host @DBNAME@ @DBUSER@ @CIDRIPV6@ @METHOD@"
-	echo
-	cat $PGHBA
-    } > /tmp/fred-pghba-update-script-$$
-    cp /tmp/fred-pghba-update-script-$$ $PGHBA
-    rm /tmp/fred-pghba-update-script-$$
+    sed -i '$a# Next three lines were added by script $0 \
+# to allow local connection of user @DBUSER@ to database @DBNAME@ \
+local @DBNAME@ @DBUSER@ @METHOD@ \
+local @DBNAME@ @DBUSER@ @CIDRIPV4@ @METHOD@ \
+local @DBNAME@ @DBUSER@ @CIDRIPV6@ @METHOD@' $PGHBA
+
     # reload new file into postgres
     @PGBINDIR@/pg_ctl reload -D@PGDATADIR@ >/dev/null 2>&1
     if [ $? -ne 0 ]

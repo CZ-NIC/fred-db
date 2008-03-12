@@ -4,16 +4,40 @@ AC_CONFIG_FILES([Makefile
 AM_INIT_AUTOMAKE([-Wall -Werror])
 
 #function to check if directory exists (arguments same as AC_CHECK_FILE)
+#with disable/enable checking option
 AC_DEFUN([AC_CHECK_DIR],
 [
-AC_MSG_CHECKING(for $1)
-if test -d $1; then
-    AC_MSG_RESULT(yes)
-    $2
+if test $CHECK = yes; then
+    AC_MSG_CHECKING(for $1)
+    if test -d $1; then
+        AC_MSG_RESULT(yes)
+        $2
+    else
+        AC_MSG_RESULT(no)
+        $3
+    fi
 else
-    AC_MSG_RESULT(no)
-    $3
-fi])
+    AC_MSG_WARN([Checking for $1 is overriden])
+fi
+])
+
+#function to check if file exists (arguments same as AC_CHECK_FILE)
+#with disable/enable checking option
+AC_DEFUN([AC_CHECK_FIL],
+[
+if test $CHECK = yes; then
+    AC_MSG_CHECKING(for $1)
+    if test -f $1; then
+        AC_MSG_RESULT(yes)
+        $2
+    else
+        AC_MSG_RESULT(no)
+        $3
+    fi
+else
+    AC_MSG_WARN([Checking for $1 is overriden])
+fi
+])
 
 #function to check if method value is valid
 AC_DEFUN([AC_TEST_METHOD],
@@ -40,15 +64,11 @@ else
     $3
 fi])
 
-#check for directory containing pg_hba.conf file
-#on fedora it is /var/lib/pgsql/data, on gentoo and arch /var/lib/postgres/data
-#and on debian and ubuntu /etc/postgres/<version>/main
-AC_ARG_WITH([pghbadir], [AS_HELP_STRING([--with-pghbadir],
-            [Directory containing pg_hba.conf  file [/var/lib/postgres/data]])],
-            [AC_SUBST([PGHBADIR], [$withval])],
-            [AC_SUBST([PGHBADIR], [/var/lib/postgres/data])])
-AC_CHECK_DIR([$PGHBADIR], [], [AC_MSG_ERROR(
-              [Directory "$PGHBADIR" does not exists (use --with-pghbadir)])])
+#if check postgresql directories and files
+AC_ARG_WITH([check], [AS_HELP_STRING([--with-check],
+            [Whether check directories and files existence [yes]])],
+            [AC_SUBST([CHECK], [$withval])],
+            [AC_SUBST([CHECK], [yes])])
 
 #check for directory containing postmaster.pid file
 #on fedora it is /var/lib/pgsql/data, on gentoo and arch /var/lib/postgres/data
@@ -61,20 +81,30 @@ AC_ARG_WITH([pgdatadir], [AS_HELP_STRING([--with-pgdatadir],
 AC_CHECK_DIR([$PGDATADIR], [], [AC_MSG_ERROR(
               [Directory "$PGDATADIR" does not exists (use --with-pgdatadir)])])
 
+#check for directory containing pg_hba.conf file
+#on fedora it is /var/lib/pgsql/data, on gentoo and arch /var/lib/postgres/data
+#and on debian and ubuntu /etc/postgres/<version>/main
+AC_ARG_WITH([pghbadir], [AS_HELP_STRING([--with-pghbadir],
+            [Directory containing pg_hba.conf  file [$PGDATADIR]])],
+            [AC_SUBST([PGHBADIR], [$withval])],
+            [AC_SUBST([PGHBADIR], [$PGDATADIR])])
+AC_CHECK_DIR([$PGHBADIR], [], [AC_MSG_ERROR(
+              [Directory "$PGHBADIR" does not exists (use --with-pghbadir)])])
+
 #bin directory for postgres, must contain pg_ctl, createuser, createdb, createlang, psql
 AC_ARG_WITH([pgbindir], [AS_HELP_STRING([--with-pgbindir],
             [Directory containing postgresql binary files (pg_ctl, createuser, ...) [/usr/bin]])],
             [AC_SUBST([PGBINDIR], [$withval])],
             [AC_SUBST([PGBINDIR], [/usr/bin])])
-AC_CHECK_FILE([$PGBINDIR/pg_ctl], [], [AC_MSG_ERROR(
+AC_CHECK_FIL([$PGBINDIR/pg_ctl], [], [AC_MSG_ERROR(
                [File "$PGBINDIR/pg_ctl" does not exists (use --with-pgbindir)])])
-AC_CHECK_FILE([$PGBINDIR/createuser], [], [AC_MSG_ERROR(
+AC_CHECK_FIL([$PGBINDIR/createuser], [], [AC_MSG_ERROR(
                [File "$PGBINDIR/createuser" does not exists (use --with-pgbindir)])])
-AC_CHECK_FILE([$PGBINDIR/createdb], [], [AC_MSG_ERROR(
+AC_CHECK_FIL([$PGBINDIR/createdb], [], [AC_MSG_ERROR(
                [File "$PGBINDIR/createdb" does not exists (use --with-pgbindir)])])
-AC_CHECK_FILE([$PGBINDIR/createlang], [], [AC_MSG_ERROR(
+AC_CHECK_FIL([$PGBINDIR/createlang], [], [AC_MSG_ERROR(
                [File "$PGBINDIR/createlang" does not exists (use --with-pgbindir)])])
-AC_CHECK_FILE([$PGBINDIR/psql], [], [AC_MSG_ERROR(
+AC_CHECK_FIL([$PGBINDIR/psql], [], [AC_MSG_ERROR(
                [File "$PGBINDIR/psql" does not exists (use --with-pgbindir)])])
 
 #sql script with database structure

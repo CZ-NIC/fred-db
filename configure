@@ -635,8 +635,9 @@ am__leading_dot
 AMTAR
 am__tar
 am__untar
-PGHBADIR
+CHECK
 PGDATADIR
+PGHBADIR
 PGBINDIR
 DBNAME
 DBUSER
@@ -1224,10 +1225,10 @@ if test -n "$ac_init_help"; then
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
-  --with-pghbadir         Directory containing pg_hba.conf file
-                          [/var/lib/postgres/data]
+  --with-check            Whether check directories and files existence [yes]
   --with-pgdatadir        Directory containing postmaster.pid file
                           [/var/lib/postgres/data]
+  --with-pghbadir         Directory containing pg_hba.conf file [$PGDATADIR]
   --with-pgbindir         Directory containing postgresql binary files
                           (pg_ctl, createuser, ...) [/usr/bin]
   --with-dbname           Name of database [fred]
@@ -2152,38 +2153,27 @@ am__tar='${AMTAR} chof - "$$tardir"'; am__untar='${AMTAR} xf -'
 
 
 #function to check if directory exists (arguments same as AC_CHECK_FILE)
+#with disable/enable checking option
+
+
+#function to check if file exists (arguments same as AC_CHECK_FILE)
+#with disable/enable checking option
 
 
 #function to check if method value is valid
 
 
-#check for directory containing pg_hba.conf file
-#on fedora it is /var/lib/pgsql/data, on gentoo and arch /var/lib/postgres/data
-#and on debian and ubuntu /etc/postgres/<version>/main
+#if check postgresql directories and files
 
-# Check whether --with-pghbadir was given.
-if test "${with_pghbadir+set}" = set; then
-  withval=$with_pghbadir; PGHBADIR=$withval
+# Check whether --with-check was given.
+if test "${with_check+set}" = set; then
+  withval=$with_check; CHECK=$withval
 
 else
-  PGHBADIR=/var/lib/postgres/data
+  CHECK=yes
 
 fi
 
-
-{ echo "$as_me:$LINENO: checking for $PGHBADIR" >&5
-echo $ECHO_N "checking for $PGHBADIR... $ECHO_C" >&6; }
-if test -d $PGHBADIR; then
-    { echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6; }
-
-else
-    { echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6; }
-    { { echo "$as_me:$LINENO: error: Directory \"$PGHBADIR\" does not exists (use --with-pghbadir)" >&5
-echo "$as_me: error: Directory \"$PGHBADIR\" does not exists (use --with-pghbadir)" >&2;}
-   { (exit 1); exit 1; }; }
-fi
 
 #check for directory containing postmaster.pid file
 #on fedora it is /var/lib/pgsql/data, on gentoo and arch /var/lib/postgres/data
@@ -2200,19 +2190,59 @@ else
 fi
 
 
-{ echo "$as_me:$LINENO: checking for $PGDATADIR" >&5
+if test $CHECK = yes; then
+    { echo "$as_me:$LINENO: checking for $PGDATADIR" >&5
 echo $ECHO_N "checking for $PGDATADIR... $ECHO_C" >&6; }
-if test -d $PGDATADIR; then
-    { echo "$as_me:$LINENO: result: yes" >&5
+    if test -d $PGDATADIR; then
+        { echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6; }
 
-else
-    { echo "$as_me:$LINENO: result: no" >&5
+    else
+        { echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6; }
-    { { echo "$as_me:$LINENO: error: Directory \"$PGDATADIR\" does not exists (use --with-pgdatadir)" >&5
+        { { echo "$as_me:$LINENO: error: Directory \"$PGDATADIR\" does not exists (use --with-pgdatadir)" >&5
 echo "$as_me: error: Directory \"$PGDATADIR\" does not exists (use --with-pgdatadir)" >&2;}
    { (exit 1); exit 1; }; }
+    fi
+else
+    { echo "$as_me:$LINENO: WARNING: Checking for $PGDATADIR is overriden" >&5
+echo "$as_me: WARNING: Checking for $PGDATADIR is overriden" >&2;}
 fi
+
+
+#check for directory containing pg_hba.conf file
+#on fedora it is /var/lib/pgsql/data, on gentoo and arch /var/lib/postgres/data
+#and on debian and ubuntu /etc/postgres/<version>/main
+
+# Check whether --with-pghbadir was given.
+if test "${with_pghbadir+set}" = set; then
+  withval=$with_pghbadir; PGHBADIR=$withval
+
+else
+  PGHBADIR=$PGDATADIR
+
+fi
+
+
+if test $CHECK = yes; then
+    { echo "$as_me:$LINENO: checking for $PGHBADIR" >&5
+echo $ECHO_N "checking for $PGHBADIR... $ECHO_C" >&6; }
+    if test -d $PGHBADIR; then
+        { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+
+    else
+        { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+        { { echo "$as_me:$LINENO: error: Directory \"$PGHBADIR\" does not exists (use --with-pghbadir)" >&5
+echo "$as_me: error: Directory \"$PGHBADIR\" does not exists (use --with-pghbadir)" >&2;}
+   { (exit 1); exit 1; }; }
+    fi
+else
+    { echo "$as_me:$LINENO: WARNING: Checking for $PGHBADIR is overriden" >&5
+echo "$as_me: WARNING: Checking for $PGHBADIR is overriden" >&2;}
+fi
+
 
 #bin directory for postgres, must contain pg_ctl, createuser, createdb, createlang, psql
 
@@ -2225,139 +2255,104 @@ else
 
 fi
 
-as_ac_File=`echo "ac_cv_file_$PGBINDIR/pg_ctl" | $as_tr_sh`
-{ echo "$as_me:$LINENO: checking for $PGBINDIR/pg_ctl" >&5
+
+if test $CHECK = yes; then
+    { echo "$as_me:$LINENO: checking for $PGBINDIR/pg_ctl" >&5
 echo $ECHO_N "checking for $PGBINDIR/pg_ctl... $ECHO_C" >&6; }
-if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  test "$cross_compiling" = yes &&
-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
-   { (exit 1); exit 1; }; }
-if test -r "$PGBINDIR/pg_ctl"; then
-  eval "$as_ac_File=yes"
-else
-  eval "$as_ac_File=no"
-fi
-fi
-ac_res=`eval echo '${'$as_ac_File'}'`
-	       { echo "$as_me:$LINENO: result: $ac_res" >&5
-echo "${ECHO_T}$ac_res" >&6; }
-if test `eval echo '${'$as_ac_File'}'` = yes; then
-  :
-else
-  { { echo "$as_me:$LINENO: error: File \"$PGBINDIR/pg_ctl\" does not exists (use --with-pgbindir)" >&5
+    if test -f $PGBINDIR/pg_ctl; then
+        { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+
+    else
+        { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+        { { echo "$as_me:$LINENO: error: File \"$PGBINDIR/pg_ctl\" does not exists (use --with-pgbindir)" >&5
 echo "$as_me: error: File \"$PGBINDIR/pg_ctl\" does not exists (use --with-pgbindir)" >&2;}
    { (exit 1); exit 1; }; }
+    fi
+else
+    { echo "$as_me:$LINENO: WARNING: Checking for $PGBINDIR/pg_ctl is overriden" >&5
+echo "$as_me: WARNING: Checking for $PGBINDIR/pg_ctl is overriden" >&2;}
 fi
 
-as_ac_File=`echo "ac_cv_file_$PGBINDIR/createuser" | $as_tr_sh`
-{ echo "$as_me:$LINENO: checking for $PGBINDIR/createuser" >&5
+
+if test $CHECK = yes; then
+    { echo "$as_me:$LINENO: checking for $PGBINDIR/createuser" >&5
 echo $ECHO_N "checking for $PGBINDIR/createuser... $ECHO_C" >&6; }
-if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  test "$cross_compiling" = yes &&
-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
-   { (exit 1); exit 1; }; }
-if test -r "$PGBINDIR/createuser"; then
-  eval "$as_ac_File=yes"
-else
-  eval "$as_ac_File=no"
-fi
-fi
-ac_res=`eval echo '${'$as_ac_File'}'`
-	       { echo "$as_me:$LINENO: result: $ac_res" >&5
-echo "${ECHO_T}$ac_res" >&6; }
-if test `eval echo '${'$as_ac_File'}'` = yes; then
-  :
-else
-  { { echo "$as_me:$LINENO: error: File \"$PGBINDIR/createuser\" does not exists (use --with-pgbindir)" >&5
+    if test -f $PGBINDIR/createuser; then
+        { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+
+    else
+        { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+        { { echo "$as_me:$LINENO: error: File \"$PGBINDIR/createuser\" does not exists (use --with-pgbindir)" >&5
 echo "$as_me: error: File \"$PGBINDIR/createuser\" does not exists (use --with-pgbindir)" >&2;}
    { (exit 1); exit 1; }; }
+    fi
+else
+    { echo "$as_me:$LINENO: WARNING: Checking for $PGBINDIR/createuser is overriden" >&5
+echo "$as_me: WARNING: Checking for $PGBINDIR/createuser is overriden" >&2;}
 fi
 
-as_ac_File=`echo "ac_cv_file_$PGBINDIR/createdb" | $as_tr_sh`
-{ echo "$as_me:$LINENO: checking for $PGBINDIR/createdb" >&5
+
+if test $CHECK = yes; then
+    { echo "$as_me:$LINENO: checking for $PGBINDIR/createdb" >&5
 echo $ECHO_N "checking for $PGBINDIR/createdb... $ECHO_C" >&6; }
-if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  test "$cross_compiling" = yes &&
-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
-   { (exit 1); exit 1; }; }
-if test -r "$PGBINDIR/createdb"; then
-  eval "$as_ac_File=yes"
-else
-  eval "$as_ac_File=no"
-fi
-fi
-ac_res=`eval echo '${'$as_ac_File'}'`
-	       { echo "$as_me:$LINENO: result: $ac_res" >&5
-echo "${ECHO_T}$ac_res" >&6; }
-if test `eval echo '${'$as_ac_File'}'` = yes; then
-  :
-else
-  { { echo "$as_me:$LINENO: error: File \"$PGBINDIR/createdb\" does not exists (use --with-pgbindir)" >&5
+    if test -f $PGBINDIR/createdb; then
+        { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+
+    else
+        { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+        { { echo "$as_me:$LINENO: error: File \"$PGBINDIR/createdb\" does not exists (use --with-pgbindir)" >&5
 echo "$as_me: error: File \"$PGBINDIR/createdb\" does not exists (use --with-pgbindir)" >&2;}
    { (exit 1); exit 1; }; }
+    fi
+else
+    { echo "$as_me:$LINENO: WARNING: Checking for $PGBINDIR/createdb is overriden" >&5
+echo "$as_me: WARNING: Checking for $PGBINDIR/createdb is overriden" >&2;}
 fi
 
-as_ac_File=`echo "ac_cv_file_$PGBINDIR/createlang" | $as_tr_sh`
-{ echo "$as_me:$LINENO: checking for $PGBINDIR/createlang" >&5
+
+if test $CHECK = yes; then
+    { echo "$as_me:$LINENO: checking for $PGBINDIR/createlang" >&5
 echo $ECHO_N "checking for $PGBINDIR/createlang... $ECHO_C" >&6; }
-if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  test "$cross_compiling" = yes &&
-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
-   { (exit 1); exit 1; }; }
-if test -r "$PGBINDIR/createlang"; then
-  eval "$as_ac_File=yes"
-else
-  eval "$as_ac_File=no"
-fi
-fi
-ac_res=`eval echo '${'$as_ac_File'}'`
-	       { echo "$as_me:$LINENO: result: $ac_res" >&5
-echo "${ECHO_T}$ac_res" >&6; }
-if test `eval echo '${'$as_ac_File'}'` = yes; then
-  :
-else
-  { { echo "$as_me:$LINENO: error: File \"$PGBINDIR/createlang\" does not exists (use --with-pgbindir)" >&5
+    if test -f $PGBINDIR/createlang; then
+        { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+
+    else
+        { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+        { { echo "$as_me:$LINENO: error: File \"$PGBINDIR/createlang\" does not exists (use --with-pgbindir)" >&5
 echo "$as_me: error: File \"$PGBINDIR/createlang\" does not exists (use --with-pgbindir)" >&2;}
    { (exit 1); exit 1; }; }
+    fi
+else
+    { echo "$as_me:$LINENO: WARNING: Checking for $PGBINDIR/createlang is overriden" >&5
+echo "$as_me: WARNING: Checking for $PGBINDIR/createlang is overriden" >&2;}
 fi
 
-as_ac_File=`echo "ac_cv_file_$PGBINDIR/psql" | $as_tr_sh`
-{ echo "$as_me:$LINENO: checking for $PGBINDIR/psql" >&5
+
+if test $CHECK = yes; then
+    { echo "$as_me:$LINENO: checking for $PGBINDIR/psql" >&5
 echo $ECHO_N "checking for $PGBINDIR/psql... $ECHO_C" >&6; }
-if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  test "$cross_compiling" = yes &&
-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
-   { (exit 1); exit 1; }; }
-if test -r "$PGBINDIR/psql"; then
-  eval "$as_ac_File=yes"
-else
-  eval "$as_ac_File=no"
-fi
-fi
-ac_res=`eval echo '${'$as_ac_File'}'`
-	       { echo "$as_me:$LINENO: result: $ac_res" >&5
-echo "${ECHO_T}$ac_res" >&6; }
-if test `eval echo '${'$as_ac_File'}'` = yes; then
-  :
-else
-  { { echo "$as_me:$LINENO: error: File \"$PGBINDIR/psql\" does not exists (use --with-pgbindir)" >&5
+    if test -f $PGBINDIR/psql; then
+        { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+
+    else
+        { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+        { { echo "$as_me:$LINENO: error: File \"$PGBINDIR/psql\" does not exists (use --with-pgbindir)" >&5
 echo "$as_me: error: File \"$PGBINDIR/psql\" does not exists (use --with-pgbindir)" >&2;}
    { (exit 1); exit 1; }; }
+    fi
+else
+    { echo "$as_me:$LINENO: WARNING: Checking for $PGBINDIR/psql is overriden" >&5
+echo "$as_me: WARNING: Checking for $PGBINDIR/psql is overriden" >&2;}
 fi
 
 
@@ -3161,8 +3156,9 @@ am__leading_dot!$am__leading_dot$ac_delim
 AMTAR!$AMTAR$ac_delim
 am__tar!$am__tar$ac_delim
 am__untar!$am__untar$ac_delim
-PGHBADIR!$PGHBADIR$ac_delim
+CHECK!$CHECK$ac_delim
 PGDATADIR!$PGDATADIR$ac_delim
+PGHBADIR!$PGHBADIR$ac_delim
 PGBINDIR!$PGBINDIR$ac_delim
 DBNAME!$DBNAME$ac_delim
 DBUSER!$DBUSER$ac_delim
@@ -3173,7 +3169,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 69; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 70; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
