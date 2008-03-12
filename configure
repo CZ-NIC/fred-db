@@ -635,6 +635,14 @@ am__leading_dot
 AMTAR
 am__tar
 am__untar
+PGHBADIR
+PGDATADIR
+PGBINDIR
+DBNAME
+DBUSER
+CIDRIPV4
+CIDRIPV6
+METHOD
 LIBOBJS
 LTLIBOBJS'
 ac_subst_files=''
@@ -1213,6 +1221,23 @@ if test -n "$ac_init_help"; then
    esac
   cat <<\_ACEOF
 
+Optional Packages:
+  --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
+  --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-pghbadir         Directory containing pg_hba.conf file
+                          [/var/lib/postgres/data]
+  --with-pgdatadir        Directory containing postmaster.pid file
+                          [/var/lib/postgres/data]
+  --with-pgbindir         Directory containing postgresql binary files
+                          (pg_ctl, createuser, ...) [/usr/bin]
+  --with-dbname           Name of database [fred]
+  --with-dbuser           Database user (owner) [fred]
+  --with-cidripv4         Specified the set of allowed hosts for IPv4
+                          [127.0.0.1/32]
+  --with-cidripv6         Specified the set of allowed hosts for IPv6
+                          [::1/128]
+  --with-method           Method of control when accessing database [trust]
+
 _ACEOF
 ac_status=$?
 fi
@@ -1640,7 +1665,7 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
-ac_config_files="$ac_config_files Makefile fred-db.spec"
+ac_config_files="$ac_config_files Makefile fred-db.spec createdb.sh"
 
 am__api_version='1.10'
 
@@ -2124,6 +2149,326 @@ am__tar='${AMTAR} chof - "$$tardir"'; am__untar='${AMTAR} xf -'
 
 
 
+
+
+#function to check if directory exists (arguments same as AC_CHECK_FILE)
+
+
+#function to check if method value is valid
+
+
+#check for directory containing pg_hba.conf file
+#on fedora it is /var/lib/pgsql/data, on gentoo and arch /var/lib/postgres/data
+#and on debian and ubuntu /etc/postgres/<version>/main
+
+# Check whether --with-pghbadir was given.
+if test "${with_pghbadir+set}" = set; then
+  withval=$with_pghbadir; PGHBADIR=$withval
+
+else
+  PGHBADIR=/var/lib/postgres/data
+
+fi
+
+
+{ echo "$as_me:$LINENO: checking for $PGHBADIR" >&5
+echo $ECHO_N "checking for $PGHBADIR... $ECHO_C" >&6; }
+if test -d $PGHBADIR; then
+    { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+
+else
+    { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+    { { echo "$as_me:$LINENO: error: Directory \"$PGHBADIR\" does not exists (use --with-pghbadir)" >&5
+echo "$as_me: error: Directory \"$PGHBADIR\" does not exists (use --with-pghbadir)" >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
+#check for directory containing postmaster.pid file
+#on fedora it is /var/lib/pgsql/data, on gentoo and arch /var/lib/postgres/data
+#and on debian and ubuntu /etc/postgres/<version>/main/pgdata
+#this directory is sometimes and somewhere mentioned as $PGDATA
+
+# Check whether --with-pgdatadir was given.
+if test "${with_pgdatadir+set}" = set; then
+  withval=$with_pgdatadir; PGDATADIR=$withval
+
+else
+  PGDATADIR=/var/lib/postgres/data
+
+fi
+
+
+{ echo "$as_me:$LINENO: checking for $PGDATADIR" >&5
+echo $ECHO_N "checking for $PGDATADIR... $ECHO_C" >&6; }
+if test -d $PGDATADIR; then
+    { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+
+else
+    { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+    { { echo "$as_me:$LINENO: error: Directory \"$PGDATADIR\" does not exists (use --with-pgdatadir)" >&5
+echo "$as_me: error: Directory \"$PGDATADIR\" does not exists (use --with-pgdatadir)" >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
+#bin directory for postgres, must contain pg_ctl, createuser, createdb, createlang, psql
+
+# Check whether --with-pgbindir was given.
+if test "${with_pgbindir+set}" = set; then
+  withval=$with_pgbindir; PGBINDIR=$withval
+
+else
+  PGBINDIR=/usr/bin
+
+fi
+
+as_ac_File=`echo "ac_cv_file_$PGBINDIR/pg_ctl" | $as_tr_sh`
+{ echo "$as_me:$LINENO: checking for $PGBINDIR/pg_ctl" >&5
+echo $ECHO_N "checking for $PGBINDIR/pg_ctl... $ECHO_C" >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "$PGBINDIR/pg_ctl"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval echo '${'$as_ac_File'}'`
+	       { echo "$as_me:$LINENO: result: $ac_res" >&5
+echo "${ECHO_T}$ac_res" >&6; }
+if test `eval echo '${'$as_ac_File'}'` = yes; then
+  :
+else
+  { { echo "$as_me:$LINENO: error: File \"$PGBINDIR/pg_ctl\" does not exists (use --with-pgbindir)" >&5
+echo "$as_me: error: File \"$PGBINDIR/pg_ctl\" does not exists (use --with-pgbindir)" >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
+as_ac_File=`echo "ac_cv_file_$PGBINDIR/createuser" | $as_tr_sh`
+{ echo "$as_me:$LINENO: checking for $PGBINDIR/createuser" >&5
+echo $ECHO_N "checking for $PGBINDIR/createuser... $ECHO_C" >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "$PGBINDIR/createuser"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval echo '${'$as_ac_File'}'`
+	       { echo "$as_me:$LINENO: result: $ac_res" >&5
+echo "${ECHO_T}$ac_res" >&6; }
+if test `eval echo '${'$as_ac_File'}'` = yes; then
+  :
+else
+  { { echo "$as_me:$LINENO: error: File \"$PGBINDIR/createuser\" does not exists (use --with-pgbindir)" >&5
+echo "$as_me: error: File \"$PGBINDIR/createuser\" does not exists (use --with-pgbindir)" >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
+as_ac_File=`echo "ac_cv_file_$PGBINDIR/createdb" | $as_tr_sh`
+{ echo "$as_me:$LINENO: checking for $PGBINDIR/createdb" >&5
+echo $ECHO_N "checking for $PGBINDIR/createdb... $ECHO_C" >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "$PGBINDIR/createdb"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval echo '${'$as_ac_File'}'`
+	       { echo "$as_me:$LINENO: result: $ac_res" >&5
+echo "${ECHO_T}$ac_res" >&6; }
+if test `eval echo '${'$as_ac_File'}'` = yes; then
+  :
+else
+  { { echo "$as_me:$LINENO: error: File \"$PGBINDIR/createdb\" does not exists (use --with-pgbindir)" >&5
+echo "$as_me: error: File \"$PGBINDIR/createdb\" does not exists (use --with-pgbindir)" >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
+as_ac_File=`echo "ac_cv_file_$PGBINDIR/createlang" | $as_tr_sh`
+{ echo "$as_me:$LINENO: checking for $PGBINDIR/createlang" >&5
+echo $ECHO_N "checking for $PGBINDIR/createlang... $ECHO_C" >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "$PGBINDIR/createlang"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval echo '${'$as_ac_File'}'`
+	       { echo "$as_me:$LINENO: result: $ac_res" >&5
+echo "${ECHO_T}$ac_res" >&6; }
+if test `eval echo '${'$as_ac_File'}'` = yes; then
+  :
+else
+  { { echo "$as_me:$LINENO: error: File \"$PGBINDIR/createlang\" does not exists (use --with-pgbindir)" >&5
+echo "$as_me: error: File \"$PGBINDIR/createlang\" does not exists (use --with-pgbindir)" >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
+as_ac_File=`echo "ac_cv_file_$PGBINDIR/psql" | $as_tr_sh`
+{ echo "$as_me:$LINENO: checking for $PGBINDIR/psql" >&5
+echo $ECHO_N "checking for $PGBINDIR/psql... $ECHO_C" >&6; }
+if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  test "$cross_compiling" = yes &&
+  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+   { (exit 1); exit 1; }; }
+if test -r "$PGBINDIR/psql"; then
+  eval "$as_ac_File=yes"
+else
+  eval "$as_ac_File=no"
+fi
+fi
+ac_res=`eval echo '${'$as_ac_File'}'`
+	       { echo "$as_me:$LINENO: result: $ac_res" >&5
+echo "${ECHO_T}$ac_res" >&6; }
+if test `eval echo '${'$as_ac_File'}'` = yes; then
+  :
+else
+  { { echo "$as_me:$LINENO: error: File \"$PGBINDIR/psql\" does not exists (use --with-pgbindir)" >&5
+echo "$as_me: error: File \"$PGBINDIR/psql\" does not exists (use --with-pgbindir)" >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
+
+#sql script with database structure
+
+#database name
+
+# Check whether --with-dbname was given.
+if test "${with_dbname+set}" = set; then
+  withval=$with_dbname; DBNAME=$withval
+
+else
+  DBNAME=fred
+
+fi
+
+
+#database user (owner)
+
+# Check whether --with-dbuser was given.
+if test "${with_dbuser+set}" = set; then
+  withval=$with_dbuser; DBUSER=$withval
+
+else
+  DBUSER=fred
+
+fi
+
+
+#password cannot be enteren in non-interactive mode,
+#createuser command with -P argument promt for password
+### #database password
+### AC_ARG_WITH([dbpass], [AS_HELP_STRING([--with-dbpass],
+            ### [Database user password []])],
+            ### [AC_SUBST([DBPASS], [$withval])],
+            ### [AC_SUBST([DBPASS], [""])])
+
+### #database host
+### AC_ARG_WITH([hostname], [AS_HELP_STRING([--with-hostname],
+            ### [Database host address [localhost]])],
+            ### [AC_SUBST([HOSTNAME], [$withval])],
+            ### [AC_SUBST([HOSTNAME], [localhost])])
+
+#database cidr-address for IPv4(in file pg_hba.conf)
+
+# Check whether --with-cidripv4 was given.
+if test "${with_cidripv4+set}" = set; then
+  withval=$with_cidripv4; CIDRIPV4=$withval
+
+else
+  CIDRIPV4=127.0.0.1/32
+
+fi
+
+
+#cidrv6 address specifies the set of hosts to mathch record for ipv6
+
+# Check whether --with-cidripv6 was given.
+if test "${with_cidripv6+set}" = set; then
+  withval=$with_cidripv6; CIDRIPV6=$withval
+
+else
+  CIDRIPV6=::1/128
+
+fi
+
+
+#method
+
+# Check whether --with-method was given.
+if test "${with_method+set}" = set; then
+  withval=$with_method; METHOD=$withval
+
+else
+  METHOD=trust
+
+fi
+
+
+{ echo "$as_me:$LINENO: checking whether method $METHOD is valid" >&5
+echo $ECHO_N "checking whether method $METHOD is valid... $ECHO_C" >&6; }
+case "$METHOD" in
+    "trust")a=1;;
+    "reject")a=1;;
+    "md5")a=1;;
+    "crypt")a=1;;
+    "password")a=1;;
+    "krb5")a=1;;
+    "ident")a=1;;
+    "pam")a=1;;
+    "ldap")a=1;;
+    *)a=0;;
+esac
+if test $a -eq 1
+then
+    { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+
+else
+    { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+    { { echo "$as_me:$LINENO: error: Method \"$METHOD\" is not valid. See comments in your pg_hba.conf file" >&5
+echo "$as_me: error: Method \"$METHOD\" is not valid. See comments in your pg_hba.conf file" >&2;}
+   { (exit 1); exit 1; }; }
+fi
+
+### #option
+### AC_ARG_WITH([option], [AS_HELP_STRING([--with-option],
+            ### [Ident is ident map or name of the PAM service []])],
+            ### [AC_SUBST([OPTION], [$withval])],
+            ### [AC_SUBST([OPTION], [""])])
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -2696,6 +3041,7 @@ do
   case $ac_config_target in
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "fred-db.spec") CONFIG_FILES="$CONFIG_FILES fred-db.spec" ;;
+    "createdb.sh") CONFIG_FILES="$CONFIG_FILES createdb.sh" ;;
 
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
 echo "$as_me: error: invalid argument: $ac_config_target" >&2;}
@@ -2815,11 +3161,19 @@ am__leading_dot!$am__leading_dot$ac_delim
 AMTAR!$AMTAR$ac_delim
 am__tar!$am__tar$ac_delim
 am__untar!$am__untar$ac_delim
+PGHBADIR!$PGHBADIR$ac_delim
+PGDATADIR!$PGDATADIR$ac_delim
+PGBINDIR!$PGBINDIR$ac_delim
+DBNAME!$DBNAME$ac_delim
+DBUSER!$DBUSER$ac_delim
+CIDRIPV4!$CIDRIPV4$ac_delim
+CIDRIPV6!$CIDRIPV6$ac_delim
+METHOD!$METHOD$ac_delim
 LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 61; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 69; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

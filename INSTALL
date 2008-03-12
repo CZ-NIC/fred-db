@@ -229,6 +229,36 @@ an Autoconf bug.  Until the bug is fixed you can use this workaround:
      Look for the package's source code in directory DIR.  Usually
      `configure' can determine that directory automatically.
 
+`--with-pghbadir=DIR'
+    This directory must contain pg_hba.conf file. Its location
+    differ between distributions. DIR defaults to 
+    `/var/lib/postgres/data'.
+
+`--with-pgdatadir=DIR'
+    This directory must contain postmaster.pid file. Directory
+    is mentioned as shell variable $PGDATA. Default is
+    `/var/lib/postgres/data'.
+
+`--with-pgbindir=DIR'
+    Directory containing postgres binary files such as pg_ctl,
+    psql, createuser etc. Default location is `/usr/bin'.
+
+`--with-dbname=NAME'
+    Name of database. This will be used in pg_hba.conf file.
+    Default is `fred'.
+
+`--with-dbuser=NAME'
+    Database user name. Used in pg_hba.conf file. `fred' is default.
+
+`--with-cidripv4=ADDR'
+`--with-cidripv6=ADDR'
+    CIDR-address specifies the set of hosts the record matches.
+    ADDR default is `127.0.0.1/32' for IPv4 and `::1/128' for IPv6.
+
+`--with-method=METHOD'
+    Method can be `trust', `reject', `md5', `crypt', `password',
+    `krb5', `ident', `pam' or `ldap'. Default is `trust'.
+
 `configure' also accepts some other, not widely useful, options.  Run
 `configure --help' for more details.
 

@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# This script ensures that database is installed and configured properly 
+# for connection of database user '@DBUSER@'. Script has to be run under 
+# postgresql administrator privileges (usually as user postgres)
+
+if [ "$USER" != "postgres" ]
+then
+    echo "Must be run under user 'postgres'"
+    exit 1;
+fi
+
+# First check if connection is configured in pg_hba file. This file is
+# located in postgresql cluster in PGDATA directory. If located elsewhere
+# run this script with path to pg_hba file as first parametr
+
+PGHBA=@PGHBADIR@/pg_hba.conf
+if [ ! -f $PGHBA ]
+then
+    if [ "$1" = "" -o ! -f "$1" ]
+    then
+        echo "Cannot locate pg_hba.conf file"
+	exit 2
+    else
+        PGHBA=$1
+    fi
+fi
+
+if grep @DBUSER@ $PGHBA >/dev/null 2>&1
+then
+    /bin/true
+else
+    # There is no evidence about user @DBUSER@ in authentication file so
+    # it can be suspected that user @DBUSER@ will not be allowed to connect
+    # This file will be modified to allow local connection for user
+    # @DBUSER@. If this is not intended modify database access options in
+    # server @DBUSER@ server configuration files to suite you needs
+    {
+	echo "# Next three lines were added by script $0"
+	echo "# to allow local connection of user @DBUSER@ to database @DBNAME@ "
+	echo "local @DBNAME@ @DBUSER@ @METHOD@"
+	echo "host @DBNAME@ @DBUSER@ @CIDRIPV4@ @METHOD@"
+	echo "host @DBNAME@ @DBUSER@ @CIDRIPV6@ @METHOD@"
+	echo
+	cat $PGHBA
+    } > /tmp/fred-pghba-update-script-$$
+    cp /tmp/fred-pghba-update-script-$$ $PGHBA
+    rm /tmp/fred-pghba-update-script-$$
+    # reload new file into postgres
+    @PGBINDIR@/pg_ctl reload -D@PGDATADIR@ >/dev/null 2>&1
+    if [ $? -ne 0 ]
+    then
+	    echo "Reload of updated configuration failed, try to reload manualy"
+	    exit 3
+    fi
+fi
+
+STRUCTSQL=@prefix@/share/fred-db/structure.sql 
+TABLES=$(echo "\dt" | @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -At 2>/dev/null)
+if [ "$TABLES" = "" ]; then
+    @PGBINDIR@/createuser @DBUSER@ -SDR > /dev/null 2>&1
+    @PGBINDIR@/createdb @DBNAME@ -O @DBUSER@ -E UTF8 > /dev/null 2>&1
+    @PGBINDIR@/createlang -U postgres plpgsql @DBNAME@ > /dev/null 2>&1
+    @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -f $STRUCTSQL >/dev/null 2>&1
+fi
