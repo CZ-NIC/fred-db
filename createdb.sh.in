@@ -17,6 +17,7 @@ fi
 if [ "$PGDATA" = "" ]
 then
     PGHBA=@PGHBADIR@/pg_hba.conf
+    PGDATA=@PGDATADIR@
 else
     PGHBA=$PGDATA/pg_hba.conf
 fi
@@ -41,14 +42,15 @@ else
     # This file will be modified to allow local connection for user
     # @DBUSER@. If this is not intended modify database access options in
     # server @DBUSER@ server configuration files to suite you needs
-    sed -i '$a# Next three lines were added by script $0 \
+    sed -i '1i# Next three lines were added by script $0 \
 # to allow local connection of user @DBUSER@ to database @DBNAME@ \
 local @DBNAME@ @DBUSER@ @METHOD@ \
-local @DBNAME@ @DBUSER@ @CIDRIPV4@ @METHOD@ \
-local @DBNAME@ @DBUSER@ @CIDRIPV6@ @METHOD@' $PGHBA
+host @DBNAME@ @DBUSER@ @CIDRIPV4@ @METHOD@ \
+host @DBNAME@ @DBUSER@ @CIDRIPV6@ @METHOD@ \
+' $PGHBA
 
     # reload new file into postgres
-    @PGBINDIR@/pg_ctl reload -D@PGDATADIR@ >/dev/null 2>&1
+    @PGBINDIR@/pg_ctl reload -D$PGDATA >/dev/null 2>&1
     if [ $? -ne 0 ]
     then
 	    echo "Reload of updated configuration failed, try to reload manualy"
@@ -57,7 +59,8 @@ local @DBNAME@ @DBUSER@ @CIDRIPV6@ @METHOD@' $PGHBA
 fi
 
 STRUCTSQL=@prefix@/share/fred-db/structure.sql 
-TABLES=$(echo "\dt" | @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -At 2>/dev/null)
+TABLES=$(echo "SELECT val FROM enum_parameters WHERE id=1" | 
+         @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -At 2>/dev/null)
 if [ "$TABLES" = "" ]; then
     @PGBINDIR@/createuser @DBUSER@ -SDR > /dev/null 2>&1
     @PGBINDIR@/createdb @DBNAME@ -O @DBUSER@ -E UTF8 > /dev/null 2>&1
