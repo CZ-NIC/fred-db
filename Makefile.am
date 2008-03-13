@@ -1,6 +1,7 @@
 pkgdata_DATA = structure.sql
 dist_pkgdata_SCRIPTS = createdb.sh
-CLEANFILES = structure.sql
+sbin_SCRIPTS = fred-dbmanager
+CLEANFILES = structure.sql createdb.sh fred-dbmanager
 EXTRA_DIST = $(srcdir)/sql/*.sql $(srcdir)/orderedsql.sh \
              $(srcdir)/fred-db.spec
 

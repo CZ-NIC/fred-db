@@ -1,7 +1,10 @@
 AC_INIT([fred-db], 1.8)
 AC_CONFIG_FILES([Makefile
-		 fred-db.spec createdb.sh])
+		 fred-db.spec createdb.sh fred-dbmanager])
 AM_INIT_AUTOMAKE([-Wall -Werror])
+
+#test if sed is present
+AC_PROG_SED
 
 #function to check if directory exists (arguments same as AC_CHECK_FILE)
 #with disable/enable checking option

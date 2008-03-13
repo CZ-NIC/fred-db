@@ -42,7 +42,7 @@ else
     # This file will be modified to allow local connection for user
     # @DBUSER@. If this is not intended modify database access options in
     # server @DBUSER@ server configuration files to suite you needs
-    sed -i '1i# Next three lines were added by script $0 \
+    sed -i '1i# Next three lines were added by script '$0' \
 # to allow local connection of user @DBUSER@ to database @DBNAME@ \
 local @DBNAME@ @DBUSER@ @METHOD@ \
 host @DBNAME@ @DBUSER@ @CIDRIPV4@ @METHOD@ \
@@ -58,7 +58,9 @@ host @DBNAME@ @DBUSER@ @CIDRIPV6@ @METHOD@ \
     fi
 fi
 
-STRUCTSQL=@prefix@/share/fred-db/structure.sql 
+prefix=@prefix@
+datarootdir=@datarootdir@
+STRUCTSQL=@datadir@/@PACKAGE@/structure.sql 
 TABLES=$(echo "SELECT val FROM enum_parameters WHERE id=1" | 
          @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -At 2>/dev/null)
 if [ "$TABLES" = "" ]; then
