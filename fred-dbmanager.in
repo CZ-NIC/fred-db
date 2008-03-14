@@ -97,9 +97,99 @@ f_uninstall () {
     fi
 }
 
+# return values:
+# 0 if equal
+# 1 if first version is bigger than second
+# 2 if second version is bigger than first
+# e.g. `compare_versions "1.2" "1.2.4"' return 2
+compare_versions () {
+    if [ "$3" = "" ]
+    then
+        separator="."
+    else
+        separator=$3
+    fi
+    ii=1
+    while /bin/true; do
+        verA=`echo $1 | cut -d"$separator" -f $ii 2> /dev/null`
+        verB=`echo $2 | cut -d"$separator" -f $ii 2> /dev/null`
+        
+        if [ "$verA" = "" -a "$verB" = "" ]
+        then
+            return 0
+        fi
+
+        if [ "$verA" = "" ]
+        then
+            verA=0
+        fi
+        if [ "$verB" = "" ]
+        then
+            verB=0
+        fi
+
+        if [ `expr $verA '=' $verB` -eq 0 ]
+        then
+            if [ `expr $verA '>' $verB` -eq 1 ]
+            then
+                return 1
+            elif [ `expr $verA '<' $verB` -eq 1 ]
+            then
+                return 2
+            fi
+        fi
+
+        ii=`expr $ii + 1`
+    done
+    return 0
+}
+
+#add content of $2 file to $1 file
+add_to_list () {
+    cat $2 >> $1
+}
+
+# create upgrade sctipt against version in $1 and store it in file $2
+create_upgrade_script () {
+    prefix=@prefix@
+    datarootdir=@datarootdir@
+    upgradesqldir=@datadir@/@PACKAGE@/upgrades/
+    curr_dir=`pwd`
+    cd $upgradesqldir
+    for i in `ls *.sql`
+    do
+        vv=`echo $i | sed -r 's/([0-9_]+)-([0-9_]+)\.sql/\1/' | sed '/_/s//\./g'`
+        compare_versions $1 $vv
+        last=$?
+        if [ $last = 0 ]
+        then
+            vvv=`echo $i | sed -r 's/([0-9_]+)-([0-9_]+)\.sql/\2/' | sed '/_/s//\./g'`
+            compare_versions $1 $vvv
+            if [ $? = 2 ]
+            then
+                add_to_list $2 $i
+            fi
+        elif [ $last = 2 ]
+        then
+            add_to_list $2 $i
+        fi
+
+    done
+    cd $curr_dir
+}
+
 f_upgrade () {
     test_user
-    echo "upgrade"
+    test_db
+    if [ $? != 0 ]
+    then
+        echo "@DBNAME@ database does not exist or postgres server does not runnint."
+        exit 1
+    fi
+    ver=`/usr/bin/psql -d @DBNAME@ -U @DBUSER@ -At -c "select val from enum_parameters where id=1;"`
+    upgrade_script="/tmp/fred-upgrade.sql.$$"
+    create_upgrade_script $ver $upgrade_script
+    @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -f $upgrade_script >/dev/null 2>&1
 }
 
 f_status () {
@@ -109,8 +199,8 @@ f_status () {
         echo "@DBNAME@ database does not exist or postgres server does not running."
         exit 1
     else
-        ver=`psql -U @DBUSER@ -d @DBNAME@ -R'*' -c 'select * from enum_parameters where id=1;' | grep 'model_version' | cut -d'|' -f3`
-        echo "@DBNAME@ database version:$ver"
+        ver=`/usr/bin/psql -d @DBNAME@ -U @DBUSER@ -At -c "select val from enum_parameters where id=1;"`
+        echo "@DBNAME@ database version: $ver"
         exit 0
     fi
 }

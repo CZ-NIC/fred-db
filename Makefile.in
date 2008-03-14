@@ -46,7 +46,7 @@ am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES = fred-db.spec createdb.sh fred-dbmanager
 am__installdirs = "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(sbindir)" \
-	"$(DESTDIR)$(pkgdatadir)"
+	"$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(upgradesdir)"
 dist_pkgdataSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 sbinSCRIPT_INSTALL = $(INSTALL_SCRIPT)
 SCRIPTS = $(dist_pkgdata_SCRIPTS) $(sbin_SCRIPTS)
@@ -59,7 +59,8 @@ am__vpath_adj = case $$p in \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 pkgdataDATA_INSTALL = $(INSTALL_DATA)
-DATA = $(pkgdata_DATA)
+upgradesDATA_INSTALL = $(INSTALL_DATA)
+DATA = $(pkgdata_DATA) $(upgrades_DATA)
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 distdir = $(PACKAGE)-$(VERSION)
 top_distdir = $(distdir)
@@ -154,9 +155,11 @@ top_srcdir = @top_srcdir@
 pkgdata_DATA = structure.sql
 dist_pkgdata_SCRIPTS = createdb.sh
 sbin_SCRIPTS = fred-dbmanager
+upgradesdir = $(pkgdatadir)/upgrades
+upgrades_DATA = $(srcdir)/upgrades/*.sql
 CLEANFILES = structure.sql createdb.sh fred-dbmanager
 EXTRA_DIST = $(srcdir)/sql/*.sql $(srcdir)/orderedsql.sh \
-             $(srcdir)/fred-db.spec
+             $(srcdir)/fred-db.spec $(srcdir)/upgrades/*.sql
 
 all: all-am
 
@@ -254,6 +257,23 @@ uninstall-pkgdataDATA:
 	  f=$(am__strip_dir) \
 	  echo " rm -f '$(DESTDIR)$(pkgdatadir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(pkgdatadir)/$$f"; \
+	done
+install-upgradesDATA: $(upgrades_DATA)
+	@$(NORMAL_INSTALL)
+	test -z "$(upgradesdir)" || $(MKDIR_P) "$(DESTDIR)$(upgradesdir)"
+	@list='$(upgrades_DATA)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(upgradesDATA_INSTALL) '$$d$$p' '$(DESTDIR)$(upgradesdir)/$$f'"; \
+	  $(upgradesDATA_INSTALL) "$$d$$p" "$(DESTDIR)$(upgradesdir)/$$f"; \
+	done
+
+uninstall-upgradesDATA:
+	@$(NORMAL_UNINSTALL)
+	@list='$(upgrades_DATA)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(upgradesdir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(upgradesdir)/$$f"; \
 	done
 tags: TAGS
 TAGS:
@@ -397,7 +417,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(SCRIPTS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(pkgdatadir)"; do \
+	for dir in "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(upgradesdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -444,7 +464,8 @@ info: info-am
 
 info-am:
 
-install-data-am: install-dist_pkgdataSCRIPTS install-pkgdataDATA
+install-data-am: install-dist_pkgdataSCRIPTS install-pkgdataDATA \
+	install-upgradesDATA
 
 install-dvi: install-dvi-am
 
@@ -481,7 +502,7 @@ ps: ps-am
 ps-am:
 
 uninstall-am: uninstall-dist_pkgdataSCRIPTS uninstall-pkgdataDATA \
-	uninstall-sbinSCRIPTS
+	uninstall-sbinSCRIPTS uninstall-upgradesDATA
 
 .MAKE: install-am install-strip
 
@@ -494,11 +515,12 @@ uninstall-am: uninstall-dist_pkgdataSCRIPTS uninstall-pkgdataDATA \
 	install-exec install-exec-am install-html install-html-am \
 	install-info install-info-am install-man install-pdf \
 	install-pdf-am install-pkgdataDATA install-ps install-ps-am \
-	install-sbinSCRIPTS install-strip installcheck installcheck-am \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-generic pdf pdf-am ps ps-am uninstall \
-	uninstall-am uninstall-dist_pkgdataSCRIPTS \
-	uninstall-pkgdataDATA uninstall-sbinSCRIPTS
+	install-sbinSCRIPTS install-strip install-upgradesDATA \
+	installcheck installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
+	pdf-am ps ps-am uninstall uninstall-am \
+	uninstall-dist_pkgdataSCRIPTS uninstall-pkgdataDATA \
+	uninstall-sbinSCRIPTS uninstall-upgradesDATA
 
 
 structure.sql:
