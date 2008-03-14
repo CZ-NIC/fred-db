@@ -160,6 +160,7 @@ CREATE TABLE Domain (
 CREATE INDEX domain_zone_idx ON Domain (Zone);
 CREATE INDEX domain_registrant_idx ON Domain (registrant);
 CREATE INDEX domain_nsset_idx ON Domain (nsset);
+CREATE INDEX domain_exdate_idx ON domain (exdate);
 
 comment on table Domain is 'Evidence of domains';
 comment on column Domain.ID is 'point to object table';

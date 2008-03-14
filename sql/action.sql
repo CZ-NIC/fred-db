@@ -119,6 +119,7 @@ CREATE INDEX action_clientid_idx ON action (clientid);
 CREATE INDEX action_response_idx ON action (response);
 CREATE INDEX action_startdate_idx ON action (startdate);
 CREATE INDEX action_action_idx ON action (action);
+CREATE INDEX action_clienttrid_idx ON action (clienttrid);
 
 COMMENT on table action is 
 'Table for transactions record. In this table is logged every operation done over central register
@@ -158,6 +159,6 @@ CREATE TABLE action_elements(
 );
 
 CREATE INDEX action_elements_value_idx ON action_elements (value);
-CREATE INDEX action_elements_elementid_idx ON action_elements (elementid);
+CREATE INDEX action_elements_actionid_idx ON action_elements (actionid);
 
 

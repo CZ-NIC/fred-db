@@ -1,3 +1,13 @@
+2008-03-12  Jaromir Talir <jaromir.talir@nic.cz>
+
+    * few indexes added
+
+2008-03-12  Ales Dolezal <ales.dolezal@nic.cz>
+
+    * configuration process enhancement
+
+    * adding sql comments
+
 2008-02-09  Jaromir Talir <jaromir.talir@nic.cz> 
 
     * release 1.8.0
