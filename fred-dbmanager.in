@@ -51,17 +51,25 @@ f_install () {
     then
         /bin/true
     else
+        cp $PGHBA /tmp/pg_hba.conf.$$
+        echo -n "" > $PGHBA
         # There is no evidence about user @DBUSER@ in authentication file so
         # it can be suspected that user @DBUSER@ will not be allowed to connect
         # This file will be modified to allow local connection for user
         # @DBUSER@. If this is not intended modify database access options in
         # server @DBUSER@ server configuration files to suite you needs
-        sed -i '1i# Next three lines were added by script '$0' \
+        sed -i '1i# --begin-fred-- \
+# Next three lines were added by script '$0' \
 # to allow local connection of user @DBUSER@ to database @DBNAME@ \
+# beware: lines between begin-fred and end-fred marks \
+# will be deleted by `fred-dbmanager uninstall` script \
 local @DBNAME@ @DBUSER@ @METHOD@ \
 host @DBNAME@ @DBUSER@ @CIDRIPV4@ @METHOD@ \
 host @DBNAME@ @DBUSER@ @CIDRIPV6@ @METHOD@ \
-' $PGHBA
+# --end-fred-- ' /tmp/pg_hba.conf.$$
+
+        cat /tmp/pg_hba.conf.$$ >> $PGHBA
+        rm /tmp/pg_hba.conf.$$
 
         # reload new file into postgres
         @PGBINDIR@/pg_ctl reload -D$PGDATA >/dev/null 2>&1
@@ -91,9 +99,13 @@ f_uninstall () {
 
     @PGBINDIR@/dropdb -U @DBUSER@ @DBNAME@ > /dev/null 2>&1
     @PGBINDIR@/dropuser -U postgres @DBUSER@ > /dev/null 2>&1
-    if grep @DBUSER@ $PGHBA > /dev/null 2>&1
+    if grep 'begin-fred' $PGHBA > /dev/null 2>&1
     then
-        sed -i '1,6d' $PGHBA
+        cp $PGHBA /tmp/pg_hba.conf.$$
+        echo -n "" > $PGHBA
+        sed -i '/--begin-fred--/,/--end-fred--/d' /tmp/pg_hba.conf.$$
+        cat /tmp/pg_hba.conf.$$ >> $PGHBA 
+        rm /tmp/pg_hba.conf.$$
     fi
 }
 

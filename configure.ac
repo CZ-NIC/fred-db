@@ -42,6 +42,61 @@ else
 fi
 ])
 
+
+### debian, ubuntu
+AC_DEFUN([AC_DEBIAN_DIRS],
+[
+if test $1 = yes; then
+    ### get highest version
+    ver="8.2"
+    for i in `ls /etc/postgres/`
+    do
+        ver=$i
+    done
+    AC_SUBST([PGDATADIR], [/etc/postgresql/$ver/main/pgdata])
+    AC_SUBST([PGHBADIR], [/etc/postgresql/$ver/main/])
+    AC_SUBST([PGBINDIR], [/var/lib/postgresql/$ver/bin/])
+fi
+])
+
+### redhat, fedora
+AC_DEFUN([AC_REDHAT_DIRS],
+[
+if test $1 = yes; then
+    ### on fedora is pointless to test directories
+    ### because of access rights
+    AC_SUBST([CHECK], [no])
+    AC_SUBST([PGDATADIR], [/var/lib/pgsql/data])
+    AC_SUBST([PGHBADIR], [/var/lib/pgsql/data])
+    AC_SUBST([PGBINDIR], [/usr/bin/])
+fi
+])
+
+### arch, gentoo
+AC_DEFUN([AC_DEFAULT_DIRS],
+[
+if test $1 = yes; then
+    AC_SUBST([PGDATADIR], [/var/lib/postgres/data])
+    AC_SUBST([PGHBADIR], [/var/lib/postgres/data])
+    AC_SUBST([PGBINDIR], [/usr/bin/])
+fi
+])
+
+AC_DEFUN([AC_AUTO_LOAD_PATHS],
+[
+if test $1 = yes; then
+    if test -f /etc/redhat-release; then
+        AC_REDHAT_DIRS(yes)
+    elif test -f /etc/SuSE-release; then
+        AC_REDHAT_DIRS(yes)
+    elif test -f /etc/debian_version; then
+        AC_DEBIAN_DIRS(yes)
+    else
+        AC_DEFAULT_DIRS(yes)
+    fi
+fi
+])
+
 #function to check if method value is valid
 AC_DEFUN([AC_TEST_METHOD],
 [
@@ -73,6 +128,18 @@ AC_ARG_WITH([check], [AS_HELP_STRING([--with-check],
             [AC_SUBST([CHECK], [$withval])],
             [AC_SUBST([CHECK], [yes])])
 
+AC_ARG_WITH([autodetect], [AS_HELP_STRING([--with-autodetect],
+            [Whether automatically detect proper postgres direstories and files [yes]])],
+            [AC_AUTO_LOAD_PATHS($withval)], [AC_AUTO_LOAD_PATHS(yes)])
+
+AC_ARG_WITH([redhat], [AS_HELP_STRING([--with-redhat],
+            [Use redhat directories paths (also valid for Fedora, SuSE)])],
+            [AC_REDHAT_DIRS($withval)], [])
+
+AC_ARG_WITH([debian], [AS_HELP_STRING([--with-debian],
+            [Use Debian directories paths (also valid for Ubuntu)])],
+            [AC_DEBIAN_DIRS($withval)], [])
+
 #check for directory containing postmaster.pid file
 #on fedora it is /var/lib/pgsql/data, on gentoo and arch /var/lib/postgres/data
 #and on debian and ubuntu /etc/postgres/<version>/main/pgdata
@@ -80,9 +147,7 @@ AC_ARG_WITH([check], [AS_HELP_STRING([--with-check],
 AC_ARG_WITH([pgdatadir], [AS_HELP_STRING([--with-pgdatadir],
             [Directory containing postmaster.pid  file [/var/lib/postgres/data]])],
             [AC_SUBST([PGDATADIR], [$withval])],
-            [AC_SUBST([PGDATADIR], [/var/lib/postgres/data])])
-AC_CHECK_DIR([$PGDATADIR], [], [AC_MSG_ERROR(
-              [Directory "$PGDATADIR" does not exists (use --with-pgdatadir)])])
+            [])
 
 #check for directory containing pg_hba.conf file
 #on fedora it is /var/lib/pgsql/data, on gentoo and arch /var/lib/postgres/data
@@ -90,15 +155,19 @@ AC_CHECK_DIR([$PGDATADIR], [], [AC_MSG_ERROR(
 AC_ARG_WITH([pghbadir], [AS_HELP_STRING([--with-pghbadir],
             [Directory containing pg_hba.conf  file [$PGDATADIR]])],
             [AC_SUBST([PGHBADIR], [$withval])],
-            [AC_SUBST([PGHBADIR], [$PGDATADIR])])
-AC_CHECK_DIR([$PGHBADIR], [], [AC_MSG_ERROR(
-              [Directory "$PGHBADIR" does not exists (use --with-pghbadir)])])
+            [])
+
 
 #bin directory for postgres, must contain pg_ctl, createuser, createdb, createlang, psql
 AC_ARG_WITH([pgbindir], [AS_HELP_STRING([--with-pgbindir],
             [Directory containing postgresql binary files (pg_ctl, createuser, ...) [/usr/bin]])],
             [AC_SUBST([PGBINDIR], [$withval])],
-            [AC_SUBST([PGBINDIR], [/usr/bin])])
+            [])
+
+AC_CHECK_DIR([$PGHBADIR], [], [AC_MSG_ERROR(
+              [Directory "$PGHBADIR" does not exists (use --with-pghbadir)])])
+AC_CHECK_DIR([$PGDATADIR], [], [AC_MSG_ERROR(
+              [Directory "$PGDATADIR" does not exists (use --with-pgdatadir)])])
 AC_CHECK_FIL([$PGBINDIR/pg_ctl], [], [AC_MSG_ERROR(
                [File "$PGBINDIR/pg_ctl" does not exists (use --with-pgbindir)])])
 AC_CHECK_FIL([$PGBINDIR/createuser], [], [AC_MSG_ERROR(

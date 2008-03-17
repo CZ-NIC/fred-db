@@ -1227,6 +1227,11 @@ Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-check            Whether check directories and files existence [yes]
+  --with-autodetect       Whether automatically detect proper postgres
+                          direstories and files [yes]
+  --with-redhat           Use redhat directories paths (also valid for Fedora,
+                          SuSE)
+  --with-debian           Use Debian directories paths (also valid for Ubuntu)
   --with-pgdatadir        Directory containing postmaster.pid file
                           [/var/lib/postgres/data]
   --with-pghbadir         Directory containing pg_hba.conf file [$PGDATADIR]
@@ -2247,6 +2252,18 @@ echo "${ECHO_T}$ac_cv_path_SED" >&6; }
 #with disable/enable checking option
 
 
+
+### debian, ubuntu
+
+
+### redhat, fedora
+
+
+### arch, gentoo
+
+
+
+
 #function to check if method value is valid
 
 
@@ -2262,6 +2279,181 @@ else
 fi
 
 
+
+# Check whether --with-autodetect was given.
+if test "${with_autodetect+set}" = set; then
+  withval=$with_autodetect;
+if test $withval = yes; then
+    if test -f /etc/redhat-release; then
+
+if test yes = yes; then
+    ### on fedora is pointless to test directories
+    ### because of access rights
+    CHECK=no
+
+    PGDATADIR=/var/lib/pgsql/data
+
+    PGHBADIR=/var/lib/pgsql/data
+
+    PGBINDIR=/usr/bin/
+
+fi
+
+    elif test -f /etc/SuSE-release; then
+
+if test yes = yes; then
+    ### on fedora is pointless to test directories
+    ### because of access rights
+    CHECK=no
+
+    PGDATADIR=/var/lib/pgsql/data
+
+    PGHBADIR=/var/lib/pgsql/data
+
+    PGBINDIR=/usr/bin/
+
+fi
+
+    elif test -f /etc/debian_version; then
+
+if test yes = yes; then
+    ### get highest version
+    ver="8.2"
+    for i in `ls /etc/postgres/`
+    do
+        ver=$i
+    done
+    PGDATADIR=/etc/postgresql/$ver/main/pgdata
+
+    PGHBADIR=/etc/postgresql/$ver/main/
+
+    PGBINDIR=/var/lib/postgresql/$ver/bin/
+
+fi
+
+    else
+
+if test yes = yes; then
+    PGDATADIR=/var/lib/postgres/data
+
+    PGHBADIR=/var/lib/postgres/data
+
+    PGBINDIR=/usr/bin/
+
+fi
+
+    fi
+fi
+
+else
+
+if test yes = yes; then
+    if test -f /etc/redhat-release; then
+
+if test yes = yes; then
+    ### on fedora is pointless to test directories
+    ### because of access rights
+    CHECK=no
+
+    PGDATADIR=/var/lib/pgsql/data
+
+    PGHBADIR=/var/lib/pgsql/data
+
+    PGBINDIR=/usr/bin/
+
+fi
+
+    elif test -f /etc/SuSE-release; then
+
+if test yes = yes; then
+    ### on fedora is pointless to test directories
+    ### because of access rights
+    CHECK=no
+
+    PGDATADIR=/var/lib/pgsql/data
+
+    PGHBADIR=/var/lib/pgsql/data
+
+    PGBINDIR=/usr/bin/
+
+fi
+
+    elif test -f /etc/debian_version; then
+
+if test yes = yes; then
+    ### get highest version
+    ver="8.2"
+    for i in `ls /etc/postgres/`
+    do
+        ver=$i
+    done
+    PGDATADIR=/etc/postgresql/$ver/main/pgdata
+
+    PGHBADIR=/etc/postgresql/$ver/main/
+
+    PGBINDIR=/var/lib/postgresql/$ver/bin/
+
+fi
+
+    else
+
+if test yes = yes; then
+    PGDATADIR=/var/lib/postgres/data
+
+    PGHBADIR=/var/lib/postgres/data
+
+    PGBINDIR=/usr/bin/
+
+fi
+
+    fi
+fi
+
+fi
+
+
+
+# Check whether --with-redhat was given.
+if test "${with_redhat+set}" = set; then
+  withval=$with_redhat;
+if test $withval = yes; then
+    ### on fedora is pointless to test directories
+    ### because of access rights
+    CHECK=no
+
+    PGDATADIR=/var/lib/pgsql/data
+
+    PGHBADIR=/var/lib/pgsql/data
+
+    PGBINDIR=/usr/bin/
+
+fi
+
+fi
+
+
+
+# Check whether --with-debian was given.
+if test "${with_debian+set}" = set; then
+  withval=$with_debian;
+if test $withval = yes; then
+    ### get highest version
+    ver="8.2"
+    for i in `ls /etc/postgres/`
+    do
+        ver=$i
+    done
+    PGDATADIR=/etc/postgresql/$ver/main/pgdata
+
+    PGHBADIR=/etc/postgresql/$ver/main/
+
+    PGBINDIR=/var/lib/postgresql/$ver/bin/
+
+fi
+
+fi
+
+
 #check for directory containing postmaster.pid file
 #on fedora it is /var/lib/pgsql/data, on gentoo and arch /var/lib/postgres/data
 #and on debian and ubuntu /etc/postgres/<version>/main/pgdata
@@ -2271,29 +2463,6 @@ fi
 if test "${with_pgdatadir+set}" = set; then
   withval=$with_pgdatadir; PGDATADIR=$withval
 
-else
-  PGDATADIR=/var/lib/postgres/data
-
-fi
-
-
-if test $CHECK = yes; then
-    { echo "$as_me:$LINENO: checking for $PGDATADIR" >&5
-echo $ECHO_N "checking for $PGDATADIR... $ECHO_C" >&6; }
-    if test -d $PGDATADIR; then
-        { echo "$as_me:$LINENO: result: yes" >&5
-echo "${ECHO_T}yes" >&6; }
-
-    else
-        { echo "$as_me:$LINENO: result: no" >&5
-echo "${ECHO_T}no" >&6; }
-        { { echo "$as_me:$LINENO: error: Directory \"$PGDATADIR\" does not exists (use --with-pgdatadir)" >&5
-echo "$as_me: error: Directory \"$PGDATADIR\" does not exists (use --with-pgdatadir)" >&2;}
-   { (exit 1); exit 1; }; }
-    fi
-else
-    { echo "$as_me:$LINENO: WARNING: Checking for $PGDATADIR is overriden" >&5
-echo "$as_me: WARNING: Checking for $PGDATADIR is overriden" >&2;}
 fi
 
 
@@ -2305,10 +2474,18 @@ fi
 if test "${with_pghbadir+set}" = set; then
   withval=$with_pghbadir; PGHBADIR=$withval
 
-else
-  PGHBADIR=$PGDATADIR
+fi
+
+
+
+#bin directory for postgres, must contain pg_ctl, createuser, createdb, createlang, psql
+
+# Check whether --with-pgbindir was given.
+if test "${with_pgbindir+set}" = set; then
+  withval=$with_pgbindir; PGBINDIR=$withval
 
 fi
+
 
 
 if test $CHECK = yes; then
@@ -2331,15 +2508,23 @@ echo "$as_me: WARNING: Checking for $PGHBADIR is overriden" >&2;}
 fi
 
 
-#bin directory for postgres, must contain pg_ctl, createuser, createdb, createlang, psql
+if test $CHECK = yes; then
+    { echo "$as_me:$LINENO: checking for $PGDATADIR" >&5
+echo $ECHO_N "checking for $PGDATADIR... $ECHO_C" >&6; }
+    if test -d $PGDATADIR; then
+        { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
 
-# Check whether --with-pgbindir was given.
-if test "${with_pgbindir+set}" = set; then
-  withval=$with_pgbindir; PGBINDIR=$withval
-
+    else
+        { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+        { { echo "$as_me:$LINENO: error: Directory \"$PGDATADIR\" does not exists (use --with-pgdatadir)" >&5
+echo "$as_me: error: Directory \"$PGDATADIR\" does not exists (use --with-pgdatadir)" >&2;}
+   { (exit 1); exit 1; }; }
+    fi
 else
-  PGBINDIR=/usr/bin
-
+    { echo "$as_me:$LINENO: WARNING: Checking for $PGDATADIR is overriden" >&5
+echo "$as_me: WARNING: Checking for $PGDATADIR is overriden" >&2;}
 fi
 
 
