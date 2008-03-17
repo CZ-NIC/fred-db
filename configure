@@ -2318,8 +2318,7 @@ fi
 
 if test yes = yes; then
     ### get highest version
-    ver="8.2"
-    for i in `ls /etc/postgres/`
+    for i in `ls /etc/postgresql/`
     do
         ver=$i
     done
@@ -2327,7 +2326,7 @@ if test yes = yes; then
 
     PGHBADIR=/etc/postgresql/$ver/main/
 
-    PGBINDIR=/var/lib/postgresql/$ver/bin/
+    PGBINDIR=/usr/lib/postgresql/$ver/bin/
 
 fi
 
@@ -2382,8 +2381,7 @@ fi
 
 if test yes = yes; then
     ### get highest version
-    ver="8.2"
-    for i in `ls /etc/postgres/`
+    for i in `ls /etc/postgresql/`
     do
         ver=$i
     done
@@ -2391,7 +2389,7 @@ if test yes = yes; then
 
     PGHBADIR=/etc/postgresql/$ver/main/
 
-    PGBINDIR=/var/lib/postgresql/$ver/bin/
+    PGBINDIR=/usr/lib/postgresql/$ver/bin/
 
 fi
 
@@ -2438,8 +2436,7 @@ if test "${with_debian+set}" = set; then
   withval=$with_debian;
 if test $withval = yes; then
     ### get highest version
-    ver="8.2"
-    for i in `ls /etc/postgres/`
+    for i in `ls /etc/postgresql/`
     do
         ver=$i
     done
@@ -2447,7 +2444,7 @@ if test $withval = yes; then
 
     PGHBADIR=/etc/postgresql/$ver/main/
 
-    PGBINDIR=/var/lib/postgresql/$ver/bin/
+    PGBINDIR=/usr/lib/postgresql/$ver/bin/
 
 fi
 

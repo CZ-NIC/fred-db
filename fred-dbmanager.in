@@ -97,7 +97,7 @@ f_uninstall () {
     test_user
     init_pghba
 
-    @PGBINDIR@/dropdb -U @DBUSER@ @DBNAME@ > /dev/null 2>&1
+    @PGBINDIR@/dropdb -U postgres @DBNAME@ > /dev/null 2>&1
     @PGBINDIR@/dropuser -U postgres @DBUSER@ > /dev/null 2>&1
     if grep 'begin-fred' $PGHBA > /dev/null 2>&1
     then

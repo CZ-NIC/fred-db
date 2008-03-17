@@ -48,14 +48,13 @@ AC_DEFUN([AC_DEBIAN_DIRS],
 [
 if test $1 = yes; then
     ### get highest version
-    ver="8.2"
-    for i in `ls /etc/postgres/`
+    for i in `ls /etc/postgresql/`
     do
         ver=$i
     done
     AC_SUBST([PGDATADIR], [/etc/postgresql/$ver/main/pgdata])
     AC_SUBST([PGHBADIR], [/etc/postgresql/$ver/main/])
-    AC_SUBST([PGBINDIR], [/var/lib/postgresql/$ver/bin/])
+    AC_SUBST([PGBINDIR], [/usr/lib/postgresql/$ver/bin/])
 fi
 ])
 
