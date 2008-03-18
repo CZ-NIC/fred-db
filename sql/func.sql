@@ -33,7 +33,7 @@ BEGIN
  INSERT INTO object_registry (id,roid,name,type,crid) 
  VALUES (
   iid,
-  (ARRAY['C','N','D'])[otype] || LPAD(iid,10,'0') || '-CZ' ,
+  (ARRAY['C','N','D'])[otype] || LPAD(iid::text,10,'0') || '-CZ' ,
   CASE
    WHEN otype=1 THEN UPPER(oname)
    WHEN otype=2 THEN UPPER(oname)
