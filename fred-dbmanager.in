@@ -1,5 +1,10 @@
 #!/bin/bash
 
+get_db_version() {
+    VERSIONSQL= "SELECT val FROM enum_parameters WHERE id=1"
+    @PGBINDIR@/psql -d @DBNAME@ -U @DBUSER@ -At -p @DBPORT@ -c $VERSIONSQL;
+}
+
 test_user () {
     if [ "$USER" != "postgres" ]
     then
@@ -8,7 +13,7 @@ test_user () {
     fi
 }
 test_db () {
-    psql -U @DBUSER@ -l | grep '@DBNAME@' > /dev/null
+    @PGBINDIR@/psql -U @DBUSER@ -l -p @DBPORT@ | grep '@DBNAME@' > /dev/null
     return $?
 }
 
@@ -83,13 +88,14 @@ host @DBNAME@ @DBUSER@ @CIDRIPV6@ @METHOD@ \
     prefix=@prefix@
     datarootdir=@datarootdir@
     STRUCTSQL=@datadir@/@PACKAGE@/structure.sql 
-    TABLES=$(echo "SELECT val FROM enum_parameters WHERE id=1" | 
-             @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -At 2>/dev/null)
-    if [ "$TABLES" = "" ]; then
-        @PGBINDIR@/createuser @DBUSER@ -SDR > /dev/null 2>&1
-        @PGBINDIR@/createdb @DBNAME@ -O @DBUSER@ -E UTF8 > /dev/null 2>&1
-        @PGBINDIR@/createlang -U postgres plpgsql @DBNAME@ > /dev/null 2>&1
-        @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -f $STRUCTSQL >/dev/null 2>&1
+    if [ "$(get_db_version)" = "" ]; then
+        @PGBINDIR@/createuser @DBUSER@ -SDR -p @DBPORT@ > /dev/null 2>&1
+        @PGBINDIR@/createdb @DBNAME@ -O @DBUSER@ -E UTF8 \
+                            -p @DBPORT@ > /dev/null 2>&1
+        @PGBINDIR@/createlang -U postgres plpgsql @DBNAME@
+                              -p @DBPORT@ > /dev/null 2>&1
+        @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -f $STRUCTSQL 
+                        -p @DBPORT@ >/dev/null 2>&1
     fi
 }
 
@@ -97,8 +103,8 @@ f_uninstall () {
     test_user
     init_pghba
 
-    @PGBINDIR@/dropdb -U postgres @DBNAME@ > /dev/null 2>&1
-    @PGBINDIR@/dropuser -U postgres @DBUSER@ > /dev/null 2>&1
+    @PGBINDIR@/dropdb -U postgres @DBNAME@ -p @DBPORT@ > /dev/null 2>&1
+    @PGBINDIR@/dropuser -U postgres @DBUSER@ -p @DBPORT@ > /dev/null 2>&1
     if grep 'begin-fred' $PGHBA > /dev/null 2>&1
     then
         cp $PGHBA /tmp/pg_hba.conf.$$
@@ -198,10 +204,11 @@ f_upgrade () {
         echo "@DBNAME@ database does not exist or postgres server does not runnint."
         exit 1
     fi
-    ver=`/usr/bin/psql -d @DBNAME@ -U @DBUSER@ -At -c "select val from enum_parameters where id=1;"`
+    ver=$(get_db_version)
     upgrade_script="/tmp/fred-upgrade.sql.$$"
     create_upgrade_script $ver $upgrade_script
-    @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -f $upgrade_script >/dev/null 2>&1
+    @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -p @PDBORT@ \
+                    -f $upgrade_script >/dev/null 2>&1
 }
 
 f_status () {
@@ -211,8 +218,7 @@ f_status () {
         echo "@DBNAME@ database does not exist or postgres server does not running."
         exit 1
     else
-        ver=`/usr/bin/psql -d @DBNAME@ -U @DBUSER@ -At -c "select val from enum_parameters where id=1;"`
-        echo "@DBNAME@ database version: $ver"
+        echo "@DBNAME@ database version: $(get_db_version)"
         exit 0
     fi
 }

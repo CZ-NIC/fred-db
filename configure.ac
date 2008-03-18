@@ -192,6 +192,12 @@ AC_ARG_WITH([dbuser], [AS_HELP_STRING([--with-dbuser],
             [AC_SUBST([DBUSER], [$withval])],
             [AC_SUBST([DBUSER], [fred])])
 
+#database port (host is always localhost)
+AC_ARG_WITH([dbport], [AS_HELP_STRING([--with-dbport],
+            [TCP port to database [5432]])],
+            [AC_SUBST([DBPORT], [$withval])],
+            [AC_SUBST([DBPORT], [5432])])
+
 #password cannot be enteren in non-interactive mode,
 #createuser command with -P argument promt for password
 ### #database password
