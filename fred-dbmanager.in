@@ -1,6 +1,12 @@
 #!/bin/bash
 
-get_db_version() {
+get_num_connections () {
+    CONNECTIONSQL="SELECT COUNT(*)-1 FROM pg_stat_activity"
+    @PGBINDIR@/psql -d @DBNAME@ -U @DBUSER@ -At -p @DBPORT@ \
+                    -c "$CONNECTIONSQL" 2>/dev/null;
+}
+
+get_db_version () {
     VERSIONSQL="SELECT val FROM enum_parameters WHERE id=1"
     @PGBINDIR@/psql -d @DBNAME@ -U @DBUSER@ -At -p @DBPORT@ \
                     -c "$VERSIONSQL" 2>/dev/null;
@@ -13,6 +19,7 @@ test_user () {
         exit 1;
     fi
 }
+
 test_db () {
     @PGBINDIR@/psql -U @DBUSER@ -l -p @DBPORT@ | grep '@DBNAME@' > /dev/null
     return $?
@@ -28,6 +35,7 @@ arguments:
     help - print this help"
     exit 0
 }
+
 init_pghba () {
     if [ "$PGDATA" = "" ]
     then
@@ -53,7 +61,7 @@ f_install () {
     test_user
     init_pghba
 
-    if grep @DBUSER@ $PGHBA >/dev/null 2>&1
+    if grep "@DBNAME@ @DBUSER@" $PGHBA >/dev/null 2>&1
     then
         /bin/true
     else
@@ -103,7 +111,13 @@ host @DBNAME@ @DBUSER@ @CIDRIPV6@ @METHOD@ \
 f_uninstall () {
     test_user
     init_pghba
-
+    
+    NUM_CON=$(get_num_connections)
+    if [ "$NUM_CON" -ne 0 ]
+    then
+        echo "Still $NUM_CON active connections - uninstallation aborted"
+        exit 1;
+    fi
     @PGBINDIR@/dropdb -U postgres @DBNAME@ -p @DBPORT@ > /dev/null 2>&1
     @PGBINDIR@/dropuser -U postgres @DBUSER@ -p @DBPORT@ > /dev/null 2>&1
     if grep 'begin-fred' $PGHBA > /dev/null 2>&1
@@ -219,7 +233,8 @@ f_status () {
         echo "@DBNAME@ database does not exist or postgres server does not running."
         exit 1
     else
-        echo "@DBNAME@ database version: $(get_db_version)"
+        echo -n "@DBNAME@ database version: $(get_db_version), "
+        echo "active connections: $(get_num_connections) "
         exit 0
     fi
 }
