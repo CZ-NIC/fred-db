@@ -642,6 +642,7 @@ PGHBADIR
 PGBINDIR
 DBNAME
 DBUSER
+DBPORT
 CIDRIPV4
 CIDRIPV6
 METHOD
@@ -1239,6 +1240,7 @@ Optional Packages:
                           (pg_ctl, createuser, ...) [/usr/bin]
   --with-dbname           Name of database [fred]
   --with-dbuser           Database user (owner) [fred]
+  --with-dbport           TCP port to database [5432]
   --with-cidripv4         Specified the set of allowed hosts for IPv4
                           [127.0.0.1/32]
   --with-cidripv6         Specified the set of allowed hosts for IPv6
@@ -2651,6 +2653,18 @@ else
 fi
 
 
+#database port (host is always localhost)
+
+# Check whether --with-dbport was given.
+if test "${with_dbport+set}" = set; then
+  withval=$with_dbport; DBPORT=$withval
+
+else
+  DBPORT=5432
+
+fi
+
+
 #password cannot be enteren in non-interactive mode,
 #createuser command with -P argument promt for password
 ### #database password
@@ -3433,6 +3447,7 @@ PGHBADIR!$PGHBADIR$ac_delim
 PGBINDIR!$PGBINDIR$ac_delim
 DBNAME!$DBNAME$ac_delim
 DBUSER!$DBUSER$ac_delim
+DBPORT!$DBPORT$ac_delim
 CIDRIPV4!$CIDRIPV4$ac_delim
 CIDRIPV6!$CIDRIPV6$ac_delim
 METHOD!$METHOD$ac_delim
@@ -3440,7 +3455,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 71; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 72; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
