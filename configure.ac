@@ -99,6 +99,9 @@ if test $1 = yes; then
     fi
     if test -f $PGHBADIR/postgresql.conf; then
         port=`sed '/^port[\ ]*=[\ ]*[0-9]*/!d' $PGHBADIR/postgresql.conf | sed -r 's/[^0-9]*([0-9]+)[^0-9]*/\1/'`
+        if [ "$port" = "" ]; then
+            port=5432
+        fi
         AC_SUBST([DBPORT], [$port]) 
     else
         AC_SUBST([DBPORT], [5432])
