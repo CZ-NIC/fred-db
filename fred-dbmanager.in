@@ -21,7 +21,7 @@ test_user () {
 }
 
 test_db () {
-    @PGBINDIR@/psql -U @DBUSER@ -l -p @DBPORT@ | grep '@DBNAME@' > /dev/null
+    @PGBINDIR@/psql -U @DBUSER@ -l -p @DBPORT@ @DBNAME@ | grep '@DBNAME@' > /dev/null
     return $?
 }
 
@@ -117,7 +117,7 @@ f_uninstall () {
     init_pghba
     
     NUM_CON=$(get_num_connections)
-    if [ "$NUM_CON" -ne 0 ]
+    if [ "$NUM_CON" -gt 0 ]
     then
         echo "Still $NUM_CON active connections - uninstallation aborted"
         exit 1;

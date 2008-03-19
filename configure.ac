@@ -1,4 +1,4 @@
-AC_INIT([fred-db], 1.8)
+AC_INIT([fred-db], 0.8)
 AC_CONFIG_FILES([Makefile
 		 fred-db.spec createdb.sh fred-dbmanager])
 AM_INIT_AUTOMAKE([-Wall -Werror])
@@ -52,7 +52,7 @@ if test $1 = yes; then
     do
         ver=$i
     done
-    AC_SUBST([PGDATADIR], [/etc/postgresql/$ver/main/pgdata])
+    AC_SUBST([PGDATADIR], [/var/lib/postgresql/$ver/main/])
     AC_SUBST([PGHBADIR], [/etc/postgresql/$ver/main/])
     AC_SUBST([PGBINDIR], [/usr/lib/postgresql/$ver/bin/])
 fi
@@ -141,7 +141,7 @@ AC_ARG_WITH([debian], [AS_HELP_STRING([--with-debian],
 
 #check for directory containing postmaster.pid file
 #on fedora it is /var/lib/pgsql/data, on gentoo and arch /var/lib/postgres/data
-#and on debian and ubuntu /etc/postgres/<version>/main/pgdata
+#and on debian and ubuntu /var/lib/postgresql/<version>/main/
 #this directory is sometimes and somewhere mentioned as $PGDATA
 AC_ARG_WITH([pgdatadir], [AS_HELP_STRING([--with-pgdatadir],
             [Directory containing postmaster.pid  file [/var/lib/postgres/data]])],
