@@ -47,11 +47,15 @@ fi
 AC_DEFUN([AC_DEBIAN_DIRS],
 [
 if test $1 = yes; then
-    ### get highest version
-    for i in `ls /etc/postgresql/`
-    do
-        ver=$i
-    done
+    if test "$PGVERSION" = ""; then
+        ### get highest version
+        for i in `ls /etc/postgresql/`
+        do
+            ver=$i
+        done
+    else
+        ver=$PGVERSION
+    fi
     AC_SUBST([PGDATADIR], [/var/lib/postgresql/$ver/main/])
     AC_SUBST([PGHBADIR], [/etc/postgresql/$ver/main/])
     AC_SUBST([PGBINDIR], [/usr/lib/postgresql/$ver/bin/])
@@ -93,7 +97,20 @@ if test $1 = yes; then
     else
         AC_DEFAULT_DIRS(yes)
     fi
+    if test -f $PGHBADIR/postgresql.conf; then
+        port=`sed '/^port[\ ]*=[\ ]*[0-9]*/!d' $PGHBADIR/postgresql.conf | sed -r 's/[^0-9]*([0-9]+)[^0-9]*/\1/'`
+        AC_SUBST([DBPORT], [$port]) 
+    else
+        AC_SUBST([DBPORT], [5432])
+    fi
+else
+    AC_SUBST([DBPORT], [5432])
 fi
+])
+
+AC_DEFUN([AC_PORT],
+[
+AC_SUBST([DBPORT], [$1])
 ])
 
 #function to check if method value is valid
@@ -131,6 +148,12 @@ AC_ARG_WITH([autodetect], [AS_HELP_STRING([--with-autodetect],
             [Whether automatically detect proper postgres direstories and files [yes]])],
             [AC_AUTO_LOAD_PATHS($withval)], [AC_AUTO_LOAD_PATHS(yes)])
 
+#postgresql version, meaningfull mainly on debian
+AC_ARG_WITH([pgversion], [AS_HELP_STRING([--with-pgversion],
+            [Which version of PostgreSQL use (meaningfull on Debian/Ubuntu) [highest found]])],
+            [AC_SUBST([PGVERSION], [$withval])],
+            [AC_SUBST([PGVERSION], [""])])
+
 AC_ARG_WITH([redhat], [AS_HELP_STRING([--with-redhat],
             [Use redhat directories paths (also valid for Fedora, SuSE)])],
             [AC_REDHAT_DIRS($withval)], [])
@@ -155,7 +178,6 @@ AC_ARG_WITH([pghbadir], [AS_HELP_STRING([--with-pghbadir],
             [Directory containing pg_hba.conf  file [$PGDATADIR]])],
             [AC_SUBST([PGHBADIR], [$withval])],
             [])
-
 
 #bin directory for postgres, must contain pg_ctl, createuser, createdb, createlang, psql
 AC_ARG_WITH([pgbindir], [AS_HELP_STRING([--with-pgbindir],
@@ -195,8 +217,9 @@ AC_ARG_WITH([dbuser], [AS_HELP_STRING([--with-dbuser],
 #database port (host is always localhost)
 AC_ARG_WITH([dbport], [AS_HELP_STRING([--with-dbport],
             [TCP port to database [5432]])],
-            [AC_SUBST([DBPORT], [$withval])],
-            [AC_SUBST([DBPORT], [5432])])
+            [AC_PORT($withval)], [])
+            ### [AC_SUBST([DBPORT], [$withval])],
+            ### [AC_SUBST([DBPORT], [5432])])
 
 #password cannot be enteren in non-interactive mode,
 #createuser command with -P argument promt for password

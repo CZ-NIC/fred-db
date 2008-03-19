@@ -640,9 +640,10 @@ CHECK
 PGDATADIR
 PGHBADIR
 PGBINDIR
+DBPORT
+PGVERSION
 DBNAME
 DBUSER
-DBPORT
 CIDRIPV4
 CIDRIPV6
 METHOD
@@ -1230,6 +1231,8 @@ Optional Packages:
   --with-check            Whether check directories and files existence [yes]
   --with-autodetect       Whether automatically detect proper postgres
                           direstories and files [yes]
+  --with-pgversion        Which version of PostgreSQL use (meaningfull on
+                          Debian/Ubuntu) [highest], [found]
   --with-redhat           Use redhat directories paths (also valid for Fedora,
                           SuSE)
   --with-debian           Use Debian directories paths (also valid for Ubuntu)
@@ -2266,6 +2269,8 @@ echo "${ECHO_T}$ac_cv_path_SED" >&6; }
 
 
 
+
+
 #function to check if method value is valid
 
 
@@ -2319,11 +2324,15 @@ fi
     elif test -f /etc/debian_version; then
 
 if test yes = yes; then
-    ### get highest version
-    for i in `ls /etc/postgresql/`
-    do
-        ver=$i
-    done
+    if test "$PGVERSION" = ""; then
+        ### get highest version
+        for i in `ls /etc/postgresql/`
+        do
+            ver=$i
+        done
+    else
+        ver=$PGVERSION
+    fi
     PGDATADIR=/var/lib/postgresql/$ver/main/
 
     PGHBADIR=/etc/postgresql/$ver/main/
@@ -2344,6 +2353,17 @@ if test yes = yes; then
 fi
 
     fi
+    if test -f $PGHBADIR/postgresql.conf; then
+        port=`sed '/^port\ *=\ *0-9*/!d' $PGHBADIR/postgresql.conf | sed -r 's/^0-9*(0-9+)^0-9*/\1/'`
+        DBPORT=$port
+
+    else
+        DBPORT=5432
+
+    fi
+else
+    DBPORT=5432
+
 fi
 
 else
@@ -2382,11 +2402,15 @@ fi
     elif test -f /etc/debian_version; then
 
 if test yes = yes; then
-    ### get highest version
-    for i in `ls /etc/postgresql/`
-    do
-        ver=$i
-    done
+    if test "$PGVERSION" = ""; then
+        ### get highest version
+        for i in `ls /etc/postgresql/`
+        do
+            ver=$i
+        done
+    else
+        ver=$PGVERSION
+    fi
     PGDATADIR=/var/lib/postgresql/$ver/main/
 
     PGHBADIR=/etc/postgresql/$ver/main/
@@ -2407,7 +2431,30 @@ if test yes = yes; then
 fi
 
     fi
+    if test -f $PGHBADIR/postgresql.conf; then
+        port=`sed '/^port\ *=\ *0-9*/!d' $PGHBADIR/postgresql.conf | sed -r 's/^0-9*(0-9+)^0-9*/\1/'`
+        DBPORT=$port
+
+    else
+        DBPORT=5432
+
+    fi
+else
+    DBPORT=5432
+
 fi
+
+fi
+
+
+#postgresql version, meaningfull mainly on debian
+
+# Check whether --with-pgversion was given.
+if test "${with_pgversion+set}" = set; then
+  withval=$with_pgversion; PGVERSION=$withval
+
+else
+  PGVERSION=""
 
 fi
 
@@ -2437,11 +2484,15 @@ fi
 if test "${with_debian+set}" = set; then
   withval=$with_debian;
 if test $withval = yes; then
-    ### get highest version
-    for i in `ls /etc/postgresql/`
-    do
-        ver=$i
-    done
+    if test "$PGVERSION" = ""; then
+        ### get highest version
+        for i in `ls /etc/postgresql/`
+        do
+            ver=$i
+        done
+    else
+        ver=$PGVERSION
+    fi
     PGDATADIR=/var/lib/postgresql/$ver/main/
 
     PGHBADIR=/etc/postgresql/$ver/main/
@@ -2474,7 +2525,6 @@ if test "${with_pghbadir+set}" = set; then
   withval=$with_pghbadir; PGHBADIR=$withval
 
 fi
-
 
 
 #bin directory for postgres, must contain pg_ctl, createuser, createdb, createlang, psql
@@ -2657,13 +2707,14 @@ fi
 
 # Check whether --with-dbport was given.
 if test "${with_dbport+set}" = set; then
-  withval=$with_dbport; DBPORT=$withval
+  withval=$with_dbport;
+DBPORT=$withval
 
-else
-  DBPORT=5432
 
 fi
 
+            ### [AC_SUBST([DBPORT], [$withval])],
+            ### [AC_SUBST([DBPORT], [5432])])
 
 #password cannot be enteren in non-interactive mode,
 #createuser command with -P argument promt for password
@@ -3445,9 +3496,10 @@ CHECK!$CHECK$ac_delim
 PGDATADIR!$PGDATADIR$ac_delim
 PGHBADIR!$PGHBADIR$ac_delim
 PGBINDIR!$PGBINDIR$ac_delim
+DBPORT!$DBPORT$ac_delim
+PGVERSION!$PGVERSION$ac_delim
 DBNAME!$DBNAME$ac_delim
 DBUSER!$DBUSER$ac_delim
-DBPORT!$DBPORT$ac_delim
 CIDRIPV4!$CIDRIPV4$ac_delim
 CIDRIPV6!$CIDRIPV6$ac_delim
 METHOD!$METHOD$ac_delim
@@ -3455,7 +3507,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 72; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 73; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
