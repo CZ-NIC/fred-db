@@ -61,7 +61,15 @@ f_install () {
     test_user
     init_pghba
 
-    if grep "@DBNAME@ @DBUSER@" $PGHBA >/dev/null 2>&1
+    prefix=@prefix@
+    datarootdir=@datarootdir@
+    STRUCTSQL=@datadir@/@PACKAGE@/structure.sql 
+    if [ ! -f $STRUCTSQL ]; then
+        echo "SQL script file $STRUCTSQL does not exists. Install terminated."
+        exit 1
+    fi
+
+    if grep "begin-@DBNAME@-@DBUSER@--" $PGHBA >/dev/null 2>&1
     then
         /bin/true
     else
@@ -72,15 +80,15 @@ f_install () {
         # This file will be modified to allow local connection for user
         # @DBUSER@. If this is not intended modify database access options in
         # server @DBUSER@ server configuration files to suite you needs
-        sed -i '1i# --begin-fred-- \
+        sed -i '1i# --begin-@DBNAME@-@DBUSER@-- \
 # Next three lines were added by script '$0' \
 # to allow local connection of user @DBUSER@ to database @DBNAME@ \
-# beware: lines between begin-fred and end-fred marks \
+# beware: lines between begin and end marks \
 # will be deleted by `fred-dbmanager uninstall` script \
 local @DBNAME@ @DBUSER@ @METHOD@ \
 host @DBNAME@ @DBUSER@ @CIDRIPV4@ @METHOD@ \
 host @DBNAME@ @DBUSER@ @CIDRIPV6@ @METHOD@ \
-# --end-fred-- ' /tmp/pg_hba.conf.$$
+# --end-@DBNAME@-@DBUSER@-- ' /tmp/pg_hba.conf.$$
 
         cat /tmp/pg_hba.conf.$$ >> $PGHBA
         rm /tmp/pg_hba.conf.$$
@@ -94,17 +102,13 @@ host @DBNAME@ @DBUSER@ @CIDRIPV6@ @METHOD@ \
         fi
     fi
 
-    prefix=@prefix@
-    datarootdir=@datarootdir@
-    STRUCTSQL=@datadir@/@PACKAGE@/structure.sql 
     if [ "$(get_db_version)" = "" ]; then
         @PGBINDIR@/createuser @DBUSER@ -SDR -p @DBPORT@ > /dev/null 2>&1
         @PGBINDIR@/createdb @DBNAME@ -O @DBUSER@ -E UTF8 \
                             -p @DBPORT@ > /dev/null 2>&1
-        @PGBINDIR@/createlang -U postgres plpgsql @DBNAME@
+        @PGBINDIR@/createlang -U postgres plpgsql @DBNAME@ \
                               -p @DBPORT@ > /dev/null 2>&1
-        @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -f $STRUCTSQL 
-                        -p @DBPORT@ >/dev/null 2>&1
+        @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -f $STRUCTSQL -p @DBPORT@ >/dev/null 2>&1
     fi
 }
 
@@ -120,11 +124,11 @@ f_uninstall () {
     fi
     @PGBINDIR@/dropdb -U postgres @DBNAME@ -p @DBPORT@ > /dev/null 2>&1
     @PGBINDIR@/dropuser -U postgres @DBUSER@ -p @DBPORT@ > /dev/null 2>&1
-    if grep 'begin-fred' $PGHBA > /dev/null 2>&1
+    if grep 'begin-@DBNAME@-@DBUSER@--' $PGHBA > /dev/null 2>&1
     then
         cp $PGHBA /tmp/pg_hba.conf.$$
         echo -n "" > $PGHBA
-        sed -i '/--begin-fred--/,/--end-fred--/d' /tmp/pg_hba.conf.$$
+        sed -i '/--begin-@DBNAME@-@DBUSER@--/,/--end-@DBNAME@-@DBUSER@--/d' /tmp/pg_hba.conf.$$
         cat /tmp/pg_hba.conf.$$ >> $PGHBA 
         rm /tmp/pg_hba.conf.$$
     fi
