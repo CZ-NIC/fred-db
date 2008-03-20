@@ -591,7 +591,7 @@ na základě Pravidel registrace ruší ke dni <?cs var:deldate ?> uvedenou
 <?cs if:type == #1 ?>kontaktní osobu<?cs elif:type == #2 ?>sadu nameserverů<?cs /if ?>.
 
 With regard to the fact that the <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>NS set<?cs /if ?> <?cs var:handle ?>
-<?cs var:name ?> was not active during the past 2 months, <?cs var:defaults.company ?>
+<?cs var:name ?> was not active during the fixed period, <?cs var:defaults.company ?>
 is cancelling the aforementioned <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>set of nameservers<?cs /if ?> as of <?cs var:deldate ?>.
 =====================================================================
 

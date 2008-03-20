@@ -555,4 +555,22 @@ was withdrawn from DNS as of <?cs var:statechangedate ?>.
                                              support <?cs var:defaults.company ?>
 ' WHERE id=6;
 
+UPDATE mail_templates SET template=
+'
+=====================================================================
+Oznámení o zrušení / Delete notification 
+=====================================================================
+Vzhledem ke skutečnosti, že <?cs if:type == #1 ?>kontaktní osoba<?cs elif:type == #2 ?>sada nameserverů<?cs /if ?> <?cs var:handle ?>
+<?cs var:name ?> nebyla po stanovenou dobu aktivní, <?cs var:defaults.company ?>
+na základě Pravidel registrace ruší ke dni <?cs var:deldate ?> uvedenou
+<?cs if:type == #1 ?>kontaktní osobu<?cs elif:type == #2 ?>sadu nameserverů<?cs /if ?>.
 
+With regard to the fact that the <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>NS set<?cs /if ?> <?cs var:handle ?>
+<?cs var:name ?> was not active during the fixed period, <?cs var:defaults.company ?>
+is cancelling the aforementioned <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>set of nameservers<?cs /if ?> as of <?cs var:deldate ?>.
+=====================================================================
+
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
+' WHERE id=14;
