@@ -250,6 +250,10 @@ an Autoconf bug.  Until the bug is fixed you can use this workaround:
 `--with-dbuser=NAME'
     Database user name. Used in pg_hba.conf file. `fred' is default.
 
+`--with-dbport=PORT'
+    Port for database connection. Hostname is always localhost.
+    Used in fred-dbmanager script. Default is 5432.
+
 `--with-cidripv4=ADDR'
 `--with-cidripv6=ADDR'
     CIDR-address specifies the set of hosts the record matches.

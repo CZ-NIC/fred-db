@@ -3,7 +3,7 @@ sbin_SCRIPTS = fred-dbmanager
 upgradesdir = $(pkgdatadir)/upgrades
 upgrades_DATA = $(srcdir)/upgrades/*.sql
 
-CLEANFILES = structure.sql createdb.sh fred-dbmanager
+CLEANFILES = structure.sql fred-dbmanager
 EXTRA_DIST = $(srcdir)/sql/*.sql $(srcdir)/orderedsql.sh \
              $(srcdir)/fred-db.spec $(srcdir)/upgrades/*.sql
 
