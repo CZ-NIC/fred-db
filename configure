@@ -637,13 +637,13 @@ am__tar
 am__untar
 SED
 CHECK
+PGVERSION
 PGDATADIR
 PGHBADIR
 PGBINDIR
-DBPORT
-PGVERSION
 DBNAME
 DBUSER
+DBPORT
 CIDRIPV4
 CIDRIPV6
 METHOD
@@ -1229,10 +1229,10 @@ Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-check            Whether check directories and files existence [yes]
+  --with-pgversion        Which version of PostgreSQL use (only for
+                          Debian/Ubuntu) (by default is used latest found)
   --with-autodetect       Whether automatically detect proper postgres
                           direstories and files [yes]
-  --with-pgversion        Which version of PostgreSQL use (meaningfull on
-                          Debian/Ubuntu) [highest], [found]
   --with-redhat           Use redhat directories paths (also valid for Fedora,
                           SuSE)
   --with-debian           Use Debian directories paths (also valid for Ubuntu)
@@ -2261,14 +2261,19 @@ echo "${ECHO_T}$ac_cv_path_SED" >&6; }
 ### debian, ubuntu
 
 
-### redhat, fedora
+### redhat, fedora, suse
 
 
 ### arch, gentoo
 
 
+#this function decide on what system
+#is configure script executed
 
 
+#function to determine on which port database listening
+#by default it is port from postgresql.conf file,
+#when this file cannot be found, configure use port 5432
 
 
 #function to check if method value is valid
@@ -2282,6 +2287,18 @@ if test "${with_check+set}" = set; then
 
 else
   CHECK=yes
+
+fi
+
+
+#postgresql version, meaningfull mainly on debian
+
+# Check whether --with-pgversion was given.
+if test "${with_pgversion+set}" = set; then
+  withval=$with_pgversion; PGVERSION=$withval
+
+else
+  PGVERSION=""
 
 fi
 
@@ -2353,17 +2370,6 @@ if test yes = yes; then
 fi
 
     fi
-    if test -f $PGHBADIR/postgresql.conf; then
-        port=`sed '/^port\ *=\ *0-9*/!d' $PGHBADIR/postgresql.conf | sed -r 's/^0-9*(0-9+)^0-9*/\1/'`
-        DBPORT=$port
-
-    else
-        DBPORT=5432
-
-    fi
-else
-    DBPORT=5432
-
 fi
 
 else
@@ -2431,32 +2437,10 @@ if test yes = yes; then
 fi
 
     fi
-    if test -f $PGHBADIR/postgresql.conf; then
-        port=`sed '/^port\ *=\ *0-9*/!d' $PGHBADIR/postgresql.conf | sed -r 's/^0-9*(0-9+)^0-9*/\1/'`
-        DBPORT=$port
-
-    else
-        DBPORT=5432
-
-    fi
-else
-    DBPORT=5432
-
 fi
 
 fi
 
-
-#postgresql version, meaningfull mainly on debian
-
-# Check whether --with-pgversion was given.
-if test "${with_pgversion+set}" = set; then
-  withval=$with_pgversion; PGVERSION=$withval
-
-else
-  PGVERSION=""
-
-fi
 
 
 
@@ -2708,13 +2692,40 @@ fi
 # Check whether --with-dbport was given.
 if test "${with_dbport+set}" = set; then
   withval=$with_dbport;
-DBPORT=$withval
+  if test "$withval" = ""; then
+    if test -f $PGHBADIR/postgresql.conf; then
+      port=`grep -E '^port' $PGHBADIR/postgresql.conf | cut -f3 -d\ `
+      if test "$port" = ""; then
+        port="5432"
+      fi
+    else
+      port="5432"
+    fi
+  else
+    port="$withval"
+  fi
+  DBPORT=$port
+
+
+else
+
+  if test "" = ""; then
+    if test -f $PGHBADIR/postgresql.conf; then
+      port=`grep -E '^port' $PGHBADIR/postgresql.conf | cut -f3 -d\ `
+      if test "$port" = ""; then
+        port="5432"
+      fi
+    else
+      port="5432"
+    fi
+  else
+    port=""
+  fi
+  DBPORT=$port
 
 
 fi
 
-            ### [AC_SUBST([DBPORT], [$withval])],
-            ### [AC_SUBST([DBPORT], [5432])])
 
 #password cannot be enteren in non-interactive mode,
 #createuser command with -P argument promt for password
@@ -3493,13 +3504,13 @@ am__tar!$am__tar$ac_delim
 am__untar!$am__untar$ac_delim
 SED!$SED$ac_delim
 CHECK!$CHECK$ac_delim
+PGVERSION!$PGVERSION$ac_delim
 PGDATADIR!$PGDATADIR$ac_delim
 PGHBADIR!$PGHBADIR$ac_delim
 PGBINDIR!$PGBINDIR$ac_delim
-DBPORT!$DBPORT$ac_delim
-PGVERSION!$PGVERSION$ac_delim
 DBNAME!$DBNAME$ac_delim
 DBUSER!$DBUSER$ac_delim
+DBPORT!$DBPORT$ac_delim
 CIDRIPV4!$CIDRIPV4$ac_delim
 CIDRIPV6!$CIDRIPV6$ac_delim
 METHOD!$METHOD$ac_delim

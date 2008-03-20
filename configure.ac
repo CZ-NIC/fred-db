@@ -62,7 +62,7 @@ if test $1 = yes; then
 fi
 ])
 
-### redhat, fedora
+### redhat, fedora, suse
 AC_DEFUN([AC_REDHAT_DIRS],
 [
 if test $1 = yes; then
@@ -85,6 +85,8 @@ if test $1 = yes; then
 fi
 ])
 
+#this function decide on what system
+#is configure script executed
 AC_DEFUN([AC_AUTO_LOAD_PATHS],
 [
 if test $1 = yes; then
@@ -97,23 +99,27 @@ if test $1 = yes; then
     else
         AC_DEFAULT_DIRS(yes)
     fi
-    if test -f $PGHBADIR/postgresql.conf; then
-        port=`sed '/^port[\ ]*=[\ ]*[0-9]*/!d' $PGHBADIR/postgresql.conf | sed -r 's/[^0-9]*([0-9]+)[^0-9]*/\1/'`
-        if [ "$port" = "" ]; then
-            port=5432
-        fi
-        AC_SUBST([DBPORT], [$port]) 
-    else
-        AC_SUBST([DBPORT], [5432])
-    fi
-else
-    AC_SUBST([DBPORT], [5432])
 fi
 ])
 
-AC_DEFUN([AC_PORT],
+#function to determine on which port database listening
+#by default it is port from postgresql.conf file,
+#when this file cannot be found, configure use port 5432
+AC_DEFUN([AC_AUTO_PORT],
 [
-AC_SUBST([DBPORT], [$1])
+  if test "$1" = ""; then
+    if test -f $PGHBADIR/postgresql.conf; then
+      port=`grep -E '^port' $PGHBADIR/postgresql.conf | cut -f3 -d\ `
+      if test "$port" = ""; then
+        port="5432"
+      fi
+    else
+      port="5432"
+    fi
+  else
+    port="$1"
+  fi
+  AC_SUBST([DBPORT], [$port])
 ])
 
 #function to check if method value is valid
@@ -147,15 +153,16 @@ AC_ARG_WITH([check], [AS_HELP_STRING([--with-check],
             [AC_SUBST([CHECK], [$withval])],
             [AC_SUBST([CHECK], [yes])])
 
+#postgresql version, meaningfull mainly on debian
+AC_ARG_WITH([pgversion], [AS_HELP_STRING([--with-pgversion],
+	    [Which version of PostgreSQL use (only for Debian/Ubuntu) (by default is used latest found)])],
+	    [AC_SUBST([PGVERSION], [$withval])],
+	    [AC_SUBST([PGVERSION], [""])])
+
 AC_ARG_WITH([autodetect], [AS_HELP_STRING([--with-autodetect],
             [Whether automatically detect proper postgres direstories and files [yes]])],
             [AC_AUTO_LOAD_PATHS($withval)], [AC_AUTO_LOAD_PATHS(yes)])
 
-#postgresql version, meaningfull mainly on debian
-AC_ARG_WITH([pgversion], [AS_HELP_STRING([--with-pgversion],
-            [Which version of PostgreSQL use (meaningfull on Debian/Ubuntu) [highest found]])],
-            [AC_SUBST([PGVERSION], [$withval])],
-            [AC_SUBST([PGVERSION], [""])])
 
 AC_ARG_WITH([redhat], [AS_HELP_STRING([--with-redhat],
             [Use redhat directories paths (also valid for Fedora, SuSE)])],
@@ -220,9 +227,8 @@ AC_ARG_WITH([dbuser], [AS_HELP_STRING([--with-dbuser],
 #database port (host is always localhost)
 AC_ARG_WITH([dbport], [AS_HELP_STRING([--with-dbport],
             [TCP port to database [5432]])],
-            [AC_PORT($withval)], [])
-            ### [AC_SUBST([DBPORT], [$withval])],
-            ### [AC_SUBST([DBPORT], [5432])])
+	    [AC_AUTO_PORT($withval)],
+	    [AC_AUTO_PORT()])
 
 #password cannot be enteren in non-interactive mode,
 #createuser command with -P argument promt for password
