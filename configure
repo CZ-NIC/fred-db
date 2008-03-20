@@ -1677,7 +1677,7 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
-ac_config_files="$ac_config_files Makefile fred-db.spec createdb.sh fred-dbmanager"
+ac_config_files="$ac_config_files Makefile fred-db.spec fred-dbmanager"
 
 am__api_version='1.10'
 
@@ -3381,7 +3381,6 @@ do
   case $ac_config_target in
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "fred-db.spec") CONFIG_FILES="$CONFIG_FILES fred-db.spec" ;;
-    "createdb.sh") CONFIG_FILES="$CONFIG_FILES createdb.sh" ;;
     "fred-dbmanager") CONFIG_FILES="$CONFIG_FILES fred-dbmanager" ;;
 
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5

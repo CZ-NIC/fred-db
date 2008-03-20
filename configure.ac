@@ -1,6 +1,6 @@
 AC_INIT([fred-db], 0.8)
 AC_CONFIG_FILES([Makefile
-		 fred-db.spec createdb.sh fred-dbmanager])
+		 fred-db.spec fred-dbmanager])
 AM_INIT_AUTOMAKE([-Wall -Werror])
 
 #test if sed is present

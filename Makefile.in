@@ -32,9 +32,8 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 subdir = .
-DIST_COMMON = README $(am__configure_deps) $(dist_pkgdata_SCRIPTS) \
-	$(srcdir)/Makefile.am $(srcdir)/Makefile.in \
-	$(srcdir)/createdb.sh.in $(srcdir)/fred-db.spec.in \
+DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in $(srcdir)/fred-db.spec.in \
 	$(srcdir)/fred-dbmanager.in $(top_srcdir)/configure AUTHORS \
 	COPYING ChangeLog INSTALL NEWS install-sh missing
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -44,12 +43,11 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 am__CONFIG_DISTCLEAN_FILES = config.status config.cache config.log \
  configure.lineno config.status.lineno
 mkinstalldirs = $(install_sh) -d
-CONFIG_CLEAN_FILES = fred-db.spec createdb.sh fred-dbmanager
-am__installdirs = "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(sbindir)" \
-	"$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(upgradesdir)"
-dist_pkgdataSCRIPT_INSTALL = $(INSTALL_SCRIPT)
+CONFIG_CLEAN_FILES = fred-db.spec fred-dbmanager
+am__installdirs = "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(pkgdatadir)" \
+	"$(DESTDIR)$(upgradesdir)"
 sbinSCRIPT_INSTALL = $(INSTALL_SCRIPT)
-SCRIPTS = $(dist_pkgdata_SCRIPTS) $(sbin_SCRIPTS)
+SCRIPTS = $(sbin_SCRIPTS)
 SOURCES =
 DIST_SOURCES =
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
@@ -155,7 +153,6 @@ target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 pkgdata_DATA = structure.sql
-dist_pkgdata_SCRIPTS = createdb.sh
 sbin_SCRIPTS = fred-dbmanager
 upgradesdir = $(pkgdatadir)/upgrades
 upgrades_DATA = $(srcdir)/upgrades/*.sql
@@ -201,29 +198,8 @@ $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(srcdir) && $(ACLOCAL) $(ACLOCAL_AMFLAGS)
 fred-db.spec: $(top_builddir)/config.status $(srcdir)/fred-db.spec.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
-createdb.sh: $(top_builddir)/config.status $(srcdir)/createdb.sh.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
 fred-dbmanager: $(top_builddir)/config.status $(srcdir)/fred-dbmanager.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
-install-dist_pkgdataSCRIPTS: $(dist_pkgdata_SCRIPTS)
-	@$(NORMAL_INSTALL)
-	test -z "$(pkgdatadir)" || $(MKDIR_P) "$(DESTDIR)$(pkgdatadir)"
-	@list='$(dist_pkgdata_SCRIPTS)'; for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  if test -f $$d$$p; then \
-	    f=`echo "$$p" | sed 's|^.*/||;$(transform)'`; \
-	    echo " $(dist_pkgdataSCRIPT_INSTALL) '$$d$$p' '$(DESTDIR)$(pkgdatadir)/$$f'"; \
-	    $(dist_pkgdataSCRIPT_INSTALL) "$$d$$p" "$(DESTDIR)$(pkgdatadir)/$$f"; \
-	  else :; fi; \
-	done
-
-uninstall-dist_pkgdataSCRIPTS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(dist_pkgdata_SCRIPTS)'; for p in $$list; do \
-	  f=`echo "$$p" | sed 's|^.*/||;$(transform)'`; \
-	  echo " rm -f '$(DESTDIR)$(pkgdatadir)/$$f'"; \
-	  rm -f "$(DESTDIR)$(pkgdatadir)/$$f"; \
-	done
 install-sbinSCRIPTS: $(sbin_SCRIPTS)
 	@$(NORMAL_INSTALL)
 	test -z "$(sbindir)" || $(MKDIR_P) "$(DESTDIR)$(sbindir)"
@@ -413,7 +389,7 @@ check-am: all-am
 check: check-am
 all-am: Makefile $(SCRIPTS) $(DATA)
 installdirs:
-	for dir in "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(upgradesdir)"; do \
+	for dir in "$(DESTDIR)$(sbindir)" "$(DESTDIR)$(pkgdatadir)" "$(DESTDIR)$(upgradesdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -460,8 +436,7 @@ info: info-am
 
 info-am:
 
-install-data-am: install-dist_pkgdataSCRIPTS install-pkgdataDATA \
-	install-upgradesDATA
+install-data-am: install-pkgdataDATA install-upgradesDATA
 
 install-dvi: install-dvi-am
 
@@ -497,8 +472,8 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-dist_pkgdataSCRIPTS uninstall-pkgdataDATA \
-	uninstall-sbinSCRIPTS uninstall-upgradesDATA
+uninstall-am: uninstall-pkgdataDATA uninstall-sbinSCRIPTS \
+	uninstall-upgradesDATA
 
 .MAKE: install-am install-strip
 
@@ -506,17 +481,16 @@ uninstall-am: uninstall-dist_pkgdataSCRIPTS uninstall-pkgdataDATA \
 	dist-all dist-bzip2 dist-gzip dist-shar dist-tarZ dist-zip \
 	distcheck distclean distclean-generic distcleancheck distdir \
 	distuninstallcheck dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am \
-	install-dist_pkgdataSCRIPTS install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-man install-pdf \
-	install-pdf-am install-pkgdataDATA install-ps install-ps-am \
-	install-sbinSCRIPTS install-strip install-upgradesDATA \
-	installcheck installcheck-am installdirs maintainer-clean \
-	maintainer-clean-generic mostlyclean mostlyclean-generic pdf \
-	pdf-am ps ps-am uninstall uninstall-am \
-	uninstall-dist_pkgdataSCRIPTS uninstall-pkgdataDATA \
-	uninstall-sbinSCRIPTS uninstall-upgradesDATA
+	install install-am install-data install-data-am install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am install-man \
+	install-pdf install-pdf-am install-pkgdataDATA install-ps \
+	install-ps-am install-sbinSCRIPTS install-strip \
+	install-upgradesDATA installcheck installcheck-am installdirs \
+	maintainer-clean maintainer-clean-generic mostlyclean \
+	mostlyclean-generic pdf pdf-am ps ps-am uninstall uninstall-am \
+	uninstall-pkgdataDATA uninstall-sbinSCRIPTS \
+	uninstall-upgradesDATA
 
 
 structure.sql:

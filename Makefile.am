@@ -1,5 +1,4 @@
 pkgdata_DATA = structure.sql
-dist_pkgdata_SCRIPTS = createdb.sh
 sbin_SCRIPTS = fred-dbmanager
 upgradesdir = $(pkgdatadir)/upgrades
 upgrades_DATA = $(srcdir)/upgrades/*.sql
