@@ -5,7 +5,7 @@ upgrades_DATA = $(srcdir)/upgrades/*.sql
 
 CLEANFILES = structure.sql fred-dbmanager
 EXTRA_DIST = $(srcdir)/sql/*.sql $(srcdir)/orderedsql.sh \
-             $(srcdir)/fred-db.spec $(srcdir)/upgrades/*.sql
+             fred-db.spec $(srcdir)/upgrades/*.sql
 
 structure.sql:
 	$(srcdir)/orderedsql.sh > structure.sql

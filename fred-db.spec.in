@@ -30,7 +30,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-/usr/share/fred-db/createdb.sh
+/usr/sbin/fred-dbmanager
+/usr/share/fred-db/upgrades/*
 /usr/share/fred-db/structure.sql
 
 %changelog
