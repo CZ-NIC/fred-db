@@ -1,4 +1,4 @@
->UPDATE enum_parameters SET val='1.8.1' WHERE id=1;
+UPDATE enum_parameters SET val='1.8.1' WHERE id=1;
 
 DROP INDEX action_elements_elementid_idx;
 CREATE INDEX action_elements_actionid_idx ON action_elements (actionid);
