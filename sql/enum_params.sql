@@ -54,6 +54,11 @@ VALUES (9, 'regular_day_procedure_period', '14');
 -- parametr 10 is used to identify time zone in which parameter 9 is specified  
 INSERT INTO enum_parameters (id, name, val) 
 VALUES (10, 'regular_day_procedure_zone', 'CET');
+-- parametr 11 is used to change state of objects other than domain to
+-- deleteCandidate. It is specified in granularity of months and means, period
+-- during which object wasn't linked to other object and wasn't updated 
+INSERT INTO enum_parameters (id, name, val) 
+VALUES (11, 'object_registration_protection_period', '6');
 
 comment on table enum_parameters is
 'Table of system operational parameters.

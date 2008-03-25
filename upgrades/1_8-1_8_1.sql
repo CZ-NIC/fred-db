@@ -1,4 +1,4 @@
-UPDATE enum_parameters SET val='1.8.1' WHERE id=1;
+>UPDATE enum_parameters SET val='1.8.1' WHERE id=1;
 
 DROP INDEX action_elements_elementid_idx;
 CREATE INDEX action_elements_actionid_idx ON action_elements (actionid);
@@ -574,3 +574,141 @@ is cancelling the aforementioned <?cs if:type == #1 ?>contact<?cs elif:type == #
                                              S pozdravem
                                              podpora <?cs var:defaults.company ?>
 ' WHERE id=14;
+
+-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+--    contact/nsset delete
+-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+INSERT INTO enum_parameters (id, name, val) 
+VALUES (11, 'object_registration_protection_period', '6');
+
+CREATE OR REPLACE FUNCTION date_month_test(date, varchar, varchar, varchar)
+RETURNS boolean
+AS $$
+SELECT $1 + ($2||' month')::interval + ($3||' hours')::interval 
+       <= CURRENT_TIMESTAMP AT TIME ZONE $4;
+$$ IMMUTABLE LANGUAGE SQL;
+
+-- view for actual nsset states
+-- for NOW they are not deleted
+-- ================= NSSET ========================
+DROP VIEW nsset_states;
+CREATE VIEW nsset_states AS
+SELECT
+  o.id AS object_id,
+  o.historyid AS object_hid,
+  COALESCE(osr.states,'{}') ||
+  CASE WHEN NOT(d.nsset ISNULL) THEN ARRAY[16] ELSE '{}' END ||
+  CASE WHEN d.nsset ISNULL 
+            AND date_month_test(
+              GREATEST(
+                COALESCE(l.last_linked,o.crdate)::date,
+                COALESCE(ob.update,o.crdate)::date
+              ),
+              ep_mn.val,ep_tm.val,ep_tz.val
+            )
+            AND NOT (1 = ANY(COALESCE(osr.states,'{}')))
+       THEN ARRAY[17] ELSE '{}' END 
+  AS states
+FROM
+  object ob
+  JOIN object_registry o ON (ob.id=o.id AND o.type=2)
+  JOIN enum_parameters ep_tm ON (ep_tm.id=9)
+  JOIN enum_parameters ep_tz ON (ep_tz.id=10)
+  JOIN enum_parameters ep_mn ON (ep_mn.id=11)
+  LEFT JOIN (
+    SELECT DISTINCT nsset FROM domain
+  ) AS d ON (d.nsset=o.id)
+  LEFT JOIN (
+    SELECT object_id, MAX(valid_to) AS last_linked
+    FROM object_state
+    WHERE state_id=16 GROUP BY object_id
+  ) AS l ON (o.id=l.object_id)
+  LEFT JOIN object_state_request_now osr ON (o.id=osr.object_id);
+
+-- view for actual contact states
+-- ================= CONTACT ========================
+DROP VIEW contact_states;
+CREATE VIEW contact_states AS
+SELECT
+  o.id AS object_id,
+  o.historyid AS object_hid,
+  COALESCE(osr.states,'{}') ||
+  CASE WHEN NOT(cl.cid ISNULL) THEN ARRAY[16] ELSE '{}' END ||
+  CASE WHEN cl.cid ISNULL 
+            AND date_month_test(
+              GREATEST(
+                COALESCE(l.last_linked,o.crdate)::date,
+                COALESCE(ob.update,o.crdate)::date
+              ),
+              ep_mn.val,ep_tm.val,ep_tz.val
+            )
+            AND NOT (1 = ANY(COALESCE(osr.states,'{}')))
+       THEN ARRAY[17] ELSE '{}' END 
+  AS states
+FROM
+  object ob
+  JOIN object_registry o ON (ob.id=o.id AND o.type=1)
+  JOIN enum_parameters ep_tm ON (ep_tm.id=9)
+  JOIN enum_parameters ep_tz ON (ep_tz.id=10)
+  JOIN enum_parameters ep_mn ON (ep_mn.id=11)
+  LEFT JOIN (
+    SELECT registrant AS cid FROM domain
+    UNION
+    SELECT contactid AS cid FROM domain_contact_map
+    UNION
+    SELECT contactid AS cid FROM nsset_contact_map
+  ) AS cl ON (o.id=cl.cid)
+  LEFT JOIN (
+    SELECT object_id, MAX(valid_to) AS last_linked
+    FROM object_state
+    WHERE state_id=16 GROUP BY object_id
+  ) AS l ON (o.id=l.object_id)
+  LEFT JOIN object_state_request_now osr ON (o.id=osr.object_id);
+
+CREATE OR REPLACE FUNCTION update_object_states()
+RETURNS void
+AS $$
+BEGIN
+  IF NOT EXISTS(
+    SELECT relname FROM pg_class
+    WHERE relname = 'tmp_object_state_change' AND relkind = 'r' AND
+    pg_table_is_visible(oid)
+  )
+  THEN
+    CREATE TEMPORARY TABLE tmp_object_state_change (
+      object_id INTEGER,
+      object_hid INTEGER,
+      new_states INTEGER[],
+      old_states INTEGER[]
+    );
+  ELSE
+    TRUNCATE tmp_object_state_change;
+  END IF;
+
+  INSERT INTO tmp_object_state_change
+  SELECT
+    st.object_id, st.object_hid, st.states AS new_states, 
+    COALESCE(o.states,'{}') AS old_states
+  FROM (
+    SELECT * FROM domain_states
+    UNION
+    SELECT * FROM contact_states
+    UNION
+    SELECT * FROM nsset_states
+  ) AS st
+  LEFT JOIN object_state_now o ON (st.object_id=o.object_id)
+  WHERE array_sort_dist(st.states)!=COALESCE(array_sort_dist(o.states),'{}');
+
+  INSERT INTO object_state (object_id,state_id,valid_from,ohid_from)
+  SELECT c.object_id,e.id,CURRENT_TIMESTAMP,c.object_hid
+  FROM tmp_object_state_change c, enum_object_states e
+  WHERE e.id = ANY(c.new_states) AND e.id != ALL(c.old_states);
+
+  UPDATE object_state SET valid_to=CURRENT_TIMESTAMP, ohid_to=c.object_hid
+  FROM enum_object_states e, tmp_object_state_change c
+  WHERE e.id = ANY(c.old_states) AND e.id != ALL(c.new_states)
+  AND e.id=object_state.state_id and c.object_id=object_state.object_id 
+  AND object_state.valid_to ISNULL;
+END;
+$$ LANGUAGE plpgsql;
