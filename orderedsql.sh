@@ -48,3 +48,8 @@ cat $DIR/notify.sql
 cat $DIR/notify_new.sql
 # list of tld domains
 cat $DIR/enum_tlds.sql
+# new table with filters
+cat $DIR/filters.sql
+# new indexes for history tables
+cat $DIR/index.sql
+

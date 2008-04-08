@@ -1,3 +1,11 @@
+2008-04-03  Jaromir Talir <jaromir.talir@nic.cz>
+
+    * new indexes into history tables
+	
+    * new table for stored filters
+	
+    * release 1.8.1
+
 2008-03-25  Jaromir Talir <jaromir.talir@nic.cz>
 
     * upgrade deleteCandidate state update procedure for contacts/nssets

@@ -712,3 +712,76 @@ BEGIN
   AND object_state.valid_to ISNULL;
 END;
 $$ LANGUAGE plpgsql;
+
+-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+--    new indexes into history tables
+-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+CREATE INDEX domain_history_id_idx ON domain_history (id);
+CREATE INDEX domain_history_zone_idx ON domain_history (zone);
+CREATE INDEX domain_history_exdate_idx ON domain_history (exdate);
+CREATE INDEX domain_history_registrant_idx ON domain_history (registrant);
+CREATE INDEX domain_history_nsset_idx ON domain_history (nsset);
+CREATE INDEX domain_contact_map_history_contactid_idx ON domain_contact_map_history (contactid);
+CREATE INDEX domain_contact_map_history_domainid_idx ON domain_contact_map_history (domainid);
+CREATE INDEX nsset_history_id_idx ON nsset_history (id);
+CREATE INDEX host_history_nssetid_idx ON host_history (nssetid);
+CREATE INDEX host_history_id_idx ON host_history (id);
+CREATE INDEX host_ipaddr_map_history_id_idx ON host_ipaddr_map_history (id);
+CREATE INDEX host_ipaddr_map_history_hostid_idx ON host_ipaddr_map_history (hostid);
+CREATE INDEX host_ipaddr_map_history_nssetid_idx ON host_ipaddr_map_history (nssetid);
+CREATE INDEX nsset_contact_map_history_nssetid_idx ON nsset_contact_map_history (nssetid);
+CREATE INDEX nsset_contact_map_history_contactid_idx ON nsset_contact_map_history (contactid);
+CREATE INDEX contact_history_id_idx ON contact_history (id);
+CREATE INDEX enumval_history_domainid_idx ON enumval_history (domainid);
+CREATE INDEX object_history_id_idx ON object_history (id);
+CREATE INDEX object_history_clid_idx ON object_history (clid);
+CREATE INDEX object_history_upid_idx ON object_history (upid);
+
+-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+--    new indexes into history tables
+-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+CREATE INDEX domain_history_id_idx ON domain_history (id);
+CREATE INDEX domain_history_zone_idx ON domain_history (zone);
+CREATE INDEX domain_history_exdate_idx ON domain_history (exdate);
+CREATE INDEX domain_history_registrant_idx ON domain_history (registrant);
+CREATE INDEX domain_history_nsset_idx ON domain_history (nsset);
+CREATE INDEX domain_contact_map_history_contactid_idx ON domain_contact_map_history (contactid);
+CREATE INDEX domain_contact_map_history_domainid_idx ON domain_contact_map_history (domainid);
+CREATE INDEX nsset_history_id_idx ON nsset_history (id);
+CREATE INDEX host_history_nssetid_idx ON host_history (nssetid);
+CREATE INDEX host_history_id_idx ON host_history (id);
+CREATE INDEX host_ipaddr_map_history_id_idx ON host_ipaddr_map_history (id);
+CREATE INDEX host_ipaddr_map_history_hostid_idx ON host_ipaddr_map_history (hostid);
+CREATE INDEX host_ipaddr_map_history_nssetid_idx ON host_ipaddr_map_history (nssetid);
+CREATE INDEX nsset_contact_map_history_nssetid_idx ON nsset_contact_map_history (nssetid);
+CREATE INDEX nsset_contact_map_history_contactid_idx ON nsset_contact_map_history (contactid);
+CREATE INDEX contact_history_id_idx ON contact_history (id);
+CREATE INDEX enumval_history_domainid_idx ON enumval_history (domainid);
+CREATE INDEX object_history_id_idx ON object_history (id);
+CREATE INDEX object_history_clid_idx ON object_history (clid);
+CREATE INDEX object_history_upid_idx ON object_history (upid);
+
+-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+--  new table Filters
+-- -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+CREATE TABLE Filters (
+	ID SERIAL PRIMARY KEY, 
+	Type SMALLINT NOT NULL, 
+	Name VARCHAR(255) NOT NULL, 
+	UserID INTEGER NOT NULL, 
+	GroupID INTEGER,
+	Data TEXT NOT NULL
+	);
+
+COMMENT ON TABLE Filters is
+'Table for saved object filters';
+
+COMMENT ON COLUMN Filters.ID is 'unique automatically generated identifier';
+COMMENT ON COLUMN Filters.Type is 'filter object type -- 0 = filter on filter, 1 = filter on registrar, 2 = filter on object, 3 = filter on contact, 4 = filter on nsset, 5 = filter on domain, 6 = filter on action, 7 = filter on invoice, 8 = filter on authinfo, 9 = filter on mail';
+COMMENT ON COLUMN Filters.Name is 'human readable filter name';
+COMMENT ON COLUMN Filters.UserID is 'filter creator';
+COMMENT ON COLUMN Filters.GroupID is 'filter accessibility for group';
+COMMENT ON COLUMN Filters.Data is 'filter definition';
