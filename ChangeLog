@@ -1,3 +1,9 @@
+2008-04-17  Jaromir Talir <jaromir.talir@nic.cz>
+
+    * better user detection in fred-dbmanager
+
+    * new indexes (mail,epp_info)
+
 2008-04-03  Jaromir Talir <jaromir.talir@nic.cz>
 
     * new indexes into history tables

@@ -11,3 +11,5 @@ CREATE TABLE epp_info_buffer (
 	FOREIGN KEY (registrar_id, current) REFERENCES epp_info_buffer_content (registrar_id, id),
     PRIMARY KEY (registrar_id)
 );
+
+CREATE INDEX epp_info_buffer_content_registrar_id_idx ON epp_info_buffer_content (registrar_id);

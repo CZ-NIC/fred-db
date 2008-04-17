@@ -12,16 +12,16 @@ get_db_version () {
                     -c "$VERSIONSQL" 2>/dev/null;
 }
 
-test_user () {
-    if [ "$USER" != "postgres" ]
-    then
-        echo "Must be run under user 'postgres'"
-        exit 1;
-    fi
-}
-
 test_db () {
     @PGBINDIR@/psql -U @DBUSER@ -l -p @DBPORT@ @DBNAME@ | grep '@DBNAME@' > /dev/null
+    return $?
+}
+
+test_user() {
+    # check if user has administrator privileges
+    # only this test works for both situations supported:
+    # either system wide user 'postgres' or local postgres installation
+    @PGBINDIR@/psql -p @DBPORT@ postgres -c "" > /dev/null 2>&1
     return $?
 }
 
@@ -32,11 +32,19 @@ arguments:
     uninstall - uninstall FRED database
     upgrade - upgrade FRED database with upgrade script
     status - print status of FRED database
+    testuser - check if script can be run as current_user or postgres
     help - print this help"
     exit 0
 }
 
 init_pghba () {
+    test_user;
+    if [ $? -ne 0 ]
+    then
+        echo "Current user doesn't have required administrator privileges."
+        echo "restart under 'postgres' user"
+        exit 1
+    fi
     if [ "$PGDATA" = "" ]
     then
         PGHBA=@PGHBADIR@/pg_hba.conf
@@ -45,11 +53,12 @@ init_pghba () {
         PGHBA=$PGDATA/pg_hba.conf
     fi
 
-    if [ ! -f $PGHBA ]
+    if [ ! -w $PGHBA ]
     then
         if [ "$1" = "" -o ! -f "$1" ]
         then
-            echo "Cannot locate pg_hba.conf file"
+            echo "Cannot locate pg_hba.conf file or it's not accessible, run"
+            echo "this script under adminstrator user (usually postgres)"
         exit 2
         else
             PGHBA=$1
@@ -58,7 +67,6 @@ init_pghba () {
 }
 
 f_install () {
-    test_user
     init_pghba
 
     prefix=@prefix@
@@ -106,14 +114,13 @@ host @DBNAME@ @DBUSER@ @CIDRIPV6@ @METHOD@ \
         @PGBINDIR@/createuser @DBUSER@ -SDR -p @DBPORT@ > /dev/null 2>&1
         @PGBINDIR@/createdb @DBNAME@ -O @DBUSER@ -E UTF8 \
                             -p @DBPORT@ > /dev/null 2>&1
-        @PGBINDIR@/createlang -U postgres plpgsql @DBNAME@ \
+        @PGBINDIR@/createlang plpgsql @DBNAME@ \
                               -p @DBPORT@ > /dev/null 2>&1
         @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -f $STRUCTSQL -p @DBPORT@ >/dev/null 2>&1
     fi
 }
 
 f_uninstall () {
-    test_user
     init_pghba
     
     NUM_CON=$(get_num_connections)
@@ -216,7 +223,6 @@ create_upgrade_script () {
 }
 
 f_upgrade () {
-    test_user
     test_db
     if [ $? != 0 ]
     then
@@ -243,7 +249,6 @@ f_status () {
     fi
 }
 
-
 if [ $0 = "" ]
 then
     f_usage
@@ -253,6 +258,7 @@ else
         "uninstall") f_uninstall;;
         "upgrade" ) f_upgrade;;
         "status" ) f_status;;
+        "testuser" ) test_user;;
         "help" ) f_usage;;
         *) echo "Unknown argument"; f_usage;;
     esac

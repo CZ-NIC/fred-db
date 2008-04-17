@@ -162,6 +162,8 @@ CREATE TABLE mail_archive (
 	response text
 	);
 
+CREATE INDEX mail_archive_status_idx ON mail_archive (status);
+
 comment on table mail_archive is
 'Here are stored emails which are going to be sent and email which have
 already been sent (they differ in status value).';
@@ -186,6 +188,8 @@ CREATE TABLE mail_attachments (
 	mailid integer references mail_archive(id), -- id of email in archive
 	attachid integer references files(id)       -- Attachment id
 	);
+
+CREATE INDEX mail_attachments_mailid_idx ON mail_attachments (mailid);
 
 comment on table mail_attachments is 'list of attachment ids bound to email in mail_archive';
 comment on column mail_attachments.mailid is 'id of email in archive';
