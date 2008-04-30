@@ -4,7 +4,6 @@
 DIR=$(dirname $0)/sql
 cat $DIR/error.sql
 cat $DIR/enum_reason.sql
-cat $DIR/enum_status.sql
 cat $DIR/enum_ssntype.sql
 cat $DIR/enum_country.sql
 cat $DIR/enum_cs_country.sql
