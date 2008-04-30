@@ -41,8 +41,9 @@ init_pghba () {
     test_user;
     if [ $? -ne 0 ]
     then
-        echo "Current user doesn't have required administrator privileges."
-        echo "restart under 'postgres' user"
+        echo "Current user doesn't have required administrator privileges "
+        echo "or server is not running. Start server or run this script "
+        echo "under 'postgres' user"
         exit 1
     fi
     if [ "$PGDATA" = "" ]
@@ -129,8 +130,8 @@ f_uninstall () {
         echo "Still $NUM_CON active connections - uninstallation aborted"
         exit 1;
     fi
-    @PGBINDIR@/dropdb -U postgres @DBNAME@ -p @DBPORT@ > /dev/null 2>&1
-    @PGBINDIR@/dropuser -U postgres @DBUSER@ -p @DBPORT@ > /dev/null 2>&1
+    @PGBINDIR@/dropdb @DBNAME@ -p @DBPORT@ > /dev/null 2>&1
+    @PGBINDIR@/dropuser @DBUSER@ -p @DBPORT@ > /dev/null 2>&1
     if grep 'begin-@DBNAME@-@DBUSER@--' $PGHBA > /dev/null 2>&1
     then
         cp $PGHBA /tmp/pg_hba.conf.$$

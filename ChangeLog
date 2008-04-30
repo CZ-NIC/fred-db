@@ -1,3 +1,13 @@
+2008-04-30  Jaromir Talir <jaromir.talir@nic.cz>
+
+    * release 1.8.2
+
+    * fixing fred-dbmanager uninstallation process
+    
+    * fixing mail_template with notification about delete of contact and nsset
+
+    * new indexes (poll)
+
 2008-04-17  Jaromir Talir <jaromir.talir@nic.cz>
 
     * better user detection in fred-dbmanager

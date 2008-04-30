@@ -75,3 +75,4 @@ CREATE TABLE poll_stateChange (
   stateid INTEGER REFERENCES object_state (id)
 );
 
+CREATE INDEX poll_statechange_stateid_idx ON poll_statechange (stateid);
