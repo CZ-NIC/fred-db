@@ -7,6 +7,6 @@ CLEANFILES = structure.sql fred-dbmanager
 EXTRA_DIST = $(srcdir)/sql/*.sql $(srcdir)/orderedsql.sh \
              fred-db.spec $(srcdir)/upgrades/*.sql
 
-structure.sql: $(srcdir)/sql/*.sql
+structure.sql: $(srcdir)/sql/*.sql $(srcdir)/orderedsql.sh
 	$(srcdir)/orderedsql.sh > structure.sql
 

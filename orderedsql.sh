@@ -51,4 +51,6 @@ cat $DIR/enum_tlds.sql
 cat $DIR/filters.sql
 # new indexes for history tables
 cat $DIR/index.sql
+# new table for requests from public
+cat $DIR/public_request.sql
 
