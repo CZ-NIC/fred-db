@@ -49,50 +49,50 @@ INSERT INTO mail_type_template_map (typeid, templateid) VALUES (20, 20);
 --
 
 -- need convert exdate to CET zone
-UPDATE domain SET exdate = exdate at time zone 'CET';
+UPDATE domain SET exdate = exdate::timestamptz at time zone 'CET';
 -- drop domain_states view to allow alter table command
 DROP VIEW domain_states;
 -- alter table 
 ALTER TABLE domain ALTER COLUMN exdate TYPE date;
--- recreate domain_states view
+-- recreate domain_states view - removed exdate cast to date its date already
 CREATE VIEW domain_states AS
 SELECT
   d.id AS object_id,
   o.historyid AS object_hid,
   COALESCE(osr.states,'{}') ||
-  CASE WHEN date_test(d.exdate::date,ep_ex_not.val) 
+  CASE WHEN date_test(d.exdate,ep_ex_not.val) 
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
        THEN ARRAY[8] ELSE '{}' END ||  -- expirationWarning
-  CASE WHEN date_test(d.exdate::date,'0')                
+  CASE WHEN date_test(d.exdate,'0')                
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
        THEN ARRAY[9] ELSE '{}' END ||  -- expired
-  CASE WHEN date_time_test(d.exdate::date,ep_ex_dns.val,ep_tm.val,ep_tz.val)
+  CASE WHEN date_time_test(d.exdate,ep_ex_dns.val,ep_tm.val,ep_tz.val)
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
        THEN ARRAY[10] ELSE '{}' END || -- unguarded
-  CASE WHEN date_test(e.exdate::date,ep_val_not1.val)
+  CASE WHEN date_test(e.exdate,ep_val_not1.val)
        THEN ARRAY[11] ELSE '{}' END || -- validationWarning1
-  CASE WHEN date_test(e.exdate::date,ep_val_not2.val)
+  CASE WHEN date_test(e.exdate,ep_val_not2.val)
        THEN ARRAY[12] ELSE '{}' END || -- validationWarning2
-  CASE WHEN date_time_test(e.exdate::date,'0',ep_tm.val,ep_tz.val)
+  CASE WHEN date_time_test(e.exdate,'0',ep_tm.val,ep_tz.val)
        THEN ARRAY[13] ELSE '{}' END || -- notValidated
   CASE WHEN d.nsset ISNULL 
        THEN ARRAY[14] ELSE '{}' END || -- nssetMissing
   CASE WHEN
     d.nsset ISNULL OR
     5 = ANY(COALESCE(osr.states,'{}')) OR                -- outzoneManual
-    (((date_time_test(d.exdate::date,ep_ex_dns.val,ep_tm.val,ep_tz.val)
+    (((date_time_test(d.exdate,ep_ex_dns.val,ep_tm.val,ep_tz.val)
        AND NOT (2 = ANY(COALESCE(osr.states,'{}')))      -- !renewProhibited
-      ) OR date_time_test(e.exdate::date,'0',ep_tm.val,ep_tz.val)) AND 
+      ) OR date_time_test(e.exdate,'0',ep_tm.val,ep_tz.val)) AND 
      NOT (6 = ANY(COALESCE(osr.states,'{}'))))           -- !inzoneManual
        THEN ARRAY[15] ELSE '{}' END || -- outzone
-  CASE WHEN date_time_test(d.exdate::date,ep_ex_reg.val,ep_tm.val,ep_tz.val)
+  CASE WHEN date_time_test(d.exdate,ep_ex_reg.val,ep_tm.val,ep_tz.val)
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
             AND NOT (1 = ANY(COALESCE(osr.states,'{}'))) -- !deleteProhibited
        THEN ARRAY[17] ELSE '{}' END || -- deleteCandidate
-  CASE WHEN date_test(d.exdate::date,ep_ex_let.val)
+  CASE WHEN date_test(d.exdate,ep_ex_let.val)
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
        THEN ARRAY[19] ELSE '{}' END || -- deleteWarning
-  CASE WHEN date_time_test(d.exdate::date,ep_ex_dns.val,ep_tm.val,ep_tz.val)
+  CASE WHEN date_time_test(d.exdate,ep_ex_dns.val,ep_tm.val,ep_tz.val)
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
             AND NOT (6 = ANY(COALESCE(osr.states,'{}'))) -- !inzoneManual
        THEN ARRAY[20] ELSE '{}' END    -- outzoneUnguarded
