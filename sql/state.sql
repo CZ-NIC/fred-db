@@ -212,11 +212,11 @@ CREATE TABLE object_state_request (
   -- id of requested state
   state_id INTEGER NOT NULL REFERENCES enum_object_states (id),
   -- when object should enter requested state
-  valid_from TIMESTAMP NOT NULL,
+  valid_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   -- when object should leave requested state
   valid_to TIMESTAMP,
   -- could be pointer to some list of administration actions
-  crdate TIMESTAMP NOT NULL, 
+  crdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
   -- could be pointer to some list of administration actions
   canceled TIMESTAMP 
 );

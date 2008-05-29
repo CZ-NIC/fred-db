@@ -31,8 +31,9 @@ CREATE TABLE public_request_objects_map (
 comment on table public_request_objects_map is 'table with objects associated with given request';
 
 CREATE TABLE public_request_state_request_map (
-  request_id integer REFERENCES public_request(id),
-  state_request_id integer REFERENCES object_state_request(id)
+  state_request_id integer PRIMARY KEY REFERENCES object_state_request(id)
+  block_request_id integer NOT NULL REFERENCES public_request(id),
+  unblock_request_id integer REFERENCES public_request(id),
 );
 
 comment on table public_request_state_request_map is 'table with state request associated with given request';

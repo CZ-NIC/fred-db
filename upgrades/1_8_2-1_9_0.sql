@@ -112,3 +112,5 @@ FROM
   JOIN enum_parameters ep_tz ON (ep_tz.id=10)
 WHERE d.id=o.id;
 
+ALTER TABLE object_state_request ALTER COLUMN valid_from SET DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE object_state_request ALTER COLUMN crdate SET DEFAULT CURRENT_TIMESTAMP;
