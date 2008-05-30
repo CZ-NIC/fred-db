@@ -1,3 +1,16 @@
+2008-05-30 Jaromir Talir, Jiri Sadek
+
+    * release 1.9.0
+	
+    * new tables for public request
+	- public_request
+	- public_request_objects_map
+	- public_request_state_request_map
+	
+    * update default values in object_state_request table
+	
+    * exdate changed to date from datetime
+	
     * new mail template for blocking request
 
 2008-04-30  Jaromir Talir <jaromir.talir@nic.cz>
