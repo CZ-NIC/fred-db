@@ -158,3 +158,8 @@ CREATE TABLE public_request_state_request_map (
 );
 
 comment on table public_request_state_request_map is 'table with state request associated with given request';
+
+--
+-- continual update
+--
+select setval('public_request_id_seq',(select last_value from auth_info_requests_id_seq));
