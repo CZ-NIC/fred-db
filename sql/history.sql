@@ -54,7 +54,7 @@ CREATE TABLE Domain_History (
         HISTORYID INTEGER PRIMARY KEY REFERENCES History,          
         Zone INTEGER REFERENCES Zone (ID),
         ID INTEGER   REFERENCES object_registry (id),
-        ExDate timestamp NOT NULL,
+        ExDate date NOT NULL,
         Registrant INTEGER , -- canceled references
         NSSet INTEGER  -- canceled references
         );

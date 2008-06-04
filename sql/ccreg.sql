@@ -155,7 +155,7 @@ CREATE TABLE Domain (
         Zone INTEGER REFERENCES Zone (ID),
         Registrant INTEGER NOT NULL REFERENCES Contact,
         NSSet INTEGER NULL REFERENCES NSSet, -- link to nsset can be also NULL, it can register domain without nsset
-        Exdate timestamp NOT NULL
+        Exdate date NOT NULL
         );
 CREATE INDEX domain_zone_idx ON Domain (Zone);
 CREATE INDEX domain_registrant_idx ON Domain (registrant);
