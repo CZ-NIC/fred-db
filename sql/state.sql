@@ -420,7 +420,7 @@ $$ IMMUTABLE;
 
 -- ================= UPDATE FUNCTION =================
 -- CREATE LANGUAGE plpgsql;
-CREATE OR REPLACE FUNCTION update_object_states()
+CREATE OR REPLACE FUNCTION update_object_states(int)
 RETURNS void
 AS $$
 BEGIN
@@ -440,19 +440,50 @@ BEGIN
     TRUNCATE tmp_object_state_change;
   END IF;
 
-  INSERT INTO tmp_object_state_change
-  SELECT
-    st.object_id, st.object_hid, st.states AS new_states, 
-    COALESCE(o.states,'{}') AS old_states
-  FROM (
-    SELECT * FROM domain_states
-    UNION
-    SELECT * FROM contact_states
-    UNION
-    SELECT * FROM nsset_states
-  ) AS st
-  LEFT JOIN object_state_now o ON (st.object_id=o.object_id)
-  WHERE array_sort_dist(st.states)!=COALESCE(array_sort_dist(o.states),'{}');
+  IF $1 = 0
+  THEN
+    INSERT INTO tmp_object_state_change
+    SELECT
+      st.object_id, st.object_hid, st.states AS new_states, 
+      COALESCE(o.states,'{}') AS old_states
+    FROM (
+      SELECT * FROM domain_states
+      UNION
+      SELECT * FROM contact_states
+      UNION
+      SELECT * FROM nsset_states
+    ) AS st
+    LEFT JOIN object_state_now o ON (st.object_id=o.object_id)
+    WHERE array_sort_dist(st.states)!=COALESCE(array_sort_dist(o.states),'{}');
+  ELSE
+    -- domain
+    INSERT INTO tmp_object_state_change
+    SELECT
+      st.object_id, st.object_hid, st.states AS new_states, 
+      COALESCE(o.states,'{}') AS old_states
+    FROM domain_states st
+    LEFT JOIN object_state_now o ON (st.object_id=o.object_id)
+    WHERE array_sort_dist(st.states)!=COALESCE(array_sort_dist(o.states),'{}')
+    AND st.object_id=$1;
+    -- contact
+    INSERT INTO tmp_object_state_change
+    SELECT
+      st.object_id, st.object_hid, st.states AS new_states, 
+      COALESCE(o.states,'{}') AS old_states
+    FROM contact_states st
+    LEFT JOIN object_state_now o ON (st.object_id=o.object_id)
+    WHERE array_sort_dist(st.states)!=COALESCE(array_sort_dist(o.states),'{}')
+    AND st.object_id=$1;
+    -- nsset
+    INSERT INTO tmp_object_state_change
+    SELECT
+      st.object_id, st.object_hid, st.states AS new_states, 
+      COALESCE(o.states,'{}') AS old_states
+    FROM nsset_states st
+    LEFT JOIN object_state_now o ON (st.object_id=o.object_id)
+    WHERE array_sort_dist(st.states)!=COALESCE(array_sort_dist(o.states),'{}')
+    AND st.object_id=$1;
+  END IF;
 
   INSERT INTO object_state (object_id,state_id,valid_from,ohid_from)
   SELECT c.object_id,e.id,CURRENT_TIMESTAMP,c.object_hid

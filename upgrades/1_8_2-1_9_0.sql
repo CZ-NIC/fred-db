@@ -162,4 +162,85 @@ comment on table public_request_state_request_map is 'table with state request a
 --
 -- continual update
 --
-select setval('public_request_id_seq',(select last_value from auth_info_requests_id_seq));
+
+SELECT setval('public_request_id_seq',(select last_value from auth_info_requests_id_seq));
+
+
+DROP FUNCTION update_object_states;
+CREATE OR REPLACE FUNCTION update_object_states(int)
+RETURNS void
+AS $$
+BEGIN
+  IF NOT EXISTS(
+    SELECT relname FROM pg_class
+    WHERE relname = 'tmp_object_state_change' AND relkind = 'r' AND
+    pg_table_is_visible(oid)
+  )
+  THEN
+    CREATE TEMPORARY TABLE tmp_object_state_change (
+      object_id INTEGER,
+      object_hid INTEGER,
+      new_states INTEGER[],
+      old_states INTEGER[]
+    );
+  ELSE
+    TRUNCATE tmp_object_state_change;
+  END IF;
+
+  IF $1 = 0
+  THEN
+    INSERT INTO tmp_object_state_change
+    SELECT
+      st.object_id, st.object_hid, st.states AS new_states, 
+      COALESCE(o.states,'{}') AS old_states
+    FROM (
+      SELECT * FROM domain_states
+      UNION
+      SELECT * FROM contact_states
+      UNION
+      SELECT * FROM nsset_states
+    ) AS st
+    LEFT JOIN object_state_now o ON (st.object_id=o.object_id)
+    WHERE array_sort_dist(st.states)!=COALESCE(array_sort_dist(o.states),'{}');
+  ELSE
+    -- domain
+    INSERT INTO tmp_object_state_change
+    SELECT
+      st.object_id, st.object_hid, st.states AS new_states, 
+      COALESCE(o.states,'{}') AS old_states
+    FROM domain_states st
+    LEFT JOIN object_state_now o ON (st.object_id=o.object_id)
+    WHERE array_sort_dist(st.states)!=COALESCE(array_sort_dist(o.states),'{}')
+    AND st.object_id=$1;
+    -- contact
+    INSERT INTO tmp_object_state_change
+    SELECT
+      st.object_id, st.object_hid, st.states AS new_states, 
+      COALESCE(o.states,'{}') AS old_states
+    FROM contact_states st
+    LEFT JOIN object_state_now o ON (st.object_id=o.object_id)
+    WHERE array_sort_dist(st.states)!=COALESCE(array_sort_dist(o.states),'{}')
+    AND st.object_id=$1;
+    -- nsset
+    INSERT INTO tmp_object_state_change
+    SELECT
+      st.object_id, st.object_hid, st.states AS new_states, 
+      COALESCE(o.states,'{}') AS old_states
+    FROM nsset_states st
+    LEFT JOIN object_state_now o ON (st.object_id=o.object_id)
+    WHERE array_sort_dist(st.states)!=COALESCE(array_sort_dist(o.states),'{}')
+    AND st.object_id=$1;
+  END IF;
+
+  INSERT INTO object_state (object_id,state_id,valid_from,ohid_from)
+  SELECT c.object_id,e.id,CURRENT_TIMESTAMP,c.object_hid
+  FROM tmp_object_state_change c, enum_object_states e
+  WHERE e.id = ANY(c.new_states) AND e.id != ALL(c.old_states);
+
+  UPDATE object_state SET valid_to=CURRENT_TIMESTAMP, ohid_to=c.object_hid
+  FROM enum_object_states e, tmp_object_state_change c
+  WHERE e.id = ANY(c.old_states) AND e.id != ALL(c.new_states)
+  AND e.id=object_state.state_id and c.object_id=object_state.object_id 
+  AND object_state.valid_to ISNULL;
+END;
+$$ LANGUAGE plpgsql;
