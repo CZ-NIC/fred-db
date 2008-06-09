@@ -28,14 +28,14 @@ Information about processing of request
 
 Dear customer,
 
-   Based on your request submitted via the web form on the association
+   based on your request submitted via the web form on the association
 pages on <?cs var:reqdate ?>, which received the identification number 
 <?cs var:reqid ?>, we are announcing that your request for <?cs if:otype == #1 ?>blocking<?cs elif:otype == #2 ?>unblocking<?cs /if ?>
 <?cs if:rtype == #1 ?>data changes<?cs elif:rtype == #2 ?>transfer to other registrar<?cs /if ?> for <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs /if ?> <?cs var:handle ?> 
 has been realized.
 <?cs if:otype == #1 ?>
 No <?cs if:rtype == #1 ?>data changes<?cs elif:rtype == #2 ?>transfer to other registrar<?cs /if ?> of <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs /if ?> <?cs var:handle ?> 
-will be possible until You cancel the blocking option using the 
+will be possible until you cancel the blocking option using the 
 applicable form on association pages. 
 <?cs /if?>
                                              Yours sincerely
@@ -49,11 +49,17 @@ INSERT INTO mail_type_template_map (typeid, templateid) VALUES (20, 20);
 --
 
 -- need convert exdate to CET zone
-UPDATE domain SET exdate = exdate::timestamptz at time zone 'CET';
+UPDATE domain SET exdate = exdate::timestamptz at time zone 'CET'
+  WHERE exdate::date != (exdate::timestamptz at time zone 'CET')::date;
+UPDATE domain_history SET exdate = exdate::timestamptz at time zone 'CET' 
+  FROM object_registry o 
+  WHERE domain_history.historyid=o.historyid AND o.erdate ISNULL 
+  AND exdate::date != (exdate::timestamptz at time zone 'CET')::date;
 -- drop domain_states view to allow alter table command
 DROP VIEW domain_states;
 -- alter table 
 ALTER TABLE domain ALTER COLUMN exdate TYPE date;
+ALTER TABLE domain_history ALTER COLUMN exdate TYPE date;
 -- recreate domain_states view - removed exdate cast to date its date already
 CREATE VIEW domain_states AS
 SELECT

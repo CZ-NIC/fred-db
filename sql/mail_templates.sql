@@ -804,14 +804,14 @@ Information about processing of request
 
 Dear customer,
 
-   Based on your request submitted via the web form on the association
+   based on your request submitted via the web form on the association
 pages on <?cs var:reqdate ?>, which received the identification number 
 <?cs var:reqid ?>, we are announcing that your request for <?cs if:otype == #1 ?>blocking<?cs elif:otype == #2 ?>unblocking<?cs /if ?>
 <?cs if:rtype == #1 ?>data changes<?cs elif:rtype == #2 ?>transfer to other registrar<?cs /if ?> for <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs /if ?> <?cs var:handle ?> 
 has been realized.
 <?cs if:otype == #1 ?>
 No <?cs if:rtype == #1 ?>data changes<?cs elif:rtype == #2 ?>transfer to other registrar<?cs /if ?> of <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs /if ?> <?cs var:handle ?> 
-will be possible until You cancel the blocking option using the 
+will be possible until you cancel the blocking option using the 
 applicable form on association pages. 
 <?cs /if?>
                                              Yours sincerely
