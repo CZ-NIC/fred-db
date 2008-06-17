@@ -69,5 +69,16 @@ CREATE TABLE DS_record_history (
 
 comment on table DS_record_history is 'historic data from DS_record table';
 
+--- changes in existing tables
+
 ALTER TABLE Domain_History ADD COLUMN keyset_id integer;
 
+
+--- new records in existing tables
+
+INSERT INTO enum_action VALUES (600, 'KeysetCheck');
+INSERT INTO enum_action VALUES (601, 'KeysetInfo');
+INSERT INTO enum_action VALUES (602, 'KeysetDelete');
+INSERT INTO enum_action VALUES (603, 'KeysetUpdate');
+INSERT INTO enum_action VALUES (604, 'KeysetCreate');
+INSERT INTO enum_action VALUES (605, 'KeysetTransfer');
