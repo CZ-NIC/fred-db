@@ -152,7 +152,8 @@ comment on column public_request.answer_email_id is 'reference to mail which was
 
 CREATE TABLE public_request_objects_map (
   request_id integer REFERENCES public_request(id),
-  object_id integer REFERENCES object_registry(id)
+  object_id integer REFERENCES object_registry(id),
+  
 );
 
 comment on table public_request_objects_map is 'table with objects associated with given request';
@@ -166,13 +167,25 @@ CREATE TABLE public_request_state_request_map (
 comment on table public_request_state_request_map is 'table with state request associated with given request';
 
 --
--- continual update
+-- migration of auth_info_requests into new public_request
 --
+
+INSERT INTO public_request 
+  SELECT id,request_type-1,epp_action_id,create_time,status-1,resolve_time,reason,email_to_answer,answer_email_id 
+  FROM auth_info_requests;
+
+INSERT INTO public_request_objects_map (request_id,object_id) 
+  SELECT a.id,oh.id 
+  FROM auth_info_requests a 
+    JOIN object_history oh ON (a.object_id=oh.historyid);
 
 SELECT setval('public_request_id_seq',(select last_value from auth_info_requests_id_seq));
 
+-- 
+-- allow update state of individual object
+--
 
-DROP FUNCTION update_object_states;
+DROP FUNCTION update_object_states();
 CREATE OR REPLACE FUNCTION update_object_states(int)
 RETURNS void
 AS $$
@@ -250,3 +263,13 @@ BEGIN
   AND object_state.valid_to ISNULL;
 END;
 $$ LANGUAGE plpgsql;
+
+CREATE INDEX object_registry_historyid_idx ON object_registry (historyid);
+
+UPDATE enum_object_states_desc 
+SET description='Není povoleno prodloužení registrace objektu' 
+WHERE state_id=2 AND lang='CS';
+
+UPDATE enum_object_states_desc 
+SET description='Není povolena změna určeného registrátora' 
+WHERE state_id=3 AND lang='CS';
