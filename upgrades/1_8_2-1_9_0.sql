@@ -153,7 +153,7 @@ comment on column public_request.answer_email_id is 'reference to mail which was
 CREATE TABLE public_request_objects_map (
   request_id integer REFERENCES public_request(id),
   object_id integer REFERENCES object_registry(id),
-  
+  PRIMARY KEY (request_id, object_id)
 );
 
 comment on table public_request_objects_map is 'table with objects associated with given request';
@@ -264,8 +264,10 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- new admin interface needs this index for fast lookup in history tables
 CREATE INDEX object_registry_historyid_idx ON object_registry (historyid);
 
+-- small typo fixes
 UPDATE enum_object_states_desc 
 SET description='Není povoleno prodloužení registrace objektu' 
 WHERE state_id=2 AND lang='CS';
@@ -273,3 +275,6 @@ WHERE state_id=2 AND lang='CS';
 UPDATE enum_object_states_desc 
 SET description='Není povolena změna určeného registrátora' 
 WHERE state_id=3 AND lang='CS';
+
+-- slony needs primary keys on all tables
+ALTER poll_credit_zone_limit ADD PRIMARY KEY (zone);

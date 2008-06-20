@@ -20,6 +20,8 @@ CREATE INDEX object_registry_upper_name_2_idx
  ON object_registry (UPPER(name)) WHERE type=2;
 CREATE INDEX object_registry_name_3_idx 
  ON object_registry  (NAME) WHERE type=3;
+CREATE INDEX object_registry_historyid_idx ON object_registry (historyid);
+
 comment on column OBJECT_registry.ID is 'unique automatically generated identifier';
 comment on column OBJECT_registry.ROID is 'unique roid';
 comment on column OBJECT_registry.type is 'object type (1-contact, 2-nsset, 3-domain)';
