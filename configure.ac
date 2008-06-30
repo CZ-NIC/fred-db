@@ -109,7 +109,8 @@ AC_DEFUN([AC_AUTO_PORT],
 [
   if test "$1" = ""; then
     if test -f $PGHBADIR/postgresql.conf; then
-      port=`grep -E '^port' $PGHBADIR/postgresql.conf | cut -f3 -d\ `
+	# there might be only '\t' delimiter after the value, use cut -f 1 at the end
+      port=`grep -E '^port' $PGHBADIR/postgresql.conf | cut -f3 -d\  | cut -f 1`
       if test "$port" = ""; then
         port="5432"
       fi
