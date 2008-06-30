@@ -255,6 +255,8 @@ f_status () {
 }
 
 f_dump() {
+	DAT_TABLES='check_dependance|check_enum_reason|check_test|enum_action|enum_country|enum_error|enum_filetype|enum_notify|enum_object_states|enum_object_states_desc|enum_operation|enum_parameters|enum_reason|enum_ssntype|enum_tlds|mail_defaults|mail_footer|mail_header_defaults|mail_templates|mail_type|mail_type_template_map|mail_vcard|MessageType|notify_statechange_map'
+
 	test_db
 	if [ $? != 0 ]
 	    then
@@ -262,8 +264,8 @@ f_dump() {
 		exit 1
 	fi
 
-	@PGBINDIR@/pg_dump -s --exclude-table='^enum_*' -U fred fred
-	@PGBINDIR@/pg_dump --table='^enum_*' -U fred fred
+	@PGBINDIR@/pg_dump -s --exclude-table=$DAT_TABLES -U fred fred
+	@PGBINDIR@/pg_dump --table=$DAT_TABLES -U fred fred
 }
 
 f_verify_pk() {
