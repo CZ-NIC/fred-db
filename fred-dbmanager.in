@@ -33,7 +33,11 @@ arguments:
     upgrade - upgrade FRED database with upgrade script
     status - print status of FRED database
     testuser - check if script can be run as current_user or postgres
+    verifypk - list all tables without primary key 
+    dump - dump the database: DDL statements for all objects, data only for tables with enum_ prefix
+    verifydoc - list all tables and columns without any description in database (comment command)
     help - print this help"
+
     exit 0
 }
 
@@ -71,8 +75,8 @@ f_install () {
     init_pghba
 
     prefix=@prefix@
-    datarootdir=@datarootdir@
-    STRUCTSQL=@datadir@/@PACKAGE@/structure.sql 
+	datarootdir=@datarootdir@
+	STRUCTSQL=@datadir@/@PACKAGE@/structure.sql 
     if [ ! -f $STRUCTSQL ]; then
         echo "SQL script file $STRUCTSQL does not exists. Install terminated."
         exit 1
@@ -250,6 +254,57 @@ f_status () {
     fi
 }
 
+f_dump() {
+	test_db
+	if [ $? != 0 ]
+	    then
+		echo "@DBNAME@ database does not exist or postgres server does not runnint."
+		exit 1
+	fi
+
+	@PGBINDIR@/pg_dump -s --exclude-table='^enum_*' -U fred fred
+	@PGBINDIR@/pg_dump --table='^enum_*' -U fred fred
+}
+
+f_verify_pk() {
+	test_db
+	if [ $? != 0 ]
+	    then
+		echo "@DBNAME@ database does not exist or postgres server does not runnint."
+		exit 1
+	fi
+
+	echo "List of tables without primary key: "
+	@PGBINDIR@/psql -d @DBNAME@ -U @DBUSER@ -At -p @DBPORT@  \
+		<< EOF  2> /dev/null 
+select relname from pg_class where relkind='r' and relhaspkey='f' and relname !~ '^(pg_|sql_)';
+EOF
+}
+
+f_verify_doc() {
+	test_db
+	if [ $? != 0 ]
+	    then
+		echo "@DBNAME@ database does not exist or postgres server does not runnint."
+		exit 1
+	fi
+
+	echo "Database tables without description: "
+	@PGBINDIR@/psql -d @DBNAME@ -U @DBUSER@ -At -p @DBPORT@   \
+		<< EOF    2> /dev/null 
+select relname from pg_class where oid in 	(select oid from pg_class where relkind='r' and relname !~ '^(pg_|sql_)'  except  select objoid from pg_description where objsubid=0 and description is not null);
+EOF
+
+	echo
+	echo "Columns without description: "
+	@PGBINDIR@/psql -d @DBNAME@ -U @DBUSER@ -At -p @DBPORT@   \
+		<< EOF   2> /dev/null 
+select c.relname, a.attname FROM pg_class c, pg_attribute a, pg_type t WHERE a.attrelid=c.oid AND a.atttypid=t.oid AND a.attnum>0 AND c.relkind='r' AND c.relname !~ '^(pg_|sql_)' AND NOT EXISTS (select 1 from pg_description where a.attrelid=objoid AND a.attnum=objsubid);
+EOF
+
+	# This queries can be done in 3 ways: NOT EXISTS, SELECT WHERE ID IN (SET), LEFT JOIN WHERE desc is null
+}
+
 if [ $0 = "" ]
 then
     f_usage
@@ -260,7 +315,15 @@ else
         "upgrade" ) f_upgrade;;
         "status" ) f_status;;
         "testuser" ) test_user;;
+	"verifypk" ) f_verify_pk;;
+	"dump" ) f_dump;;
+	"verifydoc" ) f_verify_doc;;
         "help" ) f_usage;;
         *) echo "Unknown argument"; f_usage;;
     esac
+
 fi
+
+
+
+
