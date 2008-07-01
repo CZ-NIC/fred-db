@@ -237,7 +237,7 @@ f_upgrade () {
     ver=$(get_db_version)
     upgrade_script="/tmp/fred-upgrade.sql.$$"
     create_upgrade_script $ver $upgrade_script
-    @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -p @PDBORT@ \
+    @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -p @DBPORT@ \
                     -f $upgrade_script >/dev/null 2>&1
 }
 
