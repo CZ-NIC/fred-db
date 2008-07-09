@@ -1,3 +1,5 @@
+UPDATE enum_parameters SET val='1.9.0' WHERE id=1;
+
 --
 --  block requests answer emails
 --
@@ -277,4 +279,4 @@ SET description='Není povolena změna určeného registrátora'
 WHERE state_id=3 AND lang='CS';
 
 -- slony needs primary keys on all tables
-ALTER poll_credit_zone_limit ADD PRIMARY KEY (zone);
+ALTER TABLE poll_credit_zone_limit ADD PRIMARY KEY (zone);

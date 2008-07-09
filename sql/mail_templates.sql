@@ -639,9 +639,10 @@ Výsledek technické kontroly sady nameserverů <?cs var:handle ?>
 Result of technical check on NS set <?cs var:handle ?>
 
 Datum kontroly / Date of the check: <?cs var:checkdate ?>
-Číslo žádosti / Ticket: <?cs var:ticket ?>
+Typ kontroly / Control type : periodická / periodic 
+Číslo kontroly / Ticket: <?cs var:ticket ?>
 
-<?cs def:printtest(par_test) ?><?cs if:par_test.name == "existance" ?>Následující nameservery v sadě nameserverů nejsou dosažitelné:
+<?cs def:printtest(par_test) ?><?cs if:par_test.name == "existence" ?>Následující nameservery v sadě nameserverů nejsou dosažitelné:
 Following nameservers in NS set are not reachable:
 <?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
 <?cs /each ?><?cs /if ?><?cs if:par_test.name == "autonomous" ?>Sada nameserverů neobsahuje minimálně dva nameservery v různých
@@ -660,10 +661,10 @@ Nameserver <?cs var:ns ?> is not authoritative for domains:
 DNS serveru.
 All nameservers in NS set use the same implementation of DNS server.
 
-<?cs /if ?><?cs if:par_test.name == "recursive" ?>Následující nameservery v sadě nameserverů jsou rekurzivní:
+<?cs /if ?><?cs if:par_test.name == "notrecursive" ?>Následující nameservery v sadě nameserverů jsou rekurzivní:
 Following nameservers in NS set are recursive:
 <?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
-<?cs /each ?><?cs /if ?><?cs if:par_test.name == "recursive4all" ?>Následující nameservery v sadě nameserverů zodpověděli rekurzivně dotaz:
+<?cs /each ?><?cs /if ?><?cs if:par_test.name == "notrecursive4all" ?>Následující nameservery v sadě nameserverů zodpověděli rekurzivně dotaz:
 Following nameservers in NS set answered recursively a query:
 <?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
 <?cs /each ?><?cs /if ?><?cs /def ?>
