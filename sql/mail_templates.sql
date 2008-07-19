@@ -130,7 +130,7 @@ Vzhledem k této situaci máte nyní následující možnosti:
 
 2. Nebo si vyberte jiného určeného registrátora a jeho prostřednictvím
    zajistěte prodloužení registrace vašeho doménového jména. Seznam
-   registrátorů najdete na www.nic.cz (Seznam registrátorů)
+   registrátorů najdete na stránkách sdružení (Seznam registrátorů)
 
 
                                              S pozdravem
@@ -167,7 +167,7 @@ one of the following:
    of your domain name is duly extended.
 
 2. Or choose another registrar in order to extend the registration of your
-   domain name. For a list of registrars, please visit www.nic.cz
+   domain name. For a list of registrars, please visit association pages
    (List of Registrars)
 
 
@@ -586,8 +586,7 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 Oznámení o zrušení / Delete notification 
 =====================================================================
 Vzhledem ke skutečnosti, že <?cs if:type == #1 ?>kontaktní osoba<?cs elif:type == #2 ?>sada nameserverů<?cs /if ?> <?cs var:handle ?>
-<?cs var:name ?> nebyla po stanovenou dobu používána, <?cs var:defaults.company ?>
-na základě Pravidel registrace ruší ke dni <?cs var:deldate ?> uvedenou
+<?cs var:name ?> nebyla po stanovenou dobu používána, <?cs var:defaults.company ?> ruší ke dni <?cs var:deldate ?> uvedenou
 <?cs if:type == #1 ?>kontaktní osobu<?cs elif:type == #2 ?>sadu nameserverů<?cs /if ?>.
 
 Zrušení <?cs if:type == #1 ?>kontaktní osoby<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?> nemá žádný vliv na funkčnost Vašich 
