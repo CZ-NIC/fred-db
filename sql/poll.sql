@@ -16,6 +16,8 @@ INSERT INTO MessageType VALUES (10, 'expiration');
 INSERT INTO MessageType VALUES (11, 'imp_validation');
 INSERT INTO MessageType VALUES (12, 'validation');
 INSERT INTO MessageType VALUES (13, 'outzone');
+INSERT INTO MessageType VALUES (14, 'transfer_keyset');
+INSERT INTO MessageType VALUES (15, 'delete_keyset');
 
 comment on table MessageType is
 'table with message number codes and its names

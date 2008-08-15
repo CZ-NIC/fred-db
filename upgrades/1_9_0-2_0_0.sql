@@ -444,7 +444,7 @@ FROM
   ) AS l ON (o.id=l.object_id)
   LEFT JOIN object_state_request_now osr ON (o.id=osr.object_id);
 
-DROP VIEW contact_states
+DROP VIEW contact_states;
 CREATE VIEW contact_states AS
 SELECT
   o.id AS object_id,

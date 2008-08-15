@@ -107,10 +107,3 @@ INSERT INTO enum_reason VALUES (46, 'Field ``digest type'''' must be 1 (SHA-1)',
 INSERT INTO enum_reason VALUES (47, 'Digest must be 40 character long', 'Digest musí být dlouhý 40 znaků');
 
 select setval('enum_reason_id_seq', 47);
-
----
---- Values to table messagetype (see poll.sql)
----
-
-INSERT INTO MessageType VALUES (14, 'transfer_keyset');
-INSERT INTO MessageType VALUES (15, 'delete_keyset');

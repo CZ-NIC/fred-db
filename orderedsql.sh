@@ -39,6 +39,8 @@ cat $DIR/info_buffer.sql
 cat $DIR/func.sql
 # table with parameters
 cat $DIR/enum_params.sql
+# keyset
+cat $DIR/keyset.sql
 # state and poll
 cat $DIR/state.sql
 cat $DIR/poll.sql
@@ -53,5 +55,3 @@ cat $DIR/filters.sql
 cat $DIR/index.sql
 # new table for requests from public
 cat $DIR/public_request.sql
-# keyset
-cat $DIR/keyset.sql
