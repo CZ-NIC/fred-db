@@ -49,11 +49,12 @@ INSERT INTO enum_reason VALUES(  22 , 'Can not add nameserver'  , 'nelze přidat
 
 INSERT INTO enum_reason VALUES(  23 ,  'Can not remove  technical contact'  , 'nelze vymazat  technický kontakt'  );
 
-INSERT INTO enum_reason VALUES(  24 , 'Technical contact is already set to this nsset.'  , 'technický kontakt je již přiřazen k  sadě jmených servrů' );
-INSERT INTO enum_reason VALUES(  25 , 'Technical contact is not set to this nsset.' ,  'technický kontakt není přiřazen k sadě jmených servrů'   );
+-- when technical/administrative contact not exist or is already assigned to object (domain/keyset/nsset)
+INSERT INTO enum_reason VALUES(  24 , 'Technical contact is already assigned to this object.'  , 'Technický kontakt je již přiřazen k tomuto objektu' );
+INSERT INTO enum_reason VALUES(  25 , 'Technical contact not exists' ,  'Technický kontakt neexistuje');
 
-INSERT INTO enum_reason VALUES(  26 , 'Administrative contact is already set to this domain.'  , 'administrátorký kontakt je již přiřazen k doméně' );
-INSERT INTO enum_reason VALUES(  27 , 'Administravite contact is not set to this domain.' ,  'administrátorký kontakt není přiřazen k doméně'   );
+INSERT INTO enum_reason VALUES(  26 , 'Administrative contact is already assigned to this object.'  , 'Administrátorký kontakt je již přiřazen k tomuto objektu' );
+INSERT INTO enum_reason VALUES(  27 , 'Administravite contact not exists' ,  'Administrátorký kontakt neexistuje'   );
  
 -- for domain when owner or nsset doesn't exist
 INSERT INTO enum_reason VALUES( 28 ,  'handle of nsset does not exist.' , 'sada jmených servrů není vytvořena' );
@@ -64,22 +65,22 @@ INSERT INTO enum_reason VALUES( 30 , 'Nameserver is already set to this nsset.' 
 INSERT INTO enum_reason VALUES( 31 , 'Nameserver is not set to this nsset.'  , 'jmený server DNS není přiřazen v sadě jmených servrů' );
 
 -- for domain renew when entered date of epiration doesn't fit 
-INSERT INTO enum_reason VALUES( 32 ,  'Expiration date does not match registry data.' , 'nesouhlasí datum expirace' );
+INSERT INTO enum_reason VALUES( 32 ,  'Expiration date does not match registry data.' , 'Nesouhlasí datum expirace' );
  
 -- error from mod_eppd, if it is missing 'op' attribute in transfer command 
-INSERT INTO enum_reason VALUES( 33 ,  'Attribute op in element transfer is missing', 'Chybi atribut op u elementu transfer' );
+INSERT INTO enum_reason VALUES( 33 ,  'Attribute op in element transfer is missing', 'Chybí atribut op u elementu transfer' );
 -- error from mod_eppd, if it is missing a type of ident element
-INSERT INTO enum_reason VALUES( 34 ,  'Attribute type in element ident is missing', 'Chybi atribut type u elementu ident' );
+INSERT INTO enum_reason VALUES( 34 ,  'Attribute type in element ident is missing', 'Chybí atribut type u elementu ident' );
 -- error from z mod_eppd, if it is missing attribute msgID in element poll
-INSERT INTO enum_reason VALUES( 35 ,  'Attribute msgID in element poll is missing', 'Chybi atribut msgID u elementu poll' );
+INSERT INTO enum_reason VALUES( 35 ,  'Attribute msgID in element poll is missing', 'Chybí atribut msgID u elementu poll' );
 
 -- blacklist domain
-INSERT INTO enum_reason VALUES( 36 ,  'registratration is prohibited'  , 'registrace je  zakázána' );
+INSERT INTO enum_reason VALUES( 36 ,  'registratration is prohibited'  , 'Registrace je  zakázána' );
 -- XML validation process failed
 INSERT INTO enum_reason VALUES( 37 ,  'Schemas validity error: ' , 'Chyba validace XML schemat: ' );
 
 -- duplicate contact for tech or admin 
-INSERT INTO enum_reason VALUES(  38 , 'Duplicity contact' , 'Duplicitnitni kontakt' );
+INSERT INTO enum_reason VALUES(  38 , 'Duplicity contact' , 'Duplicitní kontakt' );
 
 select setval('enum_reason_id_seq', 38);
 

@@ -53,4 +53,5 @@ cat $DIR/filters.sql
 cat $DIR/index.sql
 # new table for requests from public
 cat $DIR/public_request.sql
-
+# keyset
+cat $DIR/keyset.sql
