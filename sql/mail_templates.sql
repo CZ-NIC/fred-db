@@ -16,7 +16,7 @@ Vážený zákazníku,
    na základě Vaší žádosti podané prostřednictvím webového formuláře
 na stránkách sdružení dne <?cs var:reqdate ?>, které
 bylo přiděleno identifikační číslo <?cs var:reqid ?>, Vám zasíláme požadované
-heslo, příslušející <?cs if:type == #3 ?>k doméně<?cs elif:type == #1 ?>ke kontaktu s identifikátorem<?cs elif:type == #2 ?>k sadě nameserverů s identifikátorem<?cs /if ?> <?cs var:handle ?>.
+heslo, příslušející <?cs if:type == #3 ?>k doméně<?cs elif:type == #1 ?>ke kontaktu s identifikátorem<?cs elif:type == #2 ?>k sadě nameserverů s identifikátorem<?cs elif:type == #4 ?>k sadě klíčů s identifikátorem<?cs /if ?> <?cs var:handle ?>.
 
    Heslo je: <?cs var:authinfo ?>
 
@@ -35,7 +35,7 @@ Dear customer,
    Based on your request submitted via the web form on the association
 pages on <?cs var:reqdate ?>, which received
 the identification number <?cs var:reqid ?>, we are sending you the requested
-password that belongs to the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs /if ?> <?cs var:handle ?>.
+password that belongs to the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs elif:type == #4 ?>Keyset with identifier<?cs /if ?> <?cs var:handle ?>.
 
    The password is: <?cs var:authinfo ?>
 
@@ -59,7 +59,7 @@ Vážený zákazníku,
 
    na základě Vaší žádosti podané prostřednictvím registrátora
 <?cs var:registrar ?>, jejímž obsahem je žádost o zaslání hesla
-příslušející <?cs if:type == #3 ?>k doméně<?cs elif:type == #1 ?>ke kontaktu s identifikátorem<?cs elif:type == #2 ?>k sadě nameserverů s identifikátorem<?cs /if ?> <?cs var:handle ?>.
+příslušející <?cs if:type == #3 ?>k doméně<?cs elif:type == #1 ?>ke kontaktu s identifikátorem<?cs elif:type == #2 ?>k sadě nameserverů s identifikátorem<?cs elif:type == #4 ?>k sadě klíčů s identifikátorem<?cs /if ?> <?cs var:handle ?>.
 
    Heslo je: <?cs var:authinfo ?>
 
@@ -81,7 +81,7 @@ Dear customer,
 
    Based on your request submitted via the registrar <?cs var:registrar ?>,
 which contains your request for sending you the password that belongs to
-the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs /if ?> <?cs var:handle ?>.
+the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs elif:type == #4 ?>Keyset with identifier<?cs /if ?> <?cs var:handle ?>.
 
    The password is: <?cs var:authinfo ?>
 
@@ -481,7 +481,7 @@ INSERT INTO mail_type_template_map (typeid, templateid) VALUES (9, 9);
 INSERT INTO mail_type (id, name, subject) VALUES (10, 'notification_create', 'Oznámení o registraci / Registration notification');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (10, 'plain', 1,
-'<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs /if ?><?cs /if ?><?cs /def ?>
+'<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>
 ======================================================================
 Oznámení o registraci / Registration notification
 ======================================================================
@@ -506,7 +506,7 @@ INSERT INTO mail_type_template_map (typeid, templateid) VALUES (10, 10);
 INSERT INTO mail_type (id, name, subject) VALUES (11, 'notification_update', 'Oznámení změn / Notification of changes');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (11, 'plain', 1,
-'<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs /if ?><?cs /if ?><?cs /def ?>
+'<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>
 =====================================================================
 Oznámení změn / Notification of changes 
 =====================================================================
@@ -531,7 +531,7 @@ INSERT INTO mail_type_template_map (typeid, templateid) VALUES (11, 11);
 INSERT INTO mail_type (id, name, subject) VALUES (12, 'notification_transfer', 'Oznámení o transferu / Transfer notification');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (12, 'plain', 1,
-'<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs /if ?><?cs /if ?><?cs /def ?>
+'<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>
 =====================================================================
 Oznámení o transferu / Transfer notification
 =====================================================================
@@ -585,14 +585,14 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 =====================================================================
 Oznámení o zrušení / Delete notification 
 =====================================================================
-Vzhledem ke skutečnosti, že <?cs if:type == #1 ?>kontaktní osoba<?cs elif:type == #2 ?>sada nameserverů<?cs /if ?> <?cs var:handle ?>
+Vzhledem ke skutečnosti, že <?cs if:type == #1 ?>kontaktní osoba<?cs elif:type == #2 ?>sada nameserverů<?cs elif:type == #4 ?>sada klíčů<?cs /if ?> <?cs var:handle ?>
 <?cs var:name ?> nebyla po stanovenou dobu používána, <?cs var:defaults.company ?> ruší ke dni <?cs var:deldate ?> uvedenou
 <?cs if:type == #1 ?>kontaktní osobu<?cs elif:type == #2 ?>sadu nameserverů<?cs /if ?>.
 
 Zrušení <?cs if:type == #1 ?>kontaktní osoby<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?> nemá žádný vliv na funkčnost Vašich 
 zaregistrovaných doménových jmen.
 
-With regard to the fact that the <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>NS set<?cs /if ?> <?cs var:handle ?>
+With regard to the fact that the <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?> <?cs var:handle ?>
 <?cs var:name ?> was not used during the fixed period, <?cs var:defaults.company ?>
 is cancelling the aforementioned <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>set of nameservers<?cs /if ?> as of <?cs var:deldate ?>.
 
@@ -609,7 +609,7 @@ INSERT INTO mail_type_template_map (typeid, templateid) VALUES (14, 14);
 INSERT INTO mail_type (id, name, subject) VALUES (15, 'notification_delete', 'Oznámení o zrušení / Delete notification');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (15, 'plain', 1,
-'<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs /if ?><?cs /if ?><?cs /def ?>
+'<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>
 =====================================================================
 Oznámení o zrušení / Delete notification 
 =====================================================================
@@ -790,10 +790,10 @@ Vážený zákazníku,
    na základě Vaší žádosti podané prostřednictvím webového formuláře
 na stránkách sdružení dne <?cs var:reqdate ?>, které bylo přiděleno identifikační 
 číslo <?cs var:reqid ?>, Vám oznamujeme, že požadovaná žádost o <?cs if:otype == #1 ?>zablokování<?cs elif:otype == #2 ?>odblokování<?cs /if ?>
-<?cs if:rtype == #1 ?>změny dat<?cs elif:rtype == #2 ?>transferu k jinému registrátorovi<?cs /if ?> pro <?cs if:type == #3 ?>doménu<?cs elif:type == #1 ?>kontakt s identifikátorem<?cs elif:type == #2 ?>sadu nameserverů s identifikátorem<?cs /if ?> <?cs var:handle ?> 
+<?cs if:rtype == #1 ?>změny dat<?cs elif:rtype == #2 ?>transferu k jinému registrátorovi<?cs /if ?> pro <?cs if:type == #3 ?>doménu<?cs elif:type == #1 ?>kontakt s identifikátorem<?cs elif:type == #2 ?>sadu nameserverů s identifikátorem<?cs elif:type == #4 ?>sadu klíčů s identifikátorem<?cs /if ?> <?cs var:handle ?> 
 byla úspěšně realizována.  
 <?cs if:otype == #1 ?>
-U <?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu s identifikátorem<?cs elif:type == #2 ?>sady nameserverů s identifikátorem<?cs /if ?> <?cs var:handle ?> nebude možné provést 
+U <?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu s identifikátorem<?cs elif:type == #2 ?>sady nameserverů s identifikátorem<?cs elif:type == #4 ?>sady klíčů s identifikátorem<?cs /if ?> <?cs var:handle ?> nebude možné provést 
 <?cs if:rtype == #1 ?>změnu dat<?cs elif:rtype == #2 ?>transfer k jinému registrátorovi <?cs /if ?> až do okamžiku, kdy tuto blokaci 
 zrušíte pomocí příslušného formuláře na stránkách sdružení.
 <?cs /if?>
@@ -807,10 +807,10 @@ Dear customer,
    based on your request submitted via the web form on the association
 pages on <?cs var:reqdate ?>, which received the identification number 
 <?cs var:reqid ?>, we are announcing that your request for <?cs if:otype == #1 ?>blocking<?cs elif:otype == #2 ?>unblocking<?cs /if ?>
-<?cs if:rtype == #1 ?>data changes<?cs elif:rtype == #2 ?>transfer to other registrar<?cs /if ?> for <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs /if ?> <?cs var:handle ?> 
+<?cs if:rtype == #1 ?>data changes<?cs elif:rtype == #2 ?>transfer to other registrar<?cs /if ?> for <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs elif:type == #4 ?>Keyset with identifier<?cs /if ?> <?cs var:handle ?> 
 has been realized.
 <?cs if:otype == #1 ?>
-No <?cs if:rtype == #1 ?>data changes<?cs elif:rtype == #2 ?>transfer to other registrar<?cs /if ?> of <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs /if ?> <?cs var:handle ?> 
+No <?cs if:rtype == #1 ?>data changes<?cs elif:rtype == #2 ?>transfer to other registrar<?cs /if ?> of <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs elif:type == #4 ?>Keyset with identifier<?cs /if ?> <?cs var:handle ?> 
 will be possible until you cancel the blocking option using the 
 applicable form on association pages. 
 <?cs /if?>

@@ -366,6 +366,41 @@ FROM
   ) AS l ON (o.id=l.object_id)
   LEFT JOIN object_state_request_now osr ON (o.id=osr.object_id);
 
+-- ================= KEYSET ========================
+-- DROP VIEW keyset_states
+CREATE VIEW keyset_states AS
+SELECT
+  o.id AS object_id,
+  o.historyid AS object_hid,
+  COALESCE(osr.states,'{}') ||
+  CASE WHEN NOT(d.keyset ISNULL) THEN ARRAY[16] ELSE '{}' END ||
+  CASE WHEN d.keyset ISNULL 
+            AND date_month_test(
+              GREATEST(
+                COALESCE(l.last_linked,o.crdate)::date,
+                COALESCE(ob.update,o.crdate)::date
+              ),
+              ep_mn.val,ep_tm.val,ep_tz.val
+            )
+            AND NOT (1 = ANY(COALESCE(osr.states,'{}')))
+       THEN ARRAY[17] ELSE '{}' END 
+  AS states
+FROM
+  object ob
+  JOIN object_registry o ON (ob.id=o.id AND o.type=2)
+  JOIN enum_parameters ep_tm ON (ep_tm.id=9)
+  JOIN enum_parameters ep_tz ON (ep_tz.id=10)
+  JOIN enum_parameters ep_mn ON (ep_mn.id=11)
+  LEFT JOIN (
+    SELECT DISTINCT keyset FROM domain
+  ) AS d ON (d.keyset=o.id)
+  LEFT JOIN (
+    SELECT object_id, MAX(valid_to) AS last_linked
+    FROM object_state
+    WHERE state_id=16 GROUP BY object_id
+  ) AS l ON (o.id=l.object_id)
+  LEFT JOIN object_state_request_now osr ON (o.id=osr.object_id);
+
 -- view for actual contact states
 -- ================= CONTACT ========================
 -- DROP VIEW contact_states
@@ -398,6 +433,8 @@ FROM
     SELECT contactid AS cid FROM domain_contact_map
     UNION
     SELECT contactid AS cid FROM nsset_contact_map
+    UNION
+    SELECT contactid AS cid FROM keyset_contact_map
   ) AS cl ON (o.id=cl.cid)
   LEFT JOIN (
     SELECT object_id, MAX(valid_to) AS last_linked
@@ -452,6 +489,8 @@ BEGIN
       SELECT * FROM contact_states
       UNION
       SELECT * FROM nsset_states
+      UNION
+      SELECT * FROM keyset_states
     ) AS st
     LEFT JOIN object_state_now o ON (st.object_id=o.object_id)
     WHERE array_sort_dist(st.states)!=COALESCE(array_sort_dist(o.states),'{}');
@@ -480,6 +519,15 @@ BEGIN
       st.object_id, st.object_hid, st.states AS new_states, 
       COALESCE(o.states,'{}') AS old_states
     FROM nsset_states st
+    LEFT JOIN object_state_now o ON (st.object_id=o.object_id)
+    WHERE array_sort_dist(st.states)!=COALESCE(array_sort_dist(o.states),'{}')
+    AND st.object_id=$1;
+    -- keyset
+    INSERT INTO tmp_object_state_change
+    SELECT
+      st.object_id, st.object_hid, st.states AS new_states, 
+      COALESCE(o.states,'{}') AS old_states
+    FROM keyset_states st
     LEFT JOIN object_state_now o ON (st.object_id=o.object_id)
     WHERE array_sort_dist(st.states)!=COALESCE(array_sort_dist(o.states),'{}')
     AND st.object_id=$1;
@@ -638,8 +686,10 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
     _num INTEGER;
     _nsset_old INTEGER;
     _registrant_old INTEGER;
+    _keyset_old INTEGER;
     _nsset_new INTEGER;
     _registrant_new INTEGER;
+    _keyset_new INTEGER;
     _ex_not VARCHAR;
     _ex_dns VARCHAR;
     _ex_let VARCHAR;
@@ -649,8 +699,10 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
   BEGIN
     _nsset_old := NULL;
     _registrant_old := NULL;
+    _keyset_old := NULL;
     _nsset_new := NULL;
     _registrant_new := NULL;
+    _keyset_new := NULL;
     SELECT val INTO _ex_not FROM enum_parameters WHERE id=3;
     SELECT val INTO _ex_dns FROM enum_parameters WHERE id=4;
     SELECT val INTO _ex_let FROM enum_parameters WHERE id=5;
@@ -661,6 +713,7 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
     IF TG_OP = 'INSERT' THEN
       _registrant_new := NEW.registrant;
       _nsset_new := NEW.nsset;
+      _keyset_new := NEW.keyset;
       -- we ignore exdate, for new domain it shouldn't influence its state
       -- state: nsset missing
       EXECUTE status_update_state(
@@ -675,6 +728,10 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
       IF COALESCE(NEW.nsset,0) <> COALESCE(OLD.nsset,0) THEN
         _nsset_old := OLD.nsset;
         _nsset_new := NEW.nsset;
+      END IF;
+      IF COALESCE(NEW.keyset,0) <> COALESCE(OLD.keyset,0) THEN
+        _keyset_old := OLD.keyset;
+        _keyset_new := NEW.keyset;
       END IF;
       -- take care of all domain statuses
       IF NEW.exdate <> OLD.exdate THEN
@@ -720,6 +777,7 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
     ELSIF TG_OP = 'DELETE' THEN
       _registrant_old := OLD.registrant;
       _nsset_old := OLD.nsset; -- may be NULL!
+      _keyset_old := OLD.keyset; -- may be NULL!
       -- exdate is meaningless when deleting (probably)
     END IF;
 
@@ -744,7 +802,11 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
         IF _num = 0 THEN
           SELECT count(*) INTO _num FROM nsset_contact_map
               WHERE contactid = OLD.registrant;
-          EXECUTE status_clear_state(_num <> 0, 16, OLD.registrant);
+          IF _num = 0 THEN
+            SELECT count(*) INTO _num FROM keyset_contact_map
+                WHERE contactid = OLD.registrant;
+            EXECUTE status_clear_state(_num <> 0, 16, OLD.registrant);
+          END IF;
         END IF;
       END IF;
     END IF;
@@ -755,6 +817,14 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
     THEN
       SELECT count(*) INTO _num FROM domain WHERE nsset = OLD.nsset;
       EXECUTE status_clear_state(_num <> 0, 16, OLD.nsset);
+    END IF;
+    -- remove keyset's linked status if not bound
+    -- locking must be done (see comment above)
+    IF _keyset_old IS NOT NULL AND
+       status_clear_lock(_keyset_old, 16) IS NOT NULL  
+    THEN
+      SELECT count(*) INTO _num FROM domain WHERE keyset = OLD.keyset;
+      EXECUTE status_clear_state(_num <> 0, 16, OLD.keyset);
     END IF;
     RETURN NULL;
   END;
@@ -827,7 +897,11 @@ CREATE OR REPLACE FUNCTION status_update_contact_map() RETURNS TRIGGER AS $$
         IF _num = 0 THEN
           SELECT count(*) INTO _num FROM nsset_contact_map
               WHERE contactid = OLD.contactid;
-          EXECUTE status_clear_state(_num <> 0, 16, OLD.contactid);
+          IF _num = 0 THEN
+            SELECT count(*) INTO _num FROM keyset_contact_map
+                WHERE contactid = OLD.contactid;
+            EXECUTE status_clear_state(_num <> 0, 16, OLD.contactid);
+          END IF;
         END IF;
       END IF;
     END IF;
@@ -841,6 +915,10 @@ CREATE TRIGGER trigger_domain_contact_map AFTER INSERT OR DELETE OR UPDATE
 
 CREATE TRIGGER trigger_nsset_contact_map AFTER INSERT OR DELETE OR UPDATE
   ON nsset_contact_map FOR EACH ROW 
+  EXECUTE PROCEDURE status_update_contact_map();
+
+CREATE TRIGGER trigger_keyset_contact_map AFTER INSERT OR DELETE OR UPDATE
+  ON keyset_contact_map FOR EACH ROW 
   EXECUTE PROCEDURE status_update_contact_map();
 
 -- object history tables are filled after normal object tables (i.e. domain)
