@@ -1,3 +1,9 @@
+2008-08-14 Jaromir Talir, Ales Dolezal
+
+    * release 2.0.0
+
+    * DNSSEC implementation, new keyset object attached to domain
+
 2008-05-30 Jaromir Talir, Jiri Sadek
 
     * release 1.9.0
