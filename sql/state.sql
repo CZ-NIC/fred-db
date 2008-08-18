@@ -60,6 +60,9 @@ INSERT INTO enum_object_states
 INSERT INTO enum_object_states 
   VALUES (20,'outzoneUnguarded','{3}','f','f');
 
+-- update for keyset
+update enum_object_states set types = types || array[4] where 2 = any (types);
+
 -- descriptions fo states in different languages 
 CREATE TABLE enum_object_states_desc (
   -- id of status
