@@ -390,7 +390,7 @@ SELECT
   AS states
 FROM
   object ob
-  JOIN object_registry o ON (ob.id=o.id AND o.type=2)
+  JOIN object_registry o ON (ob.id=o.id AND o.type=4)
   JOIN enum_parameters ep_tm ON (ep_tm.id=9)
   JOIN enum_parameters ep_tz ON (ep_tz.id=10)
   JOIN enum_parameters ep_mn ON (ep_mn.id=11)
