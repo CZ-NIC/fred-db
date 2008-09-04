@@ -792,6 +792,10 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
     EXECUTE status_set_state(
       _nsset_new IS NOT NULL, 16, _nsset_new
     );
+    -- add keyset's linked status if there is none
+    EXECUTE status_set_state(
+      _keyset_new IS NOT NULL, 16, _keyset_new
+    );
     -- remove registrant's linked status if not bound
     -- locking must be done (see comment above)
     IF _registrant_old IS NOT NULL AND 
