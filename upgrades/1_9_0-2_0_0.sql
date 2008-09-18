@@ -783,6 +783,9 @@ CREATE TRIGGER trigger_keyset_contact_map AFTER INSERT OR DELETE OR UPDATE
 --- update object states table for keyset
 update enum_object_states set types = types || array[4] where 2 = any (types);
 
+--- update notification map
+INSERT INTO notify_statechange_map VALUES (11, 17, 4, 14, 1);
+
 --- update version
 update enum_parameters set val='2.0.0' where id=1;
 

@@ -42,6 +42,9 @@ INSERT INTO notify_statechange_map VALUES ( 9, 13, 3,  9, 1);
 -- state: validation, obj: domain, 
 -- template: expiration_tech_dns, emails: techs
 INSERT INTO notify_statechange_map VALUES (10, 13, 3,  6, 2);
+-- state: deleteCandidate, obj: keyset,
+-- template: notification_unused, emails: admin
+INSERT INTO notify_statechange_map VALUES (11, 17, 4, 14, 1);
 
 -- store information about successfull notification
 CREATE TABLE notify_statechange (
