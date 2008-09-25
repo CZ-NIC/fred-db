@@ -82,7 +82,23 @@ INSERT INTO enum_reason VALUES( 37 ,  'Schemas validity error: ' , 'Chyba valida
 -- duplicate contact for tech or admin 
 INSERT INTO enum_reason VALUES(  38 , 'Duplicity contact' , 'Duplicitní kontakt' );
 
-select setval('enum_reason_id_seq', 38);
+---
+--- moved from keyset.sql
+---
+INSERT INTO enum_reason VALUES (39, 'Bad format keyset handle', 'Neplatný formát ukazatele keysetu');
+INSERT INTO enum_reason VALUES (40, 'Handle of keyset does not exists', 'Ukazatel keysetu není vytvořen');
+INSERT INTO enum_reason VALUES (41, 'DSRecord does not exists', 'DSRecord záznam neexistuje');
+INSERT INTO enum_reason VALUES (42, 'Can not remove DSRecord', 'Nelze odstranit DSRecord záznam');
+INSERT INTO enum_reason VALUES (43, 'Duplicity DSRecord', 'Duplicitní DSRecord záznam');
+INSERT INTO enum_reason VALUES (44, 'DSRecord already exists for this keyset', 'DSRecord již pro tento keyset existuje');
+INSERT INTO enum_reason VALUES (45, 'DSRedord is not set for this keyset', 'DSRecord pro tento keyset neexistuje');
+INSERT INTO enum_reason VALUES (46, 'Field ``digest type'''' must be 1 (SHA-1)', 'Pole ``digest type'''' musí být 1 (SHA-1)');
+INSERT INTO enum_reason VALUES (47, 'Digest must be 40 character long', 'Digest musí být dlouhý 40 znaků');
+
+
+INSERT INTO enum_reason VALUES (48, 'Object do not belong to registrar', 'Objekt nepatří registrátorovi');
+
+select setval('enum_reason_id_seq', 47);
 
 comment on table enum_reason is 'Table of error messages reason';
 comment on column enum_reason.reason is 'reason in english language';

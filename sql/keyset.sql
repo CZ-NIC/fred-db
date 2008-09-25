@@ -81,7 +81,7 @@ ALTER TABLE Domain_History ADD COLUMN keyset integer;
 
 ---
 --- new records in existing tables
----
+--- 
 
 INSERT INTO enum_action VALUES (600, 'KeysetCheck');
 INSERT INTO enum_action VALUES (601, 'KeysetInfo');
@@ -91,19 +91,11 @@ INSERT INTO enum_action VALUES (604, 'KeysetCreate');
 INSERT INTO enum_action VALUES (605, 'KeysetTransfer');
 INSERT INTO enum_action VALUES (1006, 'ListKeySet');
 INSERT INTO enum_action VALUES (1106, 'KeySetSendAuthInfo');
+select setval('enum_action_id_seq', 1106); 
 
 ---
 --- error reason values
 ---
+--- !! moved into ``enum_reason.sql'' file
+---
 
-INSERT INTO enum_reason VALUES (39, 'Bad format keyset handle', 'Neplatný formát ukazatele keysetu');
-INSERT INTO enum_reason VALUES (40, 'Handle of keyset does not exists', 'Ukazatel keysetu není vytvořen');
-INSERT INTO enum_reason VALUES (41, 'DSRecord does not exists', 'DSRecord záznam neexistuje');
-INSERT INTO enum_reason VALUES (42, 'Can not remove DSRecord', 'Nelze odstranit DSRecord záznam');
-INSERT INTO enum_reason VALUES (43, 'Duplicity DSRecord', 'Duplicitní DSRecord záznam');
-INSERT INTO enum_reason VALUES (44, 'DSRecord already exists for this keyset', 'DSRecord již pro tento keyset existuje');
-INSERT INTO enum_reason VALUES (45, 'DSRedord is not set for this keyset', 'DSRecord pro tento keyset neexistuje');
-INSERT INTO enum_reason VALUES (46, 'Field ``digest type'''' must be 1 (SHA-1)', 'Pole ``digest type'''' musí být 1 (SHA-1)');
-INSERT INTO enum_reason VALUES (47, 'Digest must be 40 character long', 'Digest musí být dlouhý 40 znaků');
-
-select setval('enum_reason_id_seq', 47);
