@@ -37,6 +37,23 @@ comment on column DSRecord.digestType is 'used digest type. See RFC 4034 appendi
 comment on column DSRecord.digest is 'digest of DNSKEY';
 comment on column DSRecord.maxSigLife is 'record TTL';
 
+CREATE TABLE dnskey (
+    id serial PRIMARY KEY,
+    keysetid integer REFERENCES Keyset(id) ON UPDATE CASCADE NOT NULL,
+    flags integer NOT NULL,
+    protocol integer NOT NULL,
+    alg integer NOT NULL,
+    key text NOT NULL
+);
+
+comment on table dnskey is '';
+comment on column dnskey.id is 'unique automatically generated identifier';
+comment on column dnskey.keysetid is 'reference to relevant record in keyset table';
+comment on column dnskey.flags is '';
+comment on column dnskey.protocol is 'must be 3';
+comment on column dnskey.algorithm is 'used algorithm (see http://rfc-ref.org/RFC-TEXTS/4034/chapter11.html for further details)';
+comment on column dnskey.key is 'base64 decoded key';
+
 ---
 --- new DNSSEC related history tables
 ---
@@ -68,6 +85,17 @@ CREATE TABLE DSRecord_history (
 
 comment on table DSRecord_history is 'historic data from DSRecord table';
 
+CREATE TABLE dnskey_history (
+    historyid integer PRIMARY KEY REFERENCES History,
+    id integer NOT NULL,
+    keysetid integer NOT NULL,
+    flags integer NOT NULL,
+    protocol integer NOT NULL,
+    alg integer NOT NULL,
+    key text NOT NULL
+);
+
+comment on table dnskey_history is 'historic data from dnskey table';
 
 ---
 --- changes in existing tables
@@ -82,16 +110,8 @@ ALTER TABLE Domain_History ADD COLUMN keyset integer;
 ---
 --- new records in existing tables
 --- 
-
-INSERT INTO enum_action VALUES (600, 'KeysetCheck');
-INSERT INTO enum_action VALUES (601, 'KeysetInfo');
-INSERT INTO enum_action VALUES (602, 'KeysetDelete');
-INSERT INTO enum_action VALUES (603, 'KeysetUpdate');
-INSERT INTO enum_action VALUES (604, 'KeysetCreate');
-INSERT INTO enum_action VALUES (605, 'KeysetTransfer');
-INSERT INTO enum_action VALUES (1006, 'ListKeySet');
-INSERT INTO enum_action VALUES (1106, 'KeySetSendAuthInfo');
-select setval('enum_action_id_seq', 1106); 
+--- !! moved into ``reason.sql'' file
+---
 
 ---
 --- error reason values

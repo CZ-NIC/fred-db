@@ -97,8 +97,13 @@ INSERT INTO enum_reason VALUES (47, 'Digest must be 40 character long', 'Digest 
 
 
 INSERT INTO enum_reason VALUES (48, 'Object do not belong to registrar', 'Objekt nepatří registrátorovi');
+INSERT INTO enum_reason VALUES (49, 'Too many technical administrators contacts.', 'Příliš mnoho administrátorských kontaktů');
+INSERT INTO enum_reason VALUES (50, 'Too many DS records', 'Příliš mnoho DS záznamů');
+INSERT INTO enum_reason VALUES (51, 'Too many DNSKEY records', 'Příliš mnoho DNSKEY záznamů');
 
-select setval('enum_reason_id_seq', 47);
+INSERT INTO enum_reason VALUES (52, 'Too many Nameservers in this nsset', 'Příliš mnoho jmenných serverů DNS je přiřazeno sadě jmenných serverů');
+
+SELECT setval('enum_reason_id_seq', 52);
 
 comment on table enum_reason is 'Table of error messages reason';
 comment on column enum_reason.reason is 'reason in english language';
