@@ -103,12 +103,16 @@ INSERT INTO enum_reason VALUES (51, 'Too many DNSKEY records', 'Příliš mnoho 
 
 INSERT INTO enum_reason VALUES (52, 'Too many Nameservers in this nsset', 'Příliš mnoho jmenných serverů DNS je přiřazeno sadě jmenných serverů');
 INSERT INTO enum_reason VALUES (53, 'No DNSKey record', 'Žádný DNSKey záznam');
-INSERT INTO enum_reason VALUES (54, 'Field ``flags'' must be 0, 256 or 257', 'Pole ``flags'' musí bý 0, 256 nebo 257');
-INSERT INTO enum_reason VALUES (55, 'Field ``protocol'' must be 3', 'Pole ``protocol'' musí být 3');
-INSERT INTO enum_reason VALUES (56, 'Field ``alg'' must be 1,2,3,4,5,252,253,254 or 255', 'Pole ``alg'' musí být 1,2,3,4,5,252,253,254 nebo 255');
-INSERT INTO enum_reason VALUES (57, 'Duplicity DNSKey', 'Duplicitní DNSKey');
+INSERT INTO enum_reason VALUES (54, 'Field ``flags'''' must be 0, 256 or 257', 'Pole ``flags'''' musí bý 0, 256 nebo 257');
+INSERT INTO enum_reason VALUES (55, 'Field ``protocol'''' must be 3', 'Pole ``protocol'''' musí být 3');
+INSERT INTO enum_reason VALUES (56, 'Field ``alg'''' must be 1,2,3,4,5,252,253,254 or 255', 'Pole ``alg'''' musí být 1,2,3,4,5,252,253,254 nebo 255');
+INSERT INTO enum_reason VALUES (57, 'Field ``key'''' has invalid length', 'Pole ``key'''' má špatnou délku');
+INSERT INTO enum_reason VALUES (58, 'Field ``key'''' contain invalid character', 'Pole ``key'''' obsahuje neplatný znak');
+INSERT INTO enum_reason VALUES (59, 'DNSKey already exists for this keyset', 'DNSKey již pro tento keyset existuje');
+INSERT INTO enum_reason VALUES (60, 'DNSKey not exists for this keyset', 'DNSKey pro tento keyset neexistuje');
+INSERT INTO enum_reason VALUES (61, 'Duplicity DNSKey', 'Duplicitní DNSKey');
 
-SELECT setval('enum_reason_id_seq', 57);
+SELECT setval('enum_reason_id_seq', 61);
 
 comment on table enum_reason is 'Table of error messages reason';
 comment on column enum_reason.reason is 'reason in english language';
