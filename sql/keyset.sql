@@ -73,7 +73,7 @@ CREATE TABLE keyset_contact_map_history (
 );
 
 CREATE TABLE DSRecord_history (
-    historyid integer PRIMARY KEY REFERENCES History,
+    historyid integer REFERENCES History,
     id integer NOT NULL,
     keysetid integer NOT NULL,
     keyTag integer NOT NULL,
