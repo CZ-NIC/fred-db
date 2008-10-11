@@ -71,7 +71,8 @@ CREATE TABLE DSRecord_history (
     alg integer NOT NULL,
     digestType integer NOT NULL,
     digest varchar(255) NOT NULL,
-    maxSigLife integer
+    maxSigLife integer,
+    PRIMARY KEY (historyid, id)
 );
 
 comment on table DSRecord_history is 'historic data from DSRecord table';
