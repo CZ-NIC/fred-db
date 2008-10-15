@@ -87,13 +87,14 @@ CREATE TABLE DSRecord_history (
 comment on table DSRecord_history is 'historic data from DSRecord table';
 
 CREATE TABLE dnskey_history (
-    historyid integer PRIMARY KEY REFERENCES History,
+    historyid integer REFERENCES History,
     id integer NOT NULL,
     keysetid integer NOT NULL,
     flags integer NOT NULL,
     protocol integer NOT NULL,
     alg integer NOT NULL,
-    key text NOT NULL
+    key text NOT NULL,
+    PRIMARY KEY (historyid, id)
 );
 
 comment on table dnskey_history is 'historic data from dnskey table';
