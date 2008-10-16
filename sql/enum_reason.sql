@@ -111,7 +111,7 @@ INSERT INTO enum_reason VALUES (58, 'Field ``key'''' contain invalid character',
 INSERT INTO enum_reason VALUES (59, 'DNSKey already exists for this keyset', 'DNSKey již pro tento keyset existuje');
 INSERT INTO enum_reason VALUES (60, 'DNSKey not exists for this keyset', 'DNSKey pro tento keyset neexistuje');
 INSERT INTO enum_reason VALUES (61, 'Duplicity DNSKey', 'Duplicitní DNSKey');
-INSERT INTO enum_reason VALUES (62, 'No left DNSKey or DSRecord', 'Žádný zbývající DNSKey nebo DS záznam');
+INSERT INTO enum_reason VALUES (62, 'Keyset must have DNSKey or DSRecord', 'Keyset musí mít DNSKey nebo DSRecord');
 
 SELECT setval('enum_reason_id_seq', 62);
 
