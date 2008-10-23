@@ -1,5 +1,5 @@
 CREATE TABLE log_entry (
-	id serial PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	time timestamp NOT NULL,	-- TODO what type?
 	source_ip varchar(15) NOT NULL,
 	flag integer NOT NULL,		-- enum type
@@ -8,18 +8,16 @@ CREATE TABLE log_entry (
 	client_id integer NOT NULL		-- what is this?
 	);
 	
-CREATE TABLE property (
+CREATE TABLE log_property (
 	id SERIAL PRIMARY KEY,
-	name varchar(30) UNIQUE		-- property name
+	entry_id integer NOT NULL REFERENCES log_entry,
+
+	name varchar(30) 		-- property name
+	value varchar(1024)		-- property value
 );
 	
-CREATE TABLE property_value (
-	entry_id integer NOT NULL REFERENCES log_entry,
-	property_id integer NOT NULL REFERENCES property,
-	value varchar(1024)
-);
-
 CREATE INDEX log_entry_time_idx ON log_entry(time);
 CREATE INDEX log_entry_source_ip_idx ON log_entry(source_ip);
 CREATE INDEX log_entry_client_id_idx ON log_entry(client_id);
-CREATE INDEX property_value_value_idx ON property_value(value); 
+CREATE INDEX log_property_value_idx ON log_property(value); 
+CREATE INDEX log_property_name_idx ON log_property(name); 
