@@ -4,15 +4,14 @@ CREATE TABLE log_entry (
 	source_ip varchar(15) NOT NULL,
 	flag integer NOT NULL,		-- enum type
 	component integer NOT NULL,	-- enum type
-	content varchar(2000) NOT NULL, -- TODO size
-	client_id integer NOT NULL		-- what is this?
+	content varchar(2000) NOT NULL -- TODO size
 	);
 	
 CREATE TABLE log_property (
 	id SERIAL PRIMARY KEY,
 	entry_id integer NOT NULL REFERENCES log_entry,
 
-	name varchar(30) 		-- property name
+	name varchar(30) NOT NULL,	-- property name
 	value varchar(1024)		-- property value
 );
 	
