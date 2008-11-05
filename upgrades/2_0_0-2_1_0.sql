@@ -49,3 +49,5 @@ SELECT setval('enum_reason_id_seq', 62);
 
 SELECT setval('enum_action_id_seq', 1106); 
 
+--- update version
+update enum_parameters set val='2.1.0' where id=1;
