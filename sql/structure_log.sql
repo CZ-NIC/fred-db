@@ -10,7 +10,7 @@ CREATE TABLE log_entry (
 
 CREATE TABLE log_raw_content (
 	entry_id integer NOT NULL REFERENCES log_entry(id),
-	content varchar(2000) NOT NULL,
+	content text NOT NULL,
 	is_response boolean DEFAULT False -- true if the content is response, false if it's request
 );
 
@@ -24,7 +24,7 @@ CREATE TABLE log_property_value (
 	entry_id integer NOT NULL REFERENCES log_entry(id),
 
 	name_id integer NOT NULL REFERENCES log_property_name(id),
-	value varchar(1024) NOT NULL,		-- property value
+	value text NOT NULL,		-- property value
 	output boolean DEFAULT False,		-- whether it's output (response) property; if False it's input (request)
 
 	parent_id integer REFERENCES log_property_value(id)
