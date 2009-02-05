@@ -14,33 +14,33 @@ CREATE TABLE check_test (
 	description VARCHAR(300) NOT NULL, -- test description
 	disabled BOOLEAN NOT NULL DEFAULT False,
 	script VARCHAR(300) NOT NULL, -- script name, which realised test
-	need_domain BOOLEAN NOT NULL -- whether test make sense only with concrete fqdn of domain
+	need_domain SMALLINT NOT NULL DEFAULT 0 -- whether test make sense only with concrete fqdn of domain
 );
 
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
-VALUES (0,  'glue_ok',          1, '', False, '', True);
+VALUES (0,  'glue_ok',          1, '', False, '', 2);
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
-VALUES (1,  'existence',     1, '', False, 'existance.py', True);
+VALUES (1,  'existence',     1, '', False, 'existance.py', 2);
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
-VALUES (10, 'autonomous',    5, '', False, 'autonomous.py', False);
+VALUES (10, 'autonomous',    5, '', False, 'autonomous.py', 0);
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
-VALUES (20, 'presence',      2, '', False, 'presence.py', True);
+VALUES (20, 'presence',      2, '', False, 'presence.py', 1);
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
-VALUES (30, 'authoritative', 3, '', False, 'authoritative.py', True);
+VALUES (30, 'authoritative', 3, '', False, 'authoritative.py', 1);
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
-VALUES (40, 'heterogenous',  6, '', False, 'heterogenous.py', False);
+VALUES (40, 'heterogenous',  6, '', False, 'heterogenous.py', 0);
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
-VALUES (50, 'notrecursive',     4, '', False, 'recursive.py', True);
+VALUES (50, 'notrecursive',     4, '', False, 'recursive.py', 2);
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
-VALUES (60, 'notrecursive4all', 4, '', False, 'recursive4all.py', False);
+VALUES (60, 'notrecursive4all', 4, '', False, 'recursive4all.py', 0);
 
 CREATE TABLE check_dependance (
 	id SERIAL PRIMARY KEY,

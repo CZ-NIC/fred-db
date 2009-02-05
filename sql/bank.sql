@@ -18,7 +18,7 @@ CREATE TABLE bank_account
 (
 id serial NOT NULL PRIMARY KEY, -- unique primary key
 Zone INTEGER REFERENCES Zone (ID), -- for which zone should be account executed
-account_number char(16) UNIQUE NOT NULL , -- account number
+account_number char(16) NOT NULL , -- account number
 account_name  char(20) , -- account name
 bank_code char(4)  REFERENCES enum_bank_code,   -- bank code
 balance  numeric(10,2), -- actual balance 

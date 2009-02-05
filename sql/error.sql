@@ -59,7 +59,6 @@ select setval('enum_error_id_seq', 2502);
 
 comment on table enum_error is
 'Table of error messages
-
 id   - message
 1000 - command completed successfully
 1001 - command completed successfully, action pending

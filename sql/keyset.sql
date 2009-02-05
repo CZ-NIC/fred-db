@@ -51,7 +51,7 @@ comment on column dnskey.id is 'unique automatically generated identifier';
 comment on column dnskey.keysetid is 'reference to relevant record in keyset table';
 comment on column dnskey.flags is '';
 comment on column dnskey.protocol is 'must be 3';
-comment on column dnskey.algorithm is 'used algorithm (see http://rfc-ref.org/RFC-TEXTS/4034/chapter11.html for further details)';
+comment on column dnskey.alg is 'used algorithm (see http://rfc-ref.org/RFC-TEXTS/4034/chapter11.html for further details)';
 comment on column dnskey.key is 'base64 decoded key';
 
 ---
@@ -121,3 +121,5 @@ ALTER TABLE Domain_History ADD COLUMN keyset integer;
 --- !! moved into ``enum_reason.sql'' file
 ---
 
+CREATE INDEX object_registry_upper_name_4_idx 
+ ON object_registry (UPPER(name)) WHERE type=4;

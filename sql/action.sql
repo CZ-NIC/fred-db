@@ -130,6 +130,7 @@ CREATE INDEX action_response_idx ON action (response);
 CREATE INDEX action_startdate_idx ON action (startdate);
 CREATE INDEX action_action_idx ON action (action);
 CREATE INDEX action_clienttrid_idx ON action (clienttrid);
+CREATE INDEX action_enddate_idx_date ON action USING btree (((enddate)::date));
 
 COMMENT on table action is 
 'Table for transactions record. In this table is logged every operation done over central register
@@ -151,7 +152,6 @@ CREATE TABLE History (
         );
 comment on table history is
 'Main evidence table with modified data, it join historic tables modified during same operation
-
 create - in case of any change';
 comment on column history.id is 'unique automatically generated identifier';
 comment on column history.action is 'link to action which cause modification';

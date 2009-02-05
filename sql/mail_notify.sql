@@ -163,6 +163,7 @@ CREATE TABLE mail_archive (
 	);
 
 CREATE INDEX mail_archive_status_idx ON mail_archive (status);
+CREATE INDEX mail_archive_crdate_idx ON mail_archive (crdate);
 
 comment on table mail_archive is
 'Here are stored emails which are going to be sent and email which have

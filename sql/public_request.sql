@@ -24,7 +24,7 @@ comment on column public_request.answer_email_id is 'reference to mail which was
 
 
 CREATE TABLE public_request_objects_map (
-  request_id integer REFERENCES public_request(id),
+  request_id integer REFERENCES public_request(id) PRIMARY KEY,
   object_id integer REFERENCES object_registry(id)
 );
 

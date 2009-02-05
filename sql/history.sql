@@ -45,7 +45,6 @@ CREATE TABLE Contact_History (
 
 comment on table Contact_History is
 'Historic data from contact table.
-
 creation - actual data will be copied here from original table in case of any change in contact table';
 
 
