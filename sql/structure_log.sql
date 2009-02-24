@@ -31,6 +31,17 @@ CREATE TABLE log_property_value (
 						-- in case of child property, the id of the parent, NULL otherwise
 );
 
+CREATE TABLE log_session (
+	id serial primary key,
+	name varchar(255) not null,
+	login_date timestamp not null default now(), 
+	logout_date timestamp,
+
+	login_TRID varchar(128),
+	logout_TRID varchar(128),
+	lang varchar(2) not null default 'en'
+);
+
 CREATE INDEX log_entry_time_begin_idx ON log_entry(time_begin);
 CREATE INDEX log_entry_time_end_idx ON log_entry(time_end);
 CREATE INDEX log_entry_source_ip_idx ON log_entry(source_ip);
