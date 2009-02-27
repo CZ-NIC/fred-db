@@ -37,7 +37,7 @@ select setval('invoice_prefix_id_seq', 4);
 CREATE TABLE invoice
 (
 id serial NOT NULL PRIMARY KEY, -- unique primary key
-Zone INTEGER NOT NULL REFERENCES Zone (ID),
+Zone INTEGER REFERENCES Zone (ID),
 CrDate timestamp NOT NULL DEFAULT now(),  -- date and time of invoice creation 
 TaxDate date NOT NULL, -- date of taxable fulfilment ( when payment cames by advance FA)
 prefix bigint UNIQUE NOT NULL , -- 9 placed number of invoice from invoice_prefix.prefix counted via TaxDate 
