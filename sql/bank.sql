@@ -21,7 +21,7 @@ Zone INTEGER REFERENCES Zone (ID), -- for which zone should be account executed
 account_number char(16) NOT NULL , -- account number
 account_name  char(20) , -- account name
 bank_code char(4)  REFERENCES enum_bank_code,   -- bank code
-balance  numeric(10,2), -- actual balance 
+balance  numeric(10,2) default 0.0, -- actual balance 
 last_date date, -- date of last statement 
 last_num int  -- number of last statement
 );
