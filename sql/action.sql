@@ -146,18 +146,6 @@ comment on column action.EndDate is 'date and time when function ends';
 comment on column action.clientTRID is 'client transaction identifier, client must care about its unique, server copy it to response';
 comment on column action.serverTRID is 'server transaction identifier';
 
-CREATE TABLE History (
-        ID SERIAL PRIMARY KEY,
-        action INTEGER NOT NULL REFERENCES action -- link into table action
-        );
-comment on table history is
-'Main evidence table with modified data, it join historic tables modified during same operation
-create - in case of any change';
-comment on column history.id is 'unique automatically generated identifier';
-comment on column history.action is 'link to action which cause modification';
-
-CREATE INDEX history_action_idx ON history (action);
-
 -- DROP TABLE  action_xml CASCADE;
 CREATE TABLE action_xml( actionID INTEGER PRIMARY KEY REFERENCES action, xml text not NULL  , xml_out text );
 

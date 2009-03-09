@@ -32,6 +32,34 @@ comment on column OBJECT_registry.ErDate is 'object erase date';
 comment on column OBJECT_registry.CrhistoryID is 'link into create history';
 comment on column OBJECT_registry.historyID is 'link to last change in history';
 
+-- For updating previous history record (or current in case of deletion of object)
+CREATE OR REPLACE FUNCTION object_registry_update_history_rec() RETURNS TRIGGER AS $$
+BEGIN
+    -- when updation object, set valid_to and next of previous history record
+    IF OLD.historyid != NEW.historyid THEN
+        UPDATE history
+            SET valid_to = NOW(), -- NOW() is the same during the transaction, so this will be the same as valid_from of new history record
+                next = NEW.historyid
+            WHERE id = OLD.historyid;
+    END IF; 
+    
+    -- when deleting object (setting object_registry.erdate), set valid_to of current history record    
+    IF OLD.erdate IS NULL and NEW.erdate IS NOT NULL THEN
+        UPDATE history
+            SET valid_to = NEW.erdate
+            WHERE id = OLD.historyid;
+    END IF; 
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+--DROP TRIGGER trigger_object_registry_update_history_rec ON object_registry;
+CREATE TRIGGER trigger_object_registry_update_history_rec AFTER UPDATE
+    ON object_registry FOR EACH ROW
+    EXECUTE PROCEDURE object_registry_update_history_rec();
+
+
 CREATE TABLE OBJECT (
         ID INTEGER PRIMARY KEY  REFERENCES object_registry (id),
         ClID INTEGER NOT NULL REFERENCES Registrar,

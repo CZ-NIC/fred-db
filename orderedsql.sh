@@ -19,6 +19,7 @@ write_script()
 	cat $DIR/login.sql
 	cat $DIR/action.sql
 	# object table
+	cat $DIR/history_base.sql
 	cat $DIR/ccreg.sql
 	cat $DIR/history.sql
 	#zone generator
