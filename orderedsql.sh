@@ -66,19 +66,19 @@ write_script()
 usage()
 {
 	echo "$0 : Create database installation .sql script. It accepts one of these options: "
-	echo "		--with-log include logging tables (used by fred-logd daemon) "
+	echo "		--without-log exclude logging tables (used by fred-logd daemon) "
 	echo "		--help 	   display this message "
 }
 
 case "$1" in
-	--with-log)
+	--without-log)
 		write_script
-		cat $DIR/structure_log.sql
 		;;
 	--help) 
 		usage
 		;;
 	*)
 		write_script
+		cat $DIR/structure_log.sql		
 		;;
 esac
