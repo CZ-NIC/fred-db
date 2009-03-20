@@ -5,7 +5,8 @@ CREATE TABLE log_entry (
 					-- e.g. if an error message from backend is successfully logged, it's still set	
 					-- NULL in cases like crash of the server
 	source_ip INET,
-	service integer NOT NULL	-- where does the event come from
+	service integer NOT NULL,	-- where does the event come from
+	action_type integer REFERENCES log_action_type(id)
 );
 
 CREATE TABLE log_raw_content (
@@ -58,4 +59,120 @@ CREATE INDEX log_property_value_name_id_idx ON log_property_value(name_id);
 CREATE INDEX log_property_value_value_idx ON log_property_value(value); 
 CREATE INDEX log_property_value_output_idx ON log_property_value(output); 
 CREATE INDEX log_property_value_parent_id_idx ON log_property_value(parent_id); 
+
+CREATE TABLE log_action_type (
+        id SERIAL PRIMARY KEY,
+        status varchar(64) UNIQUE NOT NULL
+        );
+
+COMMENT ON TABLE log_action_type IS 
+'List of action which can be done using epp communication over central registry
+
+id  - status
+100 - ClientLogin
+101 - ClientLogin
+120 - PollAcknowledgement
+121 - PollResponse
+200 - ContactCheck
+201 - ContactInfo
+202 - ContactDelete
+203 - ContactUpdate
+204 - ContactCreate
+205 - ContactTransfer
+400 - NSsetCheck
+401 - NSsetInfo
+402 - NSsetDelete
+403 - NSsetUpdate
+404 - NSsetCreate
+405 - NSsetTransfer
+500 - DomainCheck
+501 - DomainInfo
+502 - DomainDelete
+503 - DomainUpdate
+504 - DomainCreate
+505 - DomainTransfer
+506 - DomainRenew
+507 - DomainTrade
+1000 - UnknowAction
+1002 - ListContact
+1004 - ListNSset
+1005 - ListDomain
+1010 - ClientCredit
+1012 - nssetTest
+1101 - ContactSendAuthInfo
+1102 - NSSetSendAuthInfo
+1103 - DomainSendAuthInfo
+1104 - Info
+1105 - GetInfoResults';
+
+-- login function
+INSERT INTO log_action_type (id , status) VALUES(100 , 'ClientLogin');
+INSERT INTO log_action_type (id , status) VALUES(101 , 'ClientLogout');
+-- poll function
+INSERT INTO log_action_type (id , status) VALUES(  120 , 'PollAcknowledgement' );
+INSERT INTO log_action_type (id , status) VALUES(  121 ,  'PollResponse' );
+
+ 
+-- function for working with contacts
+INSERT INTO log_action_type (id , status) VALUES(200 , 'ContactCheck');
+INSERT INTO log_action_type (id , status) VALUES(201 , 'ContactInfo');
+INSERT INTO log_action_type (id , status) VALUES(202 , 'ContactDelete');
+INSERT INTO log_action_type (id , status) VALUES(203 , 'ContactUpdate');
+INSERT INTO log_action_type (id , status) VALUES(204 , 'ContactCreate');
+INSERT INTO log_action_type (id , status) VALUES(205 , 'ContactTransfer');
+ 
+-- NSSET function
+INSERT INTO log_action_type (id , status) VALUES(400 , 'NSsetCheck');
+INSERT INTO log_action_type (id , status) VALUES(401 , 'NSsetInfo');
+INSERT INTO log_action_type (id , status) VALUES(402 , 'NSsetDelete');
+INSERT INTO log_action_type (id , status) VALUES(403 , 'NSsetUpdate');
+INSERT INTO log_action_type (id , status) VALUES(404 , 'NSsetCreate');
+INSERT INTO log_action_type (id , status) VALUES(405 , 'NSsetTransfer');
+
+-- domains function
+INSERT INTO log_action_type (id , status) VALUES(500 , 'DomainCheck');
+INSERT INTO log_action_type (id , status) VALUES(501 , 'DomainInfo');
+INSERT INTO log_action_type (id , status) VALUES(502 , 'DomainDelete');
+INSERT INTO log_action_type (id , status) VALUES(503 , 'DomainUpdate');
+INSERT INTO log_action_type (id , status) VALUES(504 , 'DomainCreate');
+INSERT INTO log_action_type (id , status) VALUES(505 , 'DomainTransfer');
+INSERT INTO log_action_type (id , status) VALUES(506 , 'DomainRenew');
+INSERT INTO log_action_type (id , status) VALUES(507 , 'DomainTrade');
+
+-- function isn't entered
+INSERT INTO log_action_type (id , status) VALUES( 1000 , 'UnknowAction');
+
+-- list function
+INSERT INTO  log_action_type (id , status) VALUES( 1002 ,  'ListContact' );
+INSERT INTO  log_action_type (id , status) VALUES( 1004 ,  'ListNSset' ); 
+INSERT INTO  log_action_type (id , status) VALUES( 1005  ,  'ListDomain' );
+-- credit function
+INSERT INTO log_action_type (id , status) VALUES(1010 , 'ClientCredit');
+-- tech check nsset
+INSERT INTO log_action_type (id , status) VALUES( 1012 , 'nssetTest' );
+
+-- send auth info function
+INSERT INTO log_action_type (  status , id )  VALUES(  'ContactSendAuthInfo' ,  1101 );
+INSERT INTO log_action_type (  status , id )  VALUES(  'NSSetSendAuthInfo'  , 1102 );
+INSERT INTO log_action_type (  status , id )  VALUES(  'DomainSendAuthInfo' ,  1103 );
+
+-- info function
+INSERT INTO log_action_type (  status , id )  VALUES(  'Info'  , 1104 );
+INSERT INTO log_action_type (  status , id )  VALUES(  'GetInfoResults' ,  1105 );
+
+-- keyset function
+INSERT INTO log_action_type VALUES (600, 'KeysetCheck');
+INSERT INTO log_action_type VALUES (601, 'KeysetInfo');
+INSERT INTO log_action_type VALUES (602, 'KeysetDelete');
+INSERT INTO log_action_type VALUES (603, 'KeysetUpdate');
+INSERT INTO log_action_type VALUES (604, 'KeysetCreate');
+INSERT INTO log_action_type VALUES (605, 'KeysetTransfer');
+INSERT INTO log_action_type VALUES (1006, 'ListKeySet');
+INSERT INTO log_action_type VALUES (1106, 'KeySetSendAuthInfo');
+
+-- ####### up to here it's a copy of enum_action from action.sql
+
+select setval('enum_action_id_seq', 1106); 
+
+
 
