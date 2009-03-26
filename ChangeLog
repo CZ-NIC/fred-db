@@ -1,3 +1,8 @@
+2009-03-26 Tomas Divis (2.1.2)
+
+    * Added columns into table history (valid_from, valid_to and next) and 
+      corrseponding triggers and update scripts.
+
 2008-08-14 Jaromir Talir, Ales Dolezal
 
     * release 2.0.0
