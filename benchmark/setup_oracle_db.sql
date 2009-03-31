@@ -420,7 +420,7 @@ INSERT INTO enum_action (id , status) VALUES(506 , 'DomainRenew');
 INSERT INTO enum_action (id , status) VALUES(507 , 'DomainTrade');
 
 -- function which is not entered
-INSERT INTO enum_action (id , status) VALUES( 1000 , 'UnknowAction');
+INSERT INTO enum_action (id , status) VALUES( 1000 , 'UnknownAction');
 
 --  tabel for transactions recording
 -- DROP TABLE Action CASCADE;

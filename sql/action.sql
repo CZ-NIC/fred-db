@@ -33,7 +33,7 @@ id  - status
 505 - DomainTransfer
 506 - DomainRenew
 507 - DomainTrade
-1000 - UnknowAction
+1000 - UnknownAction
 1002 - ListContact
 1004 - ListNSset
 1005 - ListDomain
@@ -80,7 +80,7 @@ INSERT INTO enum_action (id , status) VALUES(506 , 'DomainRenew');
 INSERT INTO enum_action (id , status) VALUES(507 , 'DomainTrade');
 
 -- function isn't entered
-INSERT INTO enum_action (id , status) VALUES( 1000 , 'UnknowAction');
+INSERT INTO enum_action (id , status) VALUES( 1000 , 'UnknownAction');
 
 -- list function
 INSERT INTO  enum_action (id , status) VALUES( 1002 ,  'ListContact' );
