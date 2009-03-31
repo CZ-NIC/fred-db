@@ -46,7 +46,7 @@ CREATE TABLE log_property_value (
 );
 
 CREATE TABLE log_session (
-	CONSTRAINT log_property_value_no_insert_root CHECK (false),    -- constraint for partitioned table
+	CONSTRAINT log_session_no_insert_root CHECK (false),    -- constraint for partitioned table
 
 	id serial primary key,
 	name varchar(255) not null,
@@ -78,6 +78,10 @@ CREATE INDEX log_property_value_name_id_idx ON log_property_value(name_id);
 CREATE INDEX log_property_value_value_idx ON log_property_value(value); 
 CREATE INDEX log_property_value_output_idx ON log_property_value(output); 
 CREATE INDEX log_property_value_parent_id_idx ON log_property_value(parent_id); 
+
+CREATE INDEX log_session_name_idx ON log_session(name);
+CREATE INDEX log_session_login_date_idx ON log_session(login_date);
+CREATE INDEX log_session_lang_idx ON log_session(lang);
 
 CREATE TABLE log_action_type (
         id SERIAL PRIMARY KEY,
@@ -112,7 +116,7 @@ id  - status
 505 - DomainTransfer
 506 - DomainRenew
 507 - DomainTrade
-1000 - UnknowAction
+1000 - UnknownAction
 1002 - ListContact
 1004 - ListNSset
 1005 - ListDomain
@@ -159,7 +163,7 @@ INSERT INTO log_action_type (id , status) VALUES(506 , 'DomainRenew');
 INSERT INTO log_action_type (id , status) VALUES(507 , 'DomainTrade');
 
 -- function isn't entered
-INSERT INTO log_action_type (id , status) VALUES( 1000 , 'UnknowAction');
+INSERT INTO log_action_type (id , status) VALUES( 1000 , 'UnknownAction');
 
 -- list function
 INSERT INTO  log_action_type (id , status) VALUES( 1002 ,  'ListContact' );
