@@ -693,7 +693,7 @@ Zaslání potvrzení o přijaté záloze
 
 Vážený obchodní přátelé,
 
-  v příloze zasíláme daňový doklad na přijatou zálohu. Tento daňový doklad 
+  v příloze zasíláme daňový doklad na přijatou zálohu pro zónu <?cs var:zone ?>. Tento daňový doklad 
 slouží k uplatnění nároku na odpočet DPH přijaté zálohy
 
                                              S pozdravem
@@ -706,7 +706,7 @@ Accepted Advance Payment Confirmation
 Dear business partners,
 
   Enclosed with this letter, we are sending a tax document for the advance
-payment accepted. This tax document can be used to claim VAT deduction for
+payment accepted for the zone <?cs var:zone ?>. This tax document can be used to claim VAT deduction for
 the advance payment.
 
                                              Yours sincerely
@@ -754,7 +754,7 @@ Zaslání měsíčního vyúčtování
 
 Vážený obchodní přátelé,
 
-  jelikož v období od <?cs var:fromdate ?> do <?cs var:todate ?> Vaše společnost neprovedla
+  jelikož v období od <?cs var:fromdate ?> do <?cs var:todate ?> v zóně <?cs var:zone ?> Vaše společnost neprovedla
 žádnou registraci doménového jména ani prodloužení platnosti doménového
 jména a nedošlo tak k čerpání žádných placených služeb, nebude pro toto
 období vystaven daňový doklad.
@@ -769,7 +769,7 @@ Monthly Bill Dispatching
 Dear business partners,
 
   Since your company has not performed any domain name registration or domain
-name validity extension in the period from <?cs var:fromdate ?> to <?cs var:todate ?>,
+name validity extension in the period from <?cs var:fromdate ?> to <?cs var:todate ?> for the zone <?cs var:zone ?>,
 hence not drawing any paid services, no tax document will be issued for this
 period.
 
