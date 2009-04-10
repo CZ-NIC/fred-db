@@ -725,7 +725,7 @@ Vážený obchodní přátelé,
 
   v příloze zasíláme daňový doklad za služby registrací doménových jmen a 
 udržování záznamů o doménových jménech za období od <?cs var:fromdate ?>
-do <?cs var:todate ?>.
+do <?cs var:todate ?> pro zónu <?cs var:zone ?>.
 
                                              S pozdravem
                                              podpora <?cs var:defaults.company ?>
@@ -738,7 +738,7 @@ Dear business partners,
 
   Enclosed with this letter, we are sending a tax document for the domain name
 registration services and the maintenance of domain name records for the period
-from <?cs var:fromdate ?> to <?cs var:todate ?>.
+from <?cs var:fromdate ?> to <?cs var:todate ?> for zone <?cs var:zone ?>.
 
                                              Yours sincerely
                                              support <?cs var:defaults.company ?>
