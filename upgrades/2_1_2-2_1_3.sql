@@ -27,3 +27,87 @@ UPDATE mail_type SET subject = '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" 
 
 UPDATE mail_type SET subject = '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o zrušení <?cs call:typesubst("cs") ?> <?cs var:handle ?> / <?cs call:typesubst("en") ?> <?cs var:handle ?> delete notification' WHERE name = 'notification_delete';
 
+UPDATE mail_templates SET template =
+'English version of the e-mail is entered below the Czech version
+
+Zaslání potvrzení o přijaté záloze
+
+Vážený obchodní přátelé,
+
+  v příloze zasíláme daňový doklad na přijatou zálohu pro zónu <?cs var:zone ?>. Tento daňový doklad 
+slouží k uplatnění nároku na odpočet DPH přijaté zálohy
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
+
+
+
+Accepted Advance Payment Confirmation
+
+Dear business partners,
+
+  Enclosed with this letter, we are sending a tax document for the advance
+payment accepted for the zone <?cs var:zone ?>. This tax document can be used to claim VAT deduction for
+the advance payment.
+
+                                             Yours sincerely
+                                             support <?cs var:defaults.company ?>
+' WHERE id = 17;
+
+UPDATE mail_templates SET template = 
+'English version of the e-mail is entered below the Czech version
+
+Zaslání měsíčního vyúčtování
+
+Vážený obchodní přátelé,
+
+  v příloze zasíláme daňový doklad za služby registrací doménových jmen a 
+udržování záznamů o doménových jménech za období od <?cs var:fromdate ?>
+do <?cs var:todate ?> pro zónu <?cs var:zone ?>.
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
+
+
+
+Monthly Bill Dispatching
+
+Dear business partners,
+
+  Enclosed with this letter, we are sending a tax document for the domain name
+registration services and the maintenance of domain name records for the period
+from <?cs var:fromdate ?> to <?cs var:todate ?> for the zone <?cs var:zone ?>.
+
+                                             Yours sincerely
+                                             support <?cs var:defaults.company ?>
+' WHERE id = 18;
+
+UPDATE mail_templates SET template =
+'English version of the e-mail is entered below the Czech version
+
+Zaslání měsíčního vyúčtování
+
+Vážený obchodní přátelé,
+
+  jelikož v období od <?cs var:fromdate ?> do <?cs var:todate ?> v zóně <?cs var:zone ?> Vaše společnost neprovedla
+žádnou registraci doménového jména ani prodloužení platnosti doménového
+jména a nedošlo tak k čerpání žádných placených služeb, nebude pro toto
+období vystaven daňový doklad.
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
+
+
+
+Monthly Bill Dispatching
+
+Dear business partners,
+
+  Since your company has not performed any domain name registration or domain
+name validity extension in the period from <?cs var:fromdate ?> to <?cs var:todate ?> for the zone <?cs var:zone ?>,
+hence not drawing any paid services, no tax document will be issued for this
+period.
+
+                                             Yours sincerely
+                                             support <?cs var:defaults.company ?>
+' WHERE id = 19;
