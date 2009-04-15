@@ -123,7 +123,7 @@ comment on column mail_templates.footer is 'should footer be concatenated with t
 CREATE TABLE mail_type (
 	id integer PRIMARY KEY,
 	name varchar(100) UNIQUE NOT NULL, -- name of type
-	subject varchar(300) NOT NULL      -- template of email subject
+	subject varchar(550) NOT NULL      -- template of email subject
 	);
 
 comment on table mail_type is 'Type of email gathers templates from which email is composed';

@@ -97,7 +97,7 @@ this fact at the following address <?cs var:defaults.emailsupport ?>.
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (2, 2);
 
-INSERT INTO mail_type (id, name, subject) VALUES (3, 'expiration_notify', 'Upozornění na nutnost úhrady domény / Reminder of the need to settle fees for the domain');
+INSERT INTO mail_type (id, name, subject) VALUES (3, 'expiration_notify', 'Upozornění na nutnost úhrady domény <?cs var:domain ?> / Reminder of the need to settle fees for the domain <?cs var:domain ?>');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (3, 'plain', 1,
 'English version of the e-mail is entered below the Czech version
@@ -177,7 +177,7 @@ one of the following:
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (3, 3);
 
 
-INSERT INTO mail_type (id, name, subject) VALUES (4, 'expiration_dns_owner', 'Oznámení o vyřazení domény z DNS / Notification about inactivation of the domain from DNS');
+INSERT INTO mail_type (id, name, subject) VALUES (4, 'expiration_dns_owner', 'Oznámení o vyřazení domény <?cs var:domain ?> z DNS / Notification about inactivation of the domain <?cs var:domain ?> from DNS');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (4, 'plain', 1,
 'English version of the e-mail is entered below the Czech version
@@ -263,7 +263,7 @@ Registrar: <?cs var:registrar ?>
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (4, 4);
 
 
-INSERT INTO mail_type (id, name, subject) VALUES (5, 'expiration_register_owner', 'Oznámení o zrušení domény / Notification about cancellation of the domain');
+INSERT INTO mail_type (id, name, subject) VALUES (5, 'expiration_register_owner', 'Oznámení o zrušení domény <?cs var:domain ?> / Notification about cancellation of the domain <?cs var:domain ?>');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (5, 'plain', 1,
 'English version of the e-mail is entered below the Czech version
@@ -298,7 +298,7 @@ jmen), <?cs var:defaults.company ?> is cancelling the domain name registration.
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (5, 5);
 
-INSERT INTO mail_type (id, name, subject) VALUES (6, 'expiration_dns_tech', 'Oznámení o vyřazení domény z DNS / Notification about withdrawal of the domain from DNS');
+INSERT INTO mail_type (id, name, subject) VALUES (6, 'expiration_dns_tech', 'Oznámení o vyřazení domény <?cs var:domain ?> z DNS / Notification about withdrawal of the domain <?cs var:domain ?> from DNS');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (6, 'plain', 1,
 'English version of the e-mail is entered below the Czech version
@@ -333,7 +333,7 @@ was withdrawn from DNS as of <?cs var:statechangedate ?>.
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (6, 6);
 
-INSERT INTO mail_type (id, name, subject) VALUES (7, 'expiration_register_tech', 'Oznámení o zrušení domény / Notification about cancellation of the domain');
+INSERT INTO mail_type (id, name, subject) VALUES (7, 'expiration_register_tech', 'Oznámení o zrušení domény <?cs var:domain ?> / Notification about cancellation of the domain <?cs var:domain ?>');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (7, 'plain', 1,
 'English version of the e-mail is entered below the Czech version
@@ -368,7 +368,7 @@ was cancelled as of <?cs var:exregdate ?>.
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (7, 7);
 
-INSERT INTO mail_type (id, name, subject) VALUES (8, 'expiration_validation_before', 'Oznámení vypršení validace enum domény / Notification about expiration of the enum domain validation');
+INSERT INTO mail_type (id, name, subject) VALUES (8, 'expiration_validation_before', 'Oznámení vypršení validace enum domény <?cs var:domain ?> / Notification about expiration of the enum domain <?cs var:domain ?> validation');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (8, 'plain', 1,
 'English version of the e-mail is entered below the Czech version
@@ -421,7 +421,7 @@ Registrar: <?cs var:registrar ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (8, 8);
 
-INSERT INTO mail_type (id, name, subject) VALUES (9, 'expiration_validation', 'Oznámení o vypršení validace enum domény / Notification about expiration of the enum domain validation');
+INSERT INTO mail_type (id, name, subject) VALUES (9, 'expiration_validation', 'Oznámení o vypršení validace enum domény <?cs var:domain ?> / Notification about expiration of the enum domain <?cs var:domain ?> validation');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (9, 'plain', 1,
 'English version of the e-mail is entered below the Czech version
@@ -478,7 +478,7 @@ Registrar: <?cs var:registrar ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (9, 9);
 
-INSERT INTO mail_type (id, name, subject) VALUES (10, 'notification_create', 'Oznámení o registraci / Registration notification');
+INSERT INTO mail_type (id, name, subject) VALUES (10, 'notification_create', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o registraci <?cs call:typesubst("cs") ?> <?cs var:handle ?> / <?cs call:typesubst("en") ?> <?cs var:handle ?> registration notification');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (10, 'plain', 1,
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>
@@ -503,7 +503,7 @@ For detail information about <?cs call:typesubst("en") ?> visit <?cs var:default
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (10, 10);
 
-INSERT INTO mail_type (id, name, subject) VALUES (11, 'notification_update', 'Oznámení změn / Notification of changes');
+INSERT INTO mail_type (id, name, subject) VALUES (11, 'notification_update', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>domain<?cs elif:type == #1 ?>contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení změn <?cs call:typesubst("cs") ?> <?cs var:handle ?>/ Notification of <?cs call:typesubst("en") ?> <?cs var:handle ?> changes');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (11, 'plain', 1,
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>
@@ -528,7 +528,7 @@ For detail information about <?cs call:typesubst("en") ?> visit <?cs var:default
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (11, 11);
 
-INSERT INTO mail_type (id, name, subject) VALUES (12, 'notification_transfer', 'Oznámení o transferu / Transfer notification');
+INSERT INTO mail_type (id, name, subject) VALUES (12, 'notification_transfer', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o transferu <?cs call:typesubst("cs") ?> <?cs var:handle ?> / <?cs call:typesubst("en") ?> <?cs var:handle ?> transfer notification');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (12, 'plain', 1,
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>
@@ -553,7 +553,7 @@ For detail information about <?cs call:typesubst("en") ?> visit <?cs var:default
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (12, 12);
 
-INSERT INTO mail_type (id, name, subject) VALUES (13, 'notification_renew', 'Oznámení o prodloužení platnosti / Domain name renew notification');
+INSERT INTO mail_type (id, name, subject) VALUES (13, 'notification_renew', 'Oznámení o prodloužení platnosti domény <?cs var:handle ?> / Domain name <?cs var:handle ?> renew notification');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (13, 'plain', 1,
 '
@@ -578,7 +578,7 @@ For detail information about domain visit <?cs var:defaults.whoispage ?>.
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (13, 13);
 
-INSERT INTO mail_type (id, name, subject) VALUES (14, 'notification_unused', 'Oznámení o zrušení / Delete notification');
+INSERT INTO mail_type (id, name, subject) VALUES (14, 'notification_unused', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o zrušení <?cs call:typesubst("cs") ?> <?cs var:handle ?> / <?cs call:typesubst("en") ?> <?cs var:handle ?> delete notification');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (14, 'plain', 1,
 '
@@ -606,7 +606,7 @@ registred domains.
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (14, 14);
 
-INSERT INTO mail_type (id, name, subject) VALUES (15, 'notification_delete', 'Oznámení o zrušení / Delete notification');
+INSERT INTO mail_type (id, name, subject) VALUES (15, 'notification_delete', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o zrušení <?cs call:typesubst("cs") ?> <?cs var:handle ?> / <?cs call:typesubst("en") ?> <?cs var:handle ?> delete notification');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (15, 'plain', 1,
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>
