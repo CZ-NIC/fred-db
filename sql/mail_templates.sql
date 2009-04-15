@@ -519,6 +519,8 @@ Registrátor / Registrar : <?cs var:registrar ?>
 Žádost byla úspešně zpracována, požadované změny byly provedeny. 
 The request was completed successfully, required changes were done. 
 
+<?cs var:changes ?>
+
 Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>.
 For detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>.
 

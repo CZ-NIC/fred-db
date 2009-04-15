@@ -1,3 +1,6 @@
+--
+-- Ticket #1441 object names added to email subject (expiration and notification)
+--
 
 ALTER TABLE mail_type ALTER subject TYPE varchar(550);
 
@@ -26,6 +29,42 @@ UPDATE mail_type SET subject = 'Oznámení o prodloužení platnosti domény <?c
 UPDATE mail_type SET subject = '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o zrušení <?cs call:typesubst("cs") ?> <?cs var:handle ?> / <?cs call:typesubst("en") ?> <?cs var:handle ?> delete notification' WHERE name = 'notification_unused';
 
 UPDATE mail_type SET subject = '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o zrušení <?cs call:typesubst("cs") ?> <?cs var:handle ?> / <?cs call:typesubst("en") ?> <?cs var:handle ?> delete notification' WHERE name = 'notification_delete';
+
+
+--
+-- Ticket #1353 epp update command changes added to email body
+--
+
+UPDATE mail_templates
+SET template =
+'<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>
+=====================================================================
+Oznámení změn / Notification of changes 
+=====================================================================
+Změna údajů <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> data change 
+Identifikátor <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> handle : <?cs var:handle ?>
+Číslo žádosti / Ticket :  <?cs var:ticket ?>
+Registrátor / Registrar : <?cs var:registrar ?>
+=====================================================================
+ 
+Žádost byla úspešně zpracována, požadované změny byly provedeny. 
+The request was completed successfully, required changes were done. 
+
+<?cs var:changes ?>
+
+Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>.
+For detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>.
+
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
+'
+WHERE id = 11;
+
+
+--
+-- Ticket #1346 zone parameter added to invoicing emails
+--
 
 UPDATE mail_templates SET template =
 'English version of the e-mail is entered below the Czech version
