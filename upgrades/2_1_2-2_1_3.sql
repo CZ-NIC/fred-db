@@ -54,17 +54,18 @@ SET template =
 <?cs /if ?><?cs if:changes.contact.ident_type ?>Typ identifikace / Identification type: <?cs call:print_value(which, changes.contact.ident_type) ?>
 <?cs /if ?><?cs if:changes.contact.ident ?>Identifikační údaj / Identification data: <?cs call:print_value(which, changes.contact.ident) ?>
 <?cs /if ?><?cs if:changes.contact.vat ?>DIĆ / VAT number: <?cs call:print_value(which, changes.contact.vat) ?>
-<?cs /if ?><?cs if:changes.contact.disclose_name ?>Jméno / Name: <?cs call:print_value_bool(which, changes.contact.disclose_name, "veřejné / public", "skryté / hidden") ?>
-<?cs /if ?><?cs if:changes.contact.disclose_org ?>Organizaci / Organization: <?cs call:print_value_bool(which, changes.contact.disclose_org, "veřejná / public", "skrytá / hidden") ?>
-<?cs /if ?><?cs if:changes.contact.disclose_email ?>Email / Email: <?cs call:print_value_bool(which, changes.contact.disclose_email, "veřejný / public", "skrytý / hidden") ?>
-<?cs /if ?><?cs if:changes.contact.disclose_notify_email ?>Notifikační email / Notify email: <?cs call:print_value_bool(which, changes.contact.disclose_notify_email, "veřejný / public", "skrytý / hidden") ?>
-<?cs /if ?><?cs if:changes.contact.disclose_ident ?>Identifikační údaj / Identification data: <?cs call:print_value_bool(which, changes.contact.disclose_ident, "veřejný / public", "skrytý / hidden") ?>
-<?cs /if ?><?cs if:changes.contact.disclose_vat ?>DIĆ / VAT number: <?cs call:print_value_bool(which, changes.contact.disclose_vat, "veřejné / public", "skryté / hidden") ?>
-<?cs /if ?><?cs if:changes.contact.disclose_telephone ?>Telefon / Telephone: <?cs call:print_value_bool(which, changes.contact.disclose_telephone, "veřejný / public", "skrytý / hidden") ?>
-<?cs /if ?><?cs if:changes.contact.disclose_fax ?>Fax / Fax: <?cs call:print_value_bool(which, changes.contact.disclose_fax, "veřejný / public", "skrytý / hidden") ?>
-<?cs /if ?><?cs elif:type == #2 ?><?cs if:changes.nsset.check_level ?>Úroveň tech. kontrol / Check level: <?cs call:print_value(which, changes.nsset.check_level) ?>
+<?cs /if ?><?cs if:subcount(changes.contact.disclose) ?>Viditelnost údajů / Data visibility:
+<?cs if:changes.contact.disclose.name ?>  Jméno / Name: <?cs call:print_value_bool(which, changes.contact.disclose.name, "veřejné / public", "skryté / hidden") ?>
+<?cs /if ?><?cs if:changes.contact.disclose.org ?>  Organizaci / Organization: <?cs call:print_value_bool(which, changes.contact.disclose.org, "veřejná / public", "skrytá / hidden") ?>
+<?cs /if ?><?cs if:changes.contact.disclose.email ?>  Email / Email: <?cs call:print_value_bool(which, changes.contact.disclose.email, "veřejný / public", "skrytý / hidden") ?>
+<?cs /if ?><?cs if:changes.contact.disclose.notify_email ?>  Notifikační email / Notify email: <?cs call:print_value_bool(which, changes.contact.disclose.notify_email, "veřejný / public", "skrytý / hidden") ?>
+<?cs /if ?><?cs if:changes.contact.disclose.ident ?>  Identifikační údaj / Identification data: <?cs call:print_value_bool(which, changes.contact.disclose.ident, "veřejný / public", "skrytý / hidden") ?>
+<?cs /if ?><?cs if:changes.contact.disclose.vat ?>  DIĆ / VAT number: <?cs call:print_value_bool(which, changes.contact.disclose.vat, "veřejné / public", "skryté / hidden") ?>
+<?cs /if ?><?cs if:changes.contact.disclose.telephone ?>  Telefon / Telephone: <?cs call:print_value_bool(which, changes.contact.disclose.telephone, "veřejný / public", "skrytý / hidden") ?>
+<?cs /if ?><?cs if:changes.contact.disclose.fax ?>  Fax / Fax: <?cs call:print_value_bool(which, changes.contact.disclose.fax, "veřejný / public", "skrytý / hidden") ?>
+<?cs /if ?><?cs /if ?><?cs elif:type == #2 ?><?cs if:changes.nsset.check_level ?>Úroveň tech. kontrol / Check level: <?cs call:print_value(which, changes.nsset.check_level) ?>
 <?cs /if ?><?cs if:changes.nsset.admin_c ?>Technické kontakty / Technical contacts: <?cs call:print_value(which, changes.nsset.admin_c) ?>
-<?cs /if ?><?cs if:changes.nsset.dns ?>Jmenné servery / Name servers: <?cs call:print_value(which, changes.nsset.dns) ?>
+<?cs /if ?><?cs if:changes.nsset.dns.1 ?><?cs call:print_value_list(which, changes.nsset.dns, "Jmenný server / Name server") ?>
 <?cs /if ?><?cs elif:type == #3 ?><?cs if:changes.domain.registrant ?>Držitel / Holder: <?cs call:print_value(which, changes.domain.registrant) ?>
 <?cs /if ?><?cs if:changes.domain.nsset ?>Sada jmenných serverů / Name server set: <?cs call:print_value(which, changes.domain.nsset) ?>
 <?cs /if ?><?cs if:changes.domain.keyset ?>Sada klíčů / Key set: <?cs call:print_value(which, changes.domain.keyset) ?>
@@ -83,8 +84,8 @@ Identifikátor <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> handl
 Registrátor / Registrar : <?cs var:registrar ?>
 =====================================================================
  
-Žádost byla úspešně zpracována, požadované změny byly provedeny. 
-The request was completed successfully, required changes were done. 
+Žádost byla úspešně zpracována, <?cs if:changes == #1 ?>požadované změny byly provedeny<?cs else ?>žádná změna nebyla požadována, údaje zůstaly beze změny<?cs /if ?>.
+The request was completed successfully, <?cs if:changes == #1 ?>required changes were done<?cs else ?>no changes were found in the request.<?cs /if ?>
 
 <?cs if:changes == #1 ?>
 Původní hodnoty / Original values:
@@ -97,8 +98,7 @@ Nové hodnoty / New values:
 <?cs call:value_list("new") ?>
 
 Ostatní hodnoty zůstaly beze změny. 
-<?cs else ?>
-Všechny hodnoty zůstaly beze změn.
+Other data wasn''t modified.
 <?cs /if ?>
 
 
