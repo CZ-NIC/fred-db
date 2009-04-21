@@ -115,6 +115,13 @@ WHERE id = 11;
 
 
 --
+-- Updating default mail template variables
+--
+UPDATE mail_defaults SET value = 'http://www.nic.cz/whois/publicrequest/' WHERE name = 'authinfopage';
+UPDATE mail_defaults SET value = 'http://whois.nic.cz' WHERE name = 'whoispage';
+
+
+--
 -- Ticket #1346 zone parameter added to invoicing emails
 --
 

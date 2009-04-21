@@ -13,8 +13,8 @@ INSERT INTO mail_defaults (name, value) VALUES ('city', 'Praha 2');
 INSERT INTO mail_defaults (name, value) VALUES ('tel', '+420 222 745 111');
 INSERT INTO mail_defaults (name, value) VALUES ('fax', '+420 222 745 112');
 INSERT INTO mail_defaults (name, value) VALUES ('emailsupport', 'podpora@nic.cz');
-INSERT INTO mail_defaults (name, value) VALUES ('authinfopage', 'http://enum.nic.cz/');
-INSERT INTO mail_defaults (name, value) VALUES ('whoispage', 'http://whois.enum.nic.cz/');
+INSERT INTO mail_defaults (name, value) VALUES ('authinfopage', 'http://www.nic.cz/whois/publicrequest/');
+INSERT INTO mail_defaults (name, value) VALUES ('whoispage', 'http://whois.nic.cz');
 
 comment on table mail_defaults is 
 'Defaults used in templates which change rarely.
