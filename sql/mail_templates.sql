@@ -494,8 +494,12 @@ Registrátor / Registrar : <?cs var:registrar ?>
 Žádost byla úspešně zpracována, požadovaná registrace byla provedena. 
 The request was completed successfully, required registration was done.<?cs if:type == #3 ?>
 
-Při každé změně doporučujeme aktualizovat údaje o doméně, vyhnete se tak možným problémům souvisejícím s prodlužováním platnosti či manipulací s doménou osobami, které již nejsou oprávněny je provádět.
-Update domain data in the registry after any changes to avoid possible problems with domain renewal or with domain manipulation done by persons who are not authorized anymore.<?cs /if ?>
+Při každé změně doporučujeme aktualizovat údaje o doméně, vyhnete se 
+tak možným problémům souvisejícím s prodlužováním platnosti či manipulací 
+s doménou osobami, které již nejsou oprávněny je provádět.
+Update domain data in the registry after any changes to avoid possible 
+problems with domain renewal or with domain manipulation done by persons 
+who are not authorized anymore.<?cs /if ?>
 
 Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>.
 For detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>.
@@ -626,8 +630,12 @@ Registrátor / Registrar : <?cs var:registrar ?>
 Žádost byla úspešně zpracována, prodloužení platnosti bylo provedeno. 
 The request was completed successfully, domain was renewed. 
 
-Při každé změně doporučujeme aktualizovat údaje o doméně, vyhnete se tak možným problémům souvisejícím s prodlužováním platnosti či manipulací s doménou osobami, které již nejsou oprávněny je provádět.
-Update domain data in the registry after any changes to avoid possible problems with domain renewal or with domain manipulation done by persons who are not authorized anymore.
+Při každé změně doporučujeme aktualizovat údaje o doméně, vyhnete se 
+tak možným problémům souvisejícím s prodlužováním platnosti či manipulací 
+s doménou osobami, které již nejsou oprávněny je provádět.
+Update domain data in the registry after any changes to avoid possible 
+problems with domain renewal or with domain manipulation done by persons 
+who are not authorized anymore.
 
 Detail domény najdete na <?cs var:defaults.whoispage ?>.
 For detail information about domain visit <?cs var:defaults.whoispage ?>.
