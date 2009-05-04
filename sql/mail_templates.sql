@@ -653,18 +653,18 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 =====================================================================
 Oznámení o zrušení / Delete notification 
 =====================================================================
-Vzhledem ke skutečnosti, že <?cs if:type == #1 ?>kontaktní osoba<?cs elif:type == #2 ?>sada nameserverů<?cs elif:type == #4 ?>sada klíčů<?cs /if ?> <?cs var:handle ?>
-<?cs var:name ?> nebyla po stanovenou dobu používána, <?cs var:defaults.company ?> ruší ke dni <?cs var:deldate ?> uvedenou
-<?cs if:type == #1 ?>kontaktní osobu<?cs elif:type == #2 ?>sadu nameserverů<?cs /if ?>.
+Vzhledem ke skutečnosti, že <?cs if:type == #1 ?>kontaktní osoba<?cs elif:type == #2 ?>sada nameserverů<?cs elif:type == #4 ?>sada klíčů<?cs /if ?> <?cs var:handle ?> 
+nebyla po stanovenou dobu používána, <?cs var:defaults.company ?> 
+ruší ke dni <?cs var:deldate ?> uvedenou <?cs if:type == #1 ?>kontaktní osobu<?cs elif:type == #2 ?>sadu nameserverů<?cs elif:type == #4 ?>sadu klíčů<?cs /if ?>.
 
-Zrušení <?cs if:type == #1 ?>kontaktní osoby<?cs elif:type == #2 ?>sady nameserverů<?cs /if ?> nemá žádný vliv na funkčnost Vašich 
+Zrušení <?cs if:type == #1 ?>kontaktní osoby<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?> nemá žádný vliv na funkčnost Vašich 
 zaregistrovaných doménových jmen.
 
-With regard to the fact that the <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?> <?cs var:handle ?>
-<?cs var:name ?> was not used during the fixed period, <?cs var:defaults.company ?>
-is cancelling the aforementioned <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>set of nameservers<?cs /if ?> as of <?cs var:deldate ?>.
+With regard to the fact that the <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>keyset<?cs /if ?> <?cs var:handle ?>
+was not used during the fixed period, <?cs var:defaults.company ?>
+is cancelling the aforementioned <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>set of nameservers<?cs elif:type == #4 ?>set of keysets<?cs /if ?> as of <?cs var:deldate ?>.
 
-Cancellation of <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>NS set<?cs /if ?> has no influence on functionality of your
+Cancellation of <?cs if:type == #1 ?>contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?> has no influence on functionality of your
 registred domains.
 =====================================================================
 
