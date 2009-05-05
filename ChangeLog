@@ -5,6 +5,8 @@
       - added object changes to notifiaction about epp update command
       - line wrap fixes
 
+    * all initial values (except constants) removed
+
 2009-03-26 Tomas Divis (2.1.2)
 
     * Added columns into table history (valid_from, valid_to and next) and 
