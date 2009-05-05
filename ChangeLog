@@ -1,3 +1,10 @@
+2009-05-05 Jiri Sadek, Ales Dolezal (2.1.3)
+    * mail templates update
+      - added zone paramater to invoice emails
+      - added object handle to subject of notification and expiratjon emails
+      - added object changes to notifiaction about epp update command
+      - line wrap fixes
+
 2009-03-26 Tomas Divis (2.1.2)
 
     * Added columns into table history (valid_from, valid_to and next) and 
