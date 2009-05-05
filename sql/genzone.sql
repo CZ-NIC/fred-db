@@ -11,13 +11,6 @@ CREATE TABLE zone_soa (
         ns_fqdn VARCHAR(255) NOT NULL
         );
 
---
--- Default values for zone soa
---
-INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn) VALUES (1, 18000, 'hostmaster@nic.cz', NULL, 10600, 3600, 1209600, 7200, 'a.ns.nic.cz');
-INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn) VALUES (2, 18000, 'hostmaster@nic.cz', NULL, 10600, 3600, 1209600, 7200, 'a.ns.nic.cz');
-INSERT INTO zone_soa (Zone, TTL, Hostmaster, Serial, Refresh, Update_retr, Expiry, Minimum, ns_fqdn) VALUES (3, 18000, 'hostmaster@nic.cz', NULL, 10600, 3600, 1209600, 7200, 'ns.tld.cz');
-
 -- Nameservers for a zone
 CREATE TABLE zone_ns (
         id SERIAL PRIMARY KEY,
@@ -25,22 +18,6 @@ CREATE TABLE zone_ns (
         fqdn VARCHAR(255) NOT NULL,
         addrs INET[] NOT NULL
         );
-
---
--- Default values for nameservers
---
-INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (1, 'a.ns.nic.cz', '{}');
-INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (1, 'b.ns.cznic.org', '{}');
-INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (1, 'c.ns.nic.cz', '{}');
-INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (1, 'e.ns.nic.cz', '{}');
-INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (2, 'a.ns.nic.cz', '{}');
-INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'ns.tld.cz', '{217.31.196.10}');
-INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'ns2.nic.fr', '{}');
-INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'nsl.tld.cz', '{195.66.241.202}');
-INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'nss.tld.cz', '{217.31.200.10}');
-INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'ns-cz.ripe.net', '{}');
-INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'sunic.sunet.se', '{}');
-INSERT INTO zone_ns (Zone, fqdn, addrs) VALUES (3, 'ns-ext.vix.com', '{}');
 
 -- List of status for domain zone generator classification
 -- supplement missing enum type in postgresql
