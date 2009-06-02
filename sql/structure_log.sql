@@ -1,3 +1,8 @@
+CREATE TABLE log_action_type (
+        id SERIAL PRIMARY KEY,
+        status varchar(64) UNIQUE NOT NULL
+        );
+
 CREATE TABLE log_entry (
     CONSTRAINT log_entry_no_insert_root CHECK (false),   -- constraint for partitioned table
     
@@ -8,7 +13,7 @@ CREATE TABLE log_entry (
 					-- NULL in cases like crash of the server
 	source_ip INET,
 	service integer NOT NULL,	-- service code - enum LogServiceType
-	action_type integer REFERENCES log_action_type(id),
+	action_type integer REFERENCES log_action_type(id) DEFAULT 1000,
 		
 	is_monitoring boolean NOT NULL
 );
@@ -82,11 +87,6 @@ CREATE INDEX log_property_value_parent_id_idx ON log_property_value(parent_id);
 CREATE INDEX log_session_name_idx ON log_session(name);
 CREATE INDEX log_session_login_date_idx ON log_session(login_date);
 CREATE INDEX log_session_lang_idx ON log_session(lang);
-
-CREATE TABLE log_action_type (
-        id SERIAL PRIMARY KEY,
-        status varchar(64) UNIQUE NOT NULL
-        );
 
 COMMENT ON TABLE log_action_type IS 
 'List of requests which can be used by clients

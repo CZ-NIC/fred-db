@@ -80,5 +80,6 @@ case "$1" in
 	*)
 		write_script
 		cat $DIR/structure_log.sql		
+		cat $DIR/log_partitioning_function.sql
 		;;
 esac
