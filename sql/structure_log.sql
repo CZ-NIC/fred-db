@@ -126,7 +126,19 @@ id  - status
 1102 - NSSetSendAuthInfo
 1103 - DomainSendAuthInfo
 1104 - Info
-1105 - GetInfoResults';
+1105 - GetInfoResults
+1200 - InfoListContacts
+1201 - InfoListDomains
+1202 - InfoListNssets
+1203 - InfoListKeysets
+1204 - InfoDomainsByNsset
+1205 - InfoDomainsByKeyset
+1206 - InfoDomainsByContact
+1207 - InfoNssetsByContact
+1208 - InfoNssetsByNs
+1209 - InfoKeysetsByContact
+1210 - InfoGetResults';
+
 
 -- login function
 INSERT INTO log_action_type (id , status) VALUES(100 , 'ClientLogin');
@@ -168,7 +180,7 @@ INSERT INTO log_action_type (id , status) VALUES( 1000 , 'UnknownAction');
 -- list function
 INSERT INTO  log_action_type (id , status) VALUES( 1002 ,  'ListContact' );
 INSERT INTO  log_action_type (id , status) VALUES( 1004 ,  'ListNSset' ); 
-INSERT INTO  log_action_type (id , status) VALUES( 1005  ,  'ListDomain' );
+INSERT INTO  log_action_type (id , status) VALUES( 1005 ,  'ListDomain' );
 -- credit function
 INSERT INTO log_action_type (id , status) VALUES(1010 , 'ClientCredit');
 -- tech check nsset
@@ -178,10 +190,6 @@ INSERT INTO log_action_type (id , status) VALUES( 1012 , 'nssetTest' );
 INSERT INTO log_action_type (  status , id )  VALUES(  'ContactSendAuthInfo' ,  1101 );
 INSERT INTO log_action_type (  status , id )  VALUES(  'NSSetSendAuthInfo'  , 1102 );
 INSERT INTO log_action_type (  status , id )  VALUES(  'DomainSendAuthInfo' ,  1103 );
-
--- info function
-INSERT INTO log_action_type (  status , id )  VALUES(  'Info'  , 1104 );
-INSERT INTO log_action_type (  status , id )  VALUES(  'GetInfoResults' ,  1105 );
 
 -- keyset function
 INSERT INTO log_action_type VALUES (600, 'KeysetCheck');
@@ -193,9 +201,26 @@ INSERT INTO log_action_type VALUES (605, 'KeysetTransfer');
 INSERT INTO log_action_type VALUES (1006, 'ListKeySet');
 INSERT INTO log_action_type VALUES (1106, 'KeySetSendAuthInfo');
 
--- ####### up to here it's a copy of enum_action from action.sql
 
-select setval('enum_action_id_seq', 1106); 
+-- ####### up to here it's a copy of enum_action from action.sql
+-- with 2 info functions removed (and substituted by following)
+
+-- info functions
+INSERT INTO log_action_type VALUES (1200, 'InfoListContacts');
+INSERT INTO log_action_type VALUES (1201, 'InfoListDomains');
+INSERT INTO log_action_type VALUES (1202, 'InfoListNssets');
+INSERT INTO log_action_type VALUES (1203, 'InfoListKeysets');
+INSERT INTO log_action_type VALUES (1204, 'InfoDomainsByNsset');
+INSERT INTO log_action_type VALUES (1205, 'InfoDomainsByKeyset');
+INSERT INTO log_action_type VALUES (1206, 'InfoDomainsByContact');
+INSERT INTO log_action_type VALUES (1207, 'InfoNssetsByContact');
+INSERT INTO log_action_type VALUES (1208, 'InfoNssetsByNs');
+INSERT INTO log_action_type VALUES (1209, 'InfoKeysetsByContact');
+INSERT INTO log_action_type VALUES (1210, 'InfoGetResults');
+
+
+
+select setval('enum_action_id_seq', 1210); 
 
 
 
