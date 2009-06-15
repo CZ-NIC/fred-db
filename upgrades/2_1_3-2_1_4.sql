@@ -54,3 +54,41 @@ this fact at the following address <?cs var:defaults.emailsupport ?>.
 '
 WHERE id = 2;
 
+
+---
+--- ticket #1969 - new parameters
+---
+INSERT INTO enum_parameters (id, name, val)
+VALUES (12, 'handle_registration_protection_period', '2');
+
+INSERT INTO enum_parameters (id, name, val)
+VALUES (13, 'roid_suffix', 'CZ');
+
+CREATE OR REPLACE FUNCTION create_object(
+ crregid INTEGER, 
+ oname VARCHAR, 
+ otype INTEGER
+) 
+RETURNS INTEGER AS $$
+DECLARE iid INTEGER;
+BEGIN
+ iid := NEXTVAL('object_registry_id_seq');
+ INSERT INTO object_registry (id,roid,name,type,crid) 
+ VALUES (
+  iid,
+  (ARRAY['C','N','D', 'K'])[otype] || LPAD(iid::text,10,'0') || '-' || (SELECT val FROM enum_parameters WHERE id = 13),
+  CASE
+   WHEN otype=1 THEN UPPER(oname)
+   WHEN otype=2 THEN UPPER(oname)
+   WHEN otype=3 THEN LOWER(oname)
+   WHEN otype=4 THEN UPPER(oname)
+  END,
+  otype,
+  crregid
+ );
+ RETURN iid;
+ EXCEPTION
+ WHEN UNIQUE_VIOLATION THEN RETURN 0;
+END;
+$$ LANGUAGE plpgsql;
+

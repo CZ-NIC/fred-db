@@ -59,6 +59,16 @@ VALUES (10, 'regular_day_procedure_zone', 'CET');
 -- during which object wasn't linked to other object and wasn't updated 
 INSERT INTO enum_parameters (id, name, val) 
 VALUES (11, 'object_registration_protection_period', '6');
+-- parameter 12 is used to change protection period of deleted object handle
+-- (contact, nsset, keyset). value is in months.
+INSERT INTO enum_parameters (id, name, val)
+VALUES (12, 'handle_registration_protection_period', '0');
+-- parameter 13 is used as a suffix in object_registry roid string
+-- this suffix should match pattern \w{1,8}
+INSERT INTO enum_parameters (id, name, val)
+VALUES (13, 'roid_suffix', 'EPP');
+
+
 
 comment on table enum_parameters is
 'Table of system operational parameters.
