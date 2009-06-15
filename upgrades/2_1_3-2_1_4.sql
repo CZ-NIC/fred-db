@@ -50,6 +50,7 @@ this fact at the following address <?cs var:defaults.emailsupport ?>.
 
 
                                              Yours sincerely
-                                             support <?cs var:defaults.company ?>'
+                                             support <?cs var:defaults.company ?>
+'
 WHERE id = 2;
 

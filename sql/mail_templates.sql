@@ -51,14 +51,14 @@ INSERT INTO mail_type_template_map (typeid, templateid) VALUES (1, 1);
 INSERT INTO mail_type (id, name, subject) VALUES (2, 'sendauthinfo_epp', 'Zaslání autorizační informace / Sending authorization information');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (2, 'plain', 1,
-'English version of the e-mail is entered below the Czech version
+' English version of the e-mail is entered below the Czech version
 
 Zaslání autorizační informace
 
 Vážený zákazníku,
 
-   na základě Vaší žádosti podané prostřednictvím registrátora
-<?cs var:registrar ?>, jejímž obsahem je žádost o zaslání hesla
+   na základě Vaší žádosti, podané prostřednictvím registrátora
+<?cs var:registrar ?>, Vám zasíláme požadované heslo
 příslušející <?cs if:type == #3 ?>k doméně<?cs elif:type == #1 ?>ke kontaktu s identifikátorem<?cs elif:type == #2 ?>k sadě nameserverů s identifikátorem<?cs elif:type == #4 ?>k sadě klíčů s identifikátorem<?cs /if ?> <?cs var:handle ?>.
 
    Heslo je: <?cs var:authinfo ?>
@@ -80,7 +80,7 @@ Sending authorization information
 Dear customer,
 
    Based on your request submitted via the registrar <?cs var:registrar ?>,
-which contains your request for sending you the password that belongs to
+we are sending the requested password that belongs to
 the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifier<?cs elif:type == #2 ?>NS set with identifier<?cs elif:type == #4 ?>Keyset with identifier<?cs /if ?> <?cs var:handle ?>.
 
    The password is: <?cs var:authinfo ?>
