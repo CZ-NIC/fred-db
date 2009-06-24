@@ -34,7 +34,6 @@ arguments:
     status - print status of FRED database
     testuser - check if script can be run as current_user or postgres
     help - print this help"
-    exit 0
 }
 
 init_pghba () {
@@ -250,17 +249,16 @@ f_status () {
     fi
 }
 
-if [ $0 = "" ]
-then
-    f_usage
-else
-    case $1 in
-        "install") f_install;;
-        "uninstall") f_uninstall;;
-        "upgrade" ) f_upgrade;;
-        "status" ) f_status;;
-        "testuser" ) test_user;;
-        "help" ) f_usage;;
-        *) echo "Unknown argument"; f_usage;;
-    esac
-fi
+case $1 in
+    "install") f_install;;
+    "uninstall") f_uninstall;;
+    "upgrade" ) f_upgrade;;
+    "status" ) f_status;;
+    "testuser" ) test_user;;
+    "help" ) f_usage;;
+    "") f_usage;;
+    *) 
+        echo "Unknown argument";
+        f_usage;
+        exit 1;;
+esac
