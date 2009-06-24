@@ -2694,7 +2694,7 @@ if test "${with_dbport+set}" = set; then
   withval=$with_dbport;
   if test "$withval" = ""; then
     if test -f $PGHBADIR/postgresql.conf; then
-      port=`grep -E '^port' $PGHBADIR/postgresql.conf | cut -f3 -d\ `
+      port=`grep -E '^port' $PGHBADIR/postgresql.conf | tr -d " \t" | cut -d'#' -f1 | cut -c6-`
       if test "$port" = ""; then
         port="5432"
       fi
@@ -2711,7 +2711,7 @@ else
 
   if test "" = ""; then
     if test -f $PGHBADIR/postgresql.conf; then
-      port=`grep -E '^port' $PGHBADIR/postgresql.conf | cut -f3 -d\ `
+      port=`grep -E '^port' $PGHBADIR/postgresql.conf | tr -d " \t" | cut -d'#' -f1 | cut -c6-`
       if test "$port" = ""; then
         port="5432"
       fi
