@@ -49,20 +49,6 @@ CREATE TABLE price_list
   period integer default 12 -- if it isn't periodic operation NULL 
 );
 
--- testing records (all testing records are disabled for unittesting)
--- prices for enum domains only DomainRenew 
--- ENUM trial working only renew operations are priced 
--- from 22 January 14:00  CEST, till when is free
---INSERT into price_list  values ( 1 , 1 , 2 , '2007-01-22 13:00:00' , NULL , 1.00 , 12 );
---  price for domain create operations are zero
---INSERT into price_list  values ( 2 , 1 , 1 , '2007-01-22 13:00:00' , NULL , 0.00 , 12 );
-
---INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (1, 1 , 1 , '01-01-2007' ,  1 , 12 ); -- registration
---INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (2, 1 , 2 , '01-01-2007' ,  50 , 12 ); -- renew
-
---INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (3 , 3 , 1 , '01-01-2007' ,  -50 , 12 ); -- registration ( one year only for fifty CZK )
---INSERT INTO price_list ( id , zone , operation ,   valid_from ,  price ,  period ) values (4 , 3 , 2 , '01-01-2007' ,  100 , 12 ); -- renew 
-
 comment on table price_list is 'list of operation prices';
 comment on column price_list.id is 'unique automatically generated identifier';
 comment on column price_list.zone is 'link to zone, for which is price list valid if it is domain (if it is not domain then it is NULL)';
