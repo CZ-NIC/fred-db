@@ -1,3 +1,16 @@
+2009-06-30 Jiri Sadek, Ales Dolezal, Jaroslav Benkovsky (2.1.4)
+    * fixing minor manager, configure scripts issues
+
+    * fixing tables initialization (bank_account, price_list)
+
+    * fixing authinfo mail template
+
+    * technical test mail template update due to dnssec test
+
+    * added new enum parameters:
+        - handle_registration_protection_period
+        - roid_suffix
+
 2009-05-05 Jiri Sadek, Ales Dolezal (2.1.3)
     * mail templates update
       - added zone paramater to invoice emails
