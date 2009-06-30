@@ -15,24 +15,6 @@ comment on column invoice_prefix.typ is 'invoice type (0-advanced, 1-normal)';
 comment on column invoice_prefix.year is 'for which year';
 comment on column invoice_prefix.prefix is 'counter with prefix of number of invoice';
 
--- zona enum
--- advance
-insert into invoice_prefix values ( 1 , 1 ,  0 , 2007 , 110700001 );
--- normal 
-insert into invoice_prefix values ( 2 , 1 ,  1 , 2007 , 120700001 );
--- CZ zone
--- advance
-insert into invoice_prefix values ( 3 , 3 ,  0 , 2007 , 130700001 );
--- normal
-insert into invoice_prefix values ( 4 , 3 ,  1 , 2007 , 140700001 );
- 
-select setval('invoice_prefix_id_seq', 4); 
-
-
--- tabel of invoices billing from when till when and id of invoice if it is NULL it isn't normal invoice drawn
-
-
-
 -- advance invoices 
 CREATE TABLE invoice
 (
