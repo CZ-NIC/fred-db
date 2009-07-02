@@ -39,7 +39,7 @@ password that belongs to the <?cs if:type == #3 ?>domain name<?cs elif:type == #
 
    The password is: <?cs var:authinfo ?>
 
-   If you did not submit the aforementioned request, please, notify us about
+   If you did not submit the aforementioned request, please notify us about
 this fact at the following address <?cs var:defaults.emailsupport ?>.
 
 
@@ -88,7 +88,7 @@ the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact with identifi
    This message is being sent only to the e-mail address that we have on file
 for a particular person in the Central Registry of Domain Names.
 
-   If you did not submit the aforementioned request, please, notify us about
+   If you did not submit the aforementioned request, please notify us about
 this fact at the following address <?cs var:defaults.emailsupport ?>.
 
 

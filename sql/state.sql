@@ -85,7 +85,7 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (02,'CS','Není povoleno prodloužní registrace objektu');
 INSERT INTO enum_object_states_desc 
-  VALUES (02,'EN','Registration renew prohibited');
+  VALUES (02,'EN','Registration renewal prohibited');
 INSERT INTO enum_object_states_desc 
   VALUES (03,'CS','Není povolena změna určeného regsitrátora');
 INSERT INTO enum_object_states_desc 
@@ -97,11 +97,11 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (05,'CS','Doména je administrativně vyřazena ze zóny');
 INSERT INTO enum_object_states_desc 
-  VALUES (05,'EN','Domain is administartively kept out of zone');
+  VALUES (05,'EN','Domain is administratively kept out of zone');
 INSERT INTO enum_object_states_desc 
   VALUES (06,'CS','Doména je administrativně zařazena do zóny');
 INSERT INTO enum_object_states_desc 
-  VALUES (06,'EN','Domain is administartively kept in zone');
+  VALUES (06,'EN','Domain is administratively kept in zone');
 INSERT INTO enum_object_states_desc 
   VALUES (07,'CS','Doména je blokována');
 INSERT INTO enum_object_states_desc 
