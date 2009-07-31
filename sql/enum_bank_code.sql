@@ -41,3 +41,4 @@ INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'VŠEOB.ÚVĚR.
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'VŠEOBECNÁ STAV.SPOŘITELNA' , 'VSS' ,	'7990' );
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'WUSTENROT STAVEBNÍ SPOŘITELNA' , 'WS'  , 	'7970');
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'ŽIVNOSTENSKÁ BANKA A.S.' , 'ZB' , 	'0400');
+INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'Fio, družstevní záložna', 'FIOZ', '2010');
