@@ -1,4 +1,13 @@
+CREATE TABLE session (
+	CONSTRAINT session_no_insert_root CHECK (false),    -- constraint for partitioned table
 
+	id serial primary key,
+	name varchar(255) not null,
+	login_date timestamp not null default now(), 
+	logout_date timestamp,
+
+	lang varchar(2) not null default 'en'
+);
 
 CREATE TABLE service (
 	id SERIAL PRIMARY KEY,
@@ -55,7 +64,7 @@ CREATE TABLE request_property_value (
 	entry_monitoring boolean NOT NULL, -- TEMP: for partitioning
 	
 	id SERIAL PRIMARY KEY,
-	entry_id integer NOT NULL PRIMARY KEY REFERENCES request(id),
+	entry_id integer NOT NULL REFERENCES request(id),
 
 	name_id integer NOT NULL REFERENCES request_property(id),
 	value text NOT NULL,		-- property value
@@ -63,17 +72,6 @@ CREATE TABLE request_property_value (
 
 	parent_id integer REFERENCES request_property_value(id)
 						-- in case of child property, the id of the parent, NULL otherwise
-);
-
-CREATE TABLE session (
-	CONSTRAINT session_no_insert_root CHECK (false),    -- constraint for partitioned table
-
-	id serial primary key,
-	name varchar(255) not null,
-	login_date timestamp not null default now(), 
-	logout_date timestamp,
-
-	lang varchar(2) not null default 'en'
 );
 
 CREATE INDEX request_time_begin_idx ON request(time_begin);
