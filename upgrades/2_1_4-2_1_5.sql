@@ -1,4 +1,10 @@
 ---
+--- dont forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.1.5' WHERE id = 1;
+
+
+---
 --- bank_head table
 ---
 
