@@ -394,7 +394,7 @@ declare
 
 begin
 	table_base := 'session';
-	table_name := table_base || '_' || partition_postfix(time_begin, -1);
+	table_name := table_base || '_' || partition_postfix(time_begin, -1, false);
 
 	lower := to_char(date_trunc('month', time_begin), 'YYYY-MM-DD');
 	upper := to_char(date_trunc('month', time_begin + interval '1 month'), 'YYYY-MM-DD');
