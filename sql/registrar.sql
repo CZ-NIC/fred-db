@@ -61,8 +61,8 @@ CREATE TABLE RegistrarInvoice (
   RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- registrar id
   Zone integer NOT NULL REFERENCES Zone,  --  zone for which has registrar an access
   FromDate date NOT NULL , -- date when began registrar work in a zone
-  LastDate date  -- date when was last created an invoice
-  ToDate date --after this date registrar is not allowed to register
+  LastDate date ,  -- date when was last created an invoice
+  ToDate date -- after this date registrar is not allowed to register
 );
 
 comment on column RegistrarInvoice.Zone is 'zone for which has registrar an access';
