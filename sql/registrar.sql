@@ -56,15 +56,17 @@ comment on table RegistrarACL is 'Registrars login information';
 comment on column RegistrarACL.Cert is 'certificate fingerprint';
 comment on column RegistrarACL.Password is 'login password';
 
-CREATE TABLE RegistrarInvoice (       
+CREATE TABLE RegistrarInvoice (
   ID SERIAL PRIMARY KEY,
-  RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- registrar id 
+  RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- registrar id
   Zone integer NOT NULL REFERENCES Zone,  --  zone for which has registrar an access
   FromDate date NOT NULL , -- date when began registrar work in a zone
-  LastDate date  -- date when was last created an invoice 
+  LastDate date  -- date when was last created an invoice
+  ToDate date --after this date registrar is not allowed to register
 );
 
 comment on column RegistrarInvoice.Zone is 'zone for which has registrar an access';
 comment on column RegistrarInvoice.FromDate is 'date when began registrar work in a zone';
 comment on column RegistrarInvoice.LastDate is 'date when was last created an invoice';
+comment on column RegistrarInvoice.ToDate is 'after this date, registrar is not allowed to register';
 
