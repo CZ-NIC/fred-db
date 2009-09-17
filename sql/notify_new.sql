@@ -12,6 +12,11 @@ comment on table notify_statechange_map is
 'Notification processing rules - direct notifier what mails need to be send
 and whom upon object state change';
 
+comment on column notify_statechange_map.state_id is 'id of state to be notified by email';
+comment on column notify_statechange_map.obj_type is 'type of object to be notified (1..contact, 2..nsset, 3..domain, 4..keyset)';
+comment on column notify_statechange_map.mail_type_id is 'type of mail to be send';
+comment on column notify_statechange_map.emails is 'type of contact group to be notified by email (1..admins, 2..techs)';
+
 -- state: expiration, obj: domain, 
 -- template: expiration_notify, emails: admins
 INSERT INTO notify_statechange_map VALUES ( 1,  9, 3,  3, 1);
