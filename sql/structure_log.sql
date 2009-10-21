@@ -200,6 +200,8 @@ id  - status
 1326 - DomainDig
 1327 - FilterCreate 
 
+1328 - RequestDetail
+1329 - RequestFilter
 
 1400 -  Login 
 1401 -  Logout
@@ -332,6 +334,8 @@ INSERT INTO request_type (id, status, service) VALUES (1325, 'PublicRequestInval
 INSERT INTO request_type (id, status, service) VALUES (1326, 'DomainDig', 4);
 INSERT INTO request_type (id, status, service) VALUES (1327, 'FilterCreate', 4); 
 
+INSERT INTO request_type (id, status, service) VALUES (1328, 'RequestDetail', 4);
+INSERT INTO request_type (id, status, service) VALUES (1329, 'RequestFilter', 4); 
 
 -- Intranet functions
 INSERT INTO request_type (id, status, service) VALUES (1400, 'Login', 5); 
