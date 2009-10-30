@@ -1,13 +1,12 @@
 ---
 --- dont forget to update database schema version
 ---
-UPDATE enum_parameters SET val = '2.1.5' WHERE id = 1;
+UPDATE enum_parameters SET val = '<insert version here>' WHERE id = 1;
 
 
 ---
 --- bank_head table
 ---
-
 CREATE TABLE BANK_HEAD 
 (
     id serial NOT NULL PRIMARY KEY, -- unique primary key
@@ -34,7 +33,6 @@ comment on column BANK_HEAD.file_id is 'xml file identifier number';
 ---
 --- bank_item table
 ---
-
 CREATE TABLE BANK_ITEM
 (
     id serial NOT NULL PRIMARY KEY, -- unique primary key
@@ -75,5 +73,5 @@ comment on column BANK_ITEM.crtime is 'create timestamp';
 ---
 --- new column for table ``registrar''
 ---
-
 ALTER TABLE registrar ADD regex varchar(30) DEFAULT NULL;
+
