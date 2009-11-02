@@ -1,6 +1,4 @@
 CREATE TABLE session (
-	CONSTRAINT session_no_insert_root CHECK (false),    -- constraint for partitioned table
-
 	id serial primary key,
 	name varchar(255) not null,
 	login_date timestamp not null default now(), 
@@ -24,8 +22,6 @@ CREATE TABLE request_type (
 alter table request_type add primary key (status, service);
 
 CREATE TABLE request (
-    	CONSTRAINT request_no_insert_root CHECK (false),   -- constraint for partitioned table
-    
 	id SERIAL PRIMARY KEY,
 	time_begin timestamp NOT NULL,	-- begin of the transaction
 	time_end timestamp,		-- end of transaction, it is set if the information is complete 
@@ -40,8 +36,6 @@ CREATE TABLE request (
 );
 
 CREATE TABLE request_data (
-	CONSTRAINT request_data_no_insert_root CHECK (false), -- constraint for partitioned table
-
 	entry_time_begin timestamp NOT NULL, -- TEMP: for partitioning
 	entry_service integer NOT NULL, -- TEMP: for partitioning
 	entry_monitoring boolean NOT NULL, -- TEMP: for partitioning
@@ -57,8 +51,6 @@ CREATE TABLE request_property (
 );
 	
 CREATE TABLE request_property_value (
-	CONSTRAINT request_property_value_no_insert_root CHECK (false),    -- constraint for partitioned table
-
 	entry_time_begin timestamp NOT NULL, -- TEMP: for partitioning
 	entry_service integer NOT NULL, -- TEMP: for partitioning
 	entry_monitoring boolean NOT NULL, -- TEMP: for partitioning

@@ -233,7 +233,6 @@ declare
 	table_base varchar(60);
 	create_table 	text;
 	spec_alter_table text;
-	alter_table 	text;
 	month integer;
 	lower timestamp without time zone;
 	upper  timestamp without time zone;
@@ -257,11 +256,9 @@ begin
 	 
 	
 	spec_alter_table := 'ALTER TABLE ' || table_name || ' ADD PRIMARY KEY (id); ';
-	alter_table := 'ALTER TABLE ' || table_name || ' DROP CONSTRAINT ' || table_base || '_no_insert_root';
 
 	execute create_table;
 	execute spec_alter_table;
-	execute alter_table;
 
 	perform create_indexes_request(table_name);
 
@@ -289,7 +286,6 @@ declare
 	table_postfix varchar(40);
 	create_table 	text;
 	spec_alter_table text;
-	alter_table 	text;
 	month integer;
 	lower timestamp without time zone;
 	upper  timestamp without time zone;
@@ -309,11 +305,9 @@ begin
 	
 	spec_alter_table = 'ALTER TABLE ' || table_name || ' ADD CONSTRAINT ' || table_name || '_entry_id_fkey FOREIGN KEY (entry_id) REFERENCES request_' || table_postfix || '(id); ';
 
-	alter_table = 'ALTER TABLE ' || table_name || ' DROP CONSTRAINT ' || table_base || '_no_insert_root';
 
 	execute create_table;
 	execute spec_alter_table;
-	execute alter_table;
 	
 	perform create_indexes_request_data(table_name);
 
@@ -337,7 +331,6 @@ declare
 	table_postfix varchar (40);
 	create_table 	text;
 	spec_alter_table text;
-	alter_table 	text;
 	month integer;
 	lower timestamp without time zone;
 	upper  timestamp without time zone;
@@ -359,11 +352,9 @@ begin
 	spec_alter_table = 'ALTER TABLE ' || table_name || ' ADD PRIMARY KEY (id); ALTER TABLE ' || table_name || ' ADD CONSTRAINT ' || table_name || '_entry_id_fkey FOREIGN KEY (entry_id) REFERENCES request_' || table_postfix || '(id); ALTER TABLE ' || table_name || ' ADD CONSTRAINT ' || table_name || '_name_id_fkey FOREIGN KEY (name_id) REFERENCES request_property(id); ALTER TABLE ' || table_name || ' ADD CONSTRAINT ' || table_name || '_parent_id_fkey FOREIGN KEY (parent_id) REFERENCES ' || table_name || '(id); ';
 
 
-	alter_table  = 'ALTER TABLE ' || table_name || ' DROP CONSTRAINT ' || table_base || '_no_insert_root';
 
 	execute create_table;
 	execute spec_alter_table;
-	execute alter_table;
 	perform create_indexes_request_property_value(table_name);
 
 end;
@@ -387,7 +378,6 @@ declare
 	table_base varchar(60);
 	create_table 	text;
 	spec_alter_table text;
-	alter_table 	text;
 	month integer;
 	lower timestamp without time zone;
 	upper  timestamp without time zone;
@@ -403,11 +393,9 @@ begin
 
 	spec_alter_table = 'ALTER TABLE ' || table_name || ' ADD PRIMARY KEY (id); ';
 
-	alter_table  = 'ALTER TABLE ' || table_name || ' DROP CONSTRAINT ' || table_base || '_no_insert_root';
 
 	execute create_table;
 	execute spec_alter_table;
-	execute alter_table;
 
 	perform create_indexes_session(table_name);
 
