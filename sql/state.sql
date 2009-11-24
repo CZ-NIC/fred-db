@@ -83,7 +83,7 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (01,'EN','Delete prohibited');
 INSERT INTO enum_object_states_desc 
-  VALUES (02,'CS','Není povoleno prodloužní registrace objektu');
+  VALUES (02,'CS','Není povoleno prodloužení registrace objektu');
 INSERT INTO enum_object_states_desc 
   VALUES (02,'EN','Registration renewal prohibited');
 INSERT INTO enum_object_states_desc 
