@@ -136,6 +136,7 @@ CREATE TABLE host_ipaddr_map_history (
 CREATE TABLE ENUMVal_history (
         historyID INTEGER PRIMARY KEY REFERENCES History, -- only one nsset 
         DomainID INTEGER REFERENCES object_registry (id),
-        ExDate date NOT NULL
+        ExDate date NOT NULL,
+        publish BOOLEAN NOT NULL DEFAULT false
         );
 
