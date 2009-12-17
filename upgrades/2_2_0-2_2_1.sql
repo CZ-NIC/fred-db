@@ -90,6 +90,7 @@ ALTER TABLE bank_account ALTER COLUMN balance SET DEFAULT 0.0;
 
 INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'Fio, družstevní záložna', 'FIOZ', '2010');
 
+UPDATE bank_account SET balance = 0.0 WHERE balance IS NULL;
 
 ---
 --- Typo fixes
