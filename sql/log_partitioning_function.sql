@@ -16,13 +16,13 @@ end;
 $bool_to_str$ language plpgsql;
 
 
-create or replace function tr_request(id integer, time_begin timestamp without time zone, time_end timestamp without time zone, source_ip inet, service integer, action_type integer, session_id integer, is_monitoring boolean ) returns void as $tr_request$
+create or replace function tr_request(id integer, time_begin timestamp without time zone, time_end timestamp without time zone, source_ip inet, service integer, action_type integer, session_id integer, user_name varchar(255), is_monitoring boolean ) returns void as $tr_request$
 DECLARE 
 	table_name varchar(50);
 	stmt 	   text;
 BEGIN
 
-	stmt := 'INSERT INTO request_' || partition_postfix(time_begin, service, is_monitoring) || ' (id, time_begin, time_end, source_ip, service, action_type, session_id, is_monitoring) VALUES (' || id || ', ' || quote_literal(time_begin) || ', ';
+	stmt := 'INSERT INTO request_' || partition_postfix(time_begin, service, is_monitoring) || ' (id, time_begin, time_end, source_ip, service, action_type, session_id, user_name, is_monitoring) VALUES (' || id || ', ' || quote_literal(time_begin) || ', ';
 	
 	if (time_end is null) then
 		stmt := stmt || 'null, ';
@@ -49,6 +49,12 @@ BEGIN
 	else 
 		stmt := stmt || session_id || ', ';
 	end if;
+
+        if (user_name is null) then
+                stmt := stmt || 'null, ';
+        else 
+                stmt := stmt || quote_literal(user_name) || ', ';
+        end if;
 
 	stmt := stmt || '''' || bool_to_str(is_monitoring) || ''') ';
 
@@ -416,7 +422,7 @@ $create_indexes_session$ language plpgsql;
 
 
 
-CREATE OR REPLACE RULE request_insert_function AS ON INSERT TO request DO INSTEAD SELECT tr_request ( NEW.id, NEW.time_begin, NEW.time_end, NEW.source_ip, NEW.service, NEW.action_type, NEW.session_id, NEW.is_monitoring); 
+CREATE OR REPLACE RULE request_insert_function AS ON INSERT TO request DO INSTEAD SELECT tr_request ( NEW.id, NEW.time_begin, NEW.time_end, NEW.source_ip, NEW.service, NEW.action_type, NEW.session_id, NEW.user_name, NEW.is_monitoring); 
 
 CREATE OR REPLACE RULE request_data_insert_function AS ON INSERT TO request_data DO INSTEAD SELECT tr_request_data ( NEW.entry_time_begin, NEW.entry_service, NEW.entry_monitoring, NEW.entry_id, NEW.content, NEW.is_response); 
 

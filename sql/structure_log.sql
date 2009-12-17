@@ -1,6 +1,6 @@
 CREATE TABLE session (
 	id serial primary key,
-	name varchar(255) not null,
+	name varchar(255) not null,       -- user name for Webadmin or id from registrar table for EPP
 	login_date timestamp not null default now(), 
 	logout_date timestamp,
 
@@ -31,16 +31,18 @@ CREATE TABLE request (
 	service integer NOT NULL REFERENCES service(id),   -- service code - enum LogServiceType in IDL
 	action_type integer REFERENCES request_type(id) DEFAULT 1000,
 	session_id  integer REFERENCES session(id),
+        user_name varchar(255),         -- name of the user who issued the request (from session table)
 		
 	is_monitoring boolean NOT NULL
 );
 
 CREATE TABLE request_data (
+        id SERIAL PRIMARY KEY,
 	entry_time_begin timestamp NOT NULL, -- TEMP: for partitioning
 	entry_service integer NOT NULL, -- TEMP: for partitioning
 	entry_monitoring boolean NOT NULL, -- TEMP: for partitioning
 
-	entry_id integer NOT NULL PRIMARY KEY REFERENCES request(id),
+	entry_id integer NOT NULL REFERENCES request(id),
 	content text NOT NULL,
 	is_response boolean DEFAULT False -- true if the content is response, false if it's request
 );
@@ -56,8 +58,7 @@ CREATE TABLE request_property_value (
 	entry_monitoring boolean NOT NULL, -- TEMP: for partitioning
 	
 	id SERIAL PRIMARY KEY,
-	entry_id integer NOT NULL REFERENCES request(id),
-
+	entry_id integer NOT NULL REFERENCES request(id), 
 	name_id integer NOT NULL REFERENCES request_property(id),
 	value text NOT NULL,		-- property value
 	output boolean DEFAULT False,		-- whether it's output (response) property; if False it's input (request)
