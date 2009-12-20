@@ -151,6 +151,7 @@ CREATE TABLE BANK_ITEM
 (
     id serial NOT NULL PRIMARY KEY, -- unique primary key
     statement_id int  REFERENCES BANK_HEAD default null, -- link into table heads of bank statements
+    account_id int  REFERENCES bank_account default null, -- link into table of accounts
     account_number char(16)  NOT NULL , -- contra-account number from which came or was sent a payment
     bank_code char(4) NOT NULL,   -- bank code
     code int, -- account code 1 debet item 2 credit item 4  cancel debet 5 cancel credit 
@@ -169,6 +170,7 @@ CREATE TABLE BANK_ITEM
 
 comment on column BANK_ITEM.id is 'unique automatically generated identifier';
 comment on column BANK_ITEM.statement_id is 'link to statement head';
+comment on column BANK_ITEM.account_id is 'link to account table';
 comment on column BANK_ITEM.account_number is 'contra-account number from which came or was sent a payment';
 comment on column BANK_ITEM.bank_code is 'contra-account bank code';
 comment on column BANK_ITEM.code is 'operation code (1-debet item, 2-credit item, 4-cancel debet, 5-cancel credit)';
