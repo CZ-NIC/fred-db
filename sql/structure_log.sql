@@ -30,7 +30,7 @@ CREATE TABLE request (
 	source_ip INET,
 	service integer NOT NULL REFERENCES service(id),   -- service code - enum LogServiceType in IDL
 	action_type integer REFERENCES request_type(id) DEFAULT 1000,
-	session_id  integer REFERENCES session(id),
+	session_id  integer,            --  REFERENCES session(id),
         user_name varchar(255),         -- name of the user who issued the request (from session table)
 		
 	is_monitoring boolean NOT NULL
