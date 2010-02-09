@@ -23,66 +23,9 @@ ALTER TABLE registrarinvoice ADD COLUMN toDate date;
 --- Ticket #1670 Banking refactoring
 ---
 
-CREATE TABLE BANK_HEAD
-(
-    id serial NOT NULL PRIMARY KEY, -- unique primary key
-    account_id int  REFERENCES bank_account, -- processing for given account link to account tabel
-    num int, -- serial number statement
-    create_date date , --  create date of a statement
-    balance_old_date date , -- date of a last balance
-    balance_old numeric(10,2) , -- old balance
-    balance_new numeric(10,2) ,  -- new balance
-    balance_credit  numeric(10,2) , -- income during statement ( credit balance )
-    balance_debet numeric(10,2), -- expenses during statement ( debet balance )
-    file_id INTEGER REFERENCES Files default NULL
-);
-
-COMMENT ON COLUMN BANK_HEAD.id IS 'unique automatically generated identifier';
-COMMENT ON COLUMN BANK_HEAD.account_id IS 'link to used bank account';
-COMMENT ON COLUMN BANK_HEAD.num IS 'statements number';
-COMMENT ON COLUMN BANK_HEAD.create_date IS 'statement creation date';
-COMMENT ON COLUMN BANK_HEAD.balance_old IS 'old balance state';
-COMMENT ON COLUMN BANK_HEAD.balance_credit IS 'income during statement';
-COMMENT ON COLUMN BANK_HEAD.balance_debet IS 'expenses during statement';
-COMMENT ON COLUMN BANK_HEAD.file_id IS 'xml file identifier number';
+\i ../sql/bank_new.sql
 
 
-CREATE TABLE BANK_ITEM
-(
-    id serial NOT NULL PRIMARY KEY, -- unique primary key
-    statement_id int  REFERENCES BANK_STATEMENT_HEAD default null, -- link into table heads of bank statements
-    account_number char(16)  NOT NULL , -- contra-account number from which came or was sent a payment
-    bank_code char(4) NOT NULL,   -- bank code
-    code int, -- account code 1 debet item 2 credit item 4  cancel debet 5 cancel credit
-    type int, -- transfer type
-    KonstSym char(10), -- constant symbol ( it contains bank code too )
-    VarSymb char(10), -- variable symbol
-    SpecSymb char(10), -- constant symbol
-    price numeric(10,2) NOT NULL,  -- applied amount if a debet is negative amount
-    account_evid varchar(20) UNIQUE, -- account evidence
-    account_date date NOT NULL, --  accounting date of credit or sending
-    account_memo  varchar(64), -- note
-    invoice_ID INTEGER REFERENCES Invoice default NULL, -- null if it isn't income payment of process otherwise link to advance invoice
-    account_name  varchar(64), -- account name
-    crtime timestamp NOT NULL default now()
-);
-
-COMMENT ON COLUMN BANK_ITEM.id IS 'unique automatically generated identifier';
-COMMENT ON COLUMN BANK_ITEM.statement_id IS 'link to statement head';
-COMMENT ON COLUMN BANK_ITEM.account_number IS 'contra-account number from which came or was sent a payment';
-COMMENT ON COLUMN BANK_ITEM.bank_code IS 'contra-account bank code';
-COMMENT ON COLUMN BANK_ITEM.code IS 'operation code (1-debet item, 2-credit item, 4-cancel debet, 5-cancel credit)';
-COMMENT ON COLUMN BANK_ITEM.type IS 'transfer type (1-from/to registrar, 2-from/to bank, 3-between our own accounts, 4-related to academia, 5-other transfers';
-COMMENT ON COLUMN BANK_ITEM.KonstSym IS 'constant symbol (contains bank code too)';
-COMMENT ON COLUMN BANK_ITEM.VarSymb IS 'variable symbol';
-COMMENT ON COLUMN BANK_ITEM.SpecSymb IS 'spec symbol';
-COMMENT ON COLUMN BANK_ITEM.price IS 'applied positive(credit) or negative(debet) amount';
-COMMENT ON COLUMN BANK_ITEM.account_evid IS 'account evidence';
-COMMENT ON COLUMN BANK_ITEM.account_date IS 'accounting date';
-COMMENT ON COLUMN BANK_ITEM.account_memo IS 'note';
-COMMENT ON COLUMN BANK_ITEM.invoice_ID IS 'null if it is not income payment of process otherwise link to proper invoice';
-COMMENT ON COLUMN BANK_ITEM.account_name IS 'account name';
-COMMENT ON COLUMN BANK_ITEM.crtime IS 'create timestamp';
 
 ALTER TABLE registrar ADD regex varchar(30) DEFAULT NULL;
 ALTER TABLE invoice ALTER COLUMN zone DROP NOT NULL;
