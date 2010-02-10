@@ -196,7 +196,8 @@ id  - status
 1328 - RequestDetail
 1329 - RequestFilter
 
-1332 - PaymentPair
+1330 - BankStatementDetail
+1331 - BankStatementFilter
 
 1400 -  Login 
 1401 -  Logout
@@ -334,7 +335,8 @@ INSERT INTO request_type (id, status, service) VALUES (1329, 'RequestFilter', 4)
 INSERT INTO request_type (id, status, service) VALUES (1330, 'BankStatementDetail', 4);
 INSERT INTO request_type (id, status, service) VALUES (1331, 'BankStatementFilter', 4); 
 
-INSERT INTO request_type (id, status, service) VALUES (1332, 'PaymentPair', 4); 
+INSERT INTO request_type (id, status, service) VALUES (1330, 'BankStatementDetail', 4);
+INSERT INTO request_type (id, status, service) VALUES (1331, 'BankStatementFilter', 4); 
 
 -- Intranet functions
 INSERT INTO request_type (id, status, service) VALUES (1400, 'Login', 5); 
