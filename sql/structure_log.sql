@@ -338,6 +338,7 @@ INSERT INTO request_type (id, status, service) VALUES (1331, 'BankStatementFilte
 INSERT INTO request_type (id, status, service) VALUES (1332, 'PaymentPair', 4);
 INSERT INTO request_type (id, status, service) VALUES (1333, 'SetInZoneStatus', 4);
 INSERT INTO request_type (id, status, service) VALUES (1334, 'SaveFilter', 4)
+INSERT INTO request_type (id, status, service) VALUES (1335, 'LoadFilter', 4)
 
 -- Intranet functions
 INSERT INTO request_type (id, status, service) VALUES (1400, 'Login', 5); 
