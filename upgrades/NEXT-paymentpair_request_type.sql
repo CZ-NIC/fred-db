@@ -10,4 +10,3 @@ UPDATE enum_parameters SET val = '<insert version here>' WHERE id = 1;
 ---
 
 INSERT INTO request_type (id, status, service) VALUES (1332, 'PaymentPair', 4);
-INSERT INTO request_type (id, status, service) VALUES (1333, 'SetInZoneStatus', 4);
