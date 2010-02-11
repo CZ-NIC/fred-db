@@ -27,21 +27,22 @@ CREATE TABLE BANK_ITEM
     id serial NOT NULL PRIMARY KEY, -- unique primary key
     statement_id int  REFERENCES BANK_HEAD default null, -- link into table heads of bank statements
     account_id int  REFERENCES bank_account default null, -- link into table of accounts
-    account_number char(16)  NOT NULL , -- contra-account number from which came or was sent a payment
-    bank_code char(4) NOT NULL,   -- bank code
+    account_number varchar(17)  NOT NULL , -- contra-account number from which came or was sent a payment
+    bank_code varchar(4) NOT NULL,   -- bank code
     code int, -- account code 1 debet item 2 credit item 4  cancel debet 5 cancel credit 
     type int, -- transfer type
     status int, -- payment status
-    KonstSym char(10), -- constant symbol ( it contains bank code too )
-    VarSymb char(10), -- variable symbol
-    SpecSymb char(10), -- constant symbol
+    KonstSym varchar(10), -- constant symbol ( it contains bank code too )
+    VarSymb varchar(10), -- variable symbol
+    SpecSymb varchar(10), -- constant symbol
     price numeric(10,2) NOT NULL,  -- applied amount if a debet is negative amount 
-    account_evid varchar(20) UNIQUE, -- account evidence 
+    account_evid varchar(20), -- account evidence 
     account_date date NOT NULL, --  accounting date of credit or sending 
     account_memo  varchar(64), -- note
     invoice_ID INTEGER REFERENCES Invoice default NULL, -- null if it isn't income payment of process otherwise link to advance invoice
     account_name  varchar(64), -- account name
-    crtime timestamp NOT NULL default now()
+    crtime timestamp NOT NULL default now(),
+    UNIQUE(account_id, account_evid)
 );
 
 comment on column BANK_ITEM.id is 'unique automatically generated identifier';
