@@ -1,3 +1,21 @@
+2010-02-16 Jiri Sadek, Juraj Vicenik, Jan Zima (2.3.0)
+
+    * Audit (Logger) tables added
+
+    * New tables for banking refactoring (constraint changes)
+
+    * Registrars
+	    - 'regex' column added for payment pairing by memo message
+		- access to zone limited by 'todate' column in registrarinvoice
+
+    * Typo in messages and mail templates fixes
+
+2010-01-08 Jiri Sadek, Juraj Vicenik (2.2.0)
+
+    * public request <-> action tables dependency refactoring started
+
+    * Enum directory implementation - publish flag
+
 2009-06-30 Jiri Sadek, Ales Dolezal, Jaroslav Benkovsky (2.1.4)
     * fixing minor manager, configure scripts issues
 
