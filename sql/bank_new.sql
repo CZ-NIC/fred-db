@@ -1,4 +1,4 @@
-CREATE TABLE BANK_HEAD 
+CREATE TABLE bank_statement 
 (
     id serial NOT NULL PRIMARY KEY, -- unique primary key
     account_id int  REFERENCES bank_account, -- processing for given account link to account tabel
@@ -12,20 +12,20 @@ CREATE TABLE BANK_HEAD
     file_id INTEGER REFERENCES Files default NULL
 );
 
-comment on column BANK_HEAD.id is 'unique automatically generated identifier';
-comment on column BANK_HEAD.account_id is 'link to used bank account';
-comment on column BANK_HEAD.num is 'statements number';
-comment on column BANK_HEAD.create_date is 'statement creation date';
-comment on column BANK_HEAD.balance_old is 'old balance state';
-comment on column BANK_HEAD.balance_credit is 'income during statement';
-comment on column BANK_HEAD.balance_debet is 'expenses during statement';
-comment on column BANK_HEAD.file_id is 'xml file identifier number';
+comment on column bank_statement.id is 'unique automatically generated identifier';
+comment on column bank_statement.account_id is 'link to used bank account';
+comment on column bank_statement.num is 'statements number';
+comment on column bank_statement.create_date is 'statement creation date';
+comment on column bank_statement.balance_old is 'old balance state';
+comment on column bank_statement.balance_credit is 'income during statement';
+comment on column bank_statement.balance_debet is 'expenses during statement';
+comment on column bank_statement.file_id is 'xml file identifier number';
 
 -- statements item
-CREATE TABLE BANK_ITEM
+CREATE TABLE bank_payment
 (
     id serial NOT NULL PRIMARY KEY, -- unique primary key
-    statement_id int  REFERENCES BANK_HEAD default null, -- link into table heads of bank statements
+    statement_id int  REFERENCES bank_statement default null, -- link into table heads of bank statements
     account_id int  REFERENCES bank_account default null, -- link into table of accounts
     account_number varchar(17)  NOT NULL , -- contra-account number from which came or was sent a payment
     bank_code varchar(4) NOT NULL,   -- bank code
@@ -45,22 +45,22 @@ CREATE TABLE BANK_ITEM
     UNIQUE(account_id, account_evid)
 );
 
-comment on column BANK_ITEM.id is 'unique automatically generated identifier';
-comment on column BANK_ITEM.statement_id is 'link to statement head';
-comment on column BANK_ITEM.account_id is 'link to account table';
-comment on column BANK_ITEM.account_number is 'contra-account number from which came or was sent a payment';
-comment on column BANK_ITEM.bank_code is 'contra-account bank code';
-comment on column BANK_ITEM.code is 'operation code (1-debet item, 2-credit item, 4-cancel debet, 5-cancel credit)';
-comment on column BANK_ITEM.type is 'transfer type (1-from/to registrar, 2-from/to bank, 3-between our own accounts, 4-related to academia, 5-other transfers';
-comment on column BANK_ITEM.status is 'payment status (1-Realized (only this should be further processed), 2-Partially realized, 3-Not realized, 4-Suspended, 5-Ended, 6-Waiting for clearing )';
-comment on column BANK_ITEM.KonstSym is 'constant symbol (contains bank code too)';
-comment on column BANK_ITEM.VarSymb is 'variable symbol';
-comment on column BANK_ITEM.SpecSymb is 'spec symbol';
-comment on column BANK_ITEM.price is 'applied positive(credit) or negative(debet) amount';
-comment on column BANK_ITEM.account_evid is 'account evidence';
-comment on column BANK_ITEM.account_date is 'accounting date';
-comment on column BANK_ITEM.account_memo is 'note';
-comment on column BANK_ITEM.invoice_ID is 'null if it is not income payment of process otherwise link to proper invoice';
-comment on column BANK_ITEM.account_name is 'account name';
-comment on column BANK_ITEM.crtime is 'create timestamp';
+comment on column bank_payment.id is 'unique automatically generated identifier';
+comment on column bank_payment.statement_id is 'link to statement head';
+comment on column bank_payment.account_id is 'link to account table';
+comment on column bank_payment.account_number is 'contra-account number from which came or was sent a payment';
+comment on column bank_payment.bank_code is 'contra-account bank code';
+comment on column bank_payment.code is 'operation code (1-debet item, 2-credit item, 4-cancel debet, 5-cancel credit)';
+comment on column bank_payment.type is 'transfer type (1-from/to registrar, 2-from/to bank, 3-between our own accounts, 4-related to academia, 5-other transfers';
+comment on column bank_payment.status is 'payment status (1-Realized (only this should be further processed), 2-Partially realized, 3-Not realized, 4-Suspended, 5-Ended, 6-Waiting for clearing )';
+comment on column bank_payment.KonstSym is 'constant symbol (contains bank code too)';
+comment on column bank_payment.VarSymb is 'variable symbol';
+comment on column bank_payment.SpecSymb is 'spec symbol';
+comment on column bank_payment.price is 'applied positive(credit) or negative(debet) amount';
+comment on column bank_payment.account_evid is 'account evidence';
+comment on column bank_payment.account_date is 'accounting date';
+comment on column bank_payment.account_memo is 'note';
+comment on column bank_payment.invoice_ID is 'null if it is not income payment of process otherwise link to proper invoice';
+comment on column bank_payment.account_name is 'account name';
+comment on column bank_payment.crtime is 'create timestamp';
 
