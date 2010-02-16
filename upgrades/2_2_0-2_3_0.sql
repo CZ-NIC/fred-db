@@ -1,7 +1,7 @@
 ---
 --- dont forget to update database schema version
 ---
-UPDATE enum_parameters SET val = '2.2.1' WHERE id = 1;
+UPDATE enum_parameters SET val = '2.3.0' WHERE id = 1;
 
 
 ---
