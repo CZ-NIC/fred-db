@@ -107,6 +107,7 @@ COMMENT ON TABLE request_type IS
 id  - status
 100 - ClientLogin
 101 - ClientLogout
+105 - ClientGreeting
 120 - PollAcknowledgement
 121 - PollResponse
 200 - ContactCheck
@@ -212,6 +213,7 @@ id  - status
 -- login function
 INSERT INTO request_type (id, status, service) VALUES(100 , 'ClientLogin', 3);
 INSERT INTO request_type (id, status, service) VALUES(101 , 'ClientLogout', 3);
+INSERT INTO request_type (id, status, service) VALUES(105 , 'ClientGreeting', 3);
 -- poll function
 INSERT INTO request_type (id, status, service) VALUES(  120 , 'PollAcknowledgement', 3);
 INSERT INTO request_type (id, status, service) VALUES(  121 ,  'PollResponse', 3);
