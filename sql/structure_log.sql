@@ -339,8 +339,8 @@ INSERT INTO request_type (id, status, service) VALUES (1331, 'BankStatementFilte
 
 INSERT INTO request_type (id, status, service) VALUES (1332, 'PaymentPair', 4);
 INSERT INTO request_type (id, status, service) VALUES (1333, 'SetInZoneStatus', 4);
-INSERT INTO request_type (id, status, service) VALUES (1334, 'SaveFilter', 4)
-INSERT INTO request_type (id, status, service) VALUES (1335, 'LoadFilter', 4)
+INSERT INTO request_type (id, status, service) VALUES (1334, 'SaveFilter', 4);
+INSERT INTO request_type (id, status, service) VALUES (1335, 'LoadFilter', 4);
 
 -- Intranet functions
 INSERT INTO request_type (id, status, service) VALUES (1400, 'Login', 5); 
@@ -351,8 +351,8 @@ INSERT INTO request_type (id, status, service) VALUES (1403, 'InvoiceList', 5);
 INSERT INTO request_type (id, status, service) VALUES (1404, 'DomainList', 5);
 INSERT INTO request_type (id, status, service) VALUES (1405, 'FileDetail', 5);
 
-
-select setval('enum_action_id_seq', 1406); 
-
+-- Set sequences beginnings
+SELECT setval('enum_action_id_seq', 1406); 
+SELECT setval('request_id_seq', (SELECT max(id) FROM action));
 
 
