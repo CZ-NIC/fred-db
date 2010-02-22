@@ -731,7 +731,7 @@ All nameservers in NS set use the same implementation of DNS server.
 <?cs /if ?><?cs if:par_test.name == "notrecursive" ?>Následující nameservery v sadě nameserverů jsou rekurzivní:
 Following nameservers in NS set are recursive:
 <?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
-<?cs /each ?><?cs /if ?><?cs if:par_test.name == "notrecursive4all" ?>Následující nameservery v sadě nameserverů zodpověděli rekurzivně dotaz:
+<?cs /each ?><?cs /if ?><?cs if:par_test.name == "notrecursive4all" ?>Následující nameservery v sadě nameserverů zodpověděly rekurzivně dotaz:
 Following nameservers in NS set answered recursively a query:
 <?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
 <?cs /each ?><?cs /if ?><?cs if:par_test.name == "dnsseckeychase" ?>Pro následující domény přislušející sadě nameserverů nebylo možno 
