@@ -33,6 +33,9 @@ arguments:
     upgrade - upgrade FRED database with upgrade script
     status - print status of FRED database
     testuser - check if script can be run as current_user or postgres
+    create_partitions - create partitions for fred-logd
+    list_partitions - list partitions
+    drop_partitions - drop all partitions
     help - print this help"
 }
 
@@ -249,12 +252,105 @@ f_status () {
     fi
 }
 
+list_parts_worker() {
+    SERVICES=`@PGBINDIR@/psql -P tuples_only=on -d @DBNAME@ -U @DBUSER@ -At -p @DBPORT@ \
+                    -c "select partition_postfix from service order by partition_postfix" 2>/dev/null;`
+
+    # add monitoring postfix
+    SERVICES="$SERVICES mon_"
+
+    echo ----- List of services:
+    echo $SERVICES
+
+    > table_list.txt
+
+    if [ ! -w table_list.txt ]; then
+        echo File table_list.txt not accessible for writing, action cancelled. 
+        exit 1
+    fi
+
+    # for table_base in log_entry log_raw_content log_property_value log_session; do 
+    for table_base in request request_data request_property_value session; do
+            for postfix in $SERVICES; do
+                    @PGBINDIR@/psql -P tuples_only=on -d @DBNAME@ -U @DBUSER@ -At -p @DBPORT@ \
+                    -c "\dt ${table_base}_${postfix}*" | grep fred | cut -d '|' -f 2 >> table_list.txt
+            done
+    done
+
+    @PGBINDIR@/psql -P tuples_only=on -d @DBNAME@ -U @DBUSER@ -At -p @DBPORT@ \
+        -c "\dt session_*" | grep fred | cut -d '|' -f 2 >> table_list.txt
+
+    echo ------ List of partitions:
+    cat table_list.txt
+} 
+
+f_list_parts() {
+    list_parts_worker
+
+    rm -f table_list.txt
+
+}
+
+f_drop_parts() {
+    list_parts_worker
+
+    echo "Type yes if you're sure you want to drop these tables"
+    read ans
+
+    if [ "$ans" != "yes" ]; then
+        echo Not confirmed. 
+        exit 0
+    fi
+
+    # in bash ! only works with [[ command 
+    if [[ ! -a table_list.txt ]]; then
+        echo File table_list.txt not found, action cancelled. 
+        exit 1
+    fi
+
+    for table in `cat table_list.txt`; do 
+            @PGBINDIR@/psql -P tuples_only=on -d @DBNAME@ -U @DBUSER@ -At -p @DBPORT@ \
+                    -c "drop table ${table} cascade" || break;
+    done;
+
+    rm -f table_list.txt
+
+}
+
+f_create_parts() {
+    test_db
+    if [ $? != 0 ]
+    then
+        echo "@DBNAME@ database does not exist or postgres server does not runnint."
+        exit 1
+    fi
+
+    echo 
+    echo Argument: $1
+
+    @PGBINDIR@/psql -d @DBNAME@ -U @DBUSER@ -At -p @DBPORT@ \
+                    -c "select create_parts('$1')"  > error_out.txt 2>&1
+
+                    # -c "select create_parts($1)" >/dev/null 2>&1
+
+    if [ $? != 0 ]; then 
+        echo "----- SQL failed, error ouput (file error_out.txt): "
+        cat error_out.txt
+        exit 1
+    else 
+        rm -f error_out.txt
+    fi 
+}
+
 case $1 in
     "install") f_install;;
     "uninstall") f_uninstall;;
     "upgrade" ) f_upgrade;;
     "status" ) f_status;;
     "testuser" ) test_user;;
+    "create_partitions") f_create_parts $2;;
+    "list_partitions") list_parts_worker;;
+    "drop_partitions") f_drop_parts;;
     "help" ) f_usage;;
     "") f_usage;;
     *) 
