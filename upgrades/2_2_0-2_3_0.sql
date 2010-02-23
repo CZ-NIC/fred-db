@@ -36,6 +36,52 @@ INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'Fio, družstev
 UPDATE bank_account SET balance = 0.0 WHERE balance IS NULL;
 
 ---
+--- data migration
+--- bank_statement_head -> bank_statement
+---
+INSERT INTO bank_statement
+                           (id, account_id, num, create_date, balance_old_date,
+                            balance_old, balance_new, balance_credit, balance_debet,
+                            file_id)
+
+    SELECT id, account_id, num, create_date, balance_old_date, balance_old, balance_new,
+           balance_credit, balance_debet, NULL
+       FROM bank_statement_head
+      ORDER BY id;
+
+
+---
+--- bank_statement_item && bank_ebanka_list -> bank_payement
+--- (should be ordered by account_date or not?, crtime set to NOW()?)
+---
+
+INSERT INTO bank_payment
+                         (statement_id, account_id, account_number, bank_code,
+                          code, type, status, konstsym, varsymb, specsymb,
+                          price, account_evid, account_date, account_memo,
+                          invoice_id, account_name, crtime)
+
+        SELECT NULL, ebanka.account_id, ebanka.account_number, ebanka.bank_code,
+                1, NULL::integer, 1, ebanka.konstsym, ebanka.varsymb, NULL, ebanka.price,
+                ebanka.ident, ebanka.crdate AS account_date, ebanka.memo, ebanka.invoice_id, ebanka.name,
+                NOW()
+           FROM bank_ebanka_list ebanka
+        UNION ALL
+        SELECT csob.statement_id,
+               (SELECT ba.id
+                   FROM bank_account ba
+                  WHERE ba.account_number = csob.account_number AND ba.bank_code = csob.bank_code
+                 LIMIT 1
+               ),
+               csob.account_number, csob.bank_code, 1, NULL::integer, 1, csob.konstsym,
+               csob.varsymb, csob.specsymb, csob.price, csob.account_evid,
+               csob.account_date AS account_date, csob.account_memo, csob.invoice_id, NULL,
+               NOW()
+           FROM bank_statement_item csob
+          ORDER BY account_date;
+
+
+---
 --- Typo fixes
 ---
 
