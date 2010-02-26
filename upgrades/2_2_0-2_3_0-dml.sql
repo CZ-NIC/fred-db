@@ -1,4 +1,8 @@
 ---
+--- UPGRADE SCRIPT 2.2.0 -> 2.3.0 (data modification part)
+---
+
+---
 --- dont forget to update database schema version
 ---
 UPDATE enum_parameters SET val = '2.3.0' WHERE id = 1;
@@ -8,31 +12,14 @@ UPDATE enum_parameters SET val = '2.3.0' WHERE id = 1;
 --- Ticket #3141 Logger (only included!)
 ---
 
-\i ../sql/structure_log.sql
-\i ../sql/log_partitioning_function.sql
-
-
----
---- Ticket #2099 Registrar refactoring
----
-
-ALTER TABLE registrarinvoice ADD COLUMN toDate date;
+\i ../sql/logger_dml.sql
 
 
 ---
 --- Ticket #1670 Banking refactoring
 ---
 
-\i ../sql/bank_new.sql
-
-
-
-ALTER TABLE registrar ADD regex varchar(30) DEFAULT NULL;
-ALTER TABLE invoice ALTER COLUMN zone DROP NOT NULL;
-ALTER TABLE bank_account ALTER COLUMN balance SET DEFAULT 0.0;
-
-INSERT INTO  enum_bank_code (name_full,name_short,code) VALUES ( 'Fio, družstevní záložna', 'FIOZ', '2010');
-
+INSERT INTO enum_bank_code (name_full,name_short,code) VALUES ('Fio, družstevní záložna', 'FIOZ', '2010');
 UPDATE bank_account SET balance = 0.0 WHERE balance IS NULL;
 
 ---
@@ -48,7 +35,6 @@ INSERT INTO bank_statement
            balance_credit, balance_debet, NULL
        FROM bank_statement_head
       ORDER BY id;
-
 
 ---
 --- bank_statement_item && bank_ebanka_list -> bank_payement

@@ -21,7 +21,7 @@ comment on column bank_statement.balance_credit is 'income during statement';
 comment on column bank_statement.balance_debet is 'expenses during statement';
 comment on column bank_statement.file_id is 'xml file identifier number';
 
--- statements item
+
 CREATE TABLE bank_payment
 (
     id serial NOT NULL PRIMARY KEY, -- unique primary key

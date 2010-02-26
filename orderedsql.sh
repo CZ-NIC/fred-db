@@ -38,7 +38,7 @@ write_script()
 	cat $DIR/credit.sql
 	cat $DIR/invoice.sql
 	cat $DIR/bank.sql
-    cat $DIR/bank_new.sql
+    cat $DIR/bank_ddl_new.sql
 	#tech-check
 	cat $DIR/techcheck.sql
 	cat $DIR/info_buffer.sql
@@ -80,8 +80,9 @@ case "$1" in
 		;;
 	*)
 		write_script
-		cat $DIR/structure_log.sql		
-		cat $DIR/log_partitioning_function.sql
-                cat $DIR/create_parts.sql
+        cat $DIR/logger_ddl.sql		
+        cat $DIR/logger_dml.sql
+        cat $DIR/logger_partitioning.sql
+        cat $DIR/create_parts.sql
 		;;
 esac

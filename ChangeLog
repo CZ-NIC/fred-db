@@ -10,6 +10,8 @@
 
     * Typo in messages and mail templates fixes
 
+    * Separation of upgrade script (schema modification, data modification)
+
 2010-01-08 Jiri Sadek, Juraj Vicenik (2.2.0)
 
     * public request <-> action tables dependency refactoring started
