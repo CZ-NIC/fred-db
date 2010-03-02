@@ -140,5 +140,9 @@ INSERT INTO request_type (id, status, service) VALUES (1404, 'DomainList', 5);
 INSERT INTO request_type (id, status, service) VALUES (1405, 'FileDetail', 5);
 
 -- Set sequences beginnings
-SELECT setval('enum_action_id_seq', 1406); 
-SELECT setval('request_id_seq', (SELECT max(id) FROM action));
+SELECT setval('request_type_id_seq', 1406); 
+
+--
+-- have to be done manually (logger will be in separate database)
+-- 
+-- SELECT setval('request_id_seq', (SELECT max(id) FROM action));
