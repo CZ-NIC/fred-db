@@ -7,14 +7,6 @@
 ---
 UPDATE enum_parameters SET val = '2.3.0' WHERE id = 1;
 
-
----
---- Ticket #3141 Logger (only included!)
----
-
-\i ../sql/logger_dml.sql
-
-
 ---
 --- Ticket #1670 Banking refactoring
 ---

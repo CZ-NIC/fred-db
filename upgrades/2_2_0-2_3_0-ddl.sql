@@ -3,13 +3,6 @@
 ---
 
 ---
---- Ticket #3141 Logger (only included!)
----
-
-\i ../sql/logger_ddl.sql
-\i ../sql/logger_partitioning.sql
-
----
 --- Ticket #2099 Registrar refactoring
 ---
 
