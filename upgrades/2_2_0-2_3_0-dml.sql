@@ -39,10 +39,12 @@ INSERT INTO bank_payment
                           price, account_evid, account_date, account_memo,
                           invoice_id, account_name, crtime)
 
-        SELECT NULL, ebanka.account_id, ebanka.account_number, ebanka.bank_code,
-                1, NULL::integer, 1, ebanka.konstsym, ebanka.varsymb, NULL, ebanka.price,
-                ebanka.ident, ebanka.crdate AS account_date, ebanka.memo, ebanka.invoice_id, ebanka.name,
-                NOW()
+        SELECT NULL, ebanka.account_id, trim(both ' ' from ebanka.account_number),
+                trim(both ' ' from ebanka.bank_code), 1, NULL::integer, 1,
+                trim(both ' ' from ebanka.konstsym), trim(both from ebanka.varsymb),
+                NULL, ebanka.price, trim(both ' ' from ebanka.ident) as account_evid,
+                ebanka.crdate AS account_date, trim(both ' ' from ebanka.memo),
+                ebanka.invoice_id, trim(both ' ' from ebanka.name), NOW()
            FROM bank_ebanka_list ebanka
         UNION ALL
         SELECT csob.statement_id,
@@ -51,12 +53,13 @@ INSERT INTO bank_payment
                   WHERE ba.account_number = csob.account_number AND ba.bank_code = csob.bank_code
                  LIMIT 1
                ),
-               csob.account_number, csob.bank_code, 1, NULL::integer, 1, csob.konstsym,
-               csob.varsymb, csob.specsymb, csob.price, csob.account_evid,
-               csob.account_date AS account_date, csob.account_memo, csob.invoice_id, NULL,
+               trim(both ' ' from csob.account_number), trim(both ' ' from csob.bank_code),
+               1, NULL::integer, 1, trim(both ' ' from csob.konstsym), trim(both ' ' from csob.varsymb),
+               trim(both ' ' from csob.specsymb), csob.price, trim(both ' ' from csob.account_evid) as account_evid,
+               csob.account_date AS account_date, trim(both ' ' from csob.account_memo), csob.invoice_id, NULL,
                NOW()
            FROM bank_statement_item csob
-          ORDER BY account_date;
+          ORDER BY account_date, account_evid;
 
 
 ---
