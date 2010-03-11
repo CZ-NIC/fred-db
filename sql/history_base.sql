@@ -1,6 +1,6 @@
 CREATE TABLE History (
         ID SERIAL PRIMARY KEY,
-        action INTEGER NOT NULL REFERENCES action, -- link into table action
+        action INTEGER NOT NULL,
         valid_from TIMESTAMP NOT NULL DEFAULT NOW(),
         valid_to TIMESTAMP,
         next INTEGER

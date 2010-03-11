@@ -3,7 +3,7 @@
 CREATE TABLE public_request (
   id serial NOT NULL PRIMARY KEY,
   request_type smallint NOT NULL, -- vsechny typy zadosti
-  epp_action_id integer REFERENCES action(id),
+  epp_action_id integer,
   create_time timestamp without time zone DEFAULT now() NOT NULL,
   status smallint DEFAULT 1 NOT NULL,
   resolve_time timestamp without time zone,

@@ -4,7 +4,7 @@ CREATE TABLE auth_info_requests (
     id serial NOT NULL PRIMARY KEY,
     object_id integer NOT NULL REFERENCES object_history(historyid),
     request_type smallint NOT NULL,
-    epp_action_id integer REFERENCES action(id),
+    epp_action_id integer,
     create_time timestamp without time zone DEFAULT now() NOT NULL,
     status smallint DEFAULT 1 NOT NULL,
     resolve_time timestamp without time zone,
