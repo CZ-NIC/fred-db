@@ -12,6 +12,8 @@
 
     * Separation of upgrade script (schema modification, data modification)
 
+    * Dropped constrains to action table (except action_xml table)
+
 2010-01-08 Jiri Sadek, Juraj Vicenik (2.2.0)
 
     * public request <-> action tables dependency refactoring started
