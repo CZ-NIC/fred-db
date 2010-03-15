@@ -3,6 +3,22 @@
 ---
 
 ---
+--- copied from func.sql - need for server filtering capability
+---
+---  create temporary table and if temporary table already
+---  exists truncate it for immediate usage
+---
+CREATE OR REPLACE FUNCTION create_tmp_table(tname VARCHAR)
+RETURNS VOID AS $$
+BEGIN
+ EXECUTE 'CREATE TEMPORARY TABLE ' || tname || ' (id INTEGER PRIMARY KEY)';
+ EXCEPTION
+ WHEN DUPLICATE_TABLE THEN EXECUTE 'TRUNCATE TABLE ' || tname;
+END;
+$$ LANGUAGE plpgsql;
+
+
+---
 --- Ticket #3141 Logger (only included!)
 ---
 
