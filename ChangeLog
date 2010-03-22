@@ -1,3 +1,9 @@
+2010-03-22 Jiri Sadek (2.3.1)
+
+    * Banking changes:
+	    - payment type default value
+		- migration fixes
+
 2010-02-16 Jiri Sadek, Juraj Vicenik, Jan Zima (2.3.0)
 
     * Audit (Logger) tables added
