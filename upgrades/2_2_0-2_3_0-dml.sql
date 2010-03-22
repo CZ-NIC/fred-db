@@ -42,7 +42,7 @@ INSERT INTO bank_payment
                           invoice_id, account_name, crtime)
 
         SELECT NULL, ebanka.account_id, trim(both ' ' from ebanka.account_number),
-                trim(both ' ' from ebanka.bank_code), 1, NULL::integer, 1,
+                trim(both ' ' from ebanka.bank_code), 1, 1, 1,
                 trim(both ' ' from ebanka.konstsym), trim(both from ebanka.varsymb),
                 NULL, ebanka.price, trim(both ' ' from ebanka.ident) as account_evid,
                 ebanka.crdate AS account_date, trim(both ' ' from ebanka.memo),
@@ -56,13 +56,16 @@ INSERT INTO bank_payment
                  LIMIT 1
                ),
                trim(both ' ' from csob.account_number), trim(both ' ' from csob.bank_code),
-               1, NULL::integer, 1, trim(both ' ' from csob.konstsym), trim(both ' ' from csob.varsymb),
+               1, 1, 1, trim(both ' ' from csob.konstsym), trim(both ' ' from csob.varsymb),
                trim(both ' ' from csob.specsymb), csob.price, trim(both ' ' from csob.account_evid) as account_evid,
                csob.account_date AS account_date, trim(both ' ' from csob.account_memo), csob.invoice_id, NULL,
                NOW()
            FROM bank_statement_item csob
           ORDER BY account_date, account_evid;
 
+
+SELECT setval('bank_payment_id_seq', (SELECT max(id) FROM bank_payment));
+SELECT setval('bank_statement_id_seq', (SELECT max(id) FROM bank_statement));
 
 ---
 --- Fix account_memo field for csob payments

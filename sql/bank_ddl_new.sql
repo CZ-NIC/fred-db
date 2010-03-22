@@ -30,7 +30,7 @@ CREATE TABLE bank_payment
     account_number varchar(17)  NOT NULL , -- contra-account number from which came or was sent a payment
     bank_code varchar(4) NOT NULL,   -- bank code
     code int, -- account code 1 debet item 2 credit item 4  cancel debet 5 cancel credit 
-    type int, -- transfer type
+    type int NOT NULL default 1, -- transfer type
     status int, -- payment status
     KonstSym varchar(10), -- constant symbol ( it contains bank code too )
     VarSymb varchar(10), -- variable symbol
@@ -51,7 +51,7 @@ comment on column bank_payment.account_id is 'link to account table';
 comment on column bank_payment.account_number is 'contra-account number from which came or was sent a payment';
 comment on column bank_payment.bank_code is 'contra-account bank code';
 comment on column bank_payment.code is 'operation code (1-debet item, 2-credit item, 4-cancel debet, 5-cancel credit)';
-comment on column bank_payment.type is 'transfer type (1-from/to registrar, 2-from/to bank, 3-between our own accounts, 4-related to academia, 5-other transfers';
+comment on column bank_payment.type is 'transfer type (1-not decided (not processed), 2-from/to registrar, 3-from/to bank, 4-between our own accounts, 5-related to academia, 6-other transfers';
 comment on column bank_payment.status is 'payment status (1-Realized (only this should be further processed), 2-Partially realized, 3-Not realized, 4-Suspended, 5-Ended, 6-Waiting for clearing )';
 comment on column bank_payment.KonstSym is 'constant symbol (contains bank code too)';
 comment on column bank_payment.VarSymb is 'variable symbol';
