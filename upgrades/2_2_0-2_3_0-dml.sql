@@ -70,6 +70,8 @@ INSERT INTO bank_payment
 SELECT setval('bank_payment_id_seq', (SELECT max(id) FROM bank_payment));
 SELECT setval('bank_statement_id_seq', (SELECT max(id) FROM bank_statement));
 
+UPDATE bank_payment SET type = 2 WHERE invoice_id IS NOT NULL;
+
 ---
 --- Fix account_memo and specsymb fields for csob payments
 ---
