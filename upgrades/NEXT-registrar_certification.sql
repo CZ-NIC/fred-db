@@ -6,6 +6,8 @@ UPDATE enum_parameters SET val = '<insert version here>' WHERE id = 1;
 ---
 --- Ticket #3747
 ---
+
+--ddl
 CREATE TABLE registrar_certification
 (
     id SERIAL PRIMARY KEY, -- certification id
@@ -36,8 +38,6 @@ CREATE TABLE registrar_www_lists
     short_name varchar(255) -- short name of the list
 );
 
-INSERT INTO registrar_www_lists (id, short_name) VALUES (0, 'NONE');
-
 COMMENT ON TABLE registrar_www_lists IS 'available www-lists of registars';
 COMMENT ON COLUMN registrar_www_lists.id IS 'www-list id';
 COMMENT ON COLUMN registrar_www_lists.short_name IS 'www-list short name';
@@ -53,3 +53,6 @@ COMMENT ON TABLE registrar_www_list_membership IS 'membership of registar in www
 COMMENT ON COLUMN registrar_www_list_membership.id IS 'registrar list membership id';
 COMMENT ON COLUMN registrar_www_list_membership.registrar_id IS 'registrar id';
 COMMENT ON COLUMN registrar_www_list_membership.registrar_www_lists_id IS 'www-list id';
+
+--dml
+INSERT INTO registrar_www_lists (id, short_name) VALUES (0, 'NONE');
