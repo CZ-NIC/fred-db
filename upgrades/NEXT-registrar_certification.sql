@@ -15,7 +15,7 @@ CREATE TABLE registrar_certification
     valid_from date NOT NULL, --  registrar certification valid from
     valid_until date NOT NULL, --  registrar certification valid until = valid_from + 1year
     classification integer NOT NULL, -- registrar certification result 0-5
-    evaluation REFERENCES file(id), -- link to pdf file
+    evaluation integer NOT NULL REFERENCES files(id) -- link to pdf file
 );
 
 CREATE INDEX registrar_certification_valid_from_idx ON registrar_certification(valid_from);
@@ -34,7 +34,7 @@ COMMENT ON COLUMN registrar_certification.evaluation IS
 
 CREATE TABLE registrar_www_lists
 (
-    id SERIAL PRIMARY KEY, -- registrar list id
+    id INTEGER PRIMARY KEY REFERENCES object(id), -- registrar list id
     short_name varchar(255) -- short name of the list
 );
 
@@ -42,9 +42,18 @@ COMMENT ON TABLE registrar_www_lists IS 'available www-lists of registars';
 COMMENT ON COLUMN registrar_www_lists.id IS 'www-list id';
 COMMENT ON COLUMN registrar_www_lists.short_name IS 'www-list short name';
 
+CREATE TABLE registrar_www_lists_history
+(
+	HISTORYID INTEGER PRIMARY KEY REFERENCES History,
+    id INTEGER REFERENCES object_registry(id),
+    short_name varchar(255) -- short name of the list
+);
+
+COMMENT ON TABLE registrar_www_lists_history IS 'historic data from table registrar_www_lists';
+
 CREATE TABLE registrar_www_list_membership
 (
-    id SERIAL PRIMARY KEY, -- registrar list membership id
+    id INTEGER PRIMARY KEY REFERENCES object(id), -- registrar list membership id
     registrar_id integer NOT NULL REFERENCES registrar(id), -- registrar id
     registrar_www_lists_id integer NOT NULL REFERENCES registrar_www_lists(id) -- registrar_www_lists id
 );
@@ -53,6 +62,17 @@ COMMENT ON TABLE registrar_www_list_membership IS 'membership of registar in www
 COMMENT ON COLUMN registrar_www_list_membership.id IS 'registrar list membership id';
 COMMENT ON COLUMN registrar_www_list_membership.registrar_id IS 'registrar id';
 COMMENT ON COLUMN registrar_www_list_membership.registrar_www_lists_id IS 'www-list id';
+
+CREATE TABLE registrar_www_list_membership_history
+(
+	HISTORYID INTEGER PRIMARY KEY REFERENCES History,
+    id INTEGER REFERENCES object_registry(id),
+    registrar_id integer NOT NULL REFERENCES registrar(id),
+    registrar_www_lists_id integer NOT NULL 
+);
+
+COMMENT ON TABLE registrar_www_list_membership IS 'historic data from table registrar_www_list_membership';
+
 
 --dml
 INSERT INTO registrar_www_lists (id, short_name) VALUES (0, 'NONE');
