@@ -51,7 +51,7 @@ CREATE TABLE registrar_group_map
 (
     id serial PRIMARY KEY, -- membership of registrar in group id
     registrar_id integer NOT NULL REFERENCES registrar(id), -- registrar id
-    registrar_group_id integer NOT NULL REFERENCES registrar_group(id) -- registrar group id
+    registrar_group_id integer NOT NULL REFERENCES registrar_group(id), -- registrar group id
     member_from date NOT NULL, --  registrar membership in the group from this date
     member_until date NOT NULL, --  registrar membership in the group until this date
 );
