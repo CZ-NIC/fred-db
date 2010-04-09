@@ -20,7 +20,7 @@ CREATE TABLE registrar_certification
     valid_from date NOT NULL, --  registrar certification valid from
     valid_until date NOT NULL, --  registrar certification valid until = valid_from + 1year
     classification classification_type NOT NULL, -- registrar certification result checked 0-5
-    eval_files_id integer REFERENCES files(id) -- link to pdf file
+    eval_file_id integer REFERENCES files(id) -- link to pdf file
 );
 
 CREATE INDEX registrar_certification_valid_from_idx ON registrar_certification(valid_from);
@@ -34,7 +34,7 @@ COMMENT ON COLUMN registrar_certification.valid_until IS
     'certification is valid until this date, certification should be valid for 1 year';
 COMMENT ON COLUMN registrar_certification.classification IS
     'registrar certification result checked 0-5';
-COMMENT ON COLUMN registrar_certification.eval_files_id IS
+COMMENT ON COLUMN registrar_certification.eval_file_id IS
     'evaluation pdf file link';
 
 CREATE TABLE registrar_group
