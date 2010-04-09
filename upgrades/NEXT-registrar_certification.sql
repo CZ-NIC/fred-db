@@ -43,6 +43,8 @@ CREATE TABLE registrar_group
     short_name varchar(255) NOT NULL UNIQUE -- short name of the group
 );
 
+CREATE INDEX registrar_group_short_name_idx ON registrar_group(short_name);
+
 COMMENT ON TABLE registrar_group IS 'available groups of registars';
 COMMENT ON COLUMN registrar_group.id IS 'group id';
 COMMENT ON COLUMN registrar_group.short_name IS 'group short name';
