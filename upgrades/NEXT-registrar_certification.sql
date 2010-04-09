@@ -40,7 +40,7 @@ COMMENT ON COLUMN registrar_certification.eval_files_id IS
 CREATE TABLE registrar_group
 (
     id serial PRIMARY KEY, -- registrar group id
-    short_name varchar(255) -- short name of the group
+    short_name varchar(255) NOT NULL UNIQUE -- short name of the group
 );
 
 COMMENT ON TABLE registrar_group IS 'available groups of registars';
