@@ -31,8 +31,6 @@ write_script()
 	#mailer
 	cat $DIR/mail_notify.sql
 	cat $DIR/mail_templates.sql
-	#authinfo
-	cat $DIR/authinfo.sql
 	# banking
 	cat $DIR/enum_bank_code.sql
 	cat $DIR/credit.sql
