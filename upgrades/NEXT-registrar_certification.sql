@@ -40,7 +40,8 @@ COMMENT ON COLUMN registrar_certification.eval_file_id IS
 CREATE TABLE registrar_group
 (
     id serial PRIMARY KEY, -- registrar group id
-    short_name varchar(255) NOT NULL UNIQUE -- short name of the group
+    short_name varchar(255) NOT NULL UNIQUE, -- short name of the group
+    cancelled timestamp -- when the group was cancelled
 );
 
 CREATE INDEX registrar_group_short_name_idx ON registrar_group(short_name);
@@ -48,6 +49,7 @@ CREATE INDEX registrar_group_short_name_idx ON registrar_group(short_name);
 COMMENT ON TABLE registrar_group IS 'available groups of registars';
 COMMENT ON COLUMN registrar_group.id IS 'group id';
 COMMENT ON COLUMN registrar_group.short_name IS 'group short name';
+COMMENT ON COLUMN registrar_group.cancelled IS 'time when the group was cancelled';
 
 CREATE TABLE registrar_group_map
 (
