@@ -88,7 +88,7 @@ CREATE TABLE registrar_group_map
     registrar_id integer NOT NULL REFERENCES registrar(id), -- registrar id
     registrar_group_id integer NOT NULL REFERENCES registrar_group(id), -- registrar group id
     member_from date NOT NULL, --  registrar membership in the group from this date
-    member_until date NOT NULL --  registrar membership in the group until this date
+    member_until date --  registrar membership in the group until this date or unspecified
 );
 
 CREATE INDEX registrar_group_map_member_from_idx ON registrar_group_map(member_from);
@@ -101,5 +101,5 @@ COMMENT ON COLUMN registrar_group_map.registrar_group_id IS 'group id';
 COMMENT ON COLUMN registrar_group_map.member_from 
 	IS 'registrar membership in the group from this date';
 COMMENT ON COLUMN registrar_group_map.member_until 
-	IS 'registrar membership in the group until this date';
+	IS 'registrar membership in the group until this date or unspecified';
 
