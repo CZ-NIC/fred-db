@@ -28,6 +28,53 @@ CREATE TABLE registrar_certification
     eval_file_id integer REFERENCES files(id) -- link to pdf file
 );
 
+CREATE OR REPLACE FUNCTION registrar_certification_life_check() RETURNS "trigger" AS $$
+DECLARE
+    last_reg_cert RECORD;
+BEGIN
+    IF NEW.valid_from > NEW.valid_until THEN
+        RAISE EXCEPTION 'Invalid registrar certification life';
+    END IF;
+
+    IF TG_OP = 'INSERT' THEN
+        select * from registrar_certification into last_reg_cert 
+            where registrar_id = NEW.registrar_id 
+            order by valid_from desc limit 1;
+        IF NOT FOUND THEN
+            RETURN NEW;
+        ELSE
+            IF last_reg_cert.valid_until is null THEN
+                update registrar_certification set valid_until = NEW.valid_from
+                    where id=last_reg_cert.id;
+               last_reg_cert.valid_until = NEW.valid_from;      
+            END IF;
+            IF last_reg_cert.valid_until > NEW.valid_from  THEN
+                RAISE EXCEPTION 'Invalid registrar certification life';
+            END IF;
+        END IF;
+    END IF;    
+
+    IF TG_OP = 'UPDATE' THEN
+        IF NEW.valid_from <> OLD.valid_from THEN
+            RAISE EXCEPTION 'Change of valid_from not allowed';
+        END IF;
+        IF NEW.valid_until > OLD.valid_until THEN
+            RAISE EXCEPTION 'Certification prolongation not allowed';
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE 'plpgsql';
+
+COMMENT ON FUNCTION registrar_certification_life_check()
+	IS 'check whether registrar_certification life is valid'; 
+
+CREATE TRIGGER "trigger_registrar_certification"
+  BEFORE INSERT OR UPDATE ON registrar_certification
+  FOR EACH ROW EXECUTE PROCEDURE registrar_certification_life_check();
+
+
 CREATE INDEX registrar_certification_valid_from_idx ON registrar_certification(valid_from);
 CREATE INDEX registrar_certification_valid_until_idx ON registrar_certification(valid_until);
 
