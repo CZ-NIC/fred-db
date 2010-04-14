@@ -133,6 +133,61 @@ CREATE TABLE registrar_group_map
     member_until date --  registrar membership in the group until this date or unspecified
 );
 
+CREATE OR REPLACE FUNCTION registrar_group_map_check() RETURNS "trigger" AS $$
+DECLARE
+    last_reg_map RECORD;
+BEGIN
+    IF NEW.member_until is not null and NEW.member_from > NEW.member_until THEN
+        RAISE EXCEPTION 'Invalid registrar membership life';
+    END IF;
+
+    IF TG_OP = 'INSERT' THEN
+        select * from registrar_group_map into last_reg_map
+            where registrar_id = NEW.registrar_id
+            and registrar_group_id = NEW.registrar_group_id
+            order by member_from desc limit 1;
+        IF NOT FOUND THEN
+            RETURN NEW;
+        ELSE
+            IF last_reg_map.member_until is null THEN
+                update registrar_group_map set member_until = NEW.member_from
+                    where id = last_reg_map.id;
+                    last_reg_map.member_until := NEW.member_from;
+            END IF;
+
+            IF last_reg_map.member_until > NEW.member_from  THEN
+                RAISE EXCEPTION 'Invalid registrar membership life';
+            END IF;
+        END IF;
+    END IF;
+
+    IF TG_OP = 'UPDATE' THEN
+        IF NEW.member_from <> OLD.member_from THEN
+            RAISE EXCEPTION 'Change of member_from not allowed';
+        END IF;
+
+        IF NEW.member_until is null and OLD.member_until is not null THEN
+            RAISE EXCEPTION 'Change of member_until not allowed';
+        END IF;
+        
+        IF NEW.member_until is not null and OLD.member_until is not null 
+            and NEW.member_until <> OLD.member_until THEN
+            RAISE EXCEPTION 'Change of member_until not allowed';
+        END IF;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE 'plpgsql';
+
+COMMENT ON FUNCTION registrar_group_map_check()
+	IS 'check whether registrar membership change is valid'; 
+
+CREATE TRIGGER "trigger_registrar_group_map"
+  BEFORE INSERT OR UPDATE ON registrar_group_map
+  FOR EACH ROW EXECUTE PROCEDURE registrar_group_map_check();
+
+
 CREATE INDEX registrar_group_map_member_from_idx ON registrar_group_map(member_from);
 CREATE INDEX registrar_group_map_member_until_idx ON registrar_group_map(member_until);
 
