@@ -43,11 +43,6 @@ BEGIN
         IF NOT FOUND THEN
             RETURN NEW;
         ELSE
-            IF last_reg_cert.valid_until is null THEN
-                update registrar_certification set valid_until = NEW.valid_from
-                    where id=last_reg_cert.id;
-               last_reg_cert.valid_until = NEW.valid_from;      
-            END IF;
             IF last_reg_cert.valid_until > NEW.valid_from  THEN
                 RAISE EXCEPTION 'Invalid registrar certification life';
             END IF;
