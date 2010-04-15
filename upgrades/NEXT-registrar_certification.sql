@@ -7,10 +7,10 @@ UPDATE enum_parameters SET val = '<insert version here>' WHERE id = 1;
 --- Ticket #3747
 ---
 
---drop TABLE registrar_group_map;
---drop TABLE registrar_group;
---drop TABLE registrar_certification;
---drop domain classification_type;
+-- DROP TABLE registrar_group_map;
+-- DROP TABLE registrar_group;
+-- DROP TABLE registrar_certification;
+-- DROP domain classification_type;
 
 CREATE DOMAIN classification_type AS integer NOT NULL
 	CONSTRAINT classification_type_check CHECK (VALUE IN (0, 1, 2, 3, 4, 5)); 
@@ -28,7 +28,11 @@ CREATE TABLE registrar_certification
     eval_file_id integer REFERENCES files(id) -- link to pdf file
 );
 
-CREATE OR REPLACE FUNCTION registrar_certification_life_check() RETURNS "trigger" AS $$
+/*
+ * check whether registrar_certification life is valid
+ */
+CREATE OR REPLACE FUNCTION registrar_certification_life_check() 
+RETURNS "trigger" AS $$
 DECLARE
     last_reg_cert RECORD;
 BEGIN
@@ -37,19 +41,15 @@ BEGIN
     END IF;
 
     IF TG_OP = 'INSERT' THEN
-        select * from registrar_certification into last_reg_cert 
-            where registrar_id = NEW.registrar_id 
-            order by valid_from desc limit 1;
-        IF NOT FOUND THEN
-            RETURN NEW;
-        ELSE
+        SELECT * FROM registrar_certification INTO last_reg_cert
+            WHERE registrar_id = NEW.registrar_id 
+            ORDER BY valid_from DESC LIMIT 1;
+        IF FOUND THEN
             IF last_reg_cert.valid_until > NEW.valid_from  THEN
                 RAISE EXCEPTION 'Invalid registrar certification life';
             END IF;
         END IF;
-    END IF;    
-
-    IF TG_OP = 'UPDATE' THEN
+    ELSEIF TG_OP = 'UPDATE' THEN
         IF NEW.valid_from <> OLD.valid_from THEN
             RAISE EXCEPTION 'Change of valid_from not allowed';
         END IF;
@@ -60,13 +60,13 @@ BEGIN
 
     RETURN NEW;
 END;
-$$ LANGUAGE 'plpgsql';
+$$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION registrar_certification_life_check()
 	IS 'check whether registrar_certification life is valid'; 
 
 CREATE TRIGGER "trigger_registrar_certification"
-  BEFORE INSERT OR UPDATE ON registrar_certification
+  AFTER INSERT OR UPDATE ON registrar_certification
   FOR EACH ROW EXECUTE PROCEDURE registrar_certification_life_check();
 
 
@@ -97,23 +97,26 @@ CREATE OR REPLACE FUNCTION cancel_registrar_group_check() RETURNS "trigger" AS $
 DECLARE
     registrars_in_group INTEGER;
 BEGIN
-    IF (OLD.cancelled is not null) THEN
+    IF OLD.cancelled IS NOT NULL THEN
         RAISE EXCEPTION 'Registrar group already cancelled';
     END IF;
-    SELECT count(*) INTO registrars_in_group 
-        FROM registrar_group_map WHERE registrar_group_id = NEW.id;
-    IF (registrars_in_group > 0 AND NEW.cancelled is not null) THEN
+
+    IF NEW.cancelled IS NOT NULL AND EXISTS(SELECT * 
+                                               FROM registrar_group_map 
+                                              WHERE registrar_group_id = NEW.id) 
+    THEN 
         RAISE EXCEPTION 'Unable to cancel non-empty registrar_group';
     END IF;
+    
     RETURN NEW;
 END;
-$$ LANGUAGE 'plpgsql';
+$$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION cancel_registrar_group_check()
 	IS 'check whether registrar_group is empty and not cancelled'; 
 
 CREATE TRIGGER "trigger_cancel_registrar_group"
-  BEFORE UPDATE  ON registrar_group
+  AFTER UPDATE  ON registrar_group
   FOR EACH ROW EXECUTE PROCEDURE cancel_registrar_group_check();
 
 
@@ -137,54 +140,53 @@ CREATE OR REPLACE FUNCTION registrar_group_map_check() RETURNS "trigger" AS $$
 DECLARE
     last_reg_map RECORD;
 BEGIN
-    IF NEW.member_until is not null and NEW.member_from > NEW.member_until THEN
+    IF NEW.member_until IS NOT NULL AND NEW.member_from > NEW.member_until THEN
         RAISE EXCEPTION 'Invalid registrar membership life';
     END IF;
 
     IF TG_OP = 'INSERT' THEN
-        select * from registrar_group_map into last_reg_map
-            where registrar_id = NEW.registrar_id
-            and registrar_group_id = NEW.registrar_group_id
-            order by member_from desc limit 1;
-        IF NOT FOUND THEN
-            RETURN NEW;
-        ELSE
-            IF last_reg_map.member_until is null THEN
-                update registrar_group_map set member_until = NEW.member_from
-                    where id = last_reg_map.id;
-                    last_reg_map.member_until := NEW.member_from;
+        SELECT * INTO last_reg_map
+           FROM registrar_group_map 
+          WHERE registrar_id = NEW.registrar_id
+            AND registrar_group_id = NEW.registrar_group_id
+          ORDER BY member_from DESC 
+          LIMIT 1;
+        IF FOUND THEN
+            IF last_reg_map.member_until IS NULL THEN
+                UPDATE registrar_group_map 
+                   SET member_until = NEW.member_from
+                  WHERE id = last_reg_map.id;
+                last_reg_map.member_until := NEW.member_from;
             END IF;
 
             IF last_reg_map.member_until > NEW.member_from  THEN
                 RAISE EXCEPTION 'Invalid registrar membership life';
             END IF;
         END IF;
-    END IF;
-
-    IF TG_OP = 'UPDATE' THEN
+    ELSEIF TG_OP = 'UPDATE' THEN
         IF NEW.member_from <> OLD.member_from THEN
             RAISE EXCEPTION 'Change of member_from not allowed';
         END IF;
 
-        IF NEW.member_until is null and OLD.member_until is not null THEN
+        IF NEW.member_until IS NULL AND OLD.member_until IS NOT NULL THEN
             RAISE EXCEPTION 'Change of member_until not allowed';
         END IF;
         
-        IF NEW.member_until is not null and OLD.member_until is not null 
-            and NEW.member_until <> OLD.member_until THEN
+        IF NEW.member_until IS NOT NULL AND OLD.member_until IS NOT NULL 
+            AND NEW.member_until <> OLD.member_until THEN
             RAISE EXCEPTION 'Change of member_until not allowed';
         END IF;
     END IF;
 
     RETURN NEW;
 END;
-$$ LANGUAGE 'plpgsql';
+$$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION registrar_group_map_check()
 	IS 'check whether registrar membership change is valid'; 
 
 CREATE TRIGGER "trigger_registrar_group_map"
-  BEFORE INSERT OR UPDATE ON registrar_group_map
+  AFTER INSERT OR UPDATE ON registrar_group_map
   FOR EACH ROW EXECUTE PROCEDURE registrar_group_map_check();
 
 
@@ -199,4 +201,3 @@ COMMENT ON COLUMN registrar_group_map.member_from
 	IS 'registrar membership in the group from this date';
 COMMENT ON COLUMN registrar_group_map.member_until 
 	IS 'registrar membership in the group until this date or unspecified';
-
