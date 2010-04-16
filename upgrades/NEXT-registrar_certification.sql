@@ -49,7 +49,7 @@ BEGIN
                 RAISE EXCEPTION 'Invalid registrar certification life';
             END IF;
         END IF;
-    ELSEIF TG_OP = 'UPDATE' THEN
+    ELSE IF TG_OP = 'UPDATE' THEN
         IF NEW.valid_from <> OLD.valid_from THEN
             RAISE EXCEPTION 'Change of valid_from not allowed';
         END IF;
@@ -66,7 +66,7 @@ COMMENT ON FUNCTION registrar_certification_life_check()
 	IS 'check whether registrar_certification life is valid'; 
 
 CREATE TRIGGER "trigger_registrar_certification"
-  AFTER INSERT OR UPDATE ON registrar_certification
+  BEFORE INSERT OR UPDATE ON registrar_certification
   FOR EACH ROW EXECUTE PROCEDURE registrar_certification_life_check();
 
 
@@ -186,7 +186,7 @@ COMMENT ON FUNCTION registrar_group_map_check()
 	IS 'check whether registrar membership change is valid'; 
 
 CREATE TRIGGER "trigger_registrar_group_map"
-  AFTER INSERT OR UPDATE ON registrar_group_map
+  BEFORE INSERT OR UPDATE ON registrar_group_map
   FOR EACH ROW EXECUTE PROCEDURE registrar_group_map_check();
 
 
