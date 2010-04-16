@@ -10,7 +10,7 @@ UPDATE enum_parameters SET val = '<insert version here>' WHERE id = 1;
 -- DROP TABLE registrar_group_map;
 -- DROP TABLE registrar_group;
 -- DROP TABLE registrar_certification;
--- DROP domain classification_type;
+-- DROP DOMAIN classification_type;
 
 CREATE DOMAIN classification_type AS integer NOT NULL
 	CONSTRAINT classification_type_check CHECK (VALUE IN (0, 1, 2, 3, 4, 5)); 
@@ -28,9 +28,8 @@ CREATE TABLE registrar_certification
     eval_file_id integer REFERENCES files(id) -- link to pdf file
 );
 
-/*
- * check whether registrar_certification life is valid
- */
+
+-- check whether registrar_certification life is valid
 CREATE OR REPLACE FUNCTION registrar_certification_life_check() 
 RETURNS "trigger" AS $$
 DECLARE
@@ -42,19 +41,22 @@ BEGIN
 
     IF TG_OP = 'INSERT' THEN
         SELECT * FROM registrar_certification INTO last_reg_cert
-            WHERE registrar_id = NEW.registrar_id 
+            WHERE registrar_id = NEW.registrar_id AND id < NEW.id
             ORDER BY valid_from DESC LIMIT 1;
         IF FOUND THEN
             IF last_reg_cert.valid_until > NEW.valid_from  THEN
                 RAISE EXCEPTION 'Invalid registrar certification life';
             END IF;
         END IF;
-    ELSE IF TG_OP = 'UPDATE' THEN
+    ELSEIF TG_OP = 'UPDATE' THEN
         IF NEW.valid_from <> OLD.valid_from THEN
             RAISE EXCEPTION 'Change of valid_from not allowed';
         END IF;
         IF NEW.valid_until > OLD.valid_until THEN
             RAISE EXCEPTION 'Certification prolongation not allowed';
+        END IF;
+        IF NEW.registrar_id <> OLD.registrar_id THEN
+            RAISE EXCEPTION 'Change of registrar not allowed';
         END IF;
     END IF;
 
@@ -66,7 +68,7 @@ COMMENT ON FUNCTION registrar_certification_life_check()
 	IS 'check whether registrar_certification life is valid'; 
 
 CREATE TRIGGER "trigger_registrar_certification"
-  BEFORE INSERT OR UPDATE ON registrar_certification
+  AFTER INSERT OR UPDATE ON registrar_certification
   FOR EACH ROW EXECUTE PROCEDURE registrar_certification_life_check();
 
 
@@ -149,6 +151,7 @@ BEGIN
            FROM registrar_group_map 
           WHERE registrar_id = NEW.registrar_id
             AND registrar_group_id = NEW.registrar_group_id
+            AND id < NEW.id
           ORDER BY member_from DESC 
           LIMIT 1;
         IF FOUND THEN
@@ -158,16 +161,16 @@ BEGIN
                   WHERE id = last_reg_map.id;
                 last_reg_map.member_until := NEW.member_from;
             END IF;
-
             IF last_reg_map.member_until > NEW.member_from  THEN
                 RAISE EXCEPTION 'Invalid registrar membership life';
             END IF;
         END IF;
+
     ELSEIF TG_OP = 'UPDATE' THEN
         IF NEW.member_from <> OLD.member_from THEN
             RAISE EXCEPTION 'Change of member_from not allowed';
         END IF;
-
+        
         IF NEW.member_until IS NULL AND OLD.member_until IS NOT NULL THEN
             RAISE EXCEPTION 'Change of member_until not allowed';
         END IF;
@@ -175,6 +178,14 @@ BEGIN
         IF NEW.member_until IS NOT NULL AND OLD.member_until IS NOT NULL 
             AND NEW.member_until <> OLD.member_until THEN
             RAISE EXCEPTION 'Change of member_until not allowed';
+        END IF;
+        
+        IF registrar_group_id <> registrar_group_id THEN
+            RAISE EXCEPTION 'Change of registrar_group not allowed';
+        END IF;
+        
+        IF registrar_id <> registrar_id THEN
+            RAISE EXCEPTION 'Change of registrar not allowed';
         END IF;
     END IF;
 
@@ -186,7 +197,7 @@ COMMENT ON FUNCTION registrar_group_map_check()
 	IS 'check whether registrar membership change is valid'; 
 
 CREATE TRIGGER "trigger_registrar_group_map"
-  BEFORE INSERT OR UPDATE ON registrar_group_map
+  AFTER INSERT OR UPDATE ON registrar_group_map
   FOR EACH ROW EXECUTE PROCEDURE registrar_group_map_check();
 
 
