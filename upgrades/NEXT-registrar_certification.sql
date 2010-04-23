@@ -180,11 +180,11 @@ BEGIN
             RAISE EXCEPTION 'Change of member_until not allowed';
         END IF;
         
-        IF registrar_group_id <> registrar_group_id THEN
+        IF NEW.registrar_group_id <> OLD.registrar_group_id THEN
             RAISE EXCEPTION 'Change of registrar_group not allowed';
         END IF;
         
-        IF registrar_id <> registrar_id THEN
+        IF NEW.registrar_id <> OLD.registrar_id THEN
             RAISE EXCEPTION 'Change of registrar not allowed';
         END IF;
     END IF;
