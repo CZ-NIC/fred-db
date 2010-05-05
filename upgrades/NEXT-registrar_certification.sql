@@ -42,7 +42,7 @@ BEGIN
     IF TG_OP = 'INSERT' THEN
         SELECT * FROM registrar_certification INTO last_reg_cert
             WHERE registrar_id = NEW.registrar_id AND id < NEW.id
-            ORDER BY valid_from DESC LIMIT 1;
+            ORDER BY valid_from DESC, id DESC LIMIT 1;
         IF FOUND THEN
             IF last_reg_cert.valid_until > NEW.valid_from  THEN
                 RAISE EXCEPTION 'Invalid registrar certification life';
@@ -152,7 +152,7 @@ BEGIN
           WHERE registrar_id = NEW.registrar_id
             AND registrar_group_id = NEW.registrar_group_id
             AND id < NEW.id
-          ORDER BY member_from DESC 
+          ORDER BY member_from DESC, id DESC 
           LIMIT 1;
         IF FOUND THEN
             IF last_reg_map.member_until IS NULL THEN
