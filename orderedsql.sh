@@ -60,6 +60,8 @@ write_script()
 	cat $DIR/index.sql
 	# new table for requests from public
 	cat $DIR/public_request.sql
+	# registrar's certifications and groups
+	cat $DIR/registrar_certification.sql
 }
 
 usage()
