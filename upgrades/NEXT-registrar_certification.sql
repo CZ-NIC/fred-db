@@ -36,7 +36,7 @@ DECLARE
     last_reg_cert RECORD;
 BEGIN
     IF NEW.valid_from > NEW.valid_until THEN
-        RAISE EXCEPTION 'Invalid registrar certification life';
+        RAISE EXCEPTION 'Invalid registrar certification life: valid_from > valid_until';
     END IF;
 
     IF TG_OP = 'INSERT' THEN
@@ -45,7 +45,7 @@ BEGIN
             ORDER BY valid_from DESC, id DESC LIMIT 1;
         IF FOUND THEN
             IF last_reg_cert.valid_until > NEW.valid_from  THEN
-                RAISE EXCEPTION 'Invalid registrar certification life';
+                RAISE EXCEPTION 'Invalid registrar certification life: last valid_until > new valid_from';
             END IF;
         END IF;
     ELSEIF TG_OP = 'UPDATE' THEN
@@ -107,7 +107,7 @@ BEGIN
                                                FROM registrar_group_map 
                                               WHERE registrar_group_id = NEW.id) 
     THEN 
-        RAISE EXCEPTION 'Unable to cancel non-empty registrar_group';
+        RAISE EXCEPTION 'Unable to cancel non-empty registrar group';
     END IF;
     
     RETURN NEW;
@@ -143,7 +143,7 @@ DECLARE
     last_reg_map RECORD;
 BEGIN
     IF NEW.member_until IS NOT NULL AND NEW.member_from > NEW.member_until THEN
-        RAISE EXCEPTION 'Invalid registrar membership life';
+        RAISE EXCEPTION 'Invalid registrar membership life: member_from > member_until';
     END IF;
 
     IF TG_OP = 'INSERT' THEN
@@ -162,7 +162,7 @@ BEGIN
                 last_reg_map.member_until := NEW.member_from;
             END IF;
             IF last_reg_map.member_until > NEW.member_from  THEN
-                RAISE EXCEPTION 'Invalid registrar membership life';
+                RAISE EXCEPTION 'Invalid registrar membership life: last member_until > new member_from';
             END IF;
         END IF;
 
