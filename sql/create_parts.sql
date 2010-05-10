@@ -1,53 +1,53 @@
 
--- create partitions for a specific month
-create or replace function create_parts_for_month(part_time timestamp without time zone) returns void as 
-$create_parts_for_month$ declare
-        serv integer;
-        cur CURSOR is select id, partition_postfix from service;
-begin
+-- CREATE partitions for a specific month
+CREATE OR REPLACE FUNCTION create_parts_for_month(part_time TIMESTAMP WITHOUT TIME ZONE) RETURNS VOID AS 
+$create_parts_for_month$ DECLARE
+        serv INTEGER;
+        cur CURSOR IS SELECT id, partition_postfix FROM service;
+BEGIN
 
         open cur;
-        loop
-            fetch cur into serv;
-            exit when not found;
+        LOOP
+            FETCH cur INTO serv;
+            EXIT WHEN NOT FOUND;
 
-            perform create_tbl_request(part_time, serv, false);
-            perform create_tbl_request_data(part_time, serv, false);
-            perform create_tbl_request_property_value(part_time, serv, false);
+            PERFORM create_tbl_request(part_time, serv, false);
+            PERFORM create_tbl_request_data(part_time, serv, false);
+            PERFORM create_tbl_request_property_value(part_time, serv, false);
             
-        end loop;
+        END LOOP;
 
         close cur;
 
         -- monitoring (service type doesn't matter)
-        perform create_tbl_request(part_time, 1, true);
-        perform create_tbl_request_data(part_time, 1, true);
-        perform create_tbl_request_property_value(part_time, 1, true);
+        PERFORM create_tbl_request(part_time, 1, true);
+        PERFORM create_tbl_request_data(part_time, 1, true);
+        PERFORM create_tbl_request_property_value(part_time, 1, true);
 
         -- now service type -1 for session tables
-        perform create_tbl_session(part_time);
+        PERFORM create_tbl_session(part_time);
             
-end;
-$create_parts_for_month$ language plpgsql;
+END;
+$create_parts_for_month$ LANGUAGE plpgsql;
 
 
-create or replace function create_parts(term_date timestamp without time zone) returns void as $create_parts$
-declare
-        term_month timestamp without time zone;
-        cur_month  timestamp without time zone;
+CREATE OR REPLACE FUNCTION create_parts(term_date TIMESTAMP WITHOUT TIME ZONE) RETURNS VOID AS $create_parts$
+DECLARE
+        term_month TIMESTAMP WITHOUT TIME ZONE;
+        cur_month  TIMESTAMP WITHOUT TIME ZONE;
 
-begin
+BEGIN
         cur_month := date_trunc('month', now());
 
         term_month := date_trunc('month', term_date);
 
-        loop 
-            perform create_parts_for_month(cur_month);
+        LOOP 
+            PERFORM create_parts_for_month(cur_month);
 
-            exit when cur_month = term_month;
+            EXIT WHEN cur_month = term_month;
             cur_month := cur_month + interval '1 month';
-        end loop;
+        END LOOP;
 
-end;
-$create_parts$ language plpgsql;
+END;
+$create_parts$ LANGUAGE plpgsql;
                 
