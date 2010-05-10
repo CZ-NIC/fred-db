@@ -28,6 +28,8 @@ write_script()
 	cat $DIR/admin.sql  
 	#filemanager
 	cat $DIR/filemanager.sql
+	#filemanager's file for certification evaluation pdf
+	cat $DIR/certification_file_dml.sql
 	#mailer
 	cat $DIR/mail_notify.sql
 	cat $DIR/mail_templates.sql
