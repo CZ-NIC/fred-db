@@ -1,1 +1,1 @@
-../sql/registrar_certification.sql
+../sql/registrar_certification_ddl.sql
