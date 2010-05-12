@@ -38,9 +38,9 @@ CREATE TABLE bank_payment
     price numeric(10,2) NOT NULL,  -- applied amount if a debet is negative amount 
     account_evid varchar(20), -- account evidence 
     account_date date NOT NULL, --  accounting date of credit or sending 
-    account_memo  varchar(64), -- note
+    account_memo  varchar(63), -- note
     invoice_ID INTEGER REFERENCES Invoice default NULL, -- null if it isn't income payment of process otherwise link to advance invoice
-    account_name  varchar(64), -- account name
+    account_name  varchar(63), -- account name
     crtime timestamp NOT NULL default now(),
     UNIQUE(account_id, account_evid)
 );
