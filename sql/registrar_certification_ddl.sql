@@ -103,9 +103,15 @@ BEGIN
         RAISE EXCEPTION 'Registrar group already cancelled';
     END IF;
 
-    IF NEW.cancelled IS NOT NULL AND EXISTS(SELECT * 
-                                               FROM registrar_group_map 
-                                              WHERE registrar_group_id = NEW.id) 
+    IF NEW.cancelled IS NOT NULL AND EXISTS(
+        SELECT * 
+          FROM registrar_group_map 
+         WHERE registrar_group_id = NEW.id
+          AND registrar_group_map.member_from <= CURRENT_DATE
+          AND (registrar_group_map.member_until IS NULL 
+                  OR (registrar_group_map.member_until >= CURRENT_DATE 
+                          AND  registrar_group_map.member_from 
+                              <> registrar_group_map.member_until))) 
     THEN 
         RAISE EXCEPTION 'Unable to cancel non-empty registrar group';
     END IF;
