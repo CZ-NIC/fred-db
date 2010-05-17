@@ -25,7 +25,7 @@ CREATE TABLE registrar_certification
     valid_from date NOT NULL, --  registrar certification valid from
     valid_until date NOT NULL, --  registrar certification valid until = valid_from + 1year
     classification classification_type NOT NULL, -- registrar certification result checked 0-5
-    eval_file_id integer REFERENCES files(id) -- link to pdf file
+    eval_file_id integer NOT NULL REFERENCES files(id) -- link to pdf file
 );
 
 
