@@ -3,10 +3,12 @@
 CREATE OR REPLACE FUNCTION create_parts_for_month(part_time TIMESTAMP WITHOUT TIME ZONE) RETURNS VOID AS 
 $create_parts_for_month$ DECLARE
         serv INTEGER;
-        cur CURSOR IS SELECT id, partition_postfix FROM service;
+        cur REFCURSOR;
 BEGIN
 
-        open cur;
+        -- a chance for minor optimization: create_tbl_* needs partitions_postfix 
+        --- which can be selected from table service. 
+        OPEN cur FOR SELECT id FROM service;
         LOOP
             FETCH cur INTO serv;
             EXIT WHEN NOT FOUND;
@@ -19,7 +21,7 @@ BEGIN
 
         close cur;
 
-        -- monitoring (service type doesn't matter)
+        -- monitoring (service type doesn't matter here - specifying 1)
         PERFORM create_tbl_request(part_time, 1, true);
         PERFORM create_tbl_request_data(part_time, 1, true);
         PERFORM create_tbl_request_property_value(part_time, 1, true);
