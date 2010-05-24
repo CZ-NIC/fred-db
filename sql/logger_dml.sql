@@ -130,6 +130,9 @@ INSERT INTO request_type (id, status, service) VALUES (1332, 'PaymentPair', 4);
 INSERT INTO request_type (id, status, service) VALUES (1333, 'SetInZoneStatus', 4);
 INSERT INTO request_type (id, status, service) VALUES (1334, 'SaveFilter', 4);
 INSERT INTO request_type (id, status, service) VALUES (1335, 'LoadFilter', 4);
+INSERT INTO request_type (id, status, service) VALUES (1336, 'CreateRegistrarGroup', 4);
+INSERT INTO request_type (id, status, service) VALUES (1337, 'DeleteRegistrarGroup', 4);
+INSERT INTO request_type (id, status, service) VALUES (1338, 'UpdateRegistrarGroup', 4);
 
 -- Intranet functions
 INSERT INTO request_type (id, status, service) VALUES (1400, 'Login', 5); 
