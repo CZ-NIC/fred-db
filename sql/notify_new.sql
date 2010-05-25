@@ -79,7 +79,7 @@ CREATE TABLE notify_letters (
   file_id INTEGER REFERENCES files (id),
   -- status of the communication with contact 
   -- initial (default) status is 'file generated & ready for processing'
-  status INTEGER NOT NULL DEFAULT 1,
+  status INTEGER NOT NULL DEFAULT 1 REFERENCES enum_send_status(id),
   -- which contact is the file sent to
   contact_id INTEGER REFERENCES object_registry(id)
 );
