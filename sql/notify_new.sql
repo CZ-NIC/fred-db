@@ -76,8 +76,16 @@ CREATE TABLE notify_letters (
   -- which statechange triggered notification
   state_id INTEGER  PRIMARY KEY REFERENCES object_state (id),
   -- file with pdf about notification (null for old)
-  file_id INTEGER REFERENCES files (id)
+  file_id INTEGER REFERENCES files (id),
+  -- status of the communication with contact 
+  -- initial (default) status is 'file generated & ready for processing'
+  status INTEGER NOT NULL DEFAULT 1,
+  -- which contact is the file sent to
+  contact_id INTEGER REFERENCES object_registry(id)
 );
+
+CREATE INDEX notify_letters_status_idx ON notify_letters (status);
+CREATE INDEX notify_letters_contact_id_idx ON notify_letters(contact_id);
 
 comment on table notify_letters is 'notification about deleteWarning state by PDF letter, multiple states is stored in one PDF document';
 comment on column notify_letters.state_id is 'which statechange triggered notification';
