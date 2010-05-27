@@ -11,6 +11,7 @@ INSERT INTO enum_send_status (id, description) VALUES (2, 'Waiting for manual co
 INSERT INTO enum_send_status (id, description) VALUES (3, 'No automatic processing');
 INSERT INTO enum_send_status (id, description) VALUES (4, 'Delivery failed');
 INSERT INTO enum_send_status (id, description) VALUES (5, 'Successfully sent');
+INSERT INTO enum_send_status (id, description) VALUES (6, 'In processing, don''t touch');
 
 -- Defaults used in templates which change rarely
 -- The default names must be prefixed with 'defaults' namespace when used
