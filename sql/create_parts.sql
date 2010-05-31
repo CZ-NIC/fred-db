@@ -35,19 +35,19 @@ $create_parts_for_month$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION create_parts(term_date TIMESTAMP WITHOUT TIME ZONE) RETURNS VOID AS $create_parts$
 DECLARE
-        term_month TIMESTAMP WITHOUT TIME ZONE;
-        cur_month  TIMESTAMP WITHOUT TIME ZONE;
+        term_month_beg TIMESTAMP WITHOUT TIME ZONE;
+        cur_month_beg  TIMESTAMP WITHOUT TIME ZONE;
 
 BEGIN
-        cur_month := date_trunc('month', now());
+        cur_month_beg := date_trunc('month', now());
 
-        term_month := date_trunc('month', term_date);
+        term_month_beg := date_trunc('month', term_date);
 
         LOOP 
-            PERFORM create_parts_for_month(cur_month);
+            PERFORM create_parts_for_month(cur_month_beg);
 
-            EXIT WHEN cur_month = term_month;
-            cur_month := cur_month + interval '1 month';
+            EXIT WHEN cur_month_beg = term_month_beg;
+            cur_month_beg := cur_month + interval '1 month';
         END LOOP;
 
 END;
