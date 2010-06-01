@@ -47,7 +47,7 @@ BEGIN
             PERFORM create_parts_for_month(cur_month_beg);
 
             EXIT WHEN cur_month_beg = term_month_beg;
-            cur_month_beg := cur_month + interval '1 month';
+            cur_month_beg := cur_month_beg + interval '1 month';
         END LOOP;
 
 END;
