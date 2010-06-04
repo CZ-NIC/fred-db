@@ -25,13 +25,13 @@ BEGIN
         stmt := 'INSERT INTO ' || table_name || ' (id, time_begin, time_end, source_ip, service, action_type, session_id, user_name, is_monitoring) '
                 'VALUES (' 
                 || COALESCE(id::TEXT, 'NULL')           || ', ' 
-                || quote_nullable(time_begin)           || ', '
-                || quote_nullable(time_end)             || ', '
-                || quote_nullable(host(source_ip))      || ', '
+                || COALESCE(quote_literal(time_begin), 'NULL')           || ', '
+                || COALESCE(quote_literal(time_end), 'NULL')             || ', '
+                || COALESCE(quote_literal(host(source_ip)), 'NULL')      || ', '
                 || COALESCE(service::TEXT, 'NULL')      || ', '
                 || COALESCE(action_type::TEXT, 'NULL')  || ', '
                 || COALESCE(session_id::TEXT, 'NULL')   || ', '
-                || quote_nullable(user_name)            || ', '
+                || COALESCE(quote_literal(user_name), 'NULL')            || ', '
                 || '''' || bool_to_str(is_monitoring)   || ''') ';
         
         -- raise notice 'request Generated insert: %', stmt;
@@ -57,9 +57,9 @@ BEGIN
         table_name := quote_ident('session_' || partition_postfix(login_date, -1, false));
         stmt := 'INSERT INTO ' || table_name || ' (id, name, login_date, logout_date, lang) VALUES (' 
                 || COALESCE(id::TEXT, 'NULL')           || ', ' 
-                || quote_nullable(name)                 || ', '
-                || quote_nullable(login_date)           || ', '
-                || quote_nullable(logout_date)          || ', '
+                || COALESCE(quote_literal(name), 'NULL')                 || ', '
+                || COALESCE(quote_literal(login_date), 'NULL')           || ', '
+                || COALESCE(quote_literal(logout_date), 'NULL')          || ', '
                 || quote_literal(lang)                  || ')';
 
         -- raise notice 'session Generated insert: %', stmt;
@@ -82,11 +82,11 @@ DECLARE
 BEGIN
         table_name := quote_ident('request_data_' || partition_postfix(entry_time_begin, entry_service, entry_monitoring));
         stmt := 'INSERT INTO ' || table_name || '(entry_time_begin, entry_service, entry_monitoring, entry_id,  content, is_response) VALUES (' 
-            || quote_nullable(entry_time_begin)                 || ', ' 
+            || COALESCE(quote_literal(entry_time_begin), 'NULL')                 || ', ' 
             || COALESCE(entry_service::TEXT, 'NULL')            || ', '
             || '''' || bool_to_str(entry_monitoring)            || ''', ' 
             || COALESCE(entry_id::TEXT, 'NULL')                 || ', ' 
-            || quote_nullable(content)                          || ', '
+            || COALESCE(quote_literal(content), 'NULL')                          || ', '
             || COALESCE('''' || bool_to_str(is_response) || '''' , 'NULL') || ') ';  
 
         -- raise notice 'request_data Generated insert: %', stmt;
@@ -110,14 +110,14 @@ DECLARE
 BEGIN
         table_name := quote_ident( 'request_property_value_' || partition_postfix(entry_time_begin, entry_service, entry_monitoring));
         stmt := 'INSERT INTO ' || table_name || '(entry_time_begin, entry_service, entry_monitoring, id, entry_id, name_id, value, output, parent_id) VALUES (' 
-            || quote_nullable(entry_time_begin)                     || ', ' 
-            || COALESCE(entry_service::TEXT, 'NULL')                      || ', '
+            || COALESCE(quote_literal(entry_time_begin), 'NULL')    || ', ' 
+            || COALESCE(entry_service::TEXT, 'NULL')                || ', '
             || '''' || bool_to_str(entry_monitoring)                || ''', '
             || COALESCE(id::TEXT, 'NULL')                           || ', '
             || COALESCE(entry_id::TEXT, 'NULL')                     || ', '
             || COALESCE(name_id::TEXT, 'NULL')                      || ', '
-            || quote_nullable(value)                                || ', '
-            || COALESCE('''' || bool_to_str(output) || '''', 'NULL')|| ', ' 
+            || COALESCE(quote_literal(value), 'NULL')               || ', '
+            || COALESCE('''' || bool_to_str(output) || '''', 'NULL') || ', ' 
             || COALESCE(parent_id::TEXT, 'NULL')                    || ')'; 
         -- raise notice 'request_property_value Generated insert: %', stmt;
         EXECUTE stmt;
@@ -196,7 +196,6 @@ $partition_postfix_alt$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION create_tbl_request(time_begin TIMESTAMP WITHOUT TIME ZONE, service INTEGER, monitoring BOOLEAN) RETURNS VOID AS $create_tbl_request$
 DECLARE 
         table_name VARCHAR(60);
-        table_base VARCHAR(60);
         create_table    TEXT;
         spec_alter_table TEXT;
         month INTEGER;
@@ -204,8 +203,7 @@ DECLARE
         upper  TIMESTAMP WITHOUT TIME ZONE;
 
 BEGIN
-        table_base := 'request';
-        table_name := quote_ident(table_base || '_' || partition_postfix(time_begin, service, monitoring));
+        table_name := quote_ident('request' || '_' || partition_postfix(time_begin, service, monitoring));
 
         lower := to_char(date_trunc('month', time_begin), 'YYYY-MM-DD');
         upper := to_char(date_trunc('month', time_begin + interval '1 month'), 'YYYY-MM-DD');
@@ -214,10 +212,10 @@ BEGIN
         IF monitoring = true THEN
                 -- special constraints for monitoring table
                 create_table := 'CREATE TABLE ' || table_name || '    (CHECK (time_begin >= TIMESTAMP ''' || lower || ''' AND time_begin < TIMESTAMP ''' 
-                || upper || ''' AND is_monitoring = ''' || bool_to_str(monitoring) || ''') ) INHERITS (' || table_base || ')';
+                || upper || ''' AND is_monitoring = ''' || bool_to_str(monitoring) || ''') ) INHERITS (request)';
         ELSE
                 create_table := 'CREATE TABLE ' || table_name || '    (CHECK (time_begin >= TIMESTAMP ''' || lower || ''' AND time_begin < TIMESTAMP ''' 
-                || upper || ''' AND service = ' || service || ' AND is_monitoring = ''' || bool_to_str(monitoring) || ''') ) INHERITS (' || table_base || ')';          
+                || upper || ''' AND service = ' || service || ' AND is_monitoring = ''' || bool_to_str(monitoring) || ''') ) INHERITS (request)';          
         END IF; 
          
         
@@ -250,7 +248,6 @@ $create_indexes_request$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION create_tbl_request_data(time_begin TIMESTAMP WITHOUT TIME ZONE, service INTEGER, monitoring BOOLEAN) RETURNS VOID AS $create_tbl_request_data$
 DECLARE 
         table_name VARCHAR(60);
-        table_base VARCHAR(60);
         table_postfix VARCHAR(40);
         create_table    TEXT;
         spec_alter_table TEXT;
@@ -258,17 +255,16 @@ DECLARE
         lower TIMESTAMP WITHOUT TIME ZONE;
         upper  TIMESTAMP WITHOUT TIME ZONE;
 BEGIN
-        table_base := 'request_data';
         table_postfix := quote_ident(partition_postfix(time_begin, service, monitoring));
-        table_name := table_base || '_' || table_postfix;
+        table_name := 'request_data_' || table_postfix;
 
         lower := to_char(date_trunc('month', time_begin), 'YYYY-MM-DD');
         upper := to_char(date_trunc('month', time_begin + interval '1 month'), 'YYYY-MM-DD');
 
         IF monitoring = true THEN
-                create_table  =  'CREATE TABLE ' || table_name || ' (CHECK (entry_time_begin >= TIMESTAMP ''' || lower || ''' AND entry_time_begin < TIMESTAMP ''' || upper || ''' AND entry_monitoring = ''' || bool_to_str(monitoring) || ''') ) INHERITS (' || table_base || ') ';   
+                create_table  =  'CREATE TABLE ' || table_name || ' (CHECK (entry_time_begin >= TIMESTAMP ''' || lower || ''' AND entry_time_begin < TIMESTAMP ''' || upper || ''' AND entry_monitoring = ''' || bool_to_str(monitoring) || ''') ) INHERITS (request_data) ';   
         ELSE 
-                create_table  =  'CREATE TABLE ' || table_name || ' (CHECK (entry_time_begin >= TIMESTAMP ''' || lower || ''' AND entry_time_begin < TIMESTAMP ''' || upper || ''' AND entry_service = ' || service || ' AND entry_monitoring = ''' || bool_to_str(monitoring) || ''') ) INHERITS (' || table_base || ') ';
+                create_table  =  'CREATE TABLE ' || table_name || ' (CHECK (entry_time_begin >= TIMESTAMP ''' || lower || ''' AND entry_time_begin < TIMESTAMP ''' || upper || ''' AND entry_service = ' || service || ' AND entry_monitoring = ''' || bool_to_str(monitoring) || ''') ) INHERITS (request_data) ';
         END IF;
         
         spec_alter_table = 'ALTER TABLE ' || table_name || ' ADD CONSTRAINT ' || table_name || '_entry_id_fkey FOREIGN KEY (entry_id) REFERENCES request_' || table_postfix || '(id); ';
@@ -296,7 +292,6 @@ $create_indexes_request_data$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION create_tbl_request_property_value(time_begin TIMESTAMP WITHOUT TIME ZONE, service INTEGER, monitoring BOOLEAN) RETURNS VOID AS $create_tbl_request_property_value$
 DECLARE 
         table_name VARCHAR(60);
-        table_base VARCHAR(60);
         table_postfix VARCHAR (40);
         create_table    TEXT;
         spec_alter_table TEXT;
@@ -304,18 +299,17 @@ DECLARE
         lower TIMESTAMP WITHOUT TIME ZONE;
         upper  TIMESTAMP WITHOUT TIME ZONE;
 BEGIN
-        table_base := 'request_property_value';
         table_postfix := quote_ident(partition_postfix(time_begin, service, monitoring));
-        table_name := table_base || '_' || table_postfix; 
+        table_name := 'request_property_value_' || table_postfix; 
 
 
         lower := to_char(date_trunc('month', time_begin), 'YYYY-MM-DD');
         upper := to_char(date_trunc('month', time_begin + interval '1 month'), 'YYYY-MM-DD');
 
         IF monitoring = true THEN
-                create_table  =  'CREATE TABLE ' || table_name || ' (CHECK (entry_time_begin >= TIMESTAMP ''' || lower || ''' AND entry_time_begin < TIMESTAMP ''' || upper || '''  AND entry_monitoring = ''' || bool_to_str(monitoring) || ''') ) INHERITS (' || table_base || ') ';
+                create_table  =  'CREATE TABLE ' || table_name || ' (CHECK (entry_time_begin >= TIMESTAMP ''' || lower || ''' AND entry_time_begin < TIMESTAMP ''' || upper || '''  AND entry_monitoring = ''' || bool_to_str(monitoring) || ''') ) INHERITS (request_property_value) ';
         ELSE 
-                create_table  =  'CREATE TABLE ' || table_name || ' (CHECK (entry_time_begin >= TIMESTAMP ''' || lower || ''' AND entry_time_begin < TIMESTAMP ''' || upper || '''  AND entry_service = ' || service || ' AND entry_monitoring = ''' || bool_to_str(monitoring) || ''') ) INHERITS (' || table_base || ') ';
+                create_table  =  'CREATE TABLE ' || table_name || ' (CHECK (entry_time_begin >= TIMESTAMP ''' || lower || ''' AND entry_time_begin < TIMESTAMP ''' || upper || '''  AND entry_service = ' || service || ' AND entry_monitoring = ''' || bool_to_str(monitoring) || ''') ) INHERITS (request_property_value) ';
         END IF;         
 
         spec_alter_table = 'ALTER TABLE ' || table_name || ' ADD PRIMARY KEY (id); ALTER TABLE ' || table_name || ' ADD CONSTRAINT ' || table_name || '_entry_id_fkey FOREIGN KEY (entry_id) REFERENCES request_' || table_postfix || '(id); ALTER TABLE ' || table_name || ' ADD CONSTRAINT ' || table_name || '_name_id_fkey FOREIGN KEY (name_id) REFERENCES request_property(id); ALTER TABLE ' || table_name || ' ADD CONSTRAINT ' || table_name || '_parent_id_fkey FOREIGN KEY (parent_id) REFERENCES ' || table_name || '(id); ';
@@ -323,6 +317,7 @@ BEGIN
         EXECUTE create_table;
         EXECUTE spec_alter_table;
         PERFORM create_indexes_request_property_value(table_name);
+
 
 END;
 $create_tbl_request_property_value$ LANGUAGE plpgsql;
@@ -344,7 +339,6 @@ $create_indexes_request_property_value$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION create_tbl_session(time_begin TIMESTAMP WITHOUT TIME ZONE) RETURNS VOID AS $create_tbl_session$
 DECLARE 
         table_name VARCHAR(60);
-        table_base VARCHAR(60);
         create_table    TEXT;
         spec_alter_table TEXT;
         month INTEGER;
@@ -352,13 +346,12 @@ DECLARE
         upper  TIMESTAMP WITHOUT TIME ZONE;
 
 BEGIN
-        table_base := 'session';
-        table_name := quote_ident(table_base || '_' || partition_postfix(time_begin, -1, false));
+        table_name := quote_ident('session_' || partition_postfix(time_begin, -1, false));
 
         lower := to_char(date_trunc('month', time_begin), 'YYYY-MM-DD');
         upper := to_char(date_trunc('month', time_begin + interval '1 month'), 'YYYY-MM-DD');
 
-        create_table =  'CREATE TABLE ' || table_name || '    (CHECK (login_date >= TIMESTAMP ''' || lower || ''' AND login_date < TIMESTAMP ''' || upper || ''') ) INHERITS (' || table_base || ') ';
+        create_table =  'CREATE TABLE ' || table_name || '    (CHECK (login_date >= TIMESTAMP ''' || lower || ''' AND login_date < TIMESTAMP ''' || upper || ''') ) INHERITS (session) ';
 
         spec_alter_table = 'ALTER TABLE ' || table_name || ' ADD PRIMARY KEY (id); ';
 
