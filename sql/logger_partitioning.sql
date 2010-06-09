@@ -22,8 +22,7 @@ DECLARE
 BEGIN
         table_name = quote_ident('request_' || partition_postfix(time_begin, service, is_monitoring));
 
-        stmt := 'INSERT INTO ' || table_name || ' (id, time_begin, time_end, source_ip, service, action_type, session_id, user_name, is_monitoring) '
-                'VALUES (' 
+        stmt := 'INSERT INTO ' || table_name || ' (id, time_begin, time_end, source_ip, service, action_type, session_id, user_name, is_monitoring) VALUES (' 
                 || COALESCE(id::TEXT, 'NULL')           || ', ' 
                 || COALESCE(quote_literal(time_begin), 'NULL')           || ', '
                 || COALESCE(quote_literal(time_end), 'NULL')             || ', '
@@ -226,6 +225,9 @@ BEGIN
 
         PERFORM create_indexes_request(table_name);
 
+EXCEPTION
+    WHEN duplicate_table THEN
+        NULL;
 END;
 $create_tbl_request$ LANGUAGE plpgsql;
 
@@ -274,6 +276,9 @@ BEGIN
         
         PERFORM create_indexes_request_data(table_name);
 
+EXCEPTION
+    WHEN duplicate_table THEN
+        NULL;
 END;
 $create_tbl_request_data$ LANGUAGE plpgsql;
 
@@ -319,6 +324,10 @@ BEGIN
         PERFORM create_indexes_request_property_value(table_name);
 
 
+EXCEPTION
+    WHEN duplicate_table THEN
+        NULL;
+
 END;
 $create_tbl_request_property_value$ LANGUAGE plpgsql;
 
@@ -361,6 +370,9 @@ BEGIN
 
         PERFORM create_indexes_session(table_name);
 
+EXCEPTION
+    WHEN duplicate_table THEN
+        NULL;
 END;
 $create_tbl_session$ LANGUAGE plpgsql;
 
