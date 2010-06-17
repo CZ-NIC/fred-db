@@ -70,23 +70,41 @@ comment on column notify_statechange.state_id is 'which statechnage triggered no
 comment on column notify_statechange.type is 'what notification was done';
 comment on column notify_statechange.mail_id is 'email with result of notification (null if contact have no email)';
 
--- notifications about deleteWarning state by PDF letter
--- multiple states is stored in one PDF document
-CREATE TABLE notify_letters (
-  -- which statechange triggered notification
-  state_id INTEGER  PRIMARY KEY REFERENCES object_state (id),
+-- letters sent electronically as PDF documents to postal service, address is included in the document
+CREATE TABLE letter_archive (
+  id SERIAL PRIMARY KEY,
+   -- initial (default) status is 'file generated & ready for processing'
+  status INTEGER NOT NULL DEFAULT 1 REFERENCES enum_send_status(id),
   -- file with pdf about notification (null for old)
   file_id INTEGER REFERENCES files (id),
-  -- status of the communication with contact 
-  -- initial (default) status is 'file generated & ready for processing'
-  status INTEGER NOT NULL DEFAULT 1 REFERENCES enum_send_status(id),
-  -- which contact is the file sent to
-  contact_id INTEGER REFERENCES object_registry(id)
+  crdate timestamp NOT NULL DEFAULT now(),  -- date of insertion in table
+  moddate timestamp,    -- date of sending (even if unsuccesfull)
+  attempt smallint NOT NULL DEFAULT 0 -- failed attempts to send data
 );
+
+
+CREATE TABLE notify_letters (
+  -- which statechange triggered notification
+  state_id INTEGER REFERENCES object_state (id),
+  -- which contact is the file sent to
+  contact_history_id INTEGER REFERENCES contact_history(historyid),
+  -- which message notifies the state change
+  letter_id INTEGER REFERENCES letter_archive (id)
+);  
 
 CREATE INDEX notify_letters_status_idx ON notify_letters (status);
 CREATE INDEX notify_letters_contact_id_idx ON notify_letters(contact_id);
 
-comment on table notify_letters is 'notification about deleteWarning state by PDF letter, multiple states is stored in one PDF document';
+comment on table notify_letters is 'notifications about deleteWarning state sent as PDF letters';
 comment on column notify_letters.state_id is 'which statechange triggered notification';
-comment on column notify_letters.file_id is 'file with pdf about notification (null for old)';
+comment on column notify_letters.contact_history_id is 'which contact is the file sent to';
+comment on column notify_letters.letter_id is 'which message notifies the state change';
+
+
+comment on table letter_archive is 'letters sent electronically as PDF documents to postal service, address is included in the document';
+comment on column letter_archive.status is 'initial (default) status is ''file generated & ready for processing'' ';
+comment on column letter_archive.file_id is 'file with pdf about notification (null for old)';
+comment on column letter_archive.crdate is 'date of insertion in table';
+comment on column letter_archive.moddate is 'date of sending (even if unsuccesfull)';
+comment on column letter_archive.attempt is 'failed attempts to send data';
+
