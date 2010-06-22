@@ -105,7 +105,7 @@ INSERT INTO enum_reason VALUES (52, 'Too many nameservers in this nsset', 'Pří
 INSERT INTO enum_reason VALUES (53, 'No DNSKey record', 'Žádný DNSKey záznam');
 INSERT INTO enum_reason VALUES (54, 'Field ``flags'''' must be 0, 256 or 257', 'Pole ``flags'''' musí být 0, 256 nebo 257');
 INSERT INTO enum_reason VALUES (55, 'Field ``protocol'''' must be 3', 'Pole ``protocol'''' musí být 3');
-INSERT INTO enum_reason VALUES (56, 'Field ``alg'''' must be 1,2,3,4,5,252,253,254 or 255', 'Pole ``alg'''' musí být 1,2,3,4,5,252,253,254 nebo 255');
+INSERT INTO enum_reason VALUES (56, 'Field ``alg'''' must be 1,2,3,4,5,6,7,8,10,12,252,253,254 or 255', 'Pole ``alg'''' musí být 1,2,3,4,5,6,7,8,10,12,252,253,254 nebo 255');
 INSERT INTO enum_reason VALUES (57, 'Field ``key'''' has invalid length', 'Pole ``key'''' má špatnou délku');
 INSERT INTO enum_reason VALUES (58, 'Field ``key'''' contains invalid character', 'Pole ``key'''' obsahuje neplatný znak');
 INSERT INTO enum_reason VALUES (59, 'DNSKey already exists for this keyset', 'DNSKey již pro tento keyset existuje');
