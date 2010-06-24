@@ -204,6 +204,8 @@ DECLARE
 BEGIN
         table_name := quote_ident('request' || '_' || partition_postfix(time_begin, service, monitoring));
 
+        LOCK TABLE request IN SHARE UPDATE EXCLUSIVE MODE;
+
         lower := to_char(date_trunc('month', time_begin), 'YYYY-MM-DD');
         upper := to_char(date_trunc('month', time_begin + interval '1 month'), 'YYYY-MM-DD');
 
@@ -260,6 +262,8 @@ BEGIN
         table_postfix := quote_ident(partition_postfix(time_begin, service, monitoring));
         table_name := 'request_data_' || table_postfix;
 
+        LOCK TABLE request_data IN SHARE UPDATE EXCLUSIVE MODE;
+
         lower := to_char(date_trunc('month', time_begin), 'YYYY-MM-DD');
         upper := to_char(date_trunc('month', time_begin + interval '1 month'), 'YYYY-MM-DD');
 
@@ -307,6 +311,7 @@ BEGIN
         table_postfix := quote_ident(partition_postfix(time_begin, service, monitoring));
         table_name := 'request_property_value_' || table_postfix; 
 
+        LOCK TABLE request_property_value IN SHARE UPDATE EXCLUSIVE MODE;
 
         lower := to_char(date_trunc('month', time_begin), 'YYYY-MM-DD');
         upper := to_char(date_trunc('month', time_begin + interval '1 month'), 'YYYY-MM-DD');
@@ -322,8 +327,6 @@ BEGIN
         EXECUTE create_table;
         EXECUTE spec_alter_table;
         PERFORM create_indexes_request_property_value(table_name);
-
-
 EXCEPTION
     WHEN duplicate_table THEN
         NULL;
@@ -356,6 +359,8 @@ DECLARE
 
 BEGIN
         table_name := quote_ident('session_' || partition_postfix(time_begin, -1, false));
+
+        LOCK TABLE session IN SHARE UPDATE EXCLUSIVE MODE;
 
         lower := to_char(date_trunc('month', time_begin), 'YYYY-MM-DD');
         upper := to_char(date_trunc('month', time_begin + interval '1 month'), 'YYYY-MM-DD');
