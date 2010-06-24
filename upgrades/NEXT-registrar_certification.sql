@@ -1,1 +1,0 @@
-../sql/registrar_certification_ddl.sql
