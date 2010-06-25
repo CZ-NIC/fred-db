@@ -43,9 +43,31 @@ INSERT INTO notify_statechange_map VALUES (12, 20, 3, 4, 3);
 ---
 --- Ticket #3885 - new keyset algorithms
 ---
-UPDATE enum_reason SET reason = 'Field ``alg'''' must be 1,2,3,4,5,6,7,8,10,12,252,253,254 or 255', 
-                       reason_cs = 'Pole ``alg'''' musí být 1,2,3,4,5,6,7,8,10,12,252,253,254 nebo 255') 
+UPDATE enum_reason SET reason = 'Field ``alg'''' must be 1,2,3,4,5,6,7,8,10,12,252,253,254 or 255',
+                       reason_cs = 'Pole ``alg'''' musí být 1,2,3,4,5,6,7,8,10,12,252,253,254 nebo 255'
                 WHERE id = 56;
 
+
+
+---
+--- notify letters - postservice
+---
+INSERT INTO enum_send_status (id, description) VALUES (1, 'Ready for processing/sending');
+INSERT INTO enum_send_status (id, description) VALUES (2, 'Waiting for manual confirmation of sending');
+INSERT INTO enum_send_status (id, description) VALUES (3, 'No automatic processing');
+INSERT INTO enum_send_status (id, description) VALUES (4, 'Delivery failed');
+INSERT INTO enum_send_status (id, description) VALUES (5, 'Successfully sent');
+INSERT INTO enum_send_status (id, description) VALUES (6, 'In processing, don''t touch');
+
+INSERT INTO letter_archive (status , file_id) SELECT 5, file_id FROM notify_letters;
+
+UPDATE notify_letters nl SET letter_id = la.id FROM letter_archive la WHERE la.file_id = nl.file_id;
+
+UPDATE notify_letters nl SET contact_history_id = h.id
+    FROM object_state os 
+        JOIN domain_history dh ON os.ohid_from = dh.historyid 
+        JOIN contact_history ch ON ch.id = dh.registrant
+        JOIN history h ON h.id=ch.historyid AND os.valid_from >= h.valid_from AND os.valid_from < h.valid_to
+        WHERE os.id = nl.state_id;
 
 

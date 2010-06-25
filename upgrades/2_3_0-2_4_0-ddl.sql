@@ -214,3 +214,60 @@ COMMENT ON COLUMN registrar_group_map.member_until
 	IS 'registrar membership in the group until this date or unspecified';
 
 
+
+---
+--- notify letters - changes need for postservice
+---
+ALTER TABLE zone ADD COLUMN warning_letter BOOLEAN NOT NULL DEFAULT TRUE;
+
+CREATE TABLE enum_send_status (
+    id INTEGER PRIMARY KEY,
+    description TEXT
+);
+
+COMMENT ON TABLE enum_send_status IS 'list of statuses when sending a general message to a contact';
+
+-- letters sent electronically as PDF documents to postal service,
+-- address is included in the document
+CREATE TABLE letter_archive (
+  id SERIAL PRIMARY KEY,
+  -- initial (default) status is 'file generated & ready for processing'
+  status INTEGER NOT NULL DEFAULT 1 REFERENCES enum_send_status(id),
+  -- file with pdf about notification (null for old)
+  file_id INTEGER REFERENCES files (id),
+  crdate timestamp NOT NULL DEFAULT now(),  -- date of insertion in table
+  moddate timestamp,    -- date of sending (even if unsuccesfull), it is the time when the send attempt finished
+  attempt smallint NOT NULL DEFAULT 0 -- failed attempts to send data
+);
+
+COMMENT ON TABLE letter_archive IS 'letters sent electronically as PDF documents to postal service, address is included in the document';
+COMMENT ON COLUMN letter_archive.status IS 'initial (default) status is ''file generated & ready for processing'' ';
+COMMENT ON COLUMN letter_archive.file_id IS 'file with pdf about notification (null for old)';
+COMMENT ON COLUMN letter_archive.crdate IS 'date of insertion in table';
+COMMENT ON COLUMN letter_archive.moddate IS 'date of sending (even if unsuccesfull), it is the time when the send attempt finished';
+COMMENT ON COLUMN letter_archive.attempt IS 'failed attempts to send data';
+
+ALTER TABLE notify_letters ADD COLUMN contact_history_id INTEGER;
+ALTER TABLE notify_letters ADD FOREIGN KEY (contact_history_id) REFERENCES contact_history(historyid);
+ALTER TABLE notify_letters ADD COLUMN letter_id INTEGER;
+ALTER TABLE notify_letters ADD FOREIGN KEY (letter_id) REFERENCES letter_archive(id);
+
+-- cannot do this before upgrade script take place
+-- TODO: make post-upgrade clean script
+-- ALTER TABLE notify_letters DROP COLUMN file_id;
+
+COMMENT ON COLUMN notify_letters.contact_history_id IS 'which contact is the file sent to';
+COMMENT ON COLUMN notify_letters.letter_id IS 'which message notifies the state change';
+
+CREATE INDEX notify_letters_contact_id_idx ON notify_letters(contact_history_id);
+
+
+
+---
+--- set owner to fred user for new tables
+---
+ALTER TABLE registrar_certification OWNER TO fred;
+ALTER TABLE registrar_group OWNER TO fred;
+ALTER TABLE registrar_group_map OWNER TO fred;
+ALTER TABLE letter_archive OWNER TO fred;
+ALTER TABLE enum_send_status OWNER TO fred;
