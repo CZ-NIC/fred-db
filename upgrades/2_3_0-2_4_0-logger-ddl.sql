@@ -1,4 +1,6 @@
-
+---
+--- Ticket #3886 - race condition fix
+---
 CREATE OR REPLACE FUNCTION create_tbl_request(time_begin TIMESTAMP WITHOUT TIME ZONE, service INTEGER, monitoring BOOLEAN) RETURNS VOID AS $create_tbl_request$
 DECLARE 
         table_name VARCHAR(60);
@@ -149,6 +151,4 @@ EXCEPTION
         NULL;
 END;
 $create_tbl_session$ LANGUAGE plpgsql;
-
-
 
