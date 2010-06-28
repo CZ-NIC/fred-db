@@ -1,3 +1,13 @@
+2010-06-28  Jiri Sadek, Juraj Vicenik, Jan Zima (2.4.0)
+
+    * New tables for registrar group and certification management
+
+    * Notification of expiration letters refactoring
+
+    * New enumeration tables for message send status
+
+    * Logger procedures fixes
+
 2010-03-29 Jiri Sadek (2.3.2)
 
     * banking data migration fixes
