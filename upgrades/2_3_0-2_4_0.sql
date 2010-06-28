@@ -4,5 +4,6 @@
 
 \i 2_3_0-2_4_0-ddl.sql
 \i 2_3_0-2_4_0-dml.sql
+\i 2_3_0-2_4_0-logger-ddl.sql
 \i 2_3_0-2_4_0-logger-dml.sql
 
