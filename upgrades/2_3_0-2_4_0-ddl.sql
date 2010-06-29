@@ -264,6 +264,12 @@ CREATE INDEX notify_letters_contact_id_idx ON notify_letters(contact_history_id)
 
 
 ---
+--- this table is not used anymore, public_request contains the data
+---
+DROP TABLE auth_info_requests;
+
+
+---
 --- set owner to fred user for new tables
 ---
 ALTER TABLE registrar_certification OWNER TO fred;
