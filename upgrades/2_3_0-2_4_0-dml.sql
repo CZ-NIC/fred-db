@@ -19,7 +19,7 @@ INSERT INTO enum_filetype (id, name) VALUES (6, 'certification evaluation pdf');
 ---
 INSERT INTO registrar_group_map (registrar_id, registrar_group_id, member_from)
 SELECT DISTINCT registrarid,
-       (SELECT id FROM registrar_group WHERE short_name = 'uncertified'),
+       (SELECT id FROM registrar_group WHERE short_name = 'certified'),
        CURRENT_DATE 
   FROM (SELECT r.id AS registrarid 
           FROM registrar r 
