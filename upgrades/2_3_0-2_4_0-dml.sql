@@ -15,8 +15,11 @@ INSERT INTO enum_filetype (id, name) VALUES (6, 'certification evaluation pdf');
 
 ---
 --- Ticket #4113
---- initialization of 'uncertified' list of registrars
+--- initialization of 'certified' list of registrars
 ---
+INSERT INTO registrar_group (short_name) VALUES ('certified');
+INSERT INTO registrar_group (short_name) VALUES ('uncertified');
+
 INSERT INTO registrar_group_map (registrar_id, registrar_group_id, member_from)
 SELECT DISTINCT registrarid,
        (SELECT id FROM registrar_group WHERE short_name = 'certified'),
