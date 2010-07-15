@@ -85,7 +85,7 @@ CREATE TABLE letter_archive (
 
 CREATE TABLE notify_letters (
   -- which statechange triggered notification
-  state_id INTEGER NOT NULL REFERENCES object_state (id),
+  state_id INTEGER NOT NULL PRIMARY KEY REFERENCES object_state (id),
   -- which contact is the file sent to
   contact_history_id INTEGER REFERENCES contact_history(historyid),
   -- which message notifies the state change
