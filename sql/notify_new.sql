@@ -75,13 +75,13 @@ CREATE TABLE letter_archive (
   id SERIAL PRIMARY KEY,
    -- initial (default) status is 'file generated & ready for processing'
   status INTEGER NOT NULL DEFAULT 1 REFERENCES enum_send_status(id),
-  -- for postservis - bundling letters into batches
-  batch_id VARCHAR(64),
   -- file with pdf about notification (null for old)
   file_id INTEGER REFERENCES files (id),
   crdate timestamp NOT NULL DEFAULT now(),  -- date of insertion in table
   moddate timestamp,    -- date of sending (even if unsuccesfull)
-  attempt smallint NOT NULL DEFAULT 0 -- failed attempts to send data
+  attempt smallint NOT NULL DEFAULT 0, -- failed attempts to send data
+  -- for postservis - bundling letters into batches
+  batch_id VARCHAR(64)
 );
 
 
