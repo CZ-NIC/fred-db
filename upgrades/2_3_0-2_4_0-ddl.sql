@@ -237,7 +237,9 @@ CREATE TABLE letter_archive (
   file_id INTEGER REFERENCES files (id),
   crdate timestamp NOT NULL DEFAULT now(),  -- date of insertion in table
   moddate timestamp,    -- date of sending (even if unsuccesfull), it is the time when the send attempt finished
-  attempt smallint NOT NULL DEFAULT 0 -- failed attempts to send data
+  attempt smallint NOT NULL DEFAULT 0, -- failed attempts to send data
+  -- for postservis - bundling letters into batches
+  batch_id VARCHAR(64)
 );
 
 COMMENT ON TABLE letter_archive IS 'letters sent electronically as PDF documents to postal service, address is included in the document';
@@ -247,8 +249,6 @@ COMMENT ON COLUMN letter_archive.crdate IS 'date of insertion in table';
 COMMENT ON COLUMN letter_archive.moddate IS 'date of sending (even if unsuccesfull), it is the time when the send attempt finished';
 COMMENT ON COLUMN letter_archive.attempt IS 'failed attempts to send data';
 
-ALTER TABLE notify_letters ADD COLUMN contact_history_id INTEGER;
-ALTER TABLE notify_letters ADD FOREIGN KEY (contact_history_id) REFERENCES contact_history(historyid);
 ALTER TABLE notify_letters ADD COLUMN letter_id INTEGER;
 ALTER TABLE notify_letters ADD FOREIGN KEY (letter_id) REFERENCES letter_archive(id);
 

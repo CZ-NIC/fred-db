@@ -66,12 +66,3 @@ INSERT INTO letter_archive (status , file_id) SELECT DISTINCT 5, file_id FROM no
 
 UPDATE notify_letters nl SET letter_id = la.id FROM letter_archive la WHERE la.file_id = nl.file_id;
 
-UPDATE notify_letters nl SET contact_history_id = h.id
-    FROM object_state os 
-        join domain_history dh ON os.ohid_from = dh.historyid 
-        join contact_history ch ON ch.id = dh.registrant
-        join history h ON h.id=ch.historyid and os.valid_from >= h.valid_from 
-                AND (CASE WHEN h.valid_to IS NULL THEN true ELSE  os.valid_from <= h.valid_to END)   
-        WHERE os.id = nl.state_id;
-
-
