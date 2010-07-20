@@ -242,12 +242,16 @@ CREATE TABLE letter_archive (
   batch_id VARCHAR(64)
 );
 
+CREATE INDEX letter_archive_status_idx ON letter_archive (status);
+CREATE INDEX letter_archive_batch_id ON letter_archive (batch_id);
+
 COMMENT ON TABLE letter_archive IS 'letters sent electronically as PDF documents to postal service, address is included in the document';
 COMMENT ON COLUMN letter_archive.status IS 'initial (default) status is ''file generated & ready for processing'' ';
 COMMENT ON COLUMN letter_archive.file_id IS 'file with pdf about notification (null for old)';
 COMMENT ON COLUMN letter_archive.crdate IS 'date of insertion in table';
 COMMENT ON COLUMN letter_archive.moddate IS 'date of sending (even if unsuccesfull), it is the time when the send attempt finished';
 COMMENT ON COLUMN letter_archive.attempt IS 'failed attempts to send data';
+COMMENT ON COLUMN letter_archive.batch_id IS 'postservis batch id - multiple letters are bundled into batches';
 
 ALTER TABLE notify_letters ADD COLUMN letter_id INTEGER;
 ALTER TABLE notify_letters ADD FOREIGN KEY (letter_id) REFERENCES letter_archive(id);
@@ -256,11 +260,7 @@ ALTER TABLE notify_letters ADD FOREIGN KEY (letter_id) REFERENCES letter_archive
 -- TODO: make post-upgrade clean script
 -- ALTER TABLE notify_letters DROP COLUMN file_id;
 
-COMMENT ON COLUMN notify_letters.contact_history_id IS 'which contact is the file sent to';
 COMMENT ON COLUMN notify_letters.letter_id IS 'which message notifies the state change';
-
-CREATE INDEX notify_letters_contact_id_idx ON notify_letters(contact_history_id);
-
 
 
 ---
