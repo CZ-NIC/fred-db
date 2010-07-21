@@ -269,7 +269,10 @@ COMMENT ON COLUMN notify_letters.letter_id IS 'which message notifies the state 
 DROP TABLE auth_info_requests;
 DROP TABLE object_status_notifications_mail_map;
 DROP TABLE object_status_notifications;
-DROP TABLE enum_notify; 
+DROP TABLE enum_notify;
+DROP TABLE bank_ebanka_list;
+DROP TABLE bank_statement_item;
+DROP TABLE bank_statement_head;
 
 
 ---
