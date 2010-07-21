@@ -264,9 +264,12 @@ COMMENT ON COLUMN notify_letters.letter_id IS 'which message notifies the state 
 
 
 ---
---- this table is not used anymore, public_request contains the data
+--- this tables are not used anymore
 ---
 DROP TABLE auth_info_requests;
+DROP TABLE object_status_notifications_mail_map;
+DROP TABLE object_status_notifications;
+DROP TABLE enum_notify; 
 
 
 ---

@@ -52,7 +52,6 @@ write_script()
 	cat $DIR/state.sql
 	cat $DIR/poll.sql
 	# notify mailer
-	cat $DIR/notify.sql
 	cat $DIR/notify_new.sql
 	# list of tld domains
 	cat $DIR/enum_tlds.sql
