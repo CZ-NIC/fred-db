@@ -1,10 +1,4 @@
-2010-07-22 Jiri Sadek, Juraj Vicenik (2.4.1)
-
-    * Schema cleaning (unused tables deleted)
-
-    * Notification of expiration letters fixes
-
-2010-06-28 Jiri Sadek, Juraj Vicenik, Jan Zima (2.4.0)
+2010-07-22 Jiri Sadek, Juraj Vicenik, Jan Zima (2.4.0)
 
     * New tables for registrar group and certification management
 
@@ -13,6 +7,8 @@
     * New enumeration tables for message send status
 
     * Logger procedures fixes
+
+    * Schema cleaning (unused tables deleted)
 
 2010-03-29 Jiri Sadek (2.3.2)
 
