@@ -16,10 +16,10 @@ CREATE TABLE service (
 CREATE TABLE request_type (
         id SERIAL UNIQUE NOT NULL, 
         status varchar(64),
-        service integer REFERENCES service(id)
+        service_id integer REFERENCES service(id)
 );
 
-ALTER TABLE request_type ADD PRIMARY KEY (status, service);
+ALTER TABLE request_type ADD PRIMARY KEY (status, service_id);
 
 CREATE TABLE request (
 	id SERIAL PRIMARY KEY,
@@ -28,8 +28,8 @@ CREATE TABLE request (
 					-- e.g. if an error message from backend is successfully logged, it's still set	
 					-- NULL in cases like crash of the server
 	source_ip INET,
-	service integer NOT NULL REFERENCES service(id),   -- service code - enum LogServiceType in IDL
-	action_type integer REFERENCES request_type(id) DEFAULT 1000,
+	service_id integer NOT NULL REFERENCES service(id),   -- service_id code - enum LogServiceType in IDL
+	request_type_id integer REFERENCES request_type(id) DEFAULT 1000,
 	session_id  integer,            --  REFERENCES session(id),
         user_name varchar(255),         -- name of the user who issued the request (from session table)
 		
@@ -38,28 +38,28 @@ CREATE TABLE request (
 
 CREATE TABLE request_data (
         id SERIAL PRIMARY KEY,
-	entry_time_begin timestamp NOT NULL, -- TEMP: for partitioning
-	entry_service integer NOT NULL, -- TEMP: for partitioning
-	entry_monitoring boolean NOT NULL, -- TEMP: for partitioning
+	request_time_begin timestamp NOT NULL, -- TEMP: for partitioning
+	request_service_id integer NOT NULL, -- TEMP: for partitioning
+	request_monitoring boolean NOT NULL, -- TEMP: for partitioning
 
-	entry_id integer NOT NULL REFERENCES request(id),
+	request_id integer NOT NULL REFERENCES request(id),
 	content text NOT NULL,
 	is_response boolean DEFAULT False -- true if the content is response, false if it's request
 );
 
-CREATE TABLE request_property (
+CREATE TABLE request_property_name (
 	id SERIAL PRIMARY KEY,
 	name varchar(30) NOT NULL
 );
 	
 CREATE TABLE request_property_value (
-	entry_time_begin timestamp NOT NULL, -- TEMP: for partitioning
-	entry_service integer NOT NULL, -- TEMP: for partitioning
-	entry_monitoring boolean NOT NULL, -- TEMP: for partitioning
+	request_time_begin timestamp NOT NULL, -- TEMP: for partitioning
+	request_service_id integer NOT NULL, -- TEMP: for partitioning
+	request_monitoring boolean NOT NULL, -- TEMP: for partitioning
 	
 	id SERIAL PRIMARY KEY,
-	entry_id integer NOT NULL REFERENCES request(id), 
-	name_id integer NOT NULL REFERENCES request_property(id),
+	request_id integer NOT NULL REFERENCES request(id), 
+	property_name_id integer NOT NULL REFERENCES request_property_name(id),
 	value text NOT NULL,		-- property value
 	output boolean DEFAULT False,		-- whether it's output (response) property; if False it's input (request)
 
@@ -70,20 +70,20 @@ CREATE TABLE request_property_value (
 CREATE INDEX request_time_begin_idx ON request(time_begin);
 CREATE INDEX request_time_end_idx ON request(time_end);
 CREATE INDEX request_source_ip_idx ON request(source_ip);
-CREATE INDEX request_service_idx ON request(service);
-CREATE INDEX request_action_type_idx ON request(action_type);
+CREATE INDEX request_service_idx ON request(service_id);
+CREATE INDEX request_action_type_idx ON request(request_type_id);
 CREATE INDEX request_monitoring_idx ON request(is_monitoring);
 
-CREATE INDEX request_data_entry_time_begin_idx ON request_data(entry_time_begin);
-CREATE INDEX request_data_entry_id_idx ON request_data(entry_id);
+CREATE INDEX request_data_entry_time_begin_idx ON request_data(request_time_begin);
+CREATE INDEX request_data_entry_id_idx ON request_data(request_id);
 CREATE INDEX request_data_content_idx ON request_data(content);
 CREATE INDEX request_data_is_response_idx ON request_data(is_response);
 
-CREATE INDEX request_property_name_idx ON request_property(name); 
+CREATE INDEX request_property_name_idx ON request_property_name(name); 
 
-CREATE INDEX request_property_value_entry_time_begin_idx ON request_property_value(entry_time_begin);
-CREATE INDEX request_property_value_entry_id_idx ON request_property_value(entry_id); 
-CREATE INDEX request_property_value_name_id_idx ON request_property_value(name_id); 
+CREATE INDEX request_property_value_entry_time_begin_idx ON request_property_value(request_time_begin);
+CREATE INDEX request_property_value_entry_id_idx ON request_property_value(request_id); 
+CREATE INDEX request_property_value_name_id_idx ON request_property_value(property_name_id); 
 CREATE INDEX request_property_value_value_idx ON request_property_value(value); 
 CREATE INDEX request_property_value_output_idx ON request_property_value(output); 
 CREATE INDEX request_property_value_parent_id_idx ON request_property_value(parent_id); 
