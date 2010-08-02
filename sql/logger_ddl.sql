@@ -15,11 +15,11 @@ CREATE TABLE service (
 
 CREATE TABLE request_type (
         id SERIAL UNIQUE NOT NULL, 
-        status varchar(64),
+        name varchar(64),
         service_id integer REFERENCES service(id)
 );
 
-ALTER TABLE request_type ADD PRIMARY KEY (status, service_id);
+ALTER TABLE request_type ADD PRIMARY KEY (name, service_id);
 
 CREATE TABLE request (
 	id SERIAL PRIMARY KEY,
