@@ -29,6 +29,8 @@ CREATE TABLE result_code (
     name VARCHAR(64) NOT NULL    
 );
 
+ALTER TABLE result_code ADD CONSTRAINT result_code_unique  UNIQUE (id, service_id, result_code );
+
 COMMENT ON TABLE result_code IS 'all possible operation result codes';
 COMMENT ON COLUMN result_code.id IS 'result_code id';
 COMMENT ON COLUMN result_code.service_id IS 'reference to service table. This is needed to distinguish entries with identical result_code values';
