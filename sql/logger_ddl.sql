@@ -21,6 +21,20 @@ CREATE TABLE request_type (
 
 ALTER TABLE request_type ADD PRIMARY KEY (name, service_id);
 
+
+CREATE TABLE result_code (
+    id SERIAL PRIMARY KEY,
+    service_id INTEGER REFERENCES service(id),
+    result_code INTEGER NOT NULL,
+    name VARCHAR(64) NOT NULL    
+);
+
+COMMENT ON TABLE result_code IS 'all possible operation result codes';
+COMMENT ON COLUMN result_code.id IS 'result_code id';
+COMMENT ON COLUMN result_code.service_id IS 'reference to service table. This is needed to distinguish entries with identical result_code values';
+COMMENT ON COLUMN result_code.result_code IS 'result code as returned by the specific service, it''s only unique within the service';
+COMMENT ON COLUMN result_code.name IS 'short name for error (abbreviation) written in camelcase';
+
 CREATE TABLE request (
 	id SERIAL PRIMARY KEY,
 	time_begin timestamp NOT NULL,	-- begin of the transaction
@@ -33,8 +47,13 @@ CREATE TABLE request (
 	session_id  integer,            --  REFERENCES session(id),
         user_name varchar(255),         -- name of the user who issued the request (from session table)
 		
-	is_monitoring boolean NOT NULL
+	is_monitoring boolean NOT NULL, 
+	result_code_id INTEGER
 );
+
+ALTER TABLE request ADD FOREIGN KEY (result_code_id) REFERENCES result_code(id); 
+
+COMMENT ON COLUMN request.result_code_id IS 'result code as returned by the specific service, it''s only unique within the service';
 
 CREATE TABLE request_data (
         id SERIAL PRIMARY KEY,
