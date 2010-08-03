@@ -29,7 +29,7 @@ CREATE TABLE result_code (
     name VARCHAR(64) NOT NULL    
 );
 
-ALTER TABLE result_code ADD CONSTRAINT result_code_unique  UNIQUE (id, service_id, result_code );
+ALTER TABLE result_code ADD CONSTRAINT result_code_unique  UNIQUE (service_id, result_code );
 
 COMMENT ON TABLE result_code IS 'all possible operation result codes';
 COMMENT ON COLUMN result_code.id IS 'result_code id';
