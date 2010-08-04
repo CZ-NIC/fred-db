@@ -38,17 +38,22 @@ COMMENT ON COLUMN result_code.service_id IS 'reference to service table. This is
 COMMENT ON COLUMN result_code.result_code IS 'result code as returned by the specific service, it''s only unique within the service';
 COMMENT ON COLUMN result_code.name IS 'short name for error (abbreviation) written in camelcase';
 
--- check null for CloseRequest result_code_id updates, exception commented out until request.result_code_id optional
-CREATE OR REPLACE FUNCTION check_null(param integer) 
+-- for CloseRequest result_code_id updates, exception commented out until request.result_code_id optional
+CREATE OR REPLACE FUNCTION get_result_code_id( integer, integer) 
 RETURNS integer AS $$
+DECLARE
+    result_code_id INTEGER;
 BEGIN
-    IF param is null THEN
---        RAISE EXCEPTION 'param is null';
+
+    SELECT id FROM result_code INTO result_code_id
+        WHERE service_id=$1 and result_code=$2 ; 
+
+    IF result_code_id is null THEN
+--      RAISE EXCEPTION 'result_code_id is null';
     END IF;
-    RETURN param;
+    RETURN result_code_id;
 END;
 $$ LANGUAGE plpgsql;
-
 
 CREATE TABLE request (
 	id SERIAL PRIMARY KEY,
