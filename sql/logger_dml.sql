@@ -6,6 +6,7 @@ INSERT INTO service (id, partition_postfix, name) VALUES (2, 'pubreq_', 'Public 
 INSERT INTO service (id, partition_postfix, name) VALUES (3, 'epp_', 'EPP');
 INSERT INTO service (id, partition_postfix, name) VALUES (4, 'webadmin_', 'WebAdmin');
 INSERT INTO service (id, partition_postfix, name) VALUES (5, 'intranet_', 'Intranet');
+INSERT INTO service (id, partition_postfix, name) VALUES (6, 'mojeid_', 'MojeID');
 
 -- login function
 INSERT INTO request_type (id, name, service_id) VALUES (100, 'ClientLogin', 3);
@@ -142,10 +143,22 @@ INSERT INTO request_type (id, name, service_id) VALUES (1403, 'InvoiceList', 5);
 INSERT INTO request_type (id, name, service_id) VALUES (1404, 'DomainList', 5);
 INSERT INTO request_type (id, name, service_id) VALUES (1405, 'FileDetail', 5);
 
+-- MojeID actions
+INSERT INTO request_type (id, name, service_id) VALUES (1500, 'OpenIDRequest', 6);
+INSERT INTO request_type (id, name, service_id) VALUES (1501, 'Login', 6);
+INSERT INTO request_type (id, name, service_id) VALUES (1502, 'Logout', 6);
+INSERT INTO request_type (id, name, service_id) VALUES (1503, 'UserCreate', 6);
+INSERT INTO request_type (id, name, service_id) VALUES (1504, 'UserUpdate', 6);
+INSERT INTO request_type (id, name, service_id) VALUES (1505, 'PasswordChange', 6);
+INSERT INTO request_type (id, name, service_id) VALUES (1506, 'CertificateChange', 6);
+INSERT INTO request_type (id, name, service_id) VALUES (1507, 'PasswordResetRequest', 6);
+INSERT INTO request_type (id, name, service_id) VALUES (1508, 'PasswordReset', 6);
+
+
 -- Set sequences beginnings
-SELECT setval('request_type_id_seq', 1406); 
+SELECT setval('request_type_id_seq', (SELECT MAX(id) FROM request_type));
 
 --
 -- have to be done manually (logger will be in separate database)
--- 
+--
 -- SELECT setval('request_id_seq', (SELECT max(id) FROM action));
