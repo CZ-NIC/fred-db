@@ -32,5 +32,14 @@ ALTER TABLE request ADD FOREIGN KEY (result_code_id) REFERENCES result_code(id);
 
 COMMENT ON COLUMN request.result_code_id IS 'result code as returned by the specific service, it''s only unique within the service';
 
-
+-- check null for CloseRequest result_code_id updates, exception commented out until request.result_code_id optional
+CREATE OR REPLACE FUNCTION check_null(param integer) 
+RETURNS integer AS $$
+BEGIN
+    IF param is null THEN
+--        RAISE EXCEPTION 'param is null';
+    END IF;
+    RETURN param;
+END;
+$$ LANGUAGE plpgsql;
 
