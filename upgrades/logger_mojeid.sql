@@ -10,6 +10,7 @@ INSERT INTO request_type (id, name, service_id) VALUES (1505, 'PasswordChange', 
 INSERT INTO request_type (id, name, service_id) VALUES (1506, 'CertificateChange', 6);
 INSERT INTO request_type (id, name, service_id) VALUES (1507, 'PasswordResetRequest', 6);
 INSERT INTO request_type (id, name, service_id) VALUES (1508, 'PasswordReset', 6);
+INSERT INTO request_type (id, name, service_id) VALUES (1509, 'TrustUpdate', 6);
 
 
 SELECT setval('request_type_id_seq', (SELECT MAX(id) FROM request_type));
