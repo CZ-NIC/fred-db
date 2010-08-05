@@ -15,4 +15,5 @@ INSERT INTO result_code (service_id, result_code, name) VALUES (0, 101 , 'NoEntr
 INSERT INTO result_code (service_id, result_code, name) VALUES (0, 107 , 'UsageError');
 INSERT INTO result_code (service_id, result_code, name) VALUES (0, 108 , 'InvalidRequest');
 INSERT INTO result_code (service_id, result_code, name) VALUES (0, 501 , 'InternalServerError');
+INSERT INTO result_code (service_id, result_code, name) VALUES (0, 0 , 'Ok');
 
