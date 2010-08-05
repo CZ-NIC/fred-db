@@ -49,7 +49,7 @@ BEGIN
         WHERE service_id=$1 and result_code=$2 ; 
 
     IF result_code_id is null THEN
---      RAISE EXCEPTION 'result_code_id is null';
+        RAISE WARNING 'result_code.id not found for service_id=% and result_code=% ', $1, $2;
     END IF;
     RETURN result_code_id;
 END;
