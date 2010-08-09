@@ -18,6 +18,7 @@ CREATE TABLE request_type (
         name varchar(64),
         service_id integer REFERENCES service(id)
 );
+ALTER TABLE request_type ADD UNIQUE(name, service_id);
 
 CREATE TABLE result_code (
     id SERIAL PRIMARY KEY,
