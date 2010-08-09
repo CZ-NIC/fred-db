@@ -14,3 +14,7 @@ INSERT INTO request_type (id, name, service_id) VALUES (1509, 'TrustUpdate', 6);
 
 
 SELECT setval('request_type_id_seq', (SELECT MAX(id) FROM request_type));
+
+INSERT INTO result_code (service_id, result_code, name) VALUES (6, 1 , 'Success');
+INSERT INTO result_code (service_id, result_code, name) VALUES (6, 2 , 'Fail');
+INSERT INTO result_code (service_id, result_code, name) VALUES (6, 3 , 'Error');
