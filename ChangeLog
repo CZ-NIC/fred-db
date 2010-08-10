@@ -1,3 +1,7 @@
+2010-08-10 Jiri Sadek, Juraj Vicenik (2.4.1)
+
+    * Logger property renaming - upgrade script
+
 2010-07-22 Jiri Sadek, Juraj Vicenik, Jan Zima (2.4.0)
 
     * New tables for registrar group and certification management
