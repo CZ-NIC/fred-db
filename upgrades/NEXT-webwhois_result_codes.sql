@@ -15,3 +15,5 @@ INSERT INTO result_code (service_id, result_code, name) VALUES (1, 0 , 'Ok');
 INSERT INTO result_code (service_id, result_code, name) VALUES (1, 1 , 'NotFound');
 INSERT INTO result_code (service_id, result_code, name) VALUES (1, 2 , 'Error');
 
+-- public request result code
+INSERT INTO result_code (service_id, result_code, name) VALUES (2, 0 , 'Ok');
