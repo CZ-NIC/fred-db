@@ -10,7 +10,8 @@ CREATE TABLE public_request (
   reason character varying(512),
   email_to_answer character varying(255),
   answer_email_id integer REFERENCES mail_archive(id),
-  registrar_id integer REFERENCES registrar(id)
+  registrar_id integer REFERENCES registrar(id),
+  request_id integer
 );
 
 comment on table public_request is 'table of general requests give in by public users';
