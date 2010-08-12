@@ -11,8 +11,6 @@ UPDATE enum_parameters SET val = '<insert version here>' WHERE id = 1;
 ---
 ---
 
-ALTER TABLE public_request ADD COLUMN request_id INTEGER;
-
-
+ALTER TABLE public_request ADD COLUMN logd_request_id INTEGER;
 
 
