@@ -1,10 +1,9 @@
 CREATE TABLE session (
 	id serial primary key,
-	name varchar(255) not null,       -- user name for Webadmin or id from registrar table for EPP
+	user_name varchar(255) not null,       -- user name for Webadmin or id from registrar table for EPP
 	login_date timestamp not null default now(), 
 	logout_date timestamp,
-
-	lang varchar(2) not null default 'en'
+        user_id integer
 );
 
 CREATE TABLE service (

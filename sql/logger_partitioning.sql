@@ -48,18 +48,21 @@ $tr_request$ LANGUAGE plpgsql;
 
 
 -- session is partitioned according to date only
-CREATE OR REPLACE FUNCTION tr_session(id INTEGER, name VARCHAR(255), login_date timestamp, logout_date timestamp, lang VARCHAR(2)) RETURNS VOID AS $tr_session$
+
+CREATE OR REPLACE FUNCTION tr_session(id INTEGER, user_name VARCHAR(255), user_id INTEGER, login_date timestamp, logout_date timestamp) RETURNS VOID AS $tr_session$
 DECLARE 
         table_name VARCHAR(50);
         stmt  TEXT;
 BEGIN
         table_name := quote_ident('session_' || partition_postfix(login_date, -1, false));
-        stmt := 'INSERT INTO ' || table_name || ' (id, name, login_date, logout_date, lang) VALUES (' 
+        stmt := 'INSERT INTO ' || table_name || ' (id, user_name, user_id, login_date, logout_date) VALUES (' 
                 || COALESCE(id::TEXT, 'NULL')           || ', ' 
-                || COALESCE(quote_literal(name), 'NULL')                 || ', '
+                || COALESCE(quote_literal(user_name), 'NULL')                 || ', '
+                || COALESCE(user_id::TEXT, 'NULL')                       || ', '
                 || COALESCE(quote_literal(login_date), 'NULL')           || ', '
-                || COALESCE(quote_literal(logout_date), 'NULL')          || ', '
-                || quote_literal(lang)                  || ')';
+                || COALESCE(quote_literal(logout_date), 'NULL')          
+
+                || ')';
 
         -- raise notice 'session Generated insert: %', stmt;
         EXECUTE stmt;
@@ -387,14 +390,11 @@ CREATE OR REPLACE FUNCTION create_indexes_session(table_name VARCHAR(50)) RETURN
 DECLARE 
         create_indexes TEXT;
 BEGIN
-        create_indexes = 'CREATE INDEX ' || table_name || '_name_idx ON ' || table_name || '(name); CREATE INDEX ' || table_name || '_login_date_idx ON ' || table_name || '(login_date); CREATE INDEX ' || table_name || '_lang_idx ON ' || table_name || '(lang);';
+        create_indexes = 'CREATE INDEX ' || table_name || '_name_idx ON ' || table_name || '(user_name); CREATE INDEX ' || table_name || '_user_id_idx ON ' || table_name || '(user_id); CREATE INDEX ' || table_name || '_login_date_idx ON ' || table_name || '(login_date);'; 
         EXECUTE create_indexes;
 
 END;
 $create_indexes_session$ LANGUAGE plpgsql;
-
-
-
 
 CREATE OR REPLACE RULE request_insert_function AS ON INSERT TO request DO INSTEAD SELECT tr_request ( NEW.id, NEW.time_begin, NEW.time_end, NEW.source_ip, NEW.service_id, NEW.request_type_id, NEW.session_id, NEW.user_name, NEW.is_monitoring); 
 
@@ -403,7 +403,7 @@ CREATE OR REPLACE RULE request_data_insert_function AS ON INSERT TO request_data
 CREATE OR REPLACE RULE request_property_value_insert_function AS ON INSERT TO request_property_value DO INSTEAD SELECT tr_request_property_value ( NEW.request_time_begin, NEW.request_service_id, NEW.request_monitoring, NEW.id, NEW.request_id, NEW.property_name_id, NEW.value, NEW.output, NEW.parent_id);
 
 CREATE OR REPLACE RULE session_insert_function AS ON INSERT TO session
-DO INSTEAD SELECT tr_session ( NEW.id, NEW.name, NEW.login_date, NEW.logout_date, NEW.lang); 
+DO INSTEAD SELECT tr_session ( NEW.id, NEW.user_name, NEW.user_id, NEW.login_date, NEW.logout_date); 
 
 
 
