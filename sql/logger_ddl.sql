@@ -26,6 +26,12 @@ CREATE TABLE result_code (
     name VARCHAR(64) NOT NULL    
 );
 
+CREATE TABLE request_object_type (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(64)
+);
+
+
 ALTER TABLE result_code ADD CONSTRAINT result_code_unique  UNIQUE (service_id, result_code );
 ALTER TABLE result_code ADD CONSTRAINT result_code_unique  UNIQUE (service_id, name );
 
@@ -67,6 +73,18 @@ CREATE TABLE request (
 	is_monitoring boolean NOT NULL, 
 	result_code_id INTEGER
 );
+
+CREATE TABLE request_object_ref (
+    id SERIAL PRIMARY KEY,
+    request_time_begin TIMESTAMP NOT NULL,
+    request_service_id INTEGER  NOT NULL,                                     
+    request_monitoring BOOLEAN NOT NULL,                                      
+    request_id INTEGER NOT NULL REFERENCES request(id),                       
+
+    object_type_id INTEGER  NOT NULL REFERENCES request_object_type(id),             
+    object_id INTEGER NOT NULL
+);
+
 
 ALTER TABLE request ADD FOREIGN KEY (result_code_id) REFERENCES result_code(id); 
 
@@ -124,9 +142,17 @@ CREATE INDEX request_property_value_value_idx ON request_property_value(value);
 CREATE INDEX request_property_value_output_idx ON request_property_value(output); 
 CREATE INDEX request_property_value_parent_id_idx ON request_property_value(parent_id); 
 
-CREATE INDEX session_name_idx ON session(name);
+CREATE INDEX request_object_ref_id_idx ON request_object_ref(request_id);
+CREATE INDEX request_object_ref_time_begin_idx ON request_object_ref(request_time_begin);
+CREATE INDEX request_object_ref_service_id_idx ON request_object_ref(request_service_id);
+CREATE INDEX request_object_ref_object_type_id_idx ON request_object_ref(object_type_id);
+CREATE INDEX request_object_ref_object_id_idx ON request_object_ref(object_id);
+
+CREATE INDEX session_user_name_idx ON session(user_name);
 CREATE INDEX session_login_date_idx ON session(login_date);
-CREATE INDEX session_lang_idx ON session(lang);
+CREATE INDEX session_user_id_idx ON session(user_id);
+ 
+
    
 COMMENT ON TABLE request_type IS 
 'List of requests which can be used by clients

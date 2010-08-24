@@ -4,7 +4,7 @@
 ---
 ---
 
--- UPDATE enum_parameters SET val = '<insert version here>' WHERE id = 1;
+UPDATE enum_parameters SET val = '<insert version here>' WHERE id = 1;
 
 
 --
