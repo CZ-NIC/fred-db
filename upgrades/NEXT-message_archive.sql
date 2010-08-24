@@ -28,6 +28,17 @@ INSERT INTO comm_type (id,type) VALUES (1,'email');
 INSERT INTO comm_type (id,type) VALUES (2,'letter');
 INSERT INTO comm_type (id,type) VALUES (3,'sms');
 
+CREATE TABLE message_type
+(
+  id  SERIAL PRIMARY KEY,
+  type VARCHAR(64) -- domain_expiration, password_reset, notification_about_change,...
+);
+
+comment on table message_type is 'type of message with respect to subject of message';
+
+INSERT INTO message_type (id,type) VALUES (1,'domain_expiration');
+INSERT INTO message_type (id,type) VALUES (2,'password_reset');
+INSERT INTO message_type (id,type) VALUES (3,'notification_about_change');
 
 CREATE TABLE message_archive
 (
@@ -36,7 +47,8 @@ CREATE TABLE message_archive
   moddate timestamp without time zone, -- date of sending (even if unsuccesfull)
   attempt smallint NOT NULL DEFAULT 0, -- failed attempts to send data
   status INTEGER,
-  comm_type_id INTEGER REFERENCES comm_type (id) --  communication channel
+  comm_type_id INTEGER REFERENCES comm_type (id), --  communication channel
+  message_type_id INTEGER REFERENCES message_type (id) --  message type
 );
 
 CREATE INDEX message_archive_crdate_idx ON message_archive (crdate);
