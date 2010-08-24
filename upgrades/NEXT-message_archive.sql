@@ -63,7 +63,7 @@ CREATE TABLE sms_archive
   content TEXT -- sms text content
 );
 
-INSERT INTO message_archive (id, status, crdate, moddate, comm_type_id) SELECT id, status, crdate, moddate 
+INSERT INTO message_archive (id, status, crdate, moddate, attempt, comm_type_id) SELECT id, status, crdate, moddate, attempt 
 , (SELECT id FROM comm_type WHERE type='letter') as comm_type
 FROM letter_archive;
 
