@@ -71,7 +71,8 @@ CREATE TABLE message_contact_history_map
 CREATE TABLE sms_archive
 (
   id INTEGER PRIMARY KEY REFERENCES message_archive (id), -- message_archive id
-  phone_number TEXT NOT NULL, -- copy of phone number
+  phone_number VARCHAR(64) NOT NULL, -- copy of phone number
+  phone_number_id INTEGER, -- unused 
   content TEXT -- sms text content
 );
 
@@ -81,7 +82,18 @@ FROM letter_archive;
 
 ALTER TABLE letter_archive ADD CONSTRAINT letter_archive_id_fkey FOREIGN KEY (id) REFERENCES message_archive(id);
 
-ALTER TABLE letter_archive ADD COLUMN address TEXT;
+ALTER TABLE letter_archive ADD COLUMN postal_address_name VARCHAR(1024);
+ALTER TABLE letter_archive ADD COLUMN postal_address_organization VARCHAR(1024);
+ALTER TABLE letter_archive ADD COLUMN postal_address_street1 VARCHAR(1024);
+ALTER TABLE letter_archive ADD COLUMN postal_address_street2 VARCHAR(1024);
+ALTER TABLE letter_archive ADD COLUMN postal_address_street3 VARCHAR(1024);
+ALTER TABLE letter_archive ADD COLUMN postal_address_city VARCHAR(1024);
+ALTER TABLE letter_archive ADD COLUMN postal_address_stateorprovince VARCHAR(1024);
+ALTER TABLE letter_archive ADD COLUMN postal_address_postalcode VARCHAR(32);
+ALTER TABLE letter_archive ADD COLUMN postal_address_country CHARACTER(2);
+
+ALTER TABLE letter_archive ADD COLUMN  postal_address_id INTEGER; --unused
+
 ALTER TABLE letter_archive DROP COLUMN status;
 ALTER TABLE letter_archive DROP COLUMN crdate;
 ALTER TABLE letter_archive DROP COLUMN moddate;
