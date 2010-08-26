@@ -71,7 +71,8 @@ CREATE TABLE request (
         user_name varchar(255),         -- name of the user who issued the request (from session table)
 		
 	is_monitoring boolean NOT NULL, 
-	result_code_id INTEGER
+	result_code_id INTEGER,
+        user_id INTEGER
 );
 
 CREATE TABLE request_object_ref (
