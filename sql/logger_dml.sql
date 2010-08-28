@@ -158,7 +158,10 @@ SELECT setval('request_type_id_seq', (SELECT MAX(id) FROM request_type));
 INSERT INTO result_code (service_id, result_code, name) VALUES (6, 1 , 'Success');
 INSERT INTO result_code (service_id, result_code, name) VALUES (6, 2 , 'Fail');
 INSERT INTO result_code (service_id, result_code, name) VALUES (6, 3 , 'Error');
-
+-- webadmin
+INSERT INTO result_code (service_id, result_code, name) VALUES (4, 1 , 'Success');
+INSERT INTO result_code (service_id, result_code, name) VALUES (4, 2 , 'Fail');
+INSERT INTO result_code (service_id, result_code, name) VALUES (4, 3 , 'Error')
 
 -- Set sequences beginnings
 SELECT setval('request_type_id_seq', (SELECT MAX(id) FROM request_type));
