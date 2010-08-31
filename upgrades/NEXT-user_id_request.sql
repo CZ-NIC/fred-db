@@ -4,9 +4,13 @@
 ---
 ---
 
--- UPDATE enum_parameters SET val = '<insert version here>' WHERE id = 1;
+UPDATE enum_parameters SET val = '<insert version here>' WHERE id = 1;
 
 ---
+
+--- this command has nothing to do with the actual ticket, 
+-- it just avoids the need to have another file:
+ALTER TABLE request_property_name ADD UNIQUE (name);
 
 
 ALTER TABLE request ADD COLUMN user_id INTEGER;
