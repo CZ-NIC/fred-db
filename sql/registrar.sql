@@ -1,8 +1,8 @@
 -- DROP TABLE Registrar CASCADE;
 CREATE TABLE Registrar (
   ID SERIAL PRIMARY KEY,
-  ICO  char(10), -- ICO of registrar
-  DIC  char(15), -- DIC of registrar
+  ICO  char(50), -- ICO of registrar
+  DIC  char(50), -- DIC of registrar
   varsymb  char(10)  , -- coupling variable symbol ( ico )
   VAT boolean DEFAULT True, -- whether VAT should be count by invoicing 
   Handle varchar(255) UNIQUE NOT NULL,
