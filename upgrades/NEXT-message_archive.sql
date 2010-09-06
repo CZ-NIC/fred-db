@@ -62,8 +62,8 @@ comment on column message_archive.status is 'status';
 CREATE TABLE message_contact_history_map
 (
   id  SERIAL PRIMARY KEY,
-  contact_object_registry_id INTEGER, -- db decoupling -- REFERENCES object_registry (id), -- id type contact
-  contact_history_historyid INTEGER, -- db decoupling -- REFERENCES contact_history (historyid), -- historyid 
+  contact_object_registry_id INTEGER, REFERENCES object_registry (id), -- id type contact
+  contact_history_historyid INTEGER, REFERENCES contact_history (historyid), -- historyid 
   message_archive_id INTEGER REFERENCES message_archive (id) -- message
 );
 
