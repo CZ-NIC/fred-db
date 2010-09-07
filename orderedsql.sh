@@ -84,6 +84,5 @@ case "$1" in
         cat $DIR/logger_ddl.sql		
         cat $DIR/logger_dml.sql
         cat $DIR/logger_partitioning.sql
-        cat $DIR/create_parts.sql
 		;;
 esac
