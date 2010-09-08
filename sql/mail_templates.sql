@@ -735,10 +735,10 @@ Following nameservers in NS set are recursive:
 <?cs /each ?><?cs /if ?><?cs if:par_test.name == "notrecursive4all" ?>Následující nameservery v sadě nameserverů zodpověděly rekurzivně dotaz:
 Following nameservers in NS set answered recursively a query:
 <?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
-<?cs /each ?><?cs /if ?><?cs if:par_test.name == "dnsseckeychase" ?>Pro následující domény přislušející sadě nameserverů nebylo možno 
-sestavit řetěz důvěry:
-For following domains belonging to NS set was unable to create 
-key chain of trust:
+<?cs /each ?><?cs /if ?><?cs if:par_test.name == "dnsseckeychase" ?>Pro následující domény přislušející sadě nameserverů nebylo možno
+ověřit validitu DNSSEC podpisu:
+For following domains belonging to NS set was unable to validate
+DNSSEC signature:
 <?cs each:domain = par_test.ns ?>    <?cs var:domain ?>
 <?cs /each ?><?cs /if ?><?cs /def ?>
 === Chyby / Errors ==================================================
