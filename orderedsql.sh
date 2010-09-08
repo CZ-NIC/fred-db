@@ -82,6 +82,13 @@ case "$1" in
 	*)
 		write_script
         cat $DIR/logger_ddl.sql		
+        cat $DIR/logger_dml_whois.sql
+        cat $DIR/logger_dml_webwhois.sql
+        cat $DIR/logger_dml_pubrequest.sql
+        cat $DIR/logger_dml_epp.sql
+        cat $DIR/logger_dml_webadmin.sql
+        cat $DIR/logger_dml_intranet.sql
+        cat $DIR/logger_dml_mojeid.sql
         cat $DIR/logger_dml.sql
         cat $DIR/logger_partitioning.sql
 		;;
