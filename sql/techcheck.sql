@@ -41,6 +41,9 @@ VALUES (50, 'notrecursive',     4, '', False, 'recursive.py', 2);
 INSERT INTO check_test (id, name, severity, description, disabled, script,
 	need_domain)
 VALUES (60, 'notrecursive4all', 4, '', False, 'recursive4all.py', 0);
+INSERT INTO check_test (id, name, severity, description, disabled, script,
+	need_domain)
+VALUES (70, 'dnsseckeychase', 3, '', False, 'dnsseckeychase.py', 3);
 
 CREATE TABLE check_dependance (
 	id SERIAL PRIMARY KEY,
@@ -62,8 +65,10 @@ INSERT INTO check_dependance (addictid, testid) VALUES (30,20);
 INSERT INTO check_dependance (addictid, testid) VALUES (40, 1);
 INSERT INTO check_dependance (addictid, testid) VALUES (50, 1);
 INSERT INTO check_dependance (addictid, testid) VALUES (60, 1);
+INSERT INTO check_dependance (addictid, testid) VALUES (70, 1);
+INSERT INTO check_dependance (addictid, testid) VALUES (70, 20);
 
-select setval('check_dependance_id_seq', 14);
+select setval('check_dependance_id_seq', 16);
 
 CREATE TABLE check_nsset (
 	id SERIAL PRIMARY KEY,
