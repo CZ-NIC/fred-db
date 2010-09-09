@@ -2,6 +2,9 @@ INSERT INTO service (id, partition_postfix, name) VALUES
 (3, 'epp_', 'EPP');
 
 INSERT INTO request_type (service_id, id, name) VALUES 
+(3, 100,  'ClientLogin'),
+(3, 101,  'ClientLogout'),
+(3, 105,  'ClientGreeting'),
 (3, 120,  'PollAcknowledgement'),
 (3, 121,  'PollResponse'),
 (3, 200,  'ContactCheck'),
