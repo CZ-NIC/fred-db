@@ -103,10 +103,10 @@ DECLARE
 BEGIN
         create_indexes := 
        'CREATE INDEX ' || table_name || '_id_idx ON ' || table_name || '(request_id);'
-       'CREATE INDEX ' || table_name || '_time_begin_idx ON ' || table_name || '(request_time_begin); '
-       'CREATE INDEX ' || table_name || '_service_id_idx ON ' || table_name || '(request_service_id);'
-       'CREATE INDEX ' || table_name || '_object_type_id_idx ON ' || table_name || '(object_type_id);'
-       'CREATE INDEX ' || table_name || '_object_id_idx ON ' || table_name || '(object_id);';
+       || 'CREATE INDEX ' || table_name || '_time_begin_idx ON ' || table_name || '(request_time_begin); '
+       || 'CREATE INDEX ' || table_name || '_service_id_idx ON ' || table_name || '(request_service_id);'
+       || 'CREATE INDEX ' || table_name || '_object_type_id_idx ON ' || table_name || '(object_type_id);'
+       || 'CREATE INDEX ' || table_name || '_object_id_idx ON ' || table_name || '(object_id);';
         EXECUTE create_indexes;
 END;
 $create_indexes_request_object_ref$ LANGUAGE plpgsql;
