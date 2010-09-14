@@ -70,21 +70,91 @@ comment on column notify_statechange.state_id is 'which statechnage triggered no
 comment on column notify_statechange.type is 'what notification was done';
 comment on column notify_statechange.mail_id is 'email with result of notification (null if contact have no email)';
 
--- letters sent electronically as PDF documents to postal service, address is included in the document
-CREATE TABLE letter_archive (
-  id SERIAL PRIMARY KEY,
-   -- initial (default) status is 'file generated & ready for processing'
-  status INTEGER NOT NULL DEFAULT 1 REFERENCES enum_send_status(id),
-  -- file with pdf about notification (null for old)
-  file_id INTEGER REFERENCES files (id),
-  crdate timestamp NOT NULL DEFAULT now(),  -- date of insertion in table
-  moddate timestamp,    -- date of sending (even if unsuccesfull)
-  attempt smallint NOT NULL DEFAULT 0, -- failed attempts to send data
-  -- for postservis - bundling letters into batches
-  batch_id VARCHAR(64)
+--message_archive 
+CREATE TABLE comm_type
+(
+  id  SERIAL PRIMARY KEY,
+  type VARCHAR(64) -- email, letter, sms
 );
 
-CREATE INDEX letter_archive_status_idx ON letter_archive (status);
+comment on table comm_type is 'type of communication with contact';
+
+INSERT INTO comm_type (id,type) VALUES (1,'email');
+INSERT INTO comm_type (id,type) VALUES (2,'letter');
+INSERT INTO comm_type (id,type) VALUES (3,'sms');
+
+CREATE TABLE message_type
+(
+  id  SERIAL PRIMARY KEY,
+  type VARCHAR(64) -- domain_expiration, password_reset, notification_about_change,...
+);
+
+comment on table message_type is 'type of message with respect to subject of message';
+
+INSERT INTO message_type (id,type) VALUES (1,'domain_expiration');
+INSERT INTO message_type (id,type) VALUES (2,'password_reset');
+INSERT INTO message_type (id,type) VALUES (3,'notification_about_change');
+
+CREATE TABLE message_archive
+(
+  id  SERIAL PRIMARY KEY,
+  crdate timestamp without time zone NOT NULL DEFAULT now(), -- date of insertion in table
+  moddate timestamp without time zone, -- date of sending (even if unsuccesfull)
+  attempt smallint NOT NULL DEFAULT 0, -- failed attempts to send data
+  status INTEGER,
+  comm_type_id INTEGER REFERENCES comm_type (id), --  communication channel
+  message_type_id INTEGER REFERENCES message_type (id) --  message type
+);
+
+CREATE INDEX message_archive_crdate_idx ON message_archive (crdate);
+CREATE INDEX message_archive_status_idx ON message_archive (status);
+CREATE INDEX message_archive_comm_type_id_idx ON message_archive (comm_type_id);
+
+comment on column message_archive.crdate is 'date and time of insertion in table';
+comment on column message_archive.moddate is 'date and time of sending (event unsuccesfull)';
+comment on column message_archive.status is 'status';
+
+CREATE TABLE message_contact_history_map
+(
+  id  SERIAL PRIMARY KEY,
+  contact_object_registry_id INTEGER,-- REFERENCES object_registry (id), -- id type contact
+  contact_history_historyid INTEGER, -- REFERENCES contact_history (historyid), -- historyid 
+  message_archive_id INTEGER REFERENCES message_archive (id) -- message
+);
+
+--sms archive
+CREATE TABLE sms_archive
+(
+  id INTEGER PRIMARY KEY REFERENCES message_archive (id), -- message_archive id
+  phone_number VARCHAR(64) NOT NULL, -- copy of phone number
+  phone_number_id INTEGER, -- unused 
+  content TEXT -- sms text content
+);
+
+
+-- letters sent electronically as PDF documents to postal service, address is included in the document
+
+CREATE TABLE letter_archive
+(
+  id INTEGER PRIMARY KEY REFERENCES message_archive (id),
+  file_id integer REFERENCES files (id), -- file with pdf about notification (null for old)
+  batch_id character varying(64), -- postservis batch id - multiple letters are bundled into batches
+  postal_address_name character varying(1024),
+  postal_address_organization character varying(1024),
+  postal_address_street1 character varying(1024),
+  postal_address_street2 character varying(1024),
+  postal_address_street3 character varying(1024),
+  postal_address_city character varying(1024),
+  postal_address_stateorprovince character varying(1024),
+  postal_address_postalcode character varying(32),
+  postal_address_country character(2),
+  postal_address_id integer
+);
+
+COMMENT ON TABLE letter_archive IS 'letters sent electronically as PDF documents to postal service, address is included in the document';
+COMMENT ON COLUMN letter_archive.file_id IS 'file with pdf about notification (null for old)';
+COMMENT ON COLUMN letter_archive.batch_id IS 'postservis batch id - multiple letters are bundled into batches';
+
 CREATE INDEX letter_archive_batch_id ON letter_archive (batch_id);
 
 
