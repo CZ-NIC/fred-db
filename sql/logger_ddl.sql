@@ -14,8 +14,8 @@ CREATE TABLE service (
 
 CREATE TABLE request_type (
         id SERIAL PRIMARY KEY, 
-        name varchar(64),
-        service_id integer REFERENCES service(id)
+        name varchar(64) NOT NULL,
+        service_id integer NOT NULL REFERENCES service(id)
 );
 ALTER TABLE request_type ADD UNIQUE(name, service_id);
 
@@ -32,8 +32,8 @@ CREATE TABLE request_object_type (
 );
 
 
-ALTER TABLE result_code ADD CONSTRAINT result_code_unique  UNIQUE (service_id, result_code );
-ALTER TABLE result_code ADD CONSTRAINT result_code_unique  UNIQUE (service_id, name );
+ALTER TABLE result_code ADD CONSTRAINT result_code_unique_code  UNIQUE (service_id, result_code );
+ALTER TABLE result_code ADD CONSTRAINT result_code_unique_name  UNIQUE (service_id, name );
 
 COMMENT ON TABLE result_code IS 'all possible operation result codes';
 COMMENT ON COLUMN result_code.id IS 'result_code id';

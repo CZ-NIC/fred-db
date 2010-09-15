@@ -165,7 +165,7 @@ CREATE TABLE notify_letters (
   letter_id INTEGER REFERENCES letter_archive (id)
 );  
 
-CREATE INDEX notify_letters_status_idx ON notify_letters (status);
+CREATE INDEX notify_letters_status_idx ON notify_letters (state_id);
 CREATE INDEX notify_letters_letter_id_idx ON notify_letters (letter_id);
 
 comment on table notify_letters is 'notifications about deleteWarning state sent as PDF letters';
