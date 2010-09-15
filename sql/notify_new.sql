@@ -147,7 +147,7 @@ CREATE TABLE letter_archive
   postal_address_city character varying(1024),
   postal_address_stateorprovince character varying(1024),
   postal_address_postalcode character varying(32),
-  postal_address_country character(2),
+  postal_address_country character varying(1024),
   postal_address_id integer
 );
 

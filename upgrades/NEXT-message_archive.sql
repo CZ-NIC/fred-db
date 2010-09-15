@@ -90,7 +90,7 @@ ALTER TABLE letter_archive ADD COLUMN postal_address_street3 VARCHAR(1024);
 ALTER TABLE letter_archive ADD COLUMN postal_address_city VARCHAR(1024);
 ALTER TABLE letter_archive ADD COLUMN postal_address_stateorprovince VARCHAR(1024);
 ALTER TABLE letter_archive ADD COLUMN postal_address_postalcode VARCHAR(32);
-ALTER TABLE letter_archive ADD COLUMN postal_address_country CHARACTER(2);
+ALTER TABLE letter_archive ADD COLUMN postal_address_country VARCHAR(1024);
 
 ALTER TABLE letter_archive ADD COLUMN  postal_address_id INTEGER; --unused
 
