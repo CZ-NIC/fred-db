@@ -38,7 +38,7 @@ write_script()
 	cat $DIR/credit.sql
 	cat $DIR/invoice.sql
 	cat $DIR/bank.sql
-    cat $DIR/bank_ddl_new.sql
+	cat $DIR/bank_ddl_new.sql
 	#tech-check
 	cat $DIR/techcheck.sql
 	cat $DIR/info_buffer.sql
@@ -63,6 +63,8 @@ write_script()
 	cat $DIR/public_request.sql
 	# registrar's certifications and groups
 	cat $DIR/registrar_certification_ddl.sql
+        # mojeid
+	cat $DIR/mail_templates_mojeid.sql
 }
 
 usage()
