@@ -3,7 +3,8 @@ CREATE TABLE History (
         action INTEGER NOT NULL,
         valid_from TIMESTAMP NOT NULL DEFAULT NOW(),
         valid_to TIMESTAMP,
-        next INTEGER
+        next INTEGER,
+        request_id INTEGER
 );
 
 COMMENT ON TABLE history IS
