@@ -71,6 +71,21 @@ comment on column notify_statechange.type is 'what notification was done';
 comment on column notify_statechange.mail_id is 'email with result of notification (null if contact have no email)';
 
 --message_archive 
+
+CREATE TABLE message_status
+(
+  id  SERIAL PRIMARY KEY,
+  status_name VARCHAR(64) -- ready, being_sent, sent, send_failed
+);
+
+comment on table message_status is 'named message states';
+
+INSERT INTO message_status (id,status_name) VALUES (1,'ready');
+INSERT INTO message_status (id,status_name) VALUES (6,'being_sent');
+INSERT INTO message_status (id,status_name) VALUES (5,'sent');
+INSERT INTO message_status (id,status_name) VALUES (4,'send_failed');
+
+
 CREATE TABLE comm_type
 (
   id  SERIAL PRIMARY KEY,
@@ -101,7 +116,7 @@ CREATE TABLE message_archive
   crdate timestamp without time zone NOT NULL DEFAULT now(), -- date of insertion in table
   moddate timestamp without time zone, -- date of sending (even if unsuccesfull)
   attempt smallint NOT NULL DEFAULT 0, -- failed attempts to send data
-  status INTEGER,
+  status_id INTEGER REFERENCES message_status (id), -- message_status
   comm_type_id INTEGER REFERENCES comm_type (id), --  communication channel
   message_type_id INTEGER REFERENCES message_type (id) --  message type
 );
