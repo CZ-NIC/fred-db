@@ -40,7 +40,9 @@ INSERT INTO request_type (service_id, id, name) VALUES
 (4, 1335, 'LoadFilter'),
 (4, 1336, 'CreateRegistrarGroup'),
 (4, 1337, 'DeleteRegistrarGroup'),
-(4, 1338, 'UpdateRegistrarGroup');
+(4, 1338, 'UpdateRegistrarGroup'),
+(4, 1339, 'MessageDetail'),
+(4, 1340, 'MessageFilter');
 
 INSERT INTO result_code (service_id, result_code, name) VALUES 
 (4, 1 , 'Success'),

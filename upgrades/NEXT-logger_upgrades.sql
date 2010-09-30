@@ -674,6 +674,10 @@ INSERT INTO request_type (id, name, service_id) VALUES (1508, 'PasswordReset', 6
 INSERT INTO request_type (id, name, service_id) VALUES (1509, 'TrustChange', 6);
 INSERT INTO request_type (id, name, service_id) VALUES (1510, 'Identification', 6);
 
+INSERT INTO request_type (id, name, service_id) VALUES (1339, 'MessageDetail', 4);
+INSERT INTO request_type (id, name, service_id) VALUES (1340, 'MessageFilter', 4);
+
+
 SELECT setval('request_type_id_seq', (SELECT MAX(id) FROM request_type));
 
 INSERT INTO result_code (service_id, result_code, name) VALUES (6, 1 , 'Success');
