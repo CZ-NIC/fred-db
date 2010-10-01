@@ -59,6 +59,13 @@ INSERT INTO enum_object_states
   VALUES (19,'deleteWarning','{3}','f','f');
 INSERT INTO enum_object_states 
   VALUES (20,'outzoneUnguarded','{3}','f','f');
+INSERT INTO enum_object_states 
+  VALUES (21,'conditionallyIdentifiedContact','{1}','t','t');
+INSERT INTO enum_object_states 
+  VALUES (22,'identifiedContact','{1}','t','t');
+INSERT INTO enum_object_states 
+  VALUES (23,'validatedContact','{1}','t','t');
+
 
 -- update for keyset
 update enum_object_states set types = types || array[4] where 2 = any (types);
