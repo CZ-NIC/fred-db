@@ -9,8 +9,9 @@ Vážený zákazníku,
 
    datum:  <?cs var:reqdate ?>
    typ:  <?cs if:rtype == #1 ?>identifikace typu sms<?cs elif:rtype == #2 ?>identifikace typu dopis<?cs /if ?>
-   handle:  <?cs var:handle ?> 
-   1.heslo: <?cs var:passwd ?> 
+   handle:  <?cs var:handle ?>
+   1.heslo: <?cs var:passwd ?><?cs if:passwd2 ?>
+   2.heslo: <?cs var:passwd2 ?> (demo mód)<?cs /if ?>
    url: <?cs var:url ?>
 
                                              S pozdravem
@@ -22,8 +23,9 @@ Dear customer,
 
    date:  <?cs var:reqdate ?>
    type:  <?cs if:rtype == #1 ?>sms identification<?cs elif:rtype == #2 ?>snail mail identification<?cs /if ?>
-   handle:  <?cs var:handle ?> 
-   1.passwd: <?cs var:passwd ?> 
+   handle:  <?cs var:handle ?>
+   1.passwd: <?cs var:passwd ?><?cs if:passwd2 ?>
+   2.passwd: <?cs var:passwd2 ?> (demo mode)<?cs /if ?>
    url: <?cs var:url ?>
 
                                              Yours sincerely
