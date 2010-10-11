@@ -97,6 +97,7 @@ comment on table comm_type is 'type of communication with contact';
 INSERT INTO comm_type (id,type) VALUES (1,'email');
 INSERT INTO comm_type (id,type) VALUES (2,'letter');
 INSERT INTO comm_type (id,type) VALUES (3,'sms');
+INSERT INTO comm_type (id,type) VALUES (4,'registered_letter');
 
 CREATE TABLE message_type
 (
