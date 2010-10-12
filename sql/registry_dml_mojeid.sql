@@ -1,3 +1,6 @@
+---
+--- messages templates
+---
 INSERT INTO mail_type (id, name, subject) VALUES (21, 'mojeid_identification', 'Informace k žádosti o identifikaci / Information about identification request ');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (21, 'plain', 1,
@@ -44,3 +47,27 @@ Vážený uživateli,
                                    podpora <?cs var:defaults.company ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (21, 21);
+
+
+---
+--- file types
+---
+INSERT INTO enum_filetype (id, name) VALUES (7, 'mojeid contact identification request');
+
+
+---
+--- contact states
+---
+INSERT INTO enum_object_states VALUES (21,'conditionallyIdentifiedContact','{1}','t','t');
+INSERT INTO enum_object_states VALUES (22,'identifiedContact','{1}','t','t');
+INSERT INTO enum_object_states VALUES (23,'validatedContact','{1}','t','t');
+
+INSERT INTO enum_object_states_desc VALUES (21, 'CS', 'Kontakt je podmínečně identifikován');
+INSERT INTO enum_object_states_desc VALUES (21, 'EN', 'Contact is conditionally identified');
+INSERT INTO enum_object_states_desc VALUES (22, 'CS', 'Kontakt je identifikován');
+INSERT INTO enum_object_states_desc VALUES (22, 'EN', 'Contact is identified');
+INSERT INTO enum_object_states_desc VALUES (23, 'CS', 'Kontakt je validován');
+INSERT INTO enum_object_states_desc VALUES (23, 'EN', 'Contact is validated');
+
+
+

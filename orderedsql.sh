@@ -63,8 +63,8 @@ write_script()
 	cat $DIR/public_request.sql
 	# registrar's certifications and groups
 	cat $DIR/registrar_certification_ddl.sql
-        # mojeid
-	cat $DIR/mail_templates_mojeid.sql
+    # mojeid
+    cat $DIR/registry_dml_mojeid.sql
 }
 
 usage()
