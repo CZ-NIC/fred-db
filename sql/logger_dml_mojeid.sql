@@ -8,14 +8,9 @@ INSERT INTO request_type (service_id, id, name) VALUES
 (6, 1500, 'OpenIDRequest'),
 (6, 1501, 'Login'),
 (6, 1502, 'Logout'),
-(6, 1503, 'UserCreate'),
 (6, 1504, 'UserChange'),
-(6, 1505, 'PasswordChange'),
-(6, 1506, 'CertificateChange'),
 (6, 1507, 'PasswordResetRequest'),
-(6, 1508, 'PasswordReset'),
 (6, 1509, 'TrustChange'),
-(6, 1510, 'Identification'),
 (6, 1511, 'AccountStateChange'),
 (6, 1512, 'AuthChange');
 
