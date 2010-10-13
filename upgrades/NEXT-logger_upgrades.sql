@@ -673,6 +673,8 @@ INSERT INTO request_type (id, name, service_id) VALUES (1507, 'PasswordResetRequ
 INSERT INTO request_type (id, name, service_id) VALUES (1508, 'PasswordReset', 6);
 INSERT INTO request_type (id, name, service_id) VALUES (1509, 'TrustChange', 6);
 INSERT INTO request_type (id, name, service_id) VALUES (1510, 'Identification', 6);
+INSERT INTO request_type (id, name, service_id) VALUES (1511, 'AccountStateChange', 6);
+INSERT INTO request_type (id, name, service_id) VALUES (1512, 'AuthChange', 6);
 
 INSERT INTO request_type (id, name, service_id) VALUES (1339, 'MessageDetail', 4);
 INSERT INTO request_type (id, name, service_id) VALUES (1340, 'MessageFilter', 4);
