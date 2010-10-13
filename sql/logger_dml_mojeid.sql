@@ -15,8 +15,8 @@ INSERT INTO request_type (service_id, id, name) VALUES
 (6, 1507, 'PasswordResetRequest'),
 (6, 1508, 'PasswordReset'),
 (6, 1509, 'TrustChange'),
-(6, 1510, 'Identification');
-(6, 1511, 'AccountStateChange');
+(6, 1510, 'Identification'),
+(6, 1511, 'AccountStateChange'),
 (6, 1512, 'AuthChange');
 
 INSERT INTO result_code (service_id, result_code, name) VALUES 
