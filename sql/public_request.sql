@@ -50,8 +50,8 @@ CREATE TABLE public_request_auth (
 CREATE TABLE public_request_messages_map
 (
   public_request_id INTEGER REFERENCES public_request (id),
-  message_archive_id INTEGER REFERENCES message_archive (id), 
-  mail_archive_id INTEGER REFERENCES mail_archive (id),
+  message_archive_id INTEGER, -- REFERENCES message_archive (id), 
+  mail_archive_id INTEGER, -- REFERENCES mail_archive (id),
   UNIQUE (public_request_id, message_archive_id),
   UNIQUE (public_request_id, mail_archive_id)
 );
