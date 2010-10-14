@@ -749,25 +749,6 @@ INSERT INTO request_object_type (id, name) VALUES (9, 'invoice');
 INSERT INTO request_object_type (id, name) VALUES (10, 'bankstatement');
 INSERT INTO request_object_type (id, name) VALUES (11, 'request');
 
-
-
----
---- don't forget to update database schema version
----
----
-
-UPDATE enum_parameters SET val = '<insert version here>' WHERE id = 1;
-
-
----
---- #4365
----
----
-
-ALTER TABLE public_request ADD COLUMN logd_request_id INTEGER;
-
-
-
 ---
 --- don't forget to update database schema version
 ---

@@ -1,4 +1,11 @@
 ---
+--- #4365
+---
+---
+
+ALTER TABLE public_request ADD COLUMN logd_request_id INTEGER;
+
+---
 --- Ticket #4578
 ---
 CREATE TABLE public_request_auth (
