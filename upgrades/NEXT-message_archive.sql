@@ -48,14 +48,14 @@ INSERT INTO comm_type (id,type) VALUES (4,'registered_letter');
 CREATE TABLE message_type
 (
   id  SERIAL PRIMARY KEY,
-  type VARCHAR(64) -- domain_expiration, password_reset, notification_about_change,...
+  type VARCHAR(64) -- domain_expiration, mojeid_pin2, mojeid_pin3,...
 );
 
 comment on table message_type is 'type of message with respect to subject of message';
 
 INSERT INTO message_type (id,type) VALUES (1,'domain_expiration');
-INSERT INTO message_type (id,type) VALUES (2,'password_reset');
-INSERT INTO message_type (id,type) VALUES (3,'notification_about_change');
+INSERT INTO message_type (id,type) VALUES (2,'mojeid_pin2');
+INSERT INTO message_type (id,type) VALUES (3,'mojeid_pin3');
 
 CREATE TABLE message_archive
 (
