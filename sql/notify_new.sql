@@ -123,12 +123,12 @@ CREATE TABLE message_archive
 );
 
 CREATE INDEX message_archive_crdate_idx ON message_archive (crdate);
-CREATE INDEX message_archive_status_idx ON message_archive (status);
+CREATE INDEX message_archive_status_id_idx ON message_archive (status_id);
 CREATE INDEX message_archive_comm_type_id_idx ON message_archive (comm_type_id);
 
 comment on column message_archive.crdate is 'date and time of insertion in table';
 comment on column message_archive.moddate is 'date and time of sending (event unsuccesfull)';
-comment on column message_archive.status is 'status';
+comment on column message_archive.status_id is 'status';
 
 CREATE TABLE message_contact_history_map
 (
