@@ -216,10 +216,3 @@ INSERT INTO message_type (id,type) VALUES (1,'domain_expiration');
 INSERT INTO message_type (id,type) VALUES (2,'mojeid_pin2');
 INSERT INTO message_type (id,type) VALUES (3,'mojeid_pin3');
 
----
---- Messaging - letters migration
----
-
-INSERT INTO message_archive (id, status_id, crdate, moddate, attempt, comm_type_id) SELECT id, status, crdate, moddate, attempt 
-, (SELECT id FROM comm_type WHERE type='letter') as comm_type
-FROM letter_archive;

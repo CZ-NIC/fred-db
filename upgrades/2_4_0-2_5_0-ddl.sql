@@ -52,13 +52,6 @@ CREATE TABLE message_status
 
 comment on table message_status is 'named message states';
 
-INSERT INTO message_status (id,status_name) VALUES (1,'ready');
-INSERT INTO message_status (id,status_name) VALUES (6,'being_sent');
-INSERT INTO message_status (id,status_name) VALUES (5,'sent');
-INSERT INTO message_status (id,status_name) VALUES (4,'send_failed');
-
-
-
 CREATE TABLE comm_type
 (
   id  SERIAL PRIMARY KEY,
@@ -67,10 +60,6 @@ CREATE TABLE comm_type
 
 comment on table comm_type is 'type of communication with contact';
 
-INSERT INTO comm_type (id,type) VALUES (1,'email');
-INSERT INTO comm_type (id,type) VALUES (2,'letter');
-INSERT INTO comm_type (id,type) VALUES (3,'sms');
-INSERT INTO comm_type (id,type) VALUES (4,'registered_letter');
 
 CREATE TABLE message_type
 (
@@ -79,10 +68,6 @@ CREATE TABLE message_type
 );
 
 comment on table message_type is 'type of message with respect to subject of message';
-
-INSERT INTO message_type (id,type) VALUES (1,'domain_expiration');
-INSERT INTO message_type (id,type) VALUES (2,'mojeid_pin2');
-INSERT INTO message_type (id,type) VALUES (3,'mojeid_pin3');
 
 CREATE TABLE message_archive
 (
