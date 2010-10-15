@@ -96,12 +96,12 @@ CREATE TABLE message_archive
 );
 
 CREATE INDEX message_archive_crdate_idx ON message_archive (crdate);
-CREATE INDEX message_archive_status_idx ON message_archive (status);
+CREATE INDEX message_archive_status_id_idx ON message_archive (status_id);
 CREATE INDEX message_archive_comm_type_id_idx ON message_archive (comm_type_id);
 
 comment on column message_archive.crdate is 'date and time of insertion in table';
 comment on column message_archive.moddate is 'date and time of sending (event unsuccesfull)';
-comment on column message_archive.status is 'status';
+comment on column message_archive.status_id is 'status';
 
 CREATE TABLE message_contact_history_map
 (
@@ -120,7 +120,7 @@ CREATE TABLE sms_archive
   content TEXT -- sms text content
 );
 
-INSERT INTO message_archive (id, status, crdate, moddate, attempt, comm_type_id) SELECT id, status, crdate, moddate, attempt 
+INSERT INTO message_archive (id, status_id, crdate, moddate, attempt, comm_type_id) SELECT id, status, crdate, moddate, attempt 
 , (SELECT id FROM comm_type WHERE type='letter') as comm_type
 FROM letter_archive;
 
