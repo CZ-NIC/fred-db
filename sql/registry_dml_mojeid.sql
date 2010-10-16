@@ -1,52 +1,58 @@
 ---
 --- messages templates
 ---
-INSERT INTO mail_type (id, name, subject) VALUES (21, 'mojeid_identification', 'Informace k žádosti o identifikaci / Information about identification request ');
+INSERT INTO mail_type (id, name, subject) VALUES (21, 'mojeid_identification', 'Založení účtu mojeID');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (21, 'plain', 1,
 '
-Ověření nového uživatele mojeID
-
-
 Vážený uživateli,
 
-    tento e-mail potvrzuje úspěšné založení mojeID s těmito údaji:
+tento e-mail potvrzuje úspěšné založení účtu mojeID s těmito údaji:
 
-    účet mojeID: <?cs var:handle ?>
-    jméno:       <?cs var:firstname ?>
-    příjmení:    <?cs var:lastname ?>
-    e-mail:      <?cs var:email ?>
+účet mojeID: <?cs var:handle ?>
+jméno:       <?cs var:firstname ?>
+příjmení:    <?cs var:lastname ?>
+e-mail:      <?cs var:email ?>
 
+Pro aktivaci Vašeho účtu je nutné vložit kódy PIN1 a PIN2.
 
-    Pro další užívání účtu mojeID je nutné provést ověření Vaší
-    totožnosti pomocí dvou kódů PIN1 a PIN2.
+PIN1: <?cs var:passwd ?>
+PIN2: Vám byl zaslán <?cs if:rtype == #1 ?>pomocí SMS.<?cs elif:rtype == #2 ?>poštou.<?cs /if ?>
+<?cs if:passwd2?>V demo režimu není odesílání SMS a pošty aktivní. PIN2: <?cs var:passwd2 ?> <?cs /if ?>
+<?cs if:passwd3?>V demo režimu není odesílání SMS a pošty aktivní. PIN3: <?cs var:passwd3 ?> <?cs /if ?>
 
-    <?cs if:passwd2 ?>Z důvodu zapnutého demo módu na serveru Vám zasíláme oba
-    kódy PIN1 a PIN2 na email.<?cs else ?><?cs if:rtype == #1 ?>Jelikož jste zvolili ověření prostřednictvím e-mailu a SMS,
-    zasíláme Vám touto cestou kód PIN1. Současně Vám zasíláme kód
-    PIN2 pomocí SMS do Vašeho mobilního telefonu.<?cs elif:rtype == #2 ?>Jelikož jste zvolili ověření prostřednictvím e-mailu a dopisu,
-    zasíláme Vám touto cestou kód PIN1. Současně Vám zasíláme kód
-    PIN2 formou doporučeného dopisu na Vaši poštovní adresu.<?cs /if ?><?cs /if ?>
+Aktivaci účtu proveďte kliknutím na následující odkaz:
 
-    Váš PIN1 je: <?cs var:passwd ?><?cs if:passwd2 ?>
-    Váš PIN2 je: <?cs var:passwd2 ?> (demo mód)<?cs /if ?>
+<?cs var:url ?>?password1=<?cs var:passwd ?>
 
-    <?cs if:rtype == #1 ?>Prosím klikněte na níže uvedený odkaz, který Vás přesměruje
-    na stránku s ověřením:<?cs elif:rtype == #2 ?>V okamžiku, kdy získáte PIN2, klikněte prosím na níže uvedený
-    odkaz, který Vás přesměruje na stránku s ověřením:<?cs /if ?>
-
-    <?cs var:url ?>?password1=<?cs var:passwd ?>
-
-
-    Přejeme Vám mnoho radosti při používání služby mojeID.
-
-
-    Váš tým CZ.NIC.
-
-
-                                   podpora <?cs var:defaults.company ?>
+Váš tým <?cs var:defaults.company ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (21, 21);
+
+INSERT INTO mail_type (id, name, subject) VALUES (22, 'mojeid_validation', 'Validace účtu mojeID <?cs if:status == #1 ?>provedena<?cs else ?>neprovedena<?cs /if?>');
+INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
+(22, 'plain', 1,
+'
+<?cs if:status == #1 ?>
+Na základě žádosti číslo <?cs var:defaults.company ?> ze dne <?cs var:reqdate ?> byla provedena validace účtu mojeID.
+<?cs else ?>
+Váš účet mojeID: 
+<cs /if?>
+
+Jméno : <?cs var:handle ?>
+<?cs if:org ?>Organizace : <?cs var:org><?cs /if ?>
+<?cs if:ic ?>IČ : <?cs var:ic><?cs /if ?>
+<?cs if:birthdate?>Datum narození : <?cs var:birtdate><?cs /if ?>
+Adresa : <?cs var:street1> <?cs var:street2> <?cs var:street3>, <?cs var:postalcode> <?cs var:city>, <?cs var:countrycode> 
+
+<?cs if:status != #1 ?>
+u kterého bylo požádáno o validaci žádostí číslo <?cs var:reqid ?> ze dne <?cs var:reqdate ?> nebyl validován.
+<cs /if?>
+
+Váš tým <?cs var:defaults.company ?>
+
+');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (22, 22);
 
 
 ---
