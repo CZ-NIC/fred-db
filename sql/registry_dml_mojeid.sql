@@ -17,9 +17,9 @@ e-mail:      <?cs var:email ?>
 Pro aktivaci Vašeho účtu je nutné vložit kódy PIN1 a PIN2.
 
 PIN1: <?cs var:passwd ?>
-PIN2: Vám byl zaslán <?cs if:rtype == #1 ?>pomocí SMS.<?cs elif:rtype == #2 ?>poštou.<?cs /if ?>
-<?cs if:passwd2?>V demo režimu není odesílání SMS a pošty aktivní. PIN2: <?cs var:passwd2 ?> <?cs /if ?>
-<?cs if:passwd3?>V demo režimu není odesílání SMS a pošty aktivní. PIN3: <?cs var:passwd3 ?> <?cs /if ?>
+PIN2: Vám byl zaslán <?cs if:rtype == #1 ?>pomocí SMS.<?cs elif:rtype == #2 ?>poštou.<?cs /if ?><?cs if:passwd2?>
+V demo režimu není odesílání SMS a pošty aktivní. PIN2: <?cs var:passwd2 ?> <?cs /if ?><?cs if:passwd3?>
+V demo režimu není odesílání SMS a pošty aktivní. PIN3: <?cs var:passwd3 ?> <?cs /if ?>
 
 Aktivaci účtu proveďte kliknutím na následující odkaz:
 
@@ -34,16 +34,16 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (22, 'plain', 1,
 '
 <?cs if:status == #1 ?>
-Na základě žádosti číslo <?cs var:defaults.company ?> ze dne <?cs var:reqdate ?> byla provedena validace účtu mojeID.
+Na základě žádosti číslo <?cs var:reqid ?> ze dne <?cs var:reqdate ?> byla provedena validace účtu mojeID.
 <?cs else ?>
 Váš účet mojeID: 
 <cs /if?>
 
-Jméno : <?cs var:handle ?>
+Jméno : <?cs var:name ?>
 <?cs if:org ?>Organizace : <?cs var:org><?cs /if ?>
 <?cs if:ic ?>IČ : <?cs var:ic><?cs /if ?>
 <?cs if:birthdate?>Datum narození : <?cs var:birtdate><?cs /if ?>
-Adresa : <?cs var:street1> <?cs var:street2> <?cs var:street3>, <?cs var:postalcode> <?cs var:city>, <?cs var:countrycode> 
+Adresa : <?cs var:address>
 
 <?cs if:status != #1 ?>
 u kterého bylo požádáno o validaci žádostí číslo <?cs var:reqid ?> ze dne <?cs var:reqdate ?> nebyl validován.
