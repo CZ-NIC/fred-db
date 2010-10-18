@@ -29,28 +29,26 @@ Váš tým <?cs var:defaults.company ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (21, 21);
 
-INSERT INTO mail_type (id, name, subject) VALUES (22, 'mojeid_validation', 'Validace účtu mojeID <?cs if:status == #1 ?>provedena<?cs else ?>neprovedena<?cs /if?>');
+INSERT INTO mail_type (id, name, subject) VALUES (22, 'mojeid_validation', 'Validace účtu mojeID <?cs if:status == #1 ?>provedena<?cs else ?>neprovedena<?cs /if ?>');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (22, 'plain', 1,
 '
 <?cs if:status == #1 ?>
 Na základě žádosti číslo <?cs var:reqid ?> ze dne <?cs var:reqdate ?> byla provedena validace účtu mojeID.
 <?cs else ?>
-Váš účet mojeID: 
-<cs /if?>
+Váš účet mojeID:
+<?cs /if ?>
 
-Jméno : <?cs var:name ?>
-<?cs if:org ?>Organizace : <?cs var:org><?cs /if ?>
-<?cs if:ic ?>IČ : <?cs var:ic><?cs /if ?>
-<?cs if:birthdate?>Datum narození : <?cs var:birtdate><?cs /if ?>
-Adresa : <?cs var:address>
+Jméno : <?cs var:name ?><?cs if:org ?>
+Organizace : <?cs var:org ?><?cs /if ?><?cs if:ic ?>
+IČ : <?cs var:ic ?><?cs /if ?><?cs if:birthdate ?>
+Datum narození : <?cs var:birtdate ?><?cs /if ?>
+Adresa : <?cs var:address ?>
 
-<?cs if:status != #1 ?>
-u kterého bylo požádáno o validaci žádostí číslo <?cs var:reqid ?> ze dne <?cs var:reqdate ?> nebyl validován.
-<cs /if?>
+<?cs if:status != #1 ?>u kterého bylo požádáno o validaci žádostí číslo <?cs var:reqid ?> ze dne <?cs var:reqdate ?> nebyl validován.
+<?cs /if ?>
 
 Váš tým <?cs var:defaults.company ?>
-
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (22, 22);
 
