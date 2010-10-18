@@ -49,6 +49,7 @@ CREATE TABLE public_request_auth (
 
 CREATE TABLE public_request_messages_map
 (
+  id serial PRIMARY KEY NOT NULL,
   public_request_id INTEGER REFERENCES public_request (id),
   message_archive_id INTEGER, -- REFERENCES message_archive (id), 
   mail_archive_id INTEGER, -- REFERENCES mail_archive (id),
