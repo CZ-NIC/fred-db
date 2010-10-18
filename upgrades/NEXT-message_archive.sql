@@ -116,4 +116,8 @@ ALTER TABLE letter_archive DROP COLUMN crdate;
 ALTER TABLE letter_archive DROP COLUMN moddate;
 ALTER TABLE letter_archive DROP COLUMN attempt;
 
+ALTER TABLE letter_archive ALTER COLUMN id DROP DEFAULT;
+DROP SEQUENCE letter_archive_id_seq;
+
+
 
