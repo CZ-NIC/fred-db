@@ -97,6 +97,9 @@ INSERT INTO message_archive (id, status_id, crdate, moddate, attempt, comm_type_
 , (SELECT id FROM comm_type WHERE type='letter') as comm_type
 FROM letter_archive;
 
+--sequence update
+select setval('message_archive_id_seq',(select max(id) from message_archive));
+
 ALTER TABLE letter_archive ADD CONSTRAINT letter_archive_id_fkey FOREIGN KEY (id) REFERENCES message_archive(id);
 
 ALTER TABLE letter_archive ADD COLUMN postal_address_name VARCHAR(1024);
