@@ -201,7 +201,7 @@ Adresa : <?cs var:address ?>
 u kterého bylo požádáno o validaci žádostí číslo <?cs var:reqid ?> ze dne <?cs var:reqdate ?> nebyl validován.
 <?cs /if ?>
 Váš tým <?cs var:defaults.company ?>
-' id);
+');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (22, 22);
 
 
