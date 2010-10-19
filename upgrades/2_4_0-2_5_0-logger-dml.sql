@@ -66,6 +66,7 @@ INSERT INTO request_object_type (id, name) VALUES (8, 'publicrequest');
 INSERT INTO request_object_type (id, name) VALUES (9, 'invoice');
 INSERT INTO request_object_type (id, name) VALUES (10, 'bankstatement');
 INSERT INTO request_object_type (id, name) VALUES (11, 'request');
+INSERT INTO request_object_type (id, name) VALUES (12, 'message');
 
 ALTER TABLE request_type DROP CONSTRAINT request_type_pkey;
 
