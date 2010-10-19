@@ -24,6 +24,7 @@ ALTER TABLE request_property_value RENAME COLUMN name_id TO property_name_id;
 
 -- rename table request_property
 ALTER TABLE request_property RENAME TO request_property_name;
+ALTER SEQUENCE request_property_id_seq RENAME TO request_property_name_id_seq;
 
 -- update procedures & rules
 
