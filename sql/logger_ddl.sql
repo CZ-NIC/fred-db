@@ -1,3 +1,17 @@
+-- 
+--  create temporary table and if temporary table already
+--  exists truncate it for immediate usage (used for querying)
+--
+CREATE OR REPLACE FUNCTION create_tmp_table(tname VARCHAR) 
+RETURNS VOID AS $$
+BEGIN
+ EXECUTE 'CREATE TEMPORARY TABLE ' || tname || ' (id INTEGER PRIMARY KEY)';
+ EXCEPTION
+ WHEN DUPLICATE_TABLE THEN EXECUTE 'TRUNCATE TABLE ' || tname;
+END;
+$$ LANGUAGE plpgsql;
+
+
 CREATE TABLE session (
 	id serial primary key,
 	user_name varchar(255) not null,       -- user name for Webadmin or id from registrar table for EPP
