@@ -15,7 +15,7 @@ $$ LANGUAGE plpgsql;
 CREATE TABLE session (
 	id serial primary key,
 	user_name varchar(255) not null,       -- user name for Webadmin or id from registrar table for EPP
-	login_date timestamp not null default now(), 
+	login_date timestamp not null, 
 	logout_date timestamp,
         user_id integer
 );
