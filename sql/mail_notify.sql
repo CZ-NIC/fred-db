@@ -1,17 +1,18 @@
 --list of statuses when sending a general message to a contact';
 CREATE TABLE enum_send_status (
     id INTEGER PRIMARY KEY,
+    status_name VARCHAR(64) UNIQUE,
     description TEXT
 );
 
 comment on table enum_send_status is 'list of statuses when sending a general message to a contact';
 
-INSERT INTO enum_send_status (id, description) VALUES (1, 'Ready for processing/sending');
-INSERT INTO enum_send_status (id, description) VALUES (2, 'Waiting for manual confirmation of sending');
-INSERT INTO enum_send_status (id, description) VALUES (3, 'No automatic processing');
-INSERT INTO enum_send_status (id, description) VALUES (4, 'Delivery failed');
-INSERT INTO enum_send_status (id, description) VALUES (5, 'Successfully sent');
-INSERT INTO enum_send_status (id, description) VALUES (6, 'In processing, don''t touch');
+INSERT INTO enum_send_status (id, status_name, description) VALUES (1, 'ready', 'Ready for processing/sending');
+INSERT INTO enum_send_status (id, status_name, description) VALUES (2, 'waiting_confirmation', 'Waiting for manual confirmation of sending');
+INSERT INTO enum_send_status (id, status_name, description) VALUES (3, 'no_processing', 'No automatic processing');
+INSERT INTO enum_send_status (id, status_name, description) VALUES (4, 'send_failed', 'Delivery failed');
+INSERT INTO enum_send_status (id, status_name, description) VALUES (5, 'sent', 'Successfully sent');
+INSERT INTO enum_send_status (id, status_name, description) VALUES (6, 'being_sent', 'In processing, don''t touch');
 
 -- Defaults used in templates which change rarely
 -- The default names must be prefixed with 'defaults' namespace when used
