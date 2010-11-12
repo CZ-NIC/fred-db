@@ -13,7 +13,7 @@ UPDATE enum_parameters SET val = '<insert version here>' WHERE id = 1;
 --ddl
 ALTER TABLE enum_send_status ADD COLUMN status_name VARCHAR(64) UNIQUE;
 ALTER TABLE message_archive DROP CONSTRAINT message_archive_status_id_fkey;
-ALTER TABLE message_archive ADD CONSTRAINT message_archive_status_id_fkey FOREIGN KEY (id) REFERENCES enum_send_status(id);
+ALTER TABLE message_archive ADD CONSTRAINT message_archive_status_id_fkey FOREIGN KEY (status_id) REFERENCES enum_send_status(id);
 DROP TABLE message_status;
 
 --dml
