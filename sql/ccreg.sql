@@ -104,7 +104,7 @@ CREATE TABLE Contact (
         DiscloseNotifyEmail boolean DEFAULT False
         );
 
-comment on table Contact is 'List of contacts which act in register as domain owners and administrative contacts for nameservers group';
+comment on table Contact is 'List of contacts which act in registry as domain owners and administrative contacts for nameservers group';
 comment on column Contact.ID is 'references into object table';
 comment on column Contact.Name is 'name of contact person';
 comment on column Contact.Organization is 'full trade name of organization';

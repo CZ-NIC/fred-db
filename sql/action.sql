@@ -133,7 +133,7 @@ CREATE INDEX action_clienttrid_idx ON action (clienttrid);
 CREATE INDEX action_enddate_idx_date ON action USING btree (((enddate)::date));
 
 COMMENT on table action is 
-'Table for transactions record. In this table is logged every operation done over central register
+'Table for transactions record. In this table is logged every operation done over central registry
 
 creation - at the beginning of processing any epp message
 update - at the end of processing any epp message';

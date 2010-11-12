@@ -85,7 +85,7 @@ CREATE TABLE check_nsset (
 	-- 2 = one or more tests have unknown status and none has failed
 	overallstatus SMALLINT NOT NULL,
 	-- Here are stored fqdns of domains which were tested with nsset and
-	-- are not part of register
+	-- are not part of registry
 	extra_fqdns VARCHAR(300)[],
 	-- if domains associated with nsset were also tested
 	dig BOOLEAN NOT NULL,

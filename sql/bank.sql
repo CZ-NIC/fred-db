@@ -25,7 +25,7 @@ last_num int  -- number of last statement
 -- coupling variable symbol of registrar is in a table registrar ( it is his ICO for CZ ) a it is valid for all zones
 
 comment on table bank_account is
-'This table contains information about register administrator bank account';
+'This table contains information about registry administrator bank account';
 comment on column bank_account.id is 'unique automatically generated identifier';
 comment on column bank_account.zone is 'for which zone should be account executed';
 comment on column bank_account.balance is 'actual balance';
