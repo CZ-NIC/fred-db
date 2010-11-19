@@ -10,6 +10,31 @@ UPDATE enum_parameters SET val = '<insert version here>' WHERE id = 1;
 --- set contact disclose not null
 ---
 
+--dml
+UPDATE contact SET disclosename = TRUE WHERE disclosename IS NULL; 
+UPDATE contact SET discloseorganization = TRUE WHERE discloseorganization IS NULL;
+UPDATE contact SET discloseaddress = TRUE WHERE discloseaddress IS NULL;
+
+UPDATE contact SET disclosetelephone = FALSE WHERE disclosetelephone IS NULL;
+UPDATE contact SET disclosetelephone = FALSE WHERE disclosefax IS NULL; 
+UPDATE contact SET disclosetelephone = FALSE WHERE discloseemail IS NULL; 
+UPDATE contact SET disclosetelephone = FALSE WHERE disclosevat IS NULL; 
+UPDATE contact SET disclosetelephone = FALSE WHERE discloseident IS NULL; 
+UPDATE contact SET disclosetelephone = FALSE WHERE disclosenotifyemail IS NULL;  
+
+UPDATE contact_history SET disclosename = TRUE WHERE disclosename IS NULL; 
+UPDATE contact_history SET discloseorganization = TRUE WHERE discloseorganization IS NULL;
+UPDATE contact_history SET discloseaddress = TRUE WHERE discloseaddress IS NULL;
+
+UPDATE contact_history SET disclosetelephone = FALSE WHERE disclosetelephone IS NULL;
+UPDATE contact_history SET disclosetelephone = FALSE WHERE disclosefax IS NULL; 
+UPDATE contact_history SET disclosetelephone = FALSE WHERE discloseemail IS NULL; 
+UPDATE contact_history SET disclosetelephone = FALSE WHERE disclosevat IS NULL; 
+UPDATE contact_history SET disclosetelephone = FALSE WHERE discloseident IS NULL; 
+UPDATE contact_history SET disclosetelephone = FALSE WHERE disclosenotifyemail IS NULL;  
+
+
+
 --ddl
 ALTER TABLE contact ALTER COLUMN disclosename SET NOT NULL;
 ALTER TABLE contact ALTER COLUMN discloseorganization SET NOT NULL;
@@ -33,26 +58,4 @@ ALTER TABLE contact_history ALTER COLUMN disclosevat SET NOT NULL;
 ALTER TABLE contact_history ALTER COLUMN discloseident SET NOT NULL;
 ALTER TABLE contact_history ALTER COLUMN disclosenotifyemail SET NOT NULL;
 
---dml
-UPDATE contact SET disclosename = TRUE; 
-UPDATE contact SET discloseorganization = TRUE;
-UPDATE contact SET discloseaddress = TRUE;
-
-UPDATE contact SET disclosetelephone = FALSE WHERE disclosetelephone IS NULL;
-UPDATE contact SET disclosetelephone = FALSE WHERE disclosefax IS NULL; 
-UPDATE contact SET disclosetelephone = FALSE WHERE discloseemail IS NULL; 
-UPDATE contact SET disclosetelephone = FALSE WHERE disclosevat IS NULL; 
-UPDATE contact SET disclosetelephone = FALSE WHERE discloseident IS NULL; 
-UPDATE contact SET disclosetelephone = FALSE WHERE disclosenotifyemail IS NULL;  
-
-UPDATE contact_history SET disclosename = TRUE; 
-UPDATE contact_history SET discloseorganization = TRUE;
-UPDATE contact_history SET discloseaddress = TRUE;
-
-UPDATE contact_history SET disclosetelephone = FALSE WHERE disclosetelephone IS NULL;
-UPDATE contact_history SET disclosetelephone = FALSE WHERE disclosefax IS NULL; 
-UPDATE contact_history SET disclosetelephone = FALSE WHERE discloseemail IS NULL; 
-UPDATE contact_history SET disclosetelephone = FALSE WHERE disclosevat IS NULL; 
-UPDATE contact_history SET disclosetelephone = FALSE WHERE discloseident IS NULL; 
-UPDATE contact_history SET disclosetelephone = FALSE WHERE disclosenotifyemail IS NULL;  
 
