@@ -89,19 +89,19 @@ CREATE TABLE Contact (
         Telephone varchar(64),
         Fax varchar(64),
         Email varchar(1024),
-        DiscloseName boolean DEFAULT False,
-        DiscloseOrganization boolean DEFAULT False,
-        DiscloseAddress boolean DEFAULT False,
-        DiscloseTelephone boolean DEFAULT False,
-        DiscloseFax boolean DEFAULT False,
-        DiscloseEmail boolean DEFAULT False,
+        DiscloseName boolean NOT NULL DEFAULT False,
+        DiscloseOrganization boolean NOT NULL DEFAULT False,
+        DiscloseAddress boolean NOT NULL DEFAULT False,
+        DiscloseTelephone boolean NOT NULL DEFAULT False,
+        DiscloseFax boolean NOT NULL DEFAULT False,
+        DiscloseEmail boolean NOT NULL DEFAULT False,
         NotifyEmail varchar(1024),
         VAT varchar(32),
         SSN varchar(64),
 	    SSNtype INTEGER REFERENCES enum_ssntype,
-        DiscloseVAT boolean DEFAULT False,
-        DiscloseIdent boolean DEFAULT False,
-        DiscloseNotifyEmail boolean DEFAULT False
+        DiscloseVAT boolean NOT NULL DEFAULT False,
+        DiscloseIdent boolean NOT NULL DEFAULT False,
+        DiscloseNotifyEmail boolean NOT NULL DEFAULT False
         );
 
 comment on table Contact is 'List of contacts which act in registry as domain owners and administrative contacts for nameservers group';
