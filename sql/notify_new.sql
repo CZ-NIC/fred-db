@@ -159,7 +159,6 @@ COMMENT ON COLUMN letter_archive.batch_id IS 'postservis batch id - multiple let
 
 CREATE INDEX letter_archive_batch_id ON letter_archive (batch_id);
 
-
 CREATE TABLE notify_letters (
   -- which statechange triggered notification
   state_id INTEGER NOT NULL PRIMARY KEY REFERENCES object_state (id),
@@ -174,12 +173,4 @@ comment on table notify_letters is 'notifications about deleteWarning state sent
 comment on column notify_letters.state_id is 'which statechange triggered notification';
 comment on column notify_letters.letter_id is 'which message notifies the state change';
 
-
-comment on table letter_archive is 'letters sent electronically as PDF documents to postal service, address is included in the document';
-comment on column letter_archive.status is 'initial (default) status is ''file generated & ready for processing'' ';
-comment on column letter_archive.file_id is 'file with pdf about notification (null for old)';
-comment on column letter_archive.crdate is 'date of insertion in table';
-comment on column letter_archive.moddate is 'date of sending (even if unsuccesfull)'; 
-comment on column letter_archive.attempt is 'failed attempts to send data';
-COMMENT ON COLUMN letter_archive.batch_id IS 'postservis batch id - multiple letters are bundled into batches';
 
