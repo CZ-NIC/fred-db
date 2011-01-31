@@ -15,7 +15,8 @@ CREATE TABLE public_request (
   email_to_answer character varying(255),
   answer_email_id integer REFERENCES mail_archive(id),
   registrar_id integer REFERENCES registrar(id),
-  logd_request_id integer
+  create_request_id bigint,
+  resolve_request_id bigint
 );
 
 comment on table public_request is 'table of general requests give in by public users';
