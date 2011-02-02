@@ -15,7 +15,7 @@ BEGIN
 END;
 $bool_to_str$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION tr_request(id INTEGER, time_begin TIMESTAMP WITHOUT TIME ZONE, time_end TIMESTAMP WITHOUT TIME ZONE, source_ip INET, service_id INTEGER, request_type_id INTEGER, session_id INTEGER, user_name VARCHAR(255), user_id INTEGER, is_monitoring BOOLEAN ) RETURNS VOID AS $tr_request$
+CREATE OR REPLACE FUNCTION tr_request(id BIGINT, time_begin TIMESTAMP WITHOUT TIME ZONE, time_end TIMESTAMP WITHOUT TIME ZONE, source_ip INET, service_id INTEGER, request_type_id INTEGER, session_id BIGINT, user_name VARCHAR(255), user_id INTEGER, is_monitoring BOOLEAN ) RETURNS VOID AS $tr_request$
 DECLARE 
         table_name VARCHAR(50);
         stmt       TEXT;
@@ -49,7 +49,7 @@ $tr_request$ LANGUAGE plpgsql;
 
 
 -- reuqest_object_ref trigger
-CREATE OR REPLACE FUNCTION tr_request_object_ref(id INTEGER, request_time_begin TIMESTAMP WITHOUT TIME ZONE, request_service_id INTEGER, request_monitoring BOOLEAN, request_id INTEGER, object_type_id INTEGER, object_id INTEGER) RETURNS VOID AS $tr_request_object_ref$
+CREATE OR REPLACE FUNCTION tr_request_object_ref(id BIGINT, request_time_begin TIMESTAMP WITHOUT TIME ZONE, request_service_id INTEGER, request_monitoring BOOLEAN, request_id BIGINT, object_type_id INTEGER, object_id INTEGER) RETURNS VOID AS $tr_request_object_ref$
 DECLARE 
         table_name VARCHAR(50);
         stmt TEXT;
@@ -78,7 +78,7 @@ END;
 $tr_request_object_ref$ LANGUAGE plpgsql;
 
 -- session is partitioned according to date only
-CREATE OR REPLACE FUNCTION tr_session(id INTEGER, user_name VARCHAR(255), user_id INTEGER, login_date timestamp, logout_date timestamp) RETURNS VOID AS $tr_session$
+CREATE OR REPLACE FUNCTION tr_session(id BIGINT, user_name VARCHAR(255), user_id INTEGER, login_date timestamp, logout_date timestamp) RETURNS VOID AS $tr_session$
 DECLARE 
         table_name VARCHAR(50);
         stmt  TEXT;
@@ -106,7 +106,7 @@ EXCEPTION
 END;
 $tr_session$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION tr_request_data(request_time_begin timestamp, request_service_id INTEGER,  request_monitoring BOOLEAN, request_id INTEGER, content TEXT, is_response BOOLEAN) RETURNS VOID AS $tr_request_data$
+CREATE OR REPLACE FUNCTION tr_request_data(request_time_begin timestamp, request_service_id INTEGER,  request_monitoring BOOLEAN, request_id BIGINT, content TEXT, is_response BOOLEAN) RETURNS VOID AS $tr_request_data$
 DECLARE 
         table_name VARCHAR(50);
         stmt  TEXT;
@@ -134,7 +134,7 @@ END;
 $tr_request_data$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION tr_request_property_value(request_time_begin TIMESTAMP WITHOUT TIME ZONE, request_service_id INTEGER, request_monitoring BOOLEAN, id INTEGER, request_id INTEGER, property_name_id INTEGER, value TEXT, output BOOLEAN, parent_id INTEGER) RETURNS VOID AS $tr_request_property_value$
+CREATE OR REPLACE FUNCTION tr_request_property_value(request_time_begin TIMESTAMP WITHOUT TIME ZONE, request_service_id INTEGER, request_monitoring BOOLEAN, id BIGINT, request_id BIGINT, property_name_id INTEGER, value TEXT, output BOOLEAN, parent_id BIGINT) RETURNS VOID AS $tr_request_property_value$
 DECLARE 
         table_name VARCHAR(50);
         stmt  TEXT;

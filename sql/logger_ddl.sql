@@ -13,7 +13,7 @@ $$ LANGUAGE plpgsql;
 
 
 CREATE TABLE session (
-	id serial primary key,
+	id bigserial primary key,
 	user_name varchar(255) not null,       -- user name for Webadmin or id from registrar table for EPP
 	login_date timestamp not null, 
 	logout_date timestamp,
@@ -73,7 +73,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TABLE request (
-	id SERIAL PRIMARY KEY,
+	id BIGSERIAL PRIMARY KEY,
 	time_begin timestamp NOT NULL,	-- begin of the transaction
 	time_end timestamp,		-- end of transaction, it is set if the information is complete 
 					-- e.g. if an error message from backend is successfully logged, it's still set	
@@ -81,7 +81,7 @@ CREATE TABLE request (
 	source_ip INET,
 	service_id integer NOT NULL REFERENCES service(id),   -- service_id code - enum LogServiceType in IDL
 	request_type_id integer REFERENCES request_type(id) DEFAULT 1000,
-	session_id  integer,            --  REFERENCES session(id),
+	session_id  bigint,            --  REFERENCES session(id),
         user_name varchar(255),         -- name of the user who issued the request (from session table)
 		
 	is_monitoring boolean NOT NULL, 
@@ -90,11 +90,11 @@ CREATE TABLE request (
 );
 
 CREATE TABLE request_object_ref (
-    id SERIAL PRIMARY KEY,
+    id BIGSERIAL PRIMARY KEY,
     request_time_begin TIMESTAMP NOT NULL,
     request_service_id INTEGER  NOT NULL,                                     
     request_monitoring BOOLEAN NOT NULL,                                      
-    request_id INTEGER NOT NULL REFERENCES request(id),                       
+    request_id BIGINT NOT NULL REFERENCES request(id),                       
 
     object_type_id INTEGER  NOT NULL REFERENCES request_object_type(id),             
     object_id INTEGER NOT NULL
@@ -106,12 +106,12 @@ ALTER TABLE request ADD FOREIGN KEY (result_code_id) REFERENCES result_code(id);
 COMMENT ON COLUMN request.result_code_id IS 'result code as returned by the specific service, it''s only unique within the service';
 
 CREATE TABLE request_data (
-        id SERIAL PRIMARY KEY,
+        id BIGSERIAL PRIMARY KEY,
 	request_time_begin timestamp NOT NULL, -- TEMP: for partitioning
 	request_service_id integer NOT NULL, -- TEMP: for partitioning
 	request_monitoring boolean NOT NULL, -- TEMP: for partitioning
 
-	request_id integer NOT NULL REFERENCES request(id),
+	request_id bigint NOT NULL REFERENCES request(id),
 	content text NOT NULL,
 	is_response boolean DEFAULT False -- true if the content is response, false if it's request
 );
@@ -126,13 +126,13 @@ CREATE TABLE request_property_value (
 	request_service_id integer NOT NULL, -- TEMP: for partitioning
 	request_monitoring boolean NOT NULL, -- TEMP: for partitioning
 	
-	id SERIAL PRIMARY KEY,
-	request_id integer NOT NULL REFERENCES request(id), 
+	id BIGSERIAL PRIMARY KEY,
+	request_id bigint NOT NULL REFERENCES request(id), 
 	property_name_id integer NOT NULL REFERENCES request_property_name(id),
 	value text NOT NULL,		-- property value
 	output boolean DEFAULT False,		-- whether it's output (response) property; if False it's input (request)
 
-	parent_id integer REFERENCES request_property_value(id)
+	parent_id bigint REFERENCES request_property_value(id)
 						-- in case of child property, the id of the parent, NULL otherwise
 );
 

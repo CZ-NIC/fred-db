@@ -4,7 +4,7 @@ CREATE TABLE History (
         valid_from TIMESTAMP NOT NULL DEFAULT NOW(),
         valid_to TIMESTAMP,
         next INTEGER,
-        request_id INTEGER
+        request_id BIGINT 
 );
 
 COMMENT ON TABLE history IS
