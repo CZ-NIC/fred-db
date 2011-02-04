@@ -174,3 +174,9 @@ comment on column notify_letters.state_id is 'which statechange triggered notifi
 comment on column notify_letters.letter_id is 'which message notifies the state change';
 
 
+CREATE TABLE notify_request
+(
+    request_id INTEGER NOT NULL,
+    message_id INTEGER REFERENCES mail_archive(id)
+);
+
