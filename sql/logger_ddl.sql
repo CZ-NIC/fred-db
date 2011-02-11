@@ -142,10 +142,11 @@ CREATE INDEX request_source_ip_idx ON request(source_ip);
 CREATE INDEX request_service_idx ON request(service_id);
 CREATE INDEX request_action_type_idx ON request(request_type_id);
 CREATE INDEX request_monitoring_idx ON request(is_monitoring);
+CREATE INDEX request_user_name_idx ON request(user_name);
+CREATE INDEX request_user_id_idx ON request(user_id);
 
 CREATE INDEX request_data_entry_time_begin_idx ON request_data(request_time_begin);
 CREATE INDEX request_data_entry_id_idx ON request_data(request_id);
-CREATE INDEX request_data_content_idx ON request_data(content);
 CREATE INDEX request_data_is_response_idx ON request_data(is_response);
 
 CREATE INDEX request_property_name_idx ON request_property_name(name); 
