@@ -118,7 +118,7 @@ CREATE TABLE request_data (
 
 CREATE TABLE request_property_name (
 	id SERIAL PRIMARY KEY,
-	name varchar(30) UNIQUE NOT NULL
+	name varchar(256) UNIQUE NOT NULL
 );
 	
 CREATE TABLE request_property_value (
