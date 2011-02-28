@@ -1,3 +1,19 @@
+2011-02-28 Jiri Sadek, Juraj Vicenik, Jan Zima (2.6.0)
+
+    * Logger reference ids changed in public_request (added resolve_request_id
+      column, renamed logd_request_id to create_request_id)
+
+    * Datatype of logger id-sequence changed to bigint
+
+    * notify_request table
+
+    * message_status table dropped, all moved to enum_send_status
+
+    * Logger partition indexes
+
+    * Logger request_property_name.name attribute expanded to varchar(256) and
+      fixed bad values
+
 2010-08-10 Jiri Sadek, Juraj Vicenik (2.4.1)
 
     * Logger property renaming - upgrade script
