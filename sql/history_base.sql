@@ -19,4 +19,5 @@ COMMENT ON COLUMN history.next IS 'next history id';
 CREATE INDEX history_action_idx ON history (action);
 CREATE INDEX history_action_valid_from_idx ON history (valid_from);
 CREATE UNIQUE INDEX history_next_idx ON history (next);
+CREATE INDEX history_request_id_idx ON history (request_id);
 
