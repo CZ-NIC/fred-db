@@ -176,7 +176,7 @@ comment on column notify_letters.letter_id is 'which message notifies the state 
 
 CREATE TABLE notify_request
 (
-    request_id BIGINT NOT NULL,
-    message_id INTEGER REFERENCES mail_archive(id)
+    request_id BIGINT PRIMARY KEY,
+    message_id INTEGER UNIQUE NOT NULL REFERENCES mail_archive(id)
 );
 

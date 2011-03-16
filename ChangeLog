@@ -1,3 +1,11 @@
+2011-03-16 Jiri Sadek (2.6.2)
+
+    * primary key, unique message_id on notify_request table
+
+    * template typo fix
+
+    * create_tmp_table with bigint id columnt added to upgrade scripts
+
 2011-03-02 Jiri Sadek (2.6.1)
 
     * index for history.request_id

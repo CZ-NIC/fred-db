@@ -25,8 +25,8 @@ DROP TABLE message_status;
 ---
 CREATE TABLE notify_request
 (
-    request_id BIGINT NOT NULL,
-    message_id INTEGER REFERENCES mail_archive(id)
+    request_id BIGINT PRIMARY KEY,
+    message_id INTEGER UNIQUE NOT NULL REFERENCES mail_archive(id)
 );
 
 
@@ -36,4 +36,17 @@ CREATE TABLE notify_request
 ALTER TABLE public_request RENAME COLUMN logd_request_id TO create_request_id;
 ALTER TABLE public_request ALTER COLUMN create_request_id TYPE bigint;
 ALTER TABLE public_request ADD COLUMN resolve_request_id bigint;
+
+
+---
+--- Ticket #4953 - bigint
+---
+CREATE OR REPLACE FUNCTION create_tmp_table(tname VARCHAR) 
+RETURNS VOID AS $$
+BEGIN
+ EXECUTE 'CREATE TEMPORARY TABLE ' || tname || ' (id BIGINT PRIMARY KEY)';
+ EXCEPTION
+ WHEN DUPLICATE_TABLE THEN EXECUTE 'TRUNCATE TABLE ' || tname;
+END;
+$$ LANGUAGE plpgsql;
 
