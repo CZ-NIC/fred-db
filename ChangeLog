@@ -1,3 +1,7 @@
+2011-03-17 Jiri Sadek (2.6.3)
+
+    * history.request_id index cond. on not null values
+
 2011-03-16 Jiri Sadek (2.6.2)
 
     * primary key, unique message_id on notify_request table

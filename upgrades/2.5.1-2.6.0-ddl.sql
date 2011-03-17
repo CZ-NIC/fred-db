@@ -8,7 +8,7 @@ ALTER TABLE public_request ALTER COLUMN status SET DEFAULT 1;
 --- Ticket #4953
 ---
 ALTER TABLE history ALTER COLUMN request_id TYPE bigint;
-CREATE INDEX history_request_id_idx ON history (request_id);
+CREATE INDEX history_request_id_idx ON history (request_id) WHERE request_id IS NOT NULL;
 
 
 ---
