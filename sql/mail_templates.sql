@@ -584,6 +584,12 @@ Other data wasn''t modified.
 Úplný detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>.
 For full detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>.
 
+<?cs if:type == #1 ?>
+Chcete mít snadnější přístup ke správě Vašich údajů? Založte si mojeID. Kromě 
+nástroje, kterým můžete snadno a bezpečně spravovat údaje v centrálním 
+registru, získáte také prostředek pro jednoduché přihlašování k Vašim 
+oblíbeným webovým službám jediným jménem a heslem.
+<?cs /if ?>
 
                                              S pozdravem
                                              podpora <?cs var:defaults.company ?>
