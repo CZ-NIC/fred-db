@@ -17,14 +17,14 @@ doménových jmen.
 ID kontaktu v registru: <?cs var:handle ?>
 Organizace: <?cs var:organization ?>
 Jméno: <?cs var:name ?>
-Adresa: <?cs var:address ?>
-<?cs var:ident_type ?>: <?cs var:ident_value ?>
+Adresa: <?cs var:address ?><?cs if:ident_type != "" ?>
+<?cs var:ident_type ?>: <?cs var:ident_value ?><?cs /if ?>
 DIČ: <?cs var:dic ?>
 Telefon: <?cs var:telephone ?>
 Fax: <?cs var:fax ?>
 E-mail: <?cs var:email ?>
 Notifikační e-mail: <?cs var:notify_email ?>
-Určený registrátor: <?cs var:registrar ?>
+Určený registrátor: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
 
 Se žádostí o opravu údajů se neváhejte obrátit na svého vybraného registrátora.
 
