@@ -1,4 +1,21 @@
 ---
+--- unique array
+---
+CREATE OR REPLACE FUNCTION array_uniq(anyarray)
+RETURNS anyarray as $$
+SELECT array(SELECT DISTINCT $1[i] FROM
+    generate_series(array_lower($1,1), array_upper($1,1)) g(i));
+$$ LANGUAGE SQL STRICT IMMUTABLE;
+
+
+CREATE OR REPLACE FUNCTION array_filter_null(anyarray)
+RETURNS anyarray as $$
+SELECT array(SELECT $1[i] FROM
+    generate_series(array_lower($1,1), array_upper($1,1)) g(i) WHERE $1[i] IS NOT NULL) ;
+$$ LANGUAGE SQL STRICT IMMUTABLE;
+
+
+---
 --- reminder module mail templates
 ---
 
@@ -49,17 +66,18 @@ Váš tým CZ.NIC.
 
 Příloha:
 
-Seznam domén kde je kontakt v roli držitele nebo administrativního
+<?cs if:domains.0 ?>Seznam domén kde je kontakt v roli držitele nebo administrativního
 nebo dočasného kontaktu:
 <?cs each:item = domains ?><?cs var:item ?>
-<?cs /each ?>
+<?cs /each ?><?cs else ?>Kontakt není uveden u žádného doménového jména.<?cs /if ?>
 
-Seznam sad jmenných serverů, kde je kontakt v roli technického kontaktu:
+<?cs if:nssets.0 ?>Seznam sad jmenných serverů, kde je kontakt v roli technického kontaktu:
 <?cs each:item = nssets ?><?cs var:item ?>
-<?cs /each ?>
+<?cs /each ?><?cs else ?>Kontakt není uveden u žádné sady jmenných serverů.<?cs /if ?>
 
-Seznam sad klíčů, kde je kontakt v roli technického kontaktu:
+<?cs if:keysets.0 ?>Seznam sad klíčů, kde je kontakt v roli technického kontaktu:
 <?cs each:item = keysets ?><?cs var:item ?>
 <?cs /each ?>
+<?cs else ?>Kontakt není uveden u žádné sady klíčů.<?cs /if ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (23, 23);
