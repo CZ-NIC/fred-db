@@ -42,6 +42,8 @@ Fax: <?cs var:fax ?>
 E-mail: <?cs var:email ?>
 Notifikační e-mail: <?cs var:notify_email ?>
 Určený registrátor: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
+<?cs if:registrar_memo ?>Další informace poskytnuté registrátorem:
+<?cs var:registrar_memo ?><?cs /if ?>
 
 Se žádostí o opravu údajů se neváhejte obrátit na svého vybraného registrátora.
 
@@ -77,3 +79,11 @@ nebo dočasného kontaktu:<?cs each:item = domains ?>
 <?cs var:item ?><?cs /each ?><?cs else ?>Kontakt není uveden u žádné sady klíčů.<?cs /if ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (23, 23);
+
+
+
+CREATE TABLE reminder_registrar_parameter (
+    registrar_id integer NOT NULL PRIMARY KEY REFERENCES registrar(id),
+    template_memo text,
+    reply_to varchar(200)
+);
