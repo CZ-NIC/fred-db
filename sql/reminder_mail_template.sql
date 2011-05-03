@@ -67,17 +67,13 @@ Váš tým CZ.NIC.
 Příloha:
 
 <?cs if:domains.0 ?>Seznam domén kde je kontakt v roli držitele nebo administrativního
-nebo dočasného kontaktu:
-<?cs each:item = domains ?><?cs var:item ?>
-<?cs /each ?><?cs else ?>Kontakt není uveden u žádného doménového jména.<?cs /if ?>
+nebo dočasného kontaktu:<?cs each:item = domains ?>
+<?cs var:item ?><?cs /each ?><?cs else ?>Kontakt není uveden u žádného doménového jména.<?cs /if ?>
 
-<?cs if:nssets.0 ?>Seznam sad jmenných serverů, kde je kontakt v roli technického kontaktu:
-<?cs each:item = nssets ?><?cs var:item ?>
-<?cs /each ?><?cs else ?>Kontakt není uveden u žádné sady jmenných serverů.<?cs /if ?>
+<?cs if:nssets.0 ?>Seznam sad jmenných serverů, kde je kontakt v roli technického kontaktu:<?cs each:item = nssets ?>
+<?cs var:item ?><?cs /each ?><?cs else ?>Kontakt není uveden u žádné sady jmenných serverů.<?cs /if ?>
 
-<?cs if:keysets.0 ?>Seznam sad klíčů, kde je kontakt v roli technického kontaktu:
-<?cs each:item = keysets ?><?cs var:item ?>
-<?cs /each ?>
-<?cs else ?>Kontakt není uveden u žádné sady klíčů.<?cs /if ?>
+<?cs if:keysets.0 ?>Seznam sad klíčů, kde je kontakt v roli technického kontaktu:<?cs each:item = keysets ?>
+<?cs var:item ?><?cs /each ?><?cs else ?>Kontakt není uveden u žádné sady klíčů.<?cs /if ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (23, 23);
