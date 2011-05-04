@@ -110,11 +110,6 @@ We would also like to inform you that in accordance with the Rules of Domain Nam
 Registration for the .cz ccTLD, incorrect, false, incomplete or misleading
 information can be grounds for the cancellation of a domain name registration.
 
-Would you like to have easier access to the management of your data?
-Create your myID. Along with the tools available to manage data in the central
-registry easily and safely, you will also have a simple way of logging in
-to your favourite web services using a single username and password.
-
 Please do not hesitate to contact us for additional information.
 
 You can find attached a complete extract from the registry containing
