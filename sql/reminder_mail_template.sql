@@ -47,12 +47,12 @@ Určený registrátor: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
 
 Se žádostí o opravu údajů se neváhejte obrátit na svého vybraného registrátora.
 
-Aktuální, úplné a správné  informace v registru znamenají Vaši jistotu,
+Aktuální, úplné a správné informace v registru znamenají Vaši jistotu,
 že Vás důležité informace o Vaší doméně zastihnou vždy a včas na správné adrese.
 Nedočkáte se tak nepříjemného překvapení v podobě nefunkční či zrušené domény.
-Dovolujeme si Vás rovněž upozornit, že nesprávné, nepravdivé,
-neúplné či zavádějící údaje mohou být v souladu s Pravidly registrace doménových
-jmen v ccTLD .cz důvodem ke zrušení registrace doménového jména!
+Dovolujeme si Vás rovněž upozornit, že nesprávné, nepravdivé, neúplné
+či zavádějící údaje mohou být v souladu s Pravidly registrace doménových jmen
+v ccTLD .cz důvodem ke zrušení registrace doménového jména!
 
 Chcete mít snadnější přístup ke správě Vašich údajů? Založte si mojeID.
 Kromě nástroje, kterým můžete snadno a bezpečně spravovat údaje v centrálním
@@ -124,14 +124,14 @@ Your CZ.NIC team.
 
 Attachment:
 
-<?cs if:domains.0 ?>List of domains where the contact is in the role of a holder or an administrative
+<?cs if:domains.0 ?>List of domains where the contact is a holder or an administrative
 or temporary contact:<?cs each:item = domains ?>
 <?cs var:item ?><?cs /each ?><?cs else ?>Contact is not linked to any domain name.<?cs /if ?>
 
-<?cs if:nssets.0 ?>List of sets of name servers on which the contact is in the role of technical contact:<?cs each:item = nssets ?>
+<?cs if:nssets.0 ?>List of sets of name servers on which the contact is a technical contact:<?cs each:item = nssets ?>
 <?cs var:item ?><?cs /each ?><?cs else ?>Contact is not linked to any name server.<?cs /if ?>
 
-<?cs if:keysets.0 ?>List of keysets on which the contact is in the role of technical contact:<?cs each:item = keysets ?>
+<?cs if:keysets.0 ?>List of keysets on which the contact is a technical contact:<?cs each:item = keysets ?>
 <?cs var:item ?><?cs /each ?><?cs else ?>Contact is not linked to any keyset.<?cs /if ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (23, 23);
