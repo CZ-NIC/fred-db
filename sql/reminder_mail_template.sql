@@ -54,10 +54,10 @@ Dovolujeme si Vás rovněž upozornit, že nesprávné, nepravdivé,
 neúplné či zavádějící údaje mohou být v souladu s Pravidly registrace doménových
 jmen v ccTLD .cz důvodem ke zrušení registrace doménového jména!
 
-Chcete mít snadnější přístup ke správě Vašich údajů? Založte si mojeID. Kromě nástroje,
-kterým můžete snadno a bezpečně spravovat údaje v centrálním registru,
-získáte také prostředek pro jednoduché přihlašování k Vašim oblíbeným webovým službám
-jediným jménem a heslem.
+Chcete mít snadnější přístup ke správě Vašich údajů? Založte si mojeID.
+Kromě nástroje, kterým můžete snadno a bezpečně spravovat údaje v centrálním
+registru, získáte také prostředek pro jednoduché přihlašování k Vašim oblíbeným
+webovým službám jediným jménem a heslem.
 
 Pro více informací nás neváhejte kontaktovat!
 
@@ -77,6 +77,62 @@ nebo dočasného kontaktu:<?cs each:item = domains ?>
 
 <?cs if:keysets.0 ?>Seznam sad klíčů, kde je kontakt v roli technického kontaktu:<?cs each:item = keysets ?>
 <?cs var:item ?><?cs /each ?><?cs else ?>Kontakt není uveden u žádné sady klíčů.<?cs /if ?>
+
+
+
+Dear Sir or Madam,
+
+Please check the accuracy of the information we currently have on file
+for your contact in the central registry of domain names.
+
+Contact ID in the registry: <?cs var:handle ?>
+Organization: <?cs var:organization ?>
+Name: <?cs var:name ?>
+Address: <?cs var:address ?><?cs if:ident_type != "" ?>
+<?cs var:ident_type ?>: <?cs var:ident_value ?><?cs /if ?>
+VAT No.: <?cs var:dic ?>
+Phone: <?cs var:telephone ?>
+Fax: <?cs var:fax ?>
+E-mail: <?cs var:email ?>
+Notification e-mail: <?cs var:notify_email ?>
+Designated registrator: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
+<?cs if:registrar_memo ?>Other information provided by registrar:
+<?cs var:registrar_memo ?><?cs /if ?>
+
+Do not hesitate to contact your selected registrar with a correction request.
+
+Having current, complete and accurate information in the registry means
+you can be sure the important information about your domain is always available
+in time at the right address. In this way you will avoid an unpleasant surprise
+in the form of a non-functioning or cancelled domain.
+
+We would also like to inform you that in accordance with the Rules of Domain Name
+Registration for the .cz ccTLD, incorrect, false, incomplete or misleading
+information can be grounds for the cancellation of a domain name registration.
+
+Would you like to have easier access to the management of your data?
+Create your myID. Along with the tools available to manage data in the central
+registry easily and safely, you will also have a simple way of logging in
+to your favourite web services using a single username and password.
+
+Please do not hesitate to contact us for additional information.
+
+You can find attached a complete extract from the registry containing
+all the domains and other items associated with the above contact.
+
+Your CZ.NIC team.
+
+Attachment:
+
+<?cs if:domains.0 ?>List of domains where the contact is in the role of a holder or an administrative
+or temporary contact:<?cs each:item = domains ?>
+<?cs var:item ?><?cs /each ?><?cs else ?>Contact is not linked to any domain name.<?cs /if ?>
+
+<?cs if:nssets.0 ?>List of sets of name servers on which the contact is in the role of technical contact:<?cs each:item = nssets ?>
+<?cs var:item ?><?cs /each ?><?cs else ?>Contact is not linked to any name server.<?cs /if ?>
+
+<?cs if:keysets.0 ?>List of keysets on which the contact is in the role of technical contact:<?cs each:item = keysets ?>
+<?cs var:item ?><?cs /each ?><?cs else ?>Contact is not linked to any keyset.<?cs /if ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (23, 23);
 
