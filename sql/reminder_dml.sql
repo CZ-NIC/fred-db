@@ -1,22 +1,5 @@
 ---
---- unique array
----
-CREATE OR REPLACE FUNCTION array_uniq(anyarray)
-RETURNS anyarray as $$
-SELECT array(SELECT DISTINCT $1[i] FROM
-    generate_series(array_lower($1,1), array_upper($1,1)) g(i));
-$$ LANGUAGE SQL STRICT IMMUTABLE;
-
-
-CREATE OR REPLACE FUNCTION array_filter_null(anyarray)
-RETURNS anyarray as $$
-SELECT array(SELECT $1[i] FROM
-    generate_series(array_lower($1,1), array_upper($1,1)) g(i) WHERE $1[i] IS NOT NULL) ;
-$$ LANGUAGE SQL STRICT IMMUTABLE;
-
-
----
---- reminder module mail templates
+--- Ticket #5102 - reminder - mail template
 ---
 
 INSERT INTO mail_type (id, name, subject) VALUES (23, 'annual_contact_reminder', 'Ověření správnosti údajů');
@@ -130,23 +113,4 @@ or temporary contact:<?cs each:item = domains ?>
 <?cs var:item ?><?cs /each ?><?cs else ?>Contact is not linked to any keyset.<?cs /if ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (23, 23);
-
-
-
-CREATE TABLE reminder_registrar_parameter (
-    registrar_id integer NOT NULL PRIMARY KEY REFERENCES registrar(id),
-    template_memo text,
-    reply_to varchar(200)
-);
-
-
-
-CREATE TABLE reminder_contact_message_map (
-    reminder_date date NOT NULL,
-    contact_id integer NOT NULL REFERENCES object_registry(id),
-    message_id integer REFERENCES mail_archive(id),
-    PRIMARY KEY(reminder_date, contact_id)
-);
-
-
 
