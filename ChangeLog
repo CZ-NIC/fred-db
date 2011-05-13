@@ -1,3 +1,9 @@
+2011-05-13 Jiri Sadek, Juraj Vicenik (2.7.0)
+
+    * whois contact reminder tables
+
+    * public request types added to logger
+
 2011-03-17 Jiri Sadek (2.6.3)
 
     * history.request_id index cond. on not null values
