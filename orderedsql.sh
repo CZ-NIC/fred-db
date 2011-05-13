@@ -7,6 +7,7 @@ DIR=$(dirname $0)/sql
 
 write_script() 
 {
+    cat $DIR/array_util_func.sql
 	cat $DIR/error.sql
 	cat $DIR/enum_reason.sql
 	cat $DIR/enum_ssntype.sql
@@ -65,6 +66,9 @@ write_script()
 	cat $DIR/registrar_certification_ddl.sql
     # mojeid
     cat $DIR/registry_dml_mojeid.sql
+    # contact reminder
+    cat $DIR/reminder_ddl.sql
+    cat $DIR/reminder_dml.sql
 }
 
 usage()
