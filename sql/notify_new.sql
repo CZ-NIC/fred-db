@@ -94,8 +94,6 @@ CREATE TABLE message_type
 comment on table message_type is 'type of message with respect to subject of message';
 
 INSERT INTO message_type (id,type) VALUES (1,'domain_expiration');
-INSERT INTO message_type (id,type) VALUES (2,'mojeid_pin2');
-INSERT INTO message_type (id,type) VALUES (3,'mojeid_pin3');
 
 CREATE TABLE message_archive
 (
