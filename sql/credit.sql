@@ -27,7 +27,8 @@ CREATE TABLE price_vat
 );
 
 INSERT INTO price_vat   VALUES ( 1 , '2004-04-30 22:00:00' , 0.1803 ,  22 ); -- to be in UTC CEST +2:00
-INSERT INTO price_vat  VALUES ( 2 , NULL , 0.1667 , 20 );
+INSERT INTO price_vat  VALUES ( 2 , '2009-12-31 23:00:00' , 0.1597 , 19 );
+INSERT INTO price_vat  VALUES ( 3 , NULL , 0.1667 , 20 );
 
 select setval('price_vat_id_seq', 2);
 
