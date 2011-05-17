@@ -115,3 +115,16 @@ or temporary contact:<?cs each:item = domains ?>
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (23, 23);
 
 
+---
+--- Ticket #4910 - email/phone change with pin 
+---
+
+INSERT INTO mail_type (id, name, subject) VALUES (24, 'mojeid_email_change', 'MojeID - PIN pro změnu emailu / MojeID email change PIN');
+INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
+(24, 'plain', 1,
+'PIN pro změnu emailu k mojeID účtu <?cs var:username ?> je: <?cs var:pin ?>
+PIN for changing your email of mojeID account <?cs var:username ?> is: <?cs var:pin ?>');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (24, 24);
+
+INSERT INTO message_type (id, type) VALUES (4, 'mojeid_sms_change');
+
