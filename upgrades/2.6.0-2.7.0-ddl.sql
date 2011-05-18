@@ -39,3 +39,8 @@ SELECT array(SELECT $1[i] FROM
 $$ LANGUAGE SQL STRICT IMMUTABLE;
 
 
+---
+--- Ticket #931 - invoice refactoring
+---
+ALTER TABLE invoice_prefix ADD UNIQUE (zone, typ, year);
+

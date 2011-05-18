@@ -8,6 +8,7 @@ Zone INTEGER REFERENCES Zone (ID),
 typ integer default 0,  -- invoice type 0 advanced 1 normal
 year numeric NOT NULL, --for which year  
 prefix bigint -- counter with prefix of number line invoice 
+, CONSTRAINT invoice_prefix_zone_key UNIQUE (zone, typ, year)
 );
 
 comment on column invoice_prefix.Zone is 'reference to zone';
