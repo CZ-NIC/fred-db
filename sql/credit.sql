@@ -22,7 +22,7 @@ CREATE TABLE price_vat
 (
   id serial PRIMARY KEY, -- primary key
   valid_to timestamp default NULL, -- date when VAT change is realized
-  koef real, -- coefficient high for VAT recount
+  koef numeric, -- coefficient high for VAT recount
   VAT numeric default 19 -- VAT high
 );
 

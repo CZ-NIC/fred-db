@@ -43,4 +43,5 @@ $$ LANGUAGE SQL STRICT IMMUTABLE;
 --- Ticket #931 - invoice refactoring
 ---
 ALTER TABLE invoice_prefix ADD UNIQUE (zone, typ, year);
+ALTER TABLE price_vat ALTER COLUMN koef TYPE numeric;
 
