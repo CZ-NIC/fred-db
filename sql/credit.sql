@@ -30,7 +30,7 @@ INSERT INTO price_vat   VALUES ( 1 , '2004-04-30 22:00:00' , 0.1803 ,  22 ); -- 
 INSERT INTO price_vat  VALUES ( 2 , '2009-12-31 23:00:00' , 0.1597 , 19 );
 INSERT INTO price_vat  VALUES ( 3 , NULL , 0.1667 , 20 );
 
-select setval('price_vat_id_seq', 2);
+select setval('price_vat_id_seq', 3);
 
 comment on table price_vat is 'Table of VAT validity (in case that VAT is changing in the future. Stores coefficient for VAT recount)';
 comment on column price_vat.id is 'unique automatically generated identifier';
