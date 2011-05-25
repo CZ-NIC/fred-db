@@ -1,3 +1,7 @@
+2011-05-25 Jan Zima (2.7.1)
+
+    * price_vat.koef column type changed to numeric
+
 2011-05-13 Jiri Sadek, Juraj Vicenik (2.7.0)
 
     * whois contact reminder tables
