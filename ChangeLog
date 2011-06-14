@@ -1,3 +1,9 @@
+2011-06-14 Jiri Sadek (2.7.2)
+
+    * notify_request primary key fixed
+
+    * mail templates format fixes
+
 2011-05-25 Jan Zima (2.7.1)
 
     * price_vat.koef column type changed to numeric
