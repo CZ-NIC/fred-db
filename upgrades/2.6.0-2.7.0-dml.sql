@@ -10,8 +10,8 @@ English version of the e-mail is entered below the Czech version
 
 Vážená paní, vážený pane,
 
-dovolujeme si Vás zdvořile požádat  o kontrolu správnosti údajů,
-které nyní evidujeme u Vašeho  kontaktu v centrálním registru
+dovolujeme si Vás zdvořile požádat o kontrolu správnosti údajů,
+které nyní evidujeme u Vašeho kontaktu v centrálním registru
 doménových jmen.
 
 ID kontaktu v registru: <?cs var:handle ?>
@@ -45,7 +45,7 @@ webovým službám jediným jménem a heslem.
 Pro více informací nás neváhejte kontaktovat!
 
 Úplný výpis z registru obsahující všechny domény a další objekty přiřazené
-k shora uvedenému  kontaktu naleznete v příloze.
+k shora uvedenému kontaktu naleznete v příloze.
 
 Váš tým CZ.NIC.
 
