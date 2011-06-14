@@ -45,3 +45,10 @@ $$ LANGUAGE SQL STRICT IMMUTABLE;
 ALTER TABLE invoice_prefix ADD UNIQUE (zone, typ, year);
 ALTER TABLE price_vat ALTER COLUMN koef TYPE numeric;
 
+
+---
+--- fixed primary key
+---
+ALTER TABLE notify_request DROP CONSTRAINT notify_request_pkey;
+ALTER TABLE notify_request ADD PRIMARY KEY (request_id, message_id);
+
