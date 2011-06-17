@@ -52,6 +52,8 @@ write_script()
 	# state and poll
 	cat $DIR/state.sql
 	cat $DIR/poll.sql
+    cat $DIR/poll_request_fee_ddl.sql
+    cat $DIR/poll_request_fee_dml.sql
 	# notify mailer
 	cat $DIR/notify_new.sql
 	# list of tld domains
