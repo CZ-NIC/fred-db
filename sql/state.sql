@@ -22,7 +22,7 @@ comment on column enum_object_states.external is 'if this status is exported to 
 INSERT INTO enum_object_states 
   VALUES (01,'serverDeleteProhibited','{1,2,3}','t','t');
 INSERT INTO enum_object_states 
-  VALUES (02,'serverRenewProhibited ','{3}','t','t');
+  VALUES (02,'serverRenewProhibited','{3}','t','t');
 INSERT INTO enum_object_states 
   VALUES (03,'serverTransferProhibited','{1,2,3}','t','t');
 INSERT INTO enum_object_states 
