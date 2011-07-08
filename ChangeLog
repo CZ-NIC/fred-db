@@ -1,3 +1,17 @@
+2011-07-04 Jiri Sadek (2.8.2)
+
+    * poll_request_fee primary key
+
+2011-07-04 Jiri Sadek (2.8.1)
+
+    * poll request fee - parameters adjusted
+
+2011-07-04 Jiri Sadek (2.8.0)
+
+    * poll request fee tables
+
+    * enum object states typo fix
+
 2011-06-14 Jiri Sadek (2.7.2)
 
     * notify_request primary key fixed
