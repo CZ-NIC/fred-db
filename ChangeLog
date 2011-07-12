@@ -1,3 +1,7 @@
+2011-07-12 Juraj Vicenik (2.8.3)
+
+    * request_fee_parameter table initialization date conv. fix
+
 2011-07-04 Jiri Sadek (2.8.2)
 
     * poll_request_fee primary key
