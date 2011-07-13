@@ -33,6 +33,7 @@ Se žádostí o opravu údajů se neváhejte obrátit na svého vybraného regis
 Aktuální, úplné a správné informace v registru znamenají Vaši jistotu,
 že Vás důležité informace o Vaší doméně zastihnou vždy a včas na správné adrese.
 Nedočkáte se tak nepříjemného překvapení v podobě nefunkční či zrušené domény.
+
 Dovolujeme si Vás rovněž upozornit, že nesprávné, nepravdivé, neúplné
 či zavádějící údaje mohou být v souladu s Pravidly registrace doménových jmen
 v ccTLD .cz důvodem ke zrušení registrace doménového jména!
