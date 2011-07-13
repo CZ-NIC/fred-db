@@ -1,10 +1,7 @@
 ---
---- Ticket #5102 - reminder - mail template
+--- Ticket #5680 - added mojeid web address
 ---
-
-INSERT INTO mail_type (id, name, subject) VALUES (23, 'annual_contact_reminder', 'Ověření správnosti údajů');
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
- (23, 'plain', 1,
+UPDATE mail_templates SET template =
 '
 English version of the e-mail is entered below the Czech version
 
@@ -111,6 +108,6 @@ or temporary contact:<?cs each:item = domains ?>
 
 <?cs if:keysets.0 ?>List of keysets on which the contact is a technical contact:<?cs each:item = keysets ?>
 <?cs var:item ?><?cs /each ?><?cs else ?>Contact is not linked to any keyset.<?cs /if ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (23, 23);
+'
+WHERE id = 23;
 
