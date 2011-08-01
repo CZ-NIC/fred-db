@@ -77,8 +77,6 @@ Fax: <?cs var:fax ?>
 E-mail: <?cs var:email ?>
 Notification e-mail: <?cs var:notify_email ?>
 Designated registrator: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
-<?cs if:registrar_memo ?>Other information provided by registrar:
-<?cs var:registrar_memo ?><?cs /if ?>
 
 Do not hesitate to contact your selected registrar with a correction request.
 
