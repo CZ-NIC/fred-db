@@ -15,7 +15,14 @@ ID kontaktu v registru: <?cs var:handle ?>
 Organizace: <?cs var:organization ?>
 Jméno: <?cs var:name ?>
 Adresa: <?cs var:address ?><?cs if:ident_type != "" ?>
-<?cs if:ident_type == "RC"?>Datum narození: <?cs elif:ident_type == "OP"?>Číslo OP: <?cs elif:ident_type == "PASS"?>Číslo pasu: <?cs elif:ident_type == "ICO"?>IČO: <?cs elif:ident_type == "MPSV"?>Identifikátor MPSV: <?cs elif:ident_type == "BIRTHDAY"?>Datum narození: <?cs /if ?> <?cs var:ident_value ?><?cs /if ?>
+<?cs if:ident_type == "RC"?>Datum narození: <?cs 
+elif:ident_type == "OP"?>Číslo OP: <?cs 
+elif:ident_type == "PASS"?>Číslo pasu: <?cs 
+elif:ident_type == "ICO"?>IČO: <?cs 
+elif:ident_type == "MPSV"?>Identifikátor MPSV: <?cs 
+elif:ident_type == "BIRTHDAY"?>Datum narození: <?cs 
+/if ?> <?cs var:ident_value ?><?cs 
+/if ?>
 DIČ: <?cs var:dic ?>
 Telefon: <?cs var:telephone ?>
 Fax: <?cs var:fax ?>
@@ -70,7 +77,14 @@ Contact ID in the registry: <?cs var:handle ?>
 Organization: <?cs var:organization ?>
 Name: <?cs var:name ?>
 Address: <?cs var:address ?><?cs if:ident_type != "" ?>
-<?cs if:ident_type == "RC"?>Birth date: <?cs elif:ident_type == "OP"?>Personal ID: <?cs elif:ident_type == "PASS"?>Passport number: <?cs elif:ident_type == "ICO"?>ID number: <?cs elif:ident_type == "MPSV"?>MSPV ID: <?cs elif:ident_type == "BIRTHDAY"?>Birth day: <?cs /if ?> <?cs var:ident_value ?><?cs /if ?>
+<?cs if:ident_type == "RC"?>Birth date: <?cs 
+elif:ident_type == "OP"?>Personal ID: <?cs 
+elif:ident_type == "PASS"?>Passport number: <?cs 
+elif:ident_type == "ICO"?>ID number: <?cs 
+elif:ident_type == "MPSV"?>MSPV ID: <?cs 
+elif:ident_type == "BIRTHDAY"?>Birth day: <?cs 
+/if ?> <?cs var:ident_value ?><?cs 
+/if ?>
 VAT No.: <?cs var:dic ?>
 Phone: <?cs var:telephone ?>
 Fax: <?cs var:fax ?>
