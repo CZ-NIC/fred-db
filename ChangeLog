@@ -1,3 +1,7 @@
+2011-08-11 Jiri Sadek, Juraj Vicenik (2.8.4)
+
+    * whois reminder template fixes
+
 2011-07-12 Juraj Vicenik (2.8.3)
 
     * request_fee_parameter table initialization date conv. fix
