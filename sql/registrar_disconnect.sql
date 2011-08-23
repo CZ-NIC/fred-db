@@ -5,5 +5,5 @@ CREATE TABLE registrar_disconnect (
     blocked_from TIMESTAMP DEFAULT now(),
     blocked_to TIMESTAMP,
     unblock_request_id BIGINT
-)
+);
 
