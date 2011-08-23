@@ -1,3 +1,9 @@
+---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.8.1' WHERE id = 1;
+
+
 UPDATE mail_templates SET template = '
 English version of the e-mail is entered below the Czech version
 
