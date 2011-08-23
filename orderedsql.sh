@@ -66,6 +66,7 @@ write_script()
 	cat $DIR/public_request.sql
 	# registrar's certifications and groups
 	cat $DIR/registrar_certification_ddl.sql
+    cat $DIR/registrar_disconnect.sql
     # mojeid
     cat $DIR/registry_dml_mojeid.sql
     # contact reminder
