@@ -7,7 +7,7 @@ INSERT INTO mail_type (id, name, subject) VALUES (23, 'annual_contact_reminder',
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
  (23, 'plain', 1,
 '
-English version of the e-mail is entered below the Czech version
+This is a bilingual message. Please see below for the English version
 
 Vážená paní, vážený pane,
 
@@ -37,6 +37,7 @@ Určený registrátor: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
 <?cs var:registrar_memo_cz ?><?cs /if ?>
 
 Se žádostí o opravu údajů se neváhejte obrátit na svého vybraného registrátora.
+V případě, že zde uvedené údaje odpovídají skutečnosti, není mutné na tuto zprávu reagovat.
 
 Aktuální, úplné a správné informace v registru znamenají Vaši jistotu,
 že Vás důležité informace o Vaší doméně zastihnou vždy a včas na správné adrese.
@@ -74,7 +75,7 @@ nebo dočasného kontaktu:<?cs each:item = domains ?>
 
 Dear Sir or Madam,
 
-Please check the accuracy of the information we currently have on file
+Please check the correctness of the information we currently have on file
 for your contact in the central registry of domain names.
 
 Contact ID in the registry: <?cs var:handle ?>
@@ -100,10 +101,10 @@ Designated registrator: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
 
 Do not hesitate to contact your selected registrar with a correction request.
 
-Having current, complete and accurate information in the registry means
-you can be sure the important information about your domain is always available
-in time at the right address. In this way you will avoid an unpleasant surprise
-in the form of a non-functioning or cancelled domain.
+Having up-to-date, complete and correct information in the registry is crucial
+to reach you with all the important information about your domain name in a timely manner
+and at the correct contact address. Check you contact details now and avoid unpleasant
+surprises such as a non-functional or expired domain.
 
 We would also like to inform you that in accordance with the Rules of Domain Name
 Registration for the .cz ccTLD, incorrect, false, incomplete or misleading
@@ -111,21 +112,21 @@ information can be grounds for the cancellation of a domain name registration.
 
 Please do not hesitate to contact us for additional information.
 
-You can find attached a complete extract from the registry containing
-all the domains and other items associated with the above contact.
+You can find a complete summary of your domain names, and other objects
+associated with your contact attached below.
+
 
 Your CZ.NIC team.
 
 Attachment:
 
-<?cs if:domains.0 ?>List of domains where the contact is a holder or an administrative
-or temporary contact:<?cs each:item = domains ?>
+<?cs if:domains.0 ?>Domains where the contact is a holder or an administrative or a temporary contact:<?cs each:item = domains ?>
 <?cs var:item ?><?cs /each ?><?cs else ?>Contact is not linked to any domain name.<?cs /if ?>
 
-<?cs if:nssets.0 ?>List of sets of name servers on which the contact is a technical contact:<?cs each:item = nssets ?>
+<?cs if:nssets.0 ?>Sets of name servers where the contact is a technical contact:<?cs each:item = nssets ?>
 <?cs var:item ?><?cs /each ?><?cs else ?>Contact is not linked to any name server.<?cs /if ?>
 
-<?cs if:keysets.0 ?>List of keysets on which the contact is a technical contact:<?cs each:item = keysets ?>
+<?cs if:keysets.0 ?>Keysets where the contact is a technical contact:<?cs each:item = keysets ?>
 <?cs var:item ?><?cs /each ?><?cs else ?>Contact is not linked to any keyset.<?cs /if ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (23, 23);
