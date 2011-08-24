@@ -63,13 +63,13 @@ Příloha:
 
 <?cs if:domains.0 ?>Seznam domén kde je kontakt v roli držitele nebo administrativního
 nebo dočasného kontaktu:<?cs each:item = domains ?>
-<?cs var:item ?><?cs /each ?><?cs else ?>Kontakt není uveden u žádného doménového jména.<?cs /if ?>
+<?cs var:item ?><?cs /each ?><?cs else ?>Kontakt není uveden u žádného doménového jména.<?cs /if ?><?cs if:nssets.0 ?>
 
-<?cs if:nssets.0 ?>Seznam sad jmenných serverů, kde je kontakt v roli technického kontaktu:<?cs each:item = nssets ?>
-<?cs var:item ?><?cs /each ?><?cs else ?>Kontakt není uveden u žádné sady jmenných serverů.<?cs /if ?>
+Seznam sad jmenných serverů, kde je kontakt v roli technického kontaktu:<?cs each:item = nssets ?>
+<?cs var:item ?><?cs /each ?><?cs /if ?><?cs if:keysets.0 ?>
 
-<?cs if:keysets.0 ?>Seznam sad klíčů, kde je kontakt v roli technického kontaktu:<?cs each:item = keysets ?>
-<?cs var:item ?><?cs /each ?><?cs else ?>Kontakt není uveden u žádné sady klíčů.<?cs /if ?>
+Seznam sad klíčů, kde je kontakt v roli technického kontaktu:<?cs each:item = keysets ?>
+<?cs var:item ?><?cs /each ?><?cs /if ?>
 
 
 
@@ -121,13 +121,13 @@ Your CZ.NIC team.
 Attachment:
 
 <?cs if:domains.0 ?>Domains where the contact is a holder or an administrative or a temporary contact:<?cs each:item = domains ?>
-<?cs var:item ?><?cs /each ?><?cs else ?>Contact is not linked to any domain name.<?cs /if ?>
+<?cs var:item ?><?cs /each ?><?cs else ?>Contact is not linked to any domain name.<?cs /if ?><?cs if:nssets.0 ?>
 
-<?cs if:nssets.0 ?>Sets of name servers where the contact is a technical contact:<?cs each:item = nssets ?>
-<?cs var:item ?><?cs /each ?><?cs else ?>Contact is not linked to any name server.<?cs /if ?>
+Sets of name servers where the contact is a technical contact:<?cs each:item = nssets ?>
+<?cs var:item ?><?cs /each ?><?cs /if ?><?cs if:keysets.0 ?>
 
-<?cs if:keysets.0 ?>Keysets where the contact is a technical contact:<?cs each:item = keysets ?>
-<?cs var:item ?><?cs /each ?><?cs else ?>Contact is not linked to any keyset.<?cs /if ?>
+Keysets where the contact is a technical contact:<?cs each:item = keysets ?>
+<?cs var:item ?><?cs /each ?><?cs /if ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (23, 23);
 
