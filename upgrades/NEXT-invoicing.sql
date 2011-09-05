@@ -14,6 +14,8 @@
 ALTER TABLE invoice RENAME COLUMN zone TO zone_id; 
 ALTER TABLE invoice RENAME COLUMN registrarid TO registrar_id;
 ALTER TABLE invoice RENAME COLUMN prefix_type TO invoice_prefix_id;
+ALTER TABLE invoice RENAME COLUMN credit TO balance;
+ALTER TABLE invoice RENAME COLUMN price TO operations_price;
 
 ALTER TABLE invoice_prefix RENAME COLUMN zone TO zone_id;
 
