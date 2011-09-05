@@ -131,7 +131,7 @@ ALTER TABLE registrar_credit_transaction ADD COLUMN bank_payment_id bigint REFER
 
 --insert credit changes from deposits
 INSERT INTO registrar_credit_transaction 
-SELECT nextval('registrar_credit_transaction_id_seq'), i.credit,rc.id , i.id, bp.id
+SELECT nextval('registrar_credit_transaction_id_seq'), i.balance,rc.id , i.id, bp.id
 FROM bank_payment bp JOIN invoice i ON bp.invoice_id = i.id
 JOIN registrar_credit rc ON i.registrar_id = rc.registrar_id and  i.zone_id = rc.zone_id;
 
