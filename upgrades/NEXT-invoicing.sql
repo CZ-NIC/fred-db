@@ -108,6 +108,8 @@ COMMENT ON TABLE invoice_registrar_credit_transaction_map
 
 ALTER TABLE price_list ADD COLUMN enable_postpaid_operation boolean DEFAULT 'false';
 
+ALTER TABLE invoice_object_registry ADD COLUMN registrar_credit_transaction_id bigint REFERENCES registrar_credit_transaction(id);
+
 --migration
 
 INSERT INTO price_list (zone_id, operation_id, valid_from, valid_to, price, period, enable_postpaid_operation)
@@ -147,15 +149,29 @@ WHERE rct.invoice_id IS NOT NULL;
 ALTER TABLE registrar_credit_transaction DROP COLUMN bank_payment_id;
 ALTER TABLE registrar_credit_transaction DROP COLUMN invoice_id;
 
+--tmp invoice_object_registry_id
+ALTER TABLE registrar_credit_transaction ADD COLUMN invoice_object_registry_id bigint REFERENCES invoice_object_registry(id);
+
 --insert credit changes from operations
 INSERT INTO registrar_credit_transaction
 SELECT nextval('registrar_credit_transaction_id_seq'), 
-sum(iorpm.price) * -1, rc.id
+sum(iorpm.price) * -1, rc.id, ior.id
 FROM invoice_object_registry ior 
 JOIN invoice_object_registry_price_map iorpm ON ior.id = iorpm.invoice_object_registry_id
 JOIN registrar_credit rc ON rc.zone_id = ior.zone_id AND rc.registrar_id = ior.registrar_id
 GROUP BY iorpm.invoice_object_registry_id, rc.id;
 
-ALTER TABLE bank_payment DROP COLUMN invoice_id;
+--update operations credit changes
+UPDATE invoice_object_registry ior 
+SET registrar_credit_transaction_id = rct.invoice_object_registry_id 
+FROM registrar_credit_transaction rct  
+WHERE ior.id = rct.invoice_object_registry_id;
 
+ALTER TABLE invoice_object_registry ALTER COLUMN registrar_credit_transaction_id SET NOT NULL;
+
+--drop tmp cols
+ALTER TABLE registrar_credit_transaction DROP COLUMN invoice_object_registry_id;
+
+
+ALTER TABLE bank_payment DROP COLUMN invoice_id;
 ALTER TABLE registrarinvoice DROP COLUMN lastdate;
