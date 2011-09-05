@@ -159,7 +159,7 @@ sum(iorpm.price) * -1, rc.id, ior.id
 FROM invoice_object_registry ior 
 JOIN invoice_object_registry_price_map iorpm ON ior.id = iorpm.invoice_object_registry_id
 JOIN registrar_credit rc ON rc.zone_id = ior.zone_id AND rc.registrar_id = ior.registrar_id
-GROUP BY iorpm.invoice_object_registry_id, rc.id;
+GROUP BY iorpm.invoice_object_registry_id, rc.id, ior.id;
 
 --update operations credit changes
 UPDATE invoice_object_registry ior 
