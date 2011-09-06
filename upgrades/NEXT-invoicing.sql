@@ -92,7 +92,7 @@ CREATE TABLE bank_payment_registrar_credit_transaction_map
 (
     id BIGSERIAL PRIMARY KEY
     , bank_payment_id bigint NOT NULL REFERENCES bank_payment(id)
-    , registrar_credit_transaction_id bigint NOT NULL REFERENCES registrar_credit_transaction(id)
+    , registrar_credit_transaction_id bigint UNIQUE NOT NULL REFERENCES registrar_credit_transaction(id)
 );
 
 COMMENT ON TABLE bank_payment_registrar_credit_transaction_map
@@ -102,7 +102,7 @@ CREATE TABLE invoice_registrar_credit_transaction_map
 (
     id BIGSERIAL PRIMARY KEY
     , invoice_id bigint NOT NULL REFERENCES invoice(id)
-    , registrar_credit_transaction_id bigint NOT NULL REFERENCES registrar_credit_transaction(id)
+    , registrar_credit_transaction_id bigint UNIQUE NOT NULL REFERENCES registrar_credit_transaction(id)
 );
 
 COMMENT ON TABLE invoice_registrar_credit_transaction_map
@@ -110,7 +110,7 @@ COMMENT ON TABLE invoice_registrar_credit_transaction_map
 
 ALTER TABLE price_list ADD COLUMN enable_postpaid_operation boolean DEFAULT 'false';
 
-ALTER TABLE invoice_object_registry ADD COLUMN registrar_credit_transaction_id bigint REFERENCES registrar_credit_transaction(id);
+ALTER TABLE invoice_object_registry ADD COLUMN registrar_credit_transaction_id bigint UNIQUE NOT NULL REFERENCES registrar_credit_transaction(id);
 
 --migration
 
