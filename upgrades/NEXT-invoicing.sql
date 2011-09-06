@@ -110,7 +110,7 @@ COMMENT ON TABLE invoice_registrar_credit_transaction_map
 
 ALTER TABLE price_list ADD COLUMN enable_postpaid_operation boolean DEFAULT 'false';
 
-ALTER TABLE invoice_object_registry ADD COLUMN registrar_credit_transaction_id bigint UNIQUE NOT NULL REFERENCES registrar_credit_transaction(id);
+ALTER TABLE invoice_object_registry ADD COLUMN registrar_credit_transaction_id bigint UNIQUE REFERENCES registrar_credit_transaction(id);
 
 --migration
 
