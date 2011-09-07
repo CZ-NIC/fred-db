@@ -22,13 +22,15 @@ ALTER TABLE invoice_prefix RENAME COLUMN zone TO zone_id;
 ALTER TABLE price_list RENAME COLUMN zone TO zone_id;
 ALTER TABLE price_list RENAME COLUMN operation TO operation_id;
 
-ALTER TABLE invoice_object_registry RENAME COLUMN invoiceid TO invoice_id;
-ALTER TABLE invoice_object_registry RENAME COLUMN zone TO zone_id;
-ALTER TABLE invoice_object_registry RENAME COLUMN registrarid TO registrar_id;
-ALTER TABLE invoice_object_registry RENAME COLUMN objectid TO object_id;
+ALTER TABLE invoice_object_registry RENAME TO invoice_operation;
+ALTER TABLE invoice_operation RENAME COLUMN invoiceid TO ac_invoice_id;
+ALTER TABLE invoice_operation RENAME COLUMN zone TO zone_id;
+ALTER TABLE invoice_operation RENAME COLUMN registrarid TO registrar_id;
+ALTER TABLE invoice_operation RENAME COLUMN objectid TO object_id;
 
-ALTER TABLE invoice_object_registry_price_map RENAME COLUMN id TO invoice_object_registry_id;
-ALTER TABLE invoice_object_registry_price_map RENAME COLUMN invoiceid TO invoice_id;
+ALTER TABLE invoice_object_registry_price_map RENAME TO invoice_operation_charge_map;
+ALTER TABLE invoice_operation_charge_map RENAME COLUMN id TO invoice_operation_id;
+ALTER TABLE invoice_operation_charge_map RENAME COLUMN invoiceid TO invoice_id;
 
 ALTER TABLE invoice_credit_payment_map RENAME COLUMN invoiceid TO ac_invoice_id;
 ALTER TABLE invoice_credit_payment_map RENAME COLUMN ainvoiceid TO ad_invoice_id;
@@ -51,12 +53,12 @@ COMMENT ON TABLE registrar_credit
 CREATE TABLE registrar_credit_transaction
 (
     id bigserial PRIMARY KEY
-    , credit numeric(10,2) NOT NULL
+    , balance_change numeric(10,2) NOT NULL
     , registrar_credit_id bigint NOT NULL REFERENCES registrar_credit(id)
 );
 
 COMMENT ON TABLE registrar_credit_transaction 
-	IS 'credit changes';
+	IS 'balance changes';
 
 -- locked registrar and zone credit account insert, disabled update and delete
 CREATE OR REPLACE FUNCTION registrar_credit_change_lock()
@@ -69,7 +71,7 @@ BEGIN
             WHERE id = NEW.registrar_credit_id FOR UPDATE;
         IF FOUND THEN
             UPDATE registrar_credit 
-                SET credit = credit + NEW.credit
+                SET credit = credit + NEW.balance_change
                 WHERE id = registrar_credit_result.id;
         ELSE
             RAISE EXCEPTION 'Invalid registrar_credit_id';
@@ -110,7 +112,7 @@ COMMENT ON TABLE invoice_registrar_credit_transaction_map
 
 ALTER TABLE price_list ADD COLUMN enable_postpaid_operation boolean DEFAULT 'false';
 
-ALTER TABLE invoice_object_registry ADD COLUMN registrar_credit_transaction_id bigint UNIQUE REFERENCES registrar_credit_transaction(id);
+ALTER TABLE invoice_operation ADD COLUMN registrar_credit_transaction_id bigint UNIQUE REFERENCES registrar_credit_transaction(id);
 
 --migration
 
@@ -151,28 +153,28 @@ WHERE rct.invoice_id IS NOT NULL;
 ALTER TABLE registrar_credit_transaction DROP COLUMN bank_payment_id;
 ALTER TABLE registrar_credit_transaction DROP COLUMN invoice_id;
 
---tmp invoice_object_registry_id
-ALTER TABLE registrar_credit_transaction ADD COLUMN invoice_object_registry_id bigint REFERENCES invoice_object_registry(id);
+--tmp invoice_operation_id
+ALTER TABLE registrar_credit_transaction ADD COLUMN invoice_operation_id bigint REFERENCES invoice_operation(id);
 
 --insert credit changes from operations
 INSERT INTO registrar_credit_transaction
 SELECT nextval('registrar_credit_transaction_id_seq'), 
-sum(iorpm.price) * -1, rc.id, ior.id
-FROM invoice_object_registry ior 
-JOIN invoice_object_registry_price_map iorpm ON ior.id = iorpm.invoice_object_registry_id
-JOIN registrar_credit rc ON rc.zone_id = ior.zone_id AND rc.registrar_id = ior.registrar_id
-GROUP BY iorpm.invoice_object_registry_id, rc.id, ior.id;
+sum(iocm.price) * -1, rc.id, io.id
+FROM invoice_operation io 
+JOIN invoice_operation_charge_map iocm ON io.id = iocm.invoice_operation_id
+JOIN registrar_credit rc ON rc.zone_id = io.zone_id AND rc.registrar_id = io.registrar_id
+GROUP BY iocm.invoice_operation_id, rc.id, io.id;
 
 --update operations credit changes
-UPDATE invoice_object_registry ior 
-SET registrar_credit_transaction_id = rct.invoice_object_registry_id 
+UPDATE invoice_operation io 
+SET registrar_credit_transaction_id = rct.invoice_operation_id 
 FROM registrar_credit_transaction rct  
-WHERE ior.id = rct.invoice_object_registry_id;
+WHERE io.id = rct.invoice_operation_id;
 
-ALTER TABLE invoice_object_registry ALTER COLUMN registrar_credit_transaction_id SET NOT NULL;
+ALTER TABLE invoice_operation ALTER COLUMN registrar_credit_transaction_id SET NOT NULL;
 
 --drop tmp cols
-ALTER TABLE registrar_credit_transaction DROP COLUMN invoice_object_registry_id;
+ALTER TABLE registrar_credit_transaction DROP COLUMN invoice_operation_id;
 
 
 ALTER TABLE bank_payment DROP COLUMN invoice_id;
