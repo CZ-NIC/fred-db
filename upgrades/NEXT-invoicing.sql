@@ -30,6 +30,7 @@ ALTER TABLE invoice_operation RENAME COLUMN zone TO zone_id;
 ALTER TABLE invoice_operation RENAME COLUMN registrarid TO registrar_id;
 ALTER TABLE invoice_operation RENAME COLUMN objectid TO object_id;
 ALTER TABLE invoice_operation RENAME COLUMN exdate TO date_to;
+ALTER TABLE invoice_operation RENAME COLUMN period TO quantity;
 ALTER TABLE invoice_operation ADD COLUMN date_from date;
 
 
