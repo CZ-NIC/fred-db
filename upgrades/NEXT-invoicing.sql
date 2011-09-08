@@ -21,12 +21,17 @@ ALTER TABLE invoice_prefix RENAME COLUMN zone TO zone_id;
 
 ALTER TABLE price_list RENAME COLUMN zone TO zone_id;
 ALTER TABLE price_list RENAME COLUMN operation TO operation_id;
-
+ALTER TABLE price_list RENAME COLUMN period TO quantity;
+ALTER TABLE price_list ADD COLUMN enable_postpaid_operation boolean DEFAULT 'false';
+ 
 ALTER TABLE invoice_object_registry RENAME TO invoice_operation;
 ALTER TABLE invoice_operation RENAME COLUMN invoiceid TO ac_invoice_id;
 ALTER TABLE invoice_operation RENAME COLUMN zone TO zone_id;
 ALTER TABLE invoice_operation RENAME COLUMN registrarid TO registrar_id;
 ALTER TABLE invoice_operation RENAME COLUMN objectid TO object_id;
+ALTER TABLE invoice_operation RENAME COLUMN exdate TO date_to;
+ALTER TABLE invoice_operation ADD COLUMN date_from date;
+
 
 ALTER TABLE invoice_object_registry_price_map RENAME TO invoice_operation_charge_map;
 ALTER TABLE invoice_operation_charge_map RENAME COLUMN id TO invoice_operation_id;
@@ -38,6 +43,8 @@ ALTER TABLE invoice_credit_payment_map RENAME COLUMN ainvoiceid TO ad_invoice_id
 ALTER TABLE invoice_generation RENAME COLUMN zone TO zone_id; 
 ALTER TABLE invoice_generation RENAME COLUMN registrarid TO registrar_id;
 ALTER TABLE invoice_generation RENAME COLUMN invoiceid TO invoice_id;
+
+ALTER TABLE registrarinvoice DROP COLUMN lastdate;
 
 CREATE TABLE registrar_credit
 (
@@ -110,17 +117,17 @@ CREATE TABLE invoice_registrar_credit_transaction_map
 COMMENT ON TABLE invoice_registrar_credit_transaction_map
 	IS 'positive credit item from payment assigned to deposit or account invoice';
 
-ALTER TABLE price_list ADD COLUMN enable_postpaid_operation boolean DEFAULT 'false';
-
 ALTER TABLE invoice_operation ADD COLUMN registrar_credit_transaction_id bigint UNIQUE REFERENCES registrar_credit_transaction(id);
 
 --migration
 
-INSERT INTO price_list (zone_id, operation_id, valid_from, valid_to, price, period, enable_postpaid_operation)
+INSERT INTO price_list (zone_id, operation_id, valid_from, valid_to, price, quantity, enable_postpaid_operation)
 VALUES (
 (SELECT id FROM zone WHERE fqdn = 'cz')
 , (SELECT id FROM enum_operation WHERE operation = 'GeneralEppOperation')
-, now(), null, 0.10, 0, 'true');
+, now(), null, 0.10, 1, 'true');
+
+UPDATE price_list SET quantity = 1 WHERE quantity = 0;
 
 --UPDATE price_list pl SET enable_postpaid_operation = 'true' FROM enum_operation eo  
 --WHERE pl.operation_id = eo.id AND eo.operation = 'GeneralEppOperation';
@@ -176,6 +183,5 @@ ALTER TABLE invoice_operation ALTER COLUMN registrar_credit_transaction_id SET N
 --drop tmp cols
 ALTER TABLE registrar_credit_transaction DROP COLUMN invoice_operation_id;
 
-
 ALTER TABLE bank_payment DROP COLUMN invoice_id;
-ALTER TABLE registrarinvoice DROP COLUMN lastdate;
+
