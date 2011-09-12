@@ -28,7 +28,7 @@ registrar_id INTEGER NOT NULL REFERENCES registrar, -- link to registrar
 -- TODO registrarhistoryID for links to right ICO and DIC addresses
 balance numeric(10,2) DEFAULT 0.0, -- credit from which is taken till zero if it is NULL it is normal invoice 
 operations_price numeric(10,2) NOT NULL DEFAULT 0.0, -- invoice high also with tax 
-VAT numeric NOT NULL  DEFAULT 19, -- VAT high 19% (0) for account
+VAT numeric NOT NULL, -- VAT percent used for this invoice)
 total numeric(10,2) NOT NULL  DEFAULT 0.0 ,  -- amount without tax ( for accounting is same as price = total amount without tax);
 totalVAT numeric(10,2)  NOT NULL DEFAULT 0.0 , -- tax paid (0 for accounted tax it is paid at advance invoice)
 invoice_prefix_id INTEGER NOT NULL REFERENCES invoice_prefix(ID), --  invoice type  from which year is anf which type is according to prefix 
