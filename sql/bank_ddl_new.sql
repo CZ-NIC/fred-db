@@ -39,7 +39,6 @@ CREATE TABLE bank_payment
     account_evid varchar(20), -- account evidence 
     account_date date NOT NULL, --  accounting date of credit or sending 
     account_memo  varchar(64), -- note
-    invoice_ID INTEGER REFERENCES Invoice default NULL, -- null if it isn't income payment of process otherwise link to advance invoice
     account_name  varchar(64), -- account name
     crtime timestamp NOT NULL default now(),
     UNIQUE(account_id, account_evid)
@@ -60,7 +59,20 @@ comment on column bank_payment.price is 'applied positive(credit) or negative(de
 comment on column bank_payment.account_evid is 'account evidence';
 comment on column bank_payment.account_date is 'accounting date';
 comment on column bank_payment.account_memo is 'note';
-comment on column bank_payment.invoice_ID is 'null if it is not income payment of process otherwise link to proper invoice';
 comment on column bank_payment.account_name is 'account name';
 comment on column bank_payment.crtime is 'create timestamp';
+
+CREATE TABLE bank_payment_registrar_credit_transaction_map
+(
+    id BIGSERIAL PRIMARY KEY
+    , bank_payment_id bigint NOT NULL REFERENCES bank_payment(id)
+    , registrar_credit_transaction_id bigint UNIQUE NOT NULL REFERENCES registrar_credit_transaction(id)
+);
+
+COMMENT ON TABLE bank_payment_registrar_credit_transaction_map
+	IS 'payment assigned to credit items';
+
+
+
+
 
