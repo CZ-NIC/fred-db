@@ -36,7 +36,7 @@ write_script()
 	cat $DIR/mail_templates.sql
 	# banking
 	cat $DIR/enum_bank_code.sql
-	cat $DIR/credit.sql
+	cat $DIR/credit_ddl.sql
 	cat $DIR/invoice.sql
 	cat $DIR/bank.sql
 	cat $DIR/bank_ddl_new.sql
@@ -72,6 +72,7 @@ write_script()
     # contact reminder
     cat $DIR/reminder_ddl.sql
     cat $DIR/reminder_dml.sql
+    cat $DIR/credit_dml.sql
 }
 
 usage()
