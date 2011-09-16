@@ -102,7 +102,7 @@ registrar_id INTEGER NOT NULL REFERENCES registrar, -- link to registrar
 operation_id INTEGER NOT NULL REFERENCES enum_operation, -- operation type of registration or renew
 date_from date,
 date_to date default NULL,  -- final ExDate only for RENEW 
-quantity integer default 0 -- number of unit for renew in months
+quantity integer default 0, -- number of unit for renew in months
 registrar_credit_transaction_id BIGINT UNIQUE REFERENCES registrar_credit_transaction(id)
 );
 
