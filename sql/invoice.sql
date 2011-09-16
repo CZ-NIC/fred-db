@@ -103,7 +103,7 @@ operation_id INTEGER NOT NULL REFERENCES enum_operation, -- operation type of re
 date_from date,
 date_to date default NULL,  -- final ExDate only for RENEW 
 quantity integer default 0, -- number of unit for renew in months
-registrar_credit_transaction_id BIGINT UNIQUE REFERENCES registrar_credit_transaction(id)
+registrar_credit_transaction_id bigint UNIQUE NOT NULL REFERENCES registrar_credit_transaction(id)
 );
 
 comment on column invoice_operation.id is 'unique automatically generated identifier';
@@ -152,8 +152,6 @@ CREATE TABLE invoice_registrar_credit_transaction_map
 
 COMMENT ON TABLE invoice_registrar_credit_transaction_map
 	IS 'positive credit item from payment assigned to deposit or account invoice';
-
-ALTER TABLE invoice_operation ADD COLUMN registrar_credit_transaction_id bigint UNIQUE NOT NULL REFERENCES registrar_credit_transaction(id);
 
 
 
