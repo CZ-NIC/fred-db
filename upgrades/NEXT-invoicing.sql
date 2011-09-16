@@ -178,7 +178,7 @@ GROUP BY iocm.invoice_operation_id, rc.id, io.id;
 
 --update operations credit changes
 UPDATE invoice_operation io 
-SET registrar_credit_transaction_id = rct.invoice_operation_id 
+SET registrar_credit_transaction_id = rct.id 
 FROM registrar_credit_transaction rct  
 WHERE io.id = rct.invoice_operation_id;
 
