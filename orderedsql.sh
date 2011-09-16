@@ -72,6 +72,8 @@ write_script()
     # contact reminder
     cat $DIR/reminder_ddl.sql
     cat $DIR/reminder_dml.sql
+    # monitoring
+    cat $DIR/monitoring_dml.sql
 }
 
 usage()
