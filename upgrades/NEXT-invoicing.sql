@@ -1,6 +1,9 @@
 ---
 --- Ticket #5796
 ---
+--- THIS SCRIPT MUST BE RUN WITH SUPERUSER PRIVILEGES
+--- SO THAT `COPY' CAN WORK
+---
 
 --drop table registrar_credit_transaction cascade;
 --drop table registrar_credit cascade;
@@ -81,6 +84,8 @@ CREATE TABLE registrar_credit
     , zone_id bigint NOT NULL REFERENCES zone(id)
 );
 
+ALTER TABLE registrar_credit OWNER TO FRED;
+
 COMMENT ON TABLE registrar_credit 
 	IS 'current credit by registrar and zone';
 
@@ -90,6 +95,9 @@ CREATE TABLE registrar_credit_transaction
     , balance_change numeric(10,2) NOT NULL
     , registrar_credit_id bigint NOT NULL REFERENCES registrar_credit(id)
 );
+
+
+ALTER TABLE registrar_credit_transaction OWNER TO FRED;
 
 COMMENT ON TABLE registrar_credit_transaction 
 	IS 'balance changes';
@@ -117,6 +125,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+ALTER FUNCTION registrar_credit_change_lock() OWNER TO FRED;
+
 COMMENT ON FUNCTION registrar_credit_change_lock()
 	IS 'check and lock insert into registrar_credit_transaction disable update and delete'; 
 
@@ -131,6 +141,8 @@ CREATE TABLE bank_payment_registrar_credit_transaction_map
     , registrar_credit_transaction_id bigint UNIQUE NOT NULL REFERENCES registrar_credit_transaction(id)
 );
 
+ALTER TABLE bank_payment_registrar_credit_transaction_map OWNER TO FRED;
+
 COMMENT ON TABLE bank_payment_registrar_credit_transaction_map
 	IS 'payment assigned to credit items';
 
@@ -140,6 +152,8 @@ CREATE TABLE invoice_registrar_credit_transaction_map
     , invoice_id bigint NOT NULL REFERENCES invoice(id)
     , registrar_credit_transaction_id bigint UNIQUE NOT NULL REFERENCES registrar_credit_transaction(id)
 );
+
+ALTER TABLE invoice_registrar_credit_transaction_map OWNER TO FRED;
 
 COMMENT ON TABLE invoice_registrar_credit_transaction_map
 	IS 'positive credit item from payment assigned to deposit or account invoice';
