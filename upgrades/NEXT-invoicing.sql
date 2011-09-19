@@ -79,7 +79,7 @@ ALTER TABLE registrarinvoice DROP COLUMN lastdate;
 CREATE TABLE registrar_credit
 (
     id BIGSERIAL PRIMARY KEY
-    , credit numeric(10,2) NOT NULL DEFAULT 0
+    , credit numeric(30,2) NOT NULL DEFAULT 0
     , registrar_id bigint NOT NULL REFERENCES registrar(id)
     , zone_id bigint NOT NULL REFERENCES zone(id)
 );
@@ -234,14 +234,15 @@ CREATE TEMP TABLE temp_rct_plus
     id bigserial PRIMARY KEY,
     balance_change numeric(10,2) NOT NULL,
     registrar_credit_id bigint NOT NULL, --REFERENCES registrar_credit(id),
-    invoice_id bigint, -- REFERENCES invoice(id),
+    invoice_id bigint NOT NULL, -- REFERENCES invoice(id),
     bank_payment_id bigint -- REFERENCES bank_payment(id)
 );
 
 INSERT INTO temp_rct_plus 
     (SELECT nextval('registrar_credit_transaction_id_seq'), i.balance,rc.id , i.id, tbp.id
-    FROM temp_bank_payment tbp JOIN invoice i ON tbp.invoice_id = i.id
-    JOIN registrar_credit rc ON i.registrar_id = rc.registrar_id and  i.zone_id = rc.zone_id);
+    FROM invoice i
+    LEFT JOIN temp_bank_payment tbp ON tbp.invoice_id = i.id
+    JOIN registrar_credit rc ON i.registrar_id = rc.registrar_id and  i.zone_id = rc.zone_id WHERE i.balance IS NOT NULL);
 
 
 -------------init new tables
@@ -261,8 +262,7 @@ WHERE rct.bank_payment_id IS NOT NULL;
 --insert invoice_registrar_credit_transaction_map
 INSERT INTO invoice_registrar_credit_transaction_map 
 SELECT nextval('invoice_registrar_credit_transaction_map_id_seq'), rct.invoice_id, rct.id
-FROM temp_rct_plus rct
-WHERE rct.invoice_id IS NOT NULL;
+FROM temp_rct_plus rct;
 
 
 
