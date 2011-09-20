@@ -169,6 +169,47 @@ ALTER TABLE invoice_operation ADD COLUMN registrar_credit_transaction_id bigint 
 
 ---------------------------------------migration
 
+--legacy invoices from old system
+CREATE TEMPORARY TABLE tmp_zalohy (
+    prefix bigint NOT NULL,
+    credit numeric(10,2) 
+);
+INSERT INTO tmp_zalohy VALUES (2407000660,168060.00);
+INSERT INTO tmp_zalohy VALUES (2407000653,7768.70);
+INSERT INTO tmp_zalohy VALUES (2406000831,142604.50);
+INSERT INTO tmp_zalohy VALUES (2407000624,336120.00);
+INSERT INTO tmp_zalohy VALUES (2407000514,107490.30);
+INSERT INTO tmp_zalohy VALUES (2407000649,42015.00);
+INSERT INTO tmp_zalohy VALUES (2407000645,33066.00);
+INSERT INTO tmp_zalohy VALUES (2407000664,928.60);
+INSERT INTO tmp_zalohy VALUES (2407000663,556777.57);
+INSERT INTO tmp_zalohy VALUES (2407000392,13008.10);
+INSERT INTO tmp_zalohy VALUES (2407000602,104304.20);
+INSERT INTO tmp_zalohy VALUES (2407000669,16806.00);
+INSERT INTO tmp_zalohy VALUES (2407000656,23654.80);
+INSERT INTO tmp_zalohy VALUES (2407000661,0.00);
+INSERT INTO tmp_zalohy VALUES (2407000667,27702.70);
+INSERT INTO tmp_zalohy VALUES (2407000662,0.00);
+INSERT INTO tmp_zalohy VALUES (2407000658,0.00);
+INSERT INTO tmp_zalohy VALUES (2407000655,0.00);
+INSERT INTO tmp_zalohy VALUES (2407000651,0.00);
+INSERT INTO tmp_zalohy VALUES (2407000668,196273.90);
+INSERT INTO tmp_zalohy VALUES (2407000648,0.00);
+INSERT INTO tmp_zalohy VALUES (2407000670,47498.00);
+INSERT INTO tmp_zalohy VALUES (2407000671,100836.00);
+INSERT INTO tmp_zalohy VALUES (2407000672,25209.00);
+INSERT INTO tmp_zalohy VALUES (2407000673,92433.00);
+INSERT INTO tmp_zalohy VALUES (2407000675,16806.00);
+INSERT INTO tmp_zalohy VALUES (2407000676,100836.00);
+INSERT INTO tmp_zalohy VALUES (2407000677,25209.00);
+INSERT INTO tmp_zalohy VALUES (2407000678,65543.40);
+INSERT INTO tmp_zalohy VALUES (2407000679,100836.00);
+INSERT INTO tmp_zalohy VALUES (2407000674,244587.74);
+INSERT INTO tmp_zalohy VALUES (2407000665,503640.40);
+INSERT INTO tmp_zalohy VALUES (2407000642,14914.80);
+INSERT INTO tmp_zalohy VALUES (2407000666,330994.20);
+
+
 INSERT INTO price_list (zone_id, operation_id, valid_from, valid_to, price, quantity, enable_postpaid_operation)
 VALUES (
 (SELECT id FROM zone WHERE fqdn = 'cz')
@@ -239,10 +280,12 @@ CREATE TEMP TABLE temp_rct_plus
 );
 
 INSERT INTO temp_rct_plus 
-    (SELECT nextval('registrar_credit_transaction_id_seq'), i.total,rc.id , i.id, tbp.id
+    (SELECT nextval('registrar_credit_transaction_id_seq'), COALESCE(ti.credit, i.total),  rc.id , i.id, tbp.id
     FROM invoice i
     LEFT JOIN temp_bank_payment tbp ON tbp.invoice_id = i.id
-    JOIN registrar_credit rc ON i.registrar_id = rc.registrar_id and  i.zone_id = rc.zone_id WHERE i.balance IS NOT NULL);
+    JOIN registrar_credit rc ON i.registrar_id = rc.registrar_id and  i.zone_id = rc.zone_id 
+    JOIN tmp_zalohy ti ON ti.prefix=i.prefix 
+    WHERE i.balance IS NOT NULL);
 
 
 -------------init new tables
