@@ -239,7 +239,7 @@ CREATE TEMP TABLE temp_rct_plus
 );
 
 INSERT INTO temp_rct_plus 
-    (SELECT nextval('registrar_credit_transaction_id_seq'), i.balance,rc.id , i.id, tbp.id
+    (SELECT nextval('registrar_credit_transaction_id_seq'), i.total,rc.id , i.id, tbp.id
     FROM invoice i
     LEFT JOIN temp_bank_payment tbp ON tbp.invoice_id = i.id
     JOIN registrar_credit rc ON i.registrar_id = rc.registrar_id and  i.zone_id = rc.zone_id WHERE i.balance IS NOT NULL);
