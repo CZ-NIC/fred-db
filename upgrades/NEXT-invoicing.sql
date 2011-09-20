@@ -284,7 +284,7 @@ INSERT INTO temp_rct_plus
     FROM invoice i
     LEFT JOIN temp_bank_payment tbp ON tbp.invoice_id = i.id
     JOIN registrar_credit rc ON i.registrar_id = rc.registrar_id and  i.zone_id = rc.zone_id 
-    JOIN tmp_zalohy ti ON ti.prefix=i.prefix 
+    LEFT JOIN tmp_zalohy ti ON ti.prefix=i.prefix 
     WHERE i.balance IS NOT NULL);
 
 
