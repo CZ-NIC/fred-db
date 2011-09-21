@@ -223,6 +223,8 @@ FROM enum_operation
 WHERE operation_id = enum_operation.id 
     AND quantity = 12 
     AND enum_operation.operation = 'RenewDomain';
+    
+COMMENT ON COLUMN price_list.quantity IS 'quantity of operation or period (in years) of operation';    
 
 --UPDATE price_list pl SET enable_postpaid_operation = 'true' FROM enum_operation eo  
 --WHERE pl.operation_id = eo.id AND eo.operation = 'GeneralEppOperation';
