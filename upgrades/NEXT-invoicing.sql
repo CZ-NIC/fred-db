@@ -218,6 +218,12 @@ VALUES (
 
 UPDATE price_list SET quantity = 1 WHERE quantity = 0;
 
+UPDATE price_list SET quantity = 1 
+FROM enum_operation 
+WHERE operation_id = enum_operation.id 
+    AND quantity = 12 
+    AND enum_operation.operation = 'RenewDomain';
+
 --UPDATE price_list pl SET enable_postpaid_operation = 'true' FROM enum_operation eo  
 --WHERE pl.operation_id = eo.id AND eo.operation = 'GeneralEppOperation';
 
