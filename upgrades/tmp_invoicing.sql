@@ -260,7 +260,7 @@ CREATE TABLE registrarinvoice
 CREATE TABLE registrar_credit
 (
     id BIGSERIAL PRIMARY KEY
-    , credit numeric(10,2) NOT NULL DEFAULT 0
+    , credit numeric(30,2) NOT NULL DEFAULT 0
     , registrar_id bigint NOT NULL REFERENCES registrar(id)
     , zone_id bigint NOT NULL REFERENCES zone(id)
 );
