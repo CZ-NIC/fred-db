@@ -5,10 +5,12 @@
 
 --rename old tables
 ALTER TABLE invoice RENAME TO invoice_5897;
+ALTER TABLE invoice_prefix DROP CONSTRAINT invoice_prefix_zone_key;
 ALTER TABLE invoice_prefix RENAME TO invoice_prefix_5897;
 ALTER TABLE price_list RENAME TO price_list_5897;
 ALTER TABLE invoice_object_registry RENAME TO invoice_object_registry_5897;
 ALTER TABLE invoice_object_registry_price_map RENAME TO invoice_object_registry_price_map_5897;
+ALTER TABLE invoice_credit_payment_map DROP CONSTRAINT invoice_credit_payment_map_pkey;
 ALTER TABLE invoice_credit_payment_map RENAME TO invoice_credit_payment_map_5897;
 ALTER TABLE invoice_generation RENAME TO invoice_generation_5897;
 ALTER TABLE bank_payment RENAME TO bank_payment_5897;
@@ -118,7 +120,7 @@ ALTER TABLE tmp_registrar_credit_transaction ADD COLUMN invoice_id bigint;-- REF
 ALTER TABLE tmp_registrar_credit_transaction ADD COLUMN bank_payment_id bigint;-- REFERENCES bank_payment(id);
 
 --insert credit changes from deposits
-INSERT INTO tmp_registrar_credit_transaction REFERENCES "zone" (id)
+INSERT INTO tmp_registrar_credit_transaction 
 SELECT nextval('tmp_registrar_credit_transaction_id_seq'), i.balance,rc.id , i.id, bp.id
 FROM tmp_bank_payment bp JOIN tmp_invoice i ON bp.invoice_id = i.id
 JOIN tmp_registrar_credit rc ON i.registrar_id = rc.registrar_id and  i.zone_id = rc.zone_id;
@@ -165,6 +167,17 @@ ALTER TABLE tmp_bank_payment DROP COLUMN invoice_id;
 
 
 --new tables
+
+CREATE TABLE invoice_prefix
+(
+  id bigserial PRIMARY KEY,
+  zone_id bigint REFERENCES zone (id) , -- reference to zone
+  typ integer DEFAULT 0, -- invoice type (0-advanced, 1-normal)
+  "year" numeric NOT NULL, -- for which year
+  prefix bigint, -- counter with prefix of number of invoice
+  CONSTRAINT invoice_prefix_zone_key UNIQUE (zone_id, typ, year)
+);
+
 CREATE TABLE invoice
 (
   id bigserial PRIMARY KEY NOT NULL, -- unique automatically generated identifier
@@ -183,16 +196,6 @@ CREATE TABLE invoice
   filexml bigint REFERENCES files (id) -- link to generated XML file, it can be NULL till file is generated
 );
 
-CREATE TABLE invoice_prefix
-(
-  id bigserial PRIMARY KEY,
-  zone_id bigint REFERENCES zone (id) , -- reference to zone
-  typ integer DEFAULT 0, -- invoice type (0-advanced, 1-normal)
-  "year" numeric NOT NULL, -- for which year
-  prefix bigint, -- counter with prefix of number of invoice
-  CONSTRAINT invoice_prefix_zone_key UNIQUE (zone_id, typ, year)
-);
-
 CREATE TABLE price_list
 (
   id bigserial PRIMARY KEY, -- unique automatically generated identifier
@@ -203,29 +206,6 @@ CREATE TABLE price_list
   price numeric(10,2) NOT NULL DEFAULT 0, -- cost of operation (for one year-12 months)
   quantity integer DEFAULT 12, -- quantity or period (in years) of operation
   enable_postpaid_operation boolean DEFAULT false -- true if operation of this specific type can be executed when credit is not sufficient and create debt
-);
-
-CREATE TABLE invoice_operation
-(
-  id bigserial PRIMARY KEY, -- unique automatically generated identifier
-  ac_invoice_id bigint REFERENCES invoice (id), -- id of invoice for which is item counted
-  crdate timestamp without time zone NOT NULL DEFAULT now(), -- billing date and time
-  object_id bigint REFERENCES object_registry (id),
-  zone_id bigint REFERENCES "zone" (id), -- link to zone
-  registrar_id bigint NOT NULL REFERENCES registrar (id), -- link to registrar
-  operation_id bigint NOT NULL REFERENCES enum_operation (id), -- operation type of registration or renew
-  date_from date,
-  date_to date, -- expiration date only for RENEW
-  quantity bigint DEFAULT 0, -- number of operations or number of months for renew
-  registrar_credit_transaction_id bigint NOT NULL UNIQUE REFERENCES registrar_credit_transaction (id)
-);
-
-CREATE TABLE invoice_operation_charge_map
-(
-  invoice_operation_id bigint NOT NULL REFERENCES invoice_operation (id),
-  invoice_id bigint NOT NULL REFERENCES invoice (id), -- id of advanced invoice
-  price numeric(10,2) NOT NULL DEFAULT 0, -- operation cost
-  CONSTRAINT invoice_operation_charge_map_pkey PRIMARY KEY (invoice_operation_id, invoice_id)
 );
 
 CREATE TABLE invoice_credit_payment_map
@@ -244,7 +224,7 @@ CREATE TABLE invoice_generation
   todate date NOT NULL,
   registrar_id bigint NOT NULL REFERENCES registrar (id),
   zone_id bigint REFERENCES zone (id),
-  invoice_id bigint REFERENCES invoice (id), -- id of normal invoice
+  invoice_id bigint REFERENCES invoice (id) -- id of normal invoice
 );
 
 
@@ -271,6 +251,30 @@ CREATE TABLE registrar_credit_transaction
     , balance_change numeric(10,2) NOT NULL
     , registrar_credit_id bigint NOT NULL REFERENCES registrar_credit(id)
 );
+
+CREATE TABLE invoice_operation
+(
+  id bigserial PRIMARY KEY, -- unique automatically generated identifier
+  ac_invoice_id bigint REFERENCES invoice (id), -- id of invoice for which is item counted
+  crdate timestamp without time zone NOT NULL DEFAULT now(), -- billing date and time
+  object_id bigint REFERENCES object_registry (id),
+  zone_id bigint REFERENCES "zone" (id), -- link to zone
+  registrar_id bigint NOT NULL REFERENCES registrar (id), -- link to registrar
+  operation_id bigint NOT NULL REFERENCES enum_operation (id), -- operation type of registration or renew
+  date_from date,
+  date_to date, -- expiration date only for RENEW
+  quantity bigint DEFAULT 0, -- number of operations or number of months for renew
+  registrar_credit_transaction_id bigint NOT NULL UNIQUE REFERENCES registrar_credit_transaction (id)
+);
+
+CREATE TABLE invoice_operation_charge_map
+(
+  invoice_operation_id bigint NOT NULL REFERENCES invoice_operation (id),
+  invoice_id bigint NOT NULL REFERENCES invoice (id), -- id of advanced invoice
+  price numeric(10,2) NOT NULL DEFAULT 0, -- operation cost
+  CONSTRAINT invoice_operation_charge_map_pkey PRIMARY KEY (invoice_operation_id, invoice_id)
+);
+
 
 
 CREATE TABLE bank_payment_registrar_credit_transaction_map
