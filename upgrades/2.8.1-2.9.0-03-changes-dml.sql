@@ -93,7 +93,7 @@ FROM '/var/tmp/temp_upgrade_bank_payment.csv';
 CREATE TEMP TABLE temp_invoice_operation (
     id integer NOT NULL PRIMARY KEY, -- unique primary key
     ac_invoice_id INTEGER, -- REFERENCES invoice (id) , -- id of invoice for which is item counted 
-    CrDate timestamp NOT NULL DEFAULT now(),  -- billing date and time 
+    CrDate timestamp NOT NULL,  -- billing date and time 
     object_id integer, --  REFERENCES object_registry (id),
     zone_id INTEGER, -- REFERENCES zone (id),
     registrar_id INTEGER NOT NULL, -- REFERENCES registrar, -- link to registrar 
