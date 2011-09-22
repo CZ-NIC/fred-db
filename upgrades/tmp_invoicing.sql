@@ -29,7 +29,7 @@ CREATE TEMPORARY TABLE tmp_registrarinvoice AS SELECT * FROM registrarinvoice_58
 CREATE TEMPORARY TABLE tmp_registrar_credit
 (
     id BIGSERIAL PRIMARY KEY
-    , credit numeric(10,2) NOT NULL DEFAULT 0
+    , credit numeric(30,2) NOT NULL DEFAULT 0
     , registrar_id bigint NOT NULL --REFERENCES registrar(id)
     , zone_id bigint NOT NULL --REFERENCES zone(id)
 );
