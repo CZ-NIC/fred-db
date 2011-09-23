@@ -220,13 +220,13 @@ INSERT INTO temp_rct_minus
 --- account invoices with no operation on it (penalties and annual fees)
 ---
 INSERT INTO temp_rct_minus
-    (SELECT nextval('registrar_credit_transaction_id_seq'), i.price * -1, rc.id, i.id
+    (SELECT nextval('registrar_credit_transaction_id_seq'), i.price * -1, rc.id, ior.id
         FROM old_invoice i
         JOIN old_invoice_prefix ip on ip.id = i.prefix_type
         JOIN registrar_credit rc ON rc.zone_id = i.zone AND rc.registrar_id = i.registrarid
         LEFT JOIN old_invoice_object_registry ior on ior.invoiceid = i.id
       WHERE ip.typ = 1 AND ior.invoiceid IS NULL AND i.price > 0
-      GROUP BY i.price, rc.id, i.id);
+      GROUP BY i.price, rc.id, ior.id);
 ---
 --- insert credit changes from operations (minus)
 ---
