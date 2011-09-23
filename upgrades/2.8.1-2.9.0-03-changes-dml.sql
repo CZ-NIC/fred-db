@@ -6,19 +6,19 @@ UPDATE enum_parameters SET val = '2.9.0' WHERE id = 1;
 
 
 ---
---- Ticket #5796
----
 --- THIS SCRIPT MUST BE RUN WITH SUPERUSER PRIVILEGES
 --- SO THAT `COPY' CAN WORK
 ---
 
----------------------------------------migration
-
---legacy invoices from old system
-CREATE TEMPORARY TABLE tmp_zalohy (
+---
+--- legacy invoices from old system
+---
+CREATE TEMPORARY TABLE tmp_zalohy
+(
     prefix bigint NOT NULL,
-    credit numeric(10,2) 
+    credit numeric(10,2)
 );
+
 INSERT INTO tmp_zalohy VALUES (2407000660,168060.00);
 INSERT INTO tmp_zalohy VALUES (2407000653,7768.70);
 INSERT INTO tmp_zalohy VALUES (2406000831,142604.50);
@@ -55,43 +55,58 @@ INSERT INTO tmp_zalohy VALUES (2407000642,14914.80);
 INSERT INTO tmp_zalohy VALUES (2407000666,330994.20);
 
 
-UPDATE price_list SET quantity = 1 WHERE quantity = 0;
+---
+--- TABLE PRICE_LIST
+---
 
-UPDATE price_list SET quantity = 1 
-FROM enum_operation 
-WHERE operation_id = enum_operation.id 
-    AND quantity = 12 
-    AND enum_operation.operation = 'RenewDomain';
-    
---UPDATE price_list pl SET enable_postpaid_operation = 'true' FROM enum_operation eo  
---WHERE pl.operation_id = eo.id AND eo.operation = 'GeneralEppOperation';
+UPDATE price_list
+    SET quantity = 1
+  WHERE quantity = 0;
 
--- safer way to initialize everything needed
-INSERT INTO registrar_credit SELECT nextval('registrar_credit_id_seq'), 0,r.id,  z.id FROM registrar r, zone z;
+UPDATE price_list
+    SET quantity = 1
+  FROM enum_operation
+    WHERE operation_id = enum_operation.id
+        AND quantity = 12
+        AND enum_operation.operation = 'RenewDomain';
 
--- not possible yet due to data from some tests
--- INSERT INTO registrar_credit SELECT nextval('registrar_credit_id_seq'), 0, registrarid,  zone FROM registrarinvoice;
+INSERT INTO price_list (zone_id, operation_id, valid_from, valid_to, price, quantity, enable_postpaid_operation)
+    VALUES ((SELECT id FROM zone WHERE fqdn = 'cz'),
+            (SELECT id FROM enum_operation WHERE operation = 'GeneralEppOperation'),
+            now(), null, 0.10, 1, 'true');
+
+---
+--- set all registrar credit to 0
+--- (TODO?: registrar zone access)
+---
+INSERT INTO registrar_credit
+    SELECT nextval('registrar_credit_id_seq'), 0, r.id, z.id
+      FROM registrar r, zone z;
 
 
+---
+--- restore files
+---
 
-------restore files
---- temporary table to init the new tables
-CREATE TEMP TABLE temp_bank_payment (
+CREATE TEMP TABLE temp_bank_payment
+(
     id integer,
     invoice_id integer
 );
 
-COPY temp_bank_payment 
-FROM '/var/tmp/temp_upgrade_bank_payment.csv';
+COPY temp_bank_payment
+    FROM '/var/tmp/temp_upgrade_bank_payment.csv';
 
 
-
--- restore saved invoice_object_registry (old name) 
--- this does not have date_from and registrar_credit_transaction_id yet - to match date from file
-CREATE TEMP TABLE temp_invoice_operation (
+---
+--- restore saved invoice_object_registry (old name)
+--- this does not have date_from and registrar_credit_transaction_id yet - to match date from file
+---
+CREATE TEMP TABLE temp_invoice_operation
+(
     id integer NOT NULL PRIMARY KEY, -- unique primary key
-    ac_invoice_id INTEGER, -- REFERENCES invoice (id) , -- id of invoice for which is item counted 
-    CrDate timestamp NOT NULL,  -- billing date and time 
+    ac_invoice_id INTEGER, -- REFERENCES invoice (id) , -- id of invoice for which is item counted
+    CrDate timestamp NOT NULL,  -- billing date and time
     object_id integer, --  REFERENCES object_registry (id),
     zone_id INTEGER, -- REFERENCES zone (id),
     registrar_id INTEGER NOT NULL, -- REFERENCES registrar, -- link to registrar 
@@ -100,50 +115,50 @@ CREATE TEMP TABLE temp_invoice_operation (
     quantity integer default 0 -- number of unit for renew in months
 );
 
-CREATE TEMP TABLE temp_invoice_operation_charge_map (
+CREATE TEMP TABLE temp_invoice_operation_charge_map
+(
     invoice_operation_id INTEGER, -- REFERENCES invoice_operation(ID),
     invoice_id INTEGER, -- REFERENCES invoice (id), -- id of advanced invoice
-    price numeric(10,2) NOT NULL default 0 , -- cost for operation
-    PRIMARY KEY ( invoice_operation_id ,  invoice_id ) -- unique key
+    price numeric(10,2) NOT NULL default 0, -- cost for operation
+    PRIMARY KEY (invoice_operation_id, invoice_id ) -- unique key
 );
 
 
------------------------------ restore from files
-COPY price_list(id, zone_id, operation_id, valid_from, valid_to, price, quantity) FROM '/var/tmp/temp_upgrade_price_list.csv';
-select setval( 'price_list_id_seq1'::regclass,  (select max(id) from price_list));
-COPY invoice_prefix FROM '/var/tmp/temp_upgrade_invoice_prefix.csv';
-select setval( 'invoice_prefix_id_seq1'::regclass,  (select max(id) from invoice_prefix));
-COPY invoice FROM '/var/tmp/temp_upgrade_invoice.csv';
-select setval( 'invoice_id_seq1'::regclass,  (select max(id) from invoice));
-COPY invoice_credit_payment_map FROM '/var/tmp/temp_upgrade_invoice_credit_payment_map.csv';
-COPY invoice_generation FROM '/var/tmp/temp_upgrade_invoice_generation.csv';
-select setval( 'invoice_generation_id_seq1'::regclass,  (select max(id) from invoice_generation));
+COPY price_list(id, zone_id, operation_id, valid_from, valid_to, price, quantity)
+    FROM '/var/tmp/temp_upgrade_price_list.csv';
+SELECT setval('price_list_id_seq1'::regclass, (SELECT max(id) FROM price_list));
 
-INSERT INTO price_list (zone_id, operation_id, valid_from, valid_to, price, quantity, enable_postpaid_operation)
-VALUES (
-(SELECT id FROM zone WHERE fqdn = 'cz')
-, (SELECT id FROM enum_operation WHERE operation = 'GeneralEppOperation')
-, now(), null, 0.10, 1, 'true');
+COPY invoice_prefix
+    FROM '/var/tmp/temp_upgrade_invoice_prefix.csv';
+SELECT setval('invoice_prefix_id_seq1'::regclass, (SELECT max(id) FROM invoice_prefix));
 
-UPDATE price_list SET quantity = 1 
-FROM enum_operation 
-WHERE operation_id = enum_operation.id 
-    AND quantity = 12 
-    AND enum_operation.operation = 'RenewDomain';
+COPY invoice
+    FROM '/var/tmp/temp_upgrade_invoice.csv';
+SELECT setval('invoice_id_seq1'::regclass, (SELECT max(id) FROM invoice));
 
-COPY temp_invoice_operation 
-FROM '/var/tmp/temp_upgrade_invoice_object_registry.csv';
+COPY invoice_credit_payment_map
+    FROM '/var/tmp/temp_upgrade_invoice_credit_payment_map.csv';
+
+COPY invoice_generation
+    FROM '/var/tmp/temp_upgrade_invoice_generation.csv';
+SELECT setval('invoice_generation_id_seq1'::regclass, (SELECT max(id) FROM invoice_generation));
+
+COPY temp_invoice_operation
+    FROM '/var/tmp/temp_upgrade_invoice_object_registry.csv';
 
 /*
--- in case we need to restore it directly
+--- in case we need to restore it directly
 COPY invoice_operation (id, ac_invoice_id, crdate, object_id, zone_id, registrar_id, operation_id, date_to, quantity)
 FROM '/var/tmp/temp_upgrade_invoice_object_registry.csv';
 */
 
 COPY temp_invoice_operation_charge_map
-FROM '/var/tmp/temp_upgrade_invoice_object_registry_price_map.csv';
+    FROM '/var/tmp/temp_upgrade_invoice_object_registry_price_map.csv';
 
---- data for (indirectly) filling registrar_credit_transaction , bank_payment_registrar_credit_transaction_map, invoice_registrar_credit_transaction_map 
+---
+--- data for (indirectly) filling registrar_credit_transaction,
+--- bank_payment_registrar_credit_transaction_map, invoice_registrar_credit_transaction_map
+---
 CREATE TEMP TABLE temp_rct_plus
 (
     id bigserial PRIMARY KEY,
@@ -153,79 +168,84 @@ CREATE TEMP TABLE temp_rct_plus
     bank_payment_id bigint -- REFERENCES bank_payment(id)
 );
 
-INSERT INTO temp_rct_plus 
-    (SELECT nextval('registrar_credit_transaction_id_seq'), COALESCE(ti.credit, i.total),  rc.id , i.id, tbp.id
-    FROM invoice i
-    LEFT JOIN temp_bank_payment tbp ON tbp.invoice_id = i.id
-    JOIN registrar_credit rc ON i.registrar_id = rc.registrar_id and  i.zone_id = rc.zone_id 
-    LEFT JOIN tmp_zalohy ti ON ti.prefix=i.prefix 
-    WHERE i.balance IS NOT NULL);
+INSERT INTO temp_rct_plus
+    (SELECT nextval('registrar_credit_transaction_id_seq'), COALESCE(ti.credit, i.total), rc.id , i.id, tbp.id
+        FROM invoice i
+        JOIN invoice_prefix ip ON ip.id = i.invoice_prefix_id
+        LEFT JOIN temp_bank_payment tbp ON tbp.invoice_id = i.id
+        JOIN registrar_credit rc ON i.registrar_id = rc.registrar_id AND i.zone_id = rc.zone_id
+        LEFT JOIN tmp_zalohy ti ON ti.prefix = i.prefix
+      WHERE i.balance IS NOT NULL AND ip.typ = 0);
 
 
--------------init new tables
---insert credit changes from deposits
-INSERT INTO registrar_credit_transaction 
-SELECT id, balance_change, registrar_credit_id 
-    FROM temp_rct_plus;
+---
+--- init new tables
+---
 
+---
+--- insert credit changes from deposits
+---
+INSERT INTO registrar_credit_transaction
+    SELECT id, balance_change, registrar_credit_id
+        FROM temp_rct_plus;
 
---insert bank_payment_registrar_credit_transaction_map
-INSERT INTO bank_payment_registrar_credit_transaction_map 
-SELECT nextval('bank_payment_registrar_credit_transaction_map_id_seq'), rct.bank_payment_id, rct.id
-FROM temp_rct_plus rct
-WHERE rct.bank_payment_id IS NOT NULL;
+INSERT INTO bank_payment_registrar_credit_transaction_map
+    SELECT nextval('bank_payment_registrar_credit_transaction_map_id_seq'), rct.bank_payment_id, rct.id
+        FROM temp_rct_plus rct
+      WHERE rct.bank_payment_id IS NOT NULL;
 
+INSERT INTO invoice_registrar_credit_transaction_map
+    SELECT nextval('invoice_registrar_credit_transaction_map_id_seq'), rct.invoice_id, rct.id
+        FROM temp_rct_plus rct;
 
---insert invoice_registrar_credit_transaction_map
-INSERT INTO invoice_registrar_credit_transaction_map 
-SELECT nextval('invoice_registrar_credit_transaction_map_id_seq'), rct.invoice_id, rct.id
-FROM temp_rct_plus rct;
-
-
-
----------------------minus credit chanes 
+---
+--- minus credit chanes
+---
 CREATE TEMP TABLE temp_rct_minus
 (
-    id bigserial PRIMARY KEY
-    , balance_change numeric(10,2) NOT NULL
-    , registrar_credit_id bigint NOT NULL -- REFERENCES registrar_credit(id)
-    , invoice_operation_id bigint -- REFERENCES invoice_operation(id)
+    id bigserial PRIMARY KEY,
+    balance_change numeric(10,2) NOT NULL,
+    registrar_credit_id bigint NOT NULL, -- REFERENCES registrar_credit(id)
+    invoice_operation_id bigint -- REFERENCES invoice_operation(id)
 );
 
 INSERT INTO temp_rct_minus
-    (SELECT nextval('registrar_credit_transaction_id_seq'), 
-    sum(iocm.price) * -1, rc.id, io.id
-    FROM temp_invoice_operation io 
-    JOIN temp_invoice_operation_charge_map iocm ON io.id = iocm.invoice_operation_id
-    JOIN registrar_credit rc ON rc.zone_id = io.zone_id AND rc.registrar_id = io.registrar_id
-    GROUP BY iocm.invoice_operation_id, rc.id, io.id);
+    (SELECT nextval('registrar_credit_transaction_id_seq'), sum(iocm.price) * -1, rc.id, io.id
+        FROM temp_invoice_operation io
+        JOIN temp_invoice_operation_charge_map iocm ON io.id = iocm.invoice_operation_id
+        JOIN registrar_credit rc ON rc.zone_id = io.zone_id AND rc.registrar_id = io.registrar_id
+      GROUP BY iocm.invoice_operation_id, rc.id, io.id);
 
-
---insert credit changes from operations (minus)
+---
+--- insert credit changes from operations (minus)
+---
 INSERT INTO registrar_credit_transaction
-SELECT rct.id, rct.balance_change, rct.registrar_credit_id
-FROM temp_rct_minus rct;
-
------ fill registrar_credit
-
-UPDATE registrar_credit SET credit = reg_credit.balance_change_sum 
-FROM (SELECT registrar_credit_id, sum(balance_change) AS balance_change_sum
-    FROM registrar_credit_transaction
-    GROUP BY registrar_credit_id) AS reg_credit
-WHERE id = reg_credit.registrar_credit_id ;
+    SELECT rct.id, rct.balance_change, rct.registrar_credit_id
+        FROM temp_rct_minus rct;
 
 
+---
+--- compute registrar_credit
+---
+UPDATE registrar_credit SET credit = reg_credit.balance_change_sum
+    FROM (SELECT registrar_credit_id, sum(balance_change) AS balance_change_sum
+             FROM registrar_credit_transaction
+           GROUP BY registrar_credit_id) AS reg_credit
+  WHERE id = reg_credit.registrar_credit_id;
 
--- fill new version of invoice_operation (NOT NULL column was added) with data from the old one 
--- exclude new column date_from
--- plus data for FK(registrar_credit_transaction_id)
-INSERT INTO invoice_operation (id, ac_invoice_id, crdate, object_id, zone_id, registrar_id, operation_id, date_to, quantity,     registrar_credit_transaction_id)
- SELECT tio.id, tio.ac_invoice_id, tio.crdate, tio.object_id, tio.zone_id, tio.registrar_id, tio.operation_id, tio.date_to, tio.quantity,      rct.id
-FROM temp_invoice_operation tio
-JOIN temp_rct_minus rct ON tio.id = rct.invoice_operation_id;
 
-INSERT INTO invoice_operation_charge_map 
-SELECT * FROM temp_invoice_operation_charge_map;
+---
+--- fill new version of invoice_operation (NOT NULL column was added) with data from the old one
+--- exclude new column date_from
+--- plus data for FK(registrar_credit_transaction_id)
+---
+INSERT INTO invoice_operation (id, ac_invoice_id, crdate, object_id, zone_id, registrar_id, operation_id, date_to, quantity, registrar_credit_transaction_id)
+    SELECT tio.id, tio.ac_invoice_id, tio.crdate, tio.object_id, tio.zone_id, tio.registrar_id, tio.operation_id, tio.date_to, tio.quantity, rct.id
+        FROM temp_invoice_operation tio
+        JOIN temp_rct_minus rct ON tio.id = rct.invoice_operation_id;
+
+INSERT INTO invoice_operation_charge_map
+    SELECT * FROM temp_invoice_operation_charge_map;
 
 
 ---
