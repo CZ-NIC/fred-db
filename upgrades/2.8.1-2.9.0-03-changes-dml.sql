@@ -54,27 +54,6 @@ INSERT INTO tmp_zalohy VALUES (2407000665,503640.40);
 INSERT INTO tmp_zalohy VALUES (2407000642,14914.80);
 INSERT INTO tmp_zalohy VALUES (2407000666,330994.20);
 
-
----
---- TABLE PRICE_LIST
----
-
-UPDATE price_list
-    SET quantity = 1
-  WHERE quantity = 0;
-
-UPDATE price_list
-    SET quantity = 1
-  FROM enum_operation
-    WHERE operation_id = enum_operation.id
-        AND quantity = 12
-        AND enum_operation.operation = 'RenewDomain';
-
-INSERT INTO price_list (zone_id, operation_id, valid_from, valid_to, price, quantity, enable_postpaid_operation)
-    VALUES ((SELECT id FROM zone WHERE fqdn = 'cz'),
-            (SELECT id FROM enum_operation WHERE operation = 'GeneralEppOperation'),
-            now(), null, 0.10, 1, 'true');
-
 ---
 --- set all registrar credit to 0
 --- (TODO?: registrar zone access)
@@ -154,6 +133,26 @@ FROM '/var/tmp/temp_upgrade_invoice_object_registry.csv';
 
 COPY temp_invoice_operation_charge_map
     FROM '/var/tmp/temp_upgrade_invoice_object_registry_price_map.csv';
+
+---
+--- TABLE PRICE_LIST
+---
+
+UPDATE price_list
+    SET quantity = 1
+  WHERE quantity = 0;
+
+UPDATE price_list
+    SET quantity = 1
+  FROM enum_operation
+    WHERE operation_id = enum_operation.id
+        AND quantity = 12
+        AND enum_operation.operation = 'RenewDomain';
+
+INSERT INTO price_list (zone_id, operation_id, valid_from, valid_to, price, quantity, enable_postpaid_operation)
+    VALUES ((SELECT id FROM zone WHERE fqdn = 'cz'),
+            (SELECT id FROM enum_operation WHERE operation = 'GeneralEppOperation'),
+            now(), null, 0.10, 1, 'true');
 
 ---
 --- data for (indirectly) filling registrar_credit_transaction,
@@ -249,14 +248,81 @@ UPDATE registrar_credit SET credit = reg_credit.balance_change_sum
 --- exclude new column date_from
 --- plus data for FK(registrar_credit_transaction_id)
 ---
+
+---
+--- first disable foreign keys on invoice_operation
+---
+
+ALTER TABLE invoice_operation DROP CONSTRAINT
+ invoice_operation_ac_invoice_id_fkey;
+ALTER TABLE invoice_operation DROP CONSTRAINT
+ invoice_operation_object_id_fkey;
+ALTER TABLE invoice_operation DROP CONSTRAINT
+ invoice_operation_operation_id_fkey;
+ALTER TABLE invoice_operation DROP CONSTRAINT
+ invoice_operation_registrar_credit_transaction_id_fkey;
+ALTER TABLE invoice_operation DROP CONSTRAINT
+ invoice_operation_registrar_id_fkey;
+ALTER TABLE invoice_operation DROP CONSTRAINT
+ invoice_operation_zone_id_fkey;
+
 INSERT INTO invoice_operation (id, ac_invoice_id, crdate, object_id, zone_id, registrar_id, operation_id, date_to, quantity, registrar_credit_transaction_id)
     SELECT tio.id, tio.ac_invoice_id, tio.crdate, tio.object_id, tio.zone_id, tio.registrar_id, tio.operation_id, tio.date_to, tio.quantity, rct.id
         FROM temp_invoice_operation tio
         JOIN temp_rct_minus rct ON tio.id = rct.invoice_operation_id;
 
+---
+--- return foreign keys back
+---
+
+ALTER TABLE invoice_operation ADD CONSTRAINT
+ invoice_operation_ac_invoice_id_fkey FOREIGN KEY
+ (ac_invoice_id) REFERENCES invoice (id);
+
+ALTER TABLE invoice_operation ADD CONSTRAINT
+ invoice_operation_object_id_fkey FOREIGN KEY
+ (object_id) REFERENCES object_registry (id);
+
+ALTER TABLE invoice_operation ADD CONSTRAINT
+ invoice_operation_operation_id_fkey FOREIGN KEY
+ (operation_id) REFERENCES enum_operation (id);
+
+ALTER TABLE invoice_operation ADD CONSTRAINT
+ invoice_operation_registrar_credit_transaction_id_fkey FOREIGN KEY
+ (registrar_credit_transaction_id) REFERENCES registrar_credit_transaction(id);
+
+ALTER TABLE invoice_operation ADD CONSTRAINT
+ invoice_operation_registrar_id_fkey FOREIGN KEY
+ (registrar_id) REFERENCES registrar (id);
+
+ALTER TABLE invoice_operation ADD CONSTRAINT
+ invoice_operation_zone_id_fkey FOREIGN KEY
+ (zone_id) REFERENCES zone (id);
+
+---
+--- first disable foreign keys on invoice_operation
+---
+
+ALTER TABLE invoice_operation_charge_map DROP CONSTRAINT
+ invoice_operation_charge_map_invoice_id_fkey;
+
+ALTER TABLE invoice_operation_charge_map DROP CONSTRAINT
+ invoice_operation_charge_map_invoice_operation_id_fkey;
+
 INSERT INTO invoice_operation_charge_map
     SELECT * FROM temp_invoice_operation_charge_map;
 
+---
+--- return foreign keys back
+---
+
+ALTER TABLE invoice_operation_charge_map ADD CONSTRAINT
+ invoice_operation_charge_map_invoice_id_fkey FOREIGN KEY
+ (invoice_id) REFERENCES invoice (id);
+
+ALTER TABLE invoice_operation_charge_map ADD CONSTRAINT
+ invoice_operation_charge_map_invoice_operation_id_fkey FOREIGN KEY
+ (invoice_operation_id) REFERENCES invoice_operation(id);
 
 ---
 ---  Ticket #5808
