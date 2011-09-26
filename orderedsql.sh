@@ -54,7 +54,6 @@ write_script()
 	cat $DIR/poll.sql
     cat $DIR/request_fee_ddl.sql
     cat $DIR/request_fee_dml.sql
-    cat $DIR/credit_dml.sql
 	# notify mailer
 	cat $DIR/notify_new.sql
 	# list of tld domains
