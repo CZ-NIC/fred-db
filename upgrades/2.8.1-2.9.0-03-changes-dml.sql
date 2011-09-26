@@ -139,20 +139,7 @@ COPY temp_invoice_operation_charge_map
 ---
 
 UPDATE price_list
-    SET quantity = 1
-  WHERE quantity = 0;
-
-UPDATE price_list
-    SET quantity = 1
-  FROM enum_operation
-    WHERE operation_id = enum_operation.id
-        AND quantity = 12
-        AND enum_operation.operation = 'RenewDomain';
-
-INSERT INTO price_list (zone_id, operation_id, valid_from, valid_to, price, quantity, enable_postpaid_operation)
-    VALUES ((SELECT id FROM zone WHERE fqdn = 'cz'),
-            (SELECT id FROM enum_operation WHERE operation = 'GeneralEppOperation'),
-            now(), null, 0.10, 1, 'true');
+    SET quantity = 1;
 
 ---
 --- data for (indirectly) filling registrar_credit_transaction,
