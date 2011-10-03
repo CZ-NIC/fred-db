@@ -18,7 +18,7 @@ CREATE TABLE request_fee_parameter (
     valid_from timestamp NOT NULL,
     count_free_base INTEGER,
     count_free_per_domain INTEGER,
-    zone INTEGER NOT NULL REFERENCES zone(id)
+    zone_id INTEGER NOT NULL REFERENCES zone(id)
 );
 
 

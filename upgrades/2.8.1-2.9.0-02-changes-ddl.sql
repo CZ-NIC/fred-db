@@ -361,5 +361,5 @@ COMMENT ON COLUMN request_fee_registrar_parameter.request_price_limit IS 'limit 
 ---
 --- TABLE REQUEST_FEE_PARAMETER
 ---
-ALTER TABLE request_fee_parameter ADD COLUMN zone INTEGER REFERENCES zone(id);
+ALTER TABLE request_fee_parameter ADD COLUMN zone_id INTEGER REFERENCES zone(id);
 
