@@ -314,5 +314,5 @@ ALTER TABLE invoice_operation_charge_map ADD CONSTRAINT
 ---
 ---  Ticket #5808
 ---
-UPDATE request_fee_parameter SET zone = z.id FROM zone z WHERE z.fqdn = 'cz';
+UPDATE request_fee_parameter SET zone_id = z.id FROM zone z WHERE z.fqdn = 'cz';
 

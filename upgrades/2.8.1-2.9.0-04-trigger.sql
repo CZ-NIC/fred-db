@@ -1,7 +1,7 @@
 --- 
 ---  Ticket #5808
 ---
-ALTER TABLE request_fee_parameter ALTER COLUMN zone SET NOT NULL;
+ALTER TABLE request_fee_parameter ALTER COLUMN zone_id SET NOT NULL;
 
 
 --- create trigger
