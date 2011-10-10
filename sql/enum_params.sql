@@ -46,11 +46,12 @@ VALUES (7, 'validation_notify1_period', '-30');
 -- domain.exdate 
 INSERT INTO enum_parameters (id, name, val) 
 VALUES (8, 'validation_notify2_period', '-15');
--- parametr 9 is used to identify hour when domains are moving outzone. 
+-- parametr 9 is used to identify hour when objects are deleted
 -- value is number of hours relative to date of operation
 INSERT INTO enum_parameters (id, name, val) 
 VALUES (9, 'regular_day_procedure_period', '14');
--- parametr 10 is used to identify time zone in which parameter 9 is specified  
+-- parametr 10 is used to identify time zone in which parameter 9 and 14
+-- are specified
 INSERT INTO enum_parameters (id, name, val) 
 VALUES (10, 'regular_day_procedure_zone', 'CET');
 -- parametr 11 is used to change state of objects other than domain to
@@ -66,11 +67,10 @@ VALUES (12, 'handle_registration_protection_period', '0');
 -- this suffix should match pattern \w{1,8}
 INSERT INTO enum_parameters (id, name, val)
 VALUES (13, 'roid_suffix', 'EPP');
--- parametr 14 is used to identify hour when objects are deleted 
--- value is number of hours relative to date 
--- of operation
+-- parametr 14 is used to identify hour when domains are moving outzone. 
+-- value is number of hours relative to date of operation
 INSERT INTO enum_parameters (id, name, val) 
-VALUES (14, 'regular_day_delete_procedure_period', '14');
+VALUES (14, 'regular_day_outzone_procedure_period', '14');
 
 
 
