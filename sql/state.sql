@@ -146,7 +146,7 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (17,'CS','Určeno ke zrušení');
 INSERT INTO enum_object_states_desc 
-  VALUES (17,'EN','Intended to be deleted');
+  VALUES (17,'EN','To be deleted');
 INSERT INTO enum_object_states_desc 
   VALUES (18,'CS','Není povolena změna držitele');
 INSERT INTO enum_object_states_desc 

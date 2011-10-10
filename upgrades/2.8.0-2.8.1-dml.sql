@@ -142,7 +142,7 @@ UPDATE
 
 UPDATE
     enum_object_states_desc
-    SET description = 'Intended to be deleted'
+    SET description = 'To be deleted'
   WHERE lang = 'EN'
         AND state_id = (SELECT id FROM enum_object_states WHERE name = 'deleteCandidate');
 
