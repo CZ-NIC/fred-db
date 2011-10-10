@@ -52,7 +52,7 @@ INSERT INTO enum_object_states
 INSERT INTO enum_object_states 
   VALUES (16,'linked','{1,2}','f','t');
 INSERT INTO enum_object_states 
-  VALUES (17,'deleteCandidate','{1,2,3}','f','f');
+  VALUES (17,'deleteCandidate','{1,2,3}','f','t');
 INSERT INTO enum_object_states 
   VALUES (18,'serverRegistrantChangeProhibited','{3}','t','t');
 INSERT INTO enum_object_states 
@@ -144,9 +144,9 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (16,'EN','Has relation to other records in registry');
 INSERT INTO enum_object_states_desc 
-  VALUES (17,'CS','Objekt bude smazán');
+  VALUES (17,'CS','Určeno ke zrušení');
 INSERT INTO enum_object_states_desc 
-  VALUES (17,'EN','Object is going to be deleted');
+  VALUES (17,'EN','Intended to be deleted');
 INSERT INTO enum_object_states_desc 
   VALUES (18,'CS','Není povolena změna držitele');
 INSERT INTO enum_object_states_desc 
