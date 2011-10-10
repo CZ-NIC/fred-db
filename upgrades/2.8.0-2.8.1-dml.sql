@@ -126,3 +126,23 @@ or temporary contact:<?cs each:item = domains ?>
 <?cs if:keysets.0 ?>List of keysets on which the contact is a technical contact:<?cs each:item = keysets ?>
 <?cs var:item ?><?cs /each ?><?cs else ?>Contact is not linked to any keyset.<?cs /if ?>
 ' WHERE id = 23;
+
+
+UPDATE
+    enum_object_states
+    SET external = true
+  WHERE name = 'deleteCandidate';
+
+UPDATE
+    enum_object_states_desc
+    SET description = 'Určeno ke zrušení'
+  WHERE lang = 'CS'
+        AND state_id = (SELECT id FROM enum_object_states WHERE name = 'deleteCandidate');
+
+UPDATE
+    enum_object_states_desc
+    SET description = 'Intended to be deleted'
+  WHERE lang = 'EN'
+        AND state_id = (SELECT id FROM enum_object_states WHERE name = 'deleteCandidate');
+
+
