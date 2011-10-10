@@ -301,7 +301,7 @@ SELECT
   CASE WHEN
     d.nsset ISNULL OR
     5 = ANY(COALESCE(osr.states,'{}')) OR                -- outzoneManual
-    (((date_time_test(d.exdate::date,ep_ex_dns.val,ep_tm.val,ep_tz.val)
+    (((date_time_test(d.exdate::date,ep_ex_dns.val,ep_tm2.val,ep_tz.val)
        AND NOT (2 = ANY(COALESCE(osr.states,'{}')))      -- !renewProhibited
       ) OR date_time_test(e.exdate::date,'0',ep_tm.val,ep_tz.val)) AND 
      NOT (6 = ANY(COALESCE(osr.states,'{}'))))           -- !inzoneManual
@@ -313,7 +313,7 @@ SELECT
   CASE WHEN date_test(d.exdate::date,ep_ex_let.val)
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
        THEN ARRAY[19] ELSE '{}' END || -- deleteWarning
-  CASE WHEN date_time_test(d.exdate::date,ep_ex_dns.val,ep_tm.val,ep_tz.val)
+  CASE WHEN date_time_test(d.exdate::date,ep_ex_dns.val,ep_tm2.val,ep_tz.val)
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
             AND NOT (6 = ANY(COALESCE(osr.states,'{}'))) -- !inzoneManual
        THEN ARRAY[20] ELSE '{}' END    -- outzoneUnguarded
@@ -331,6 +331,7 @@ FROM
   JOIN enum_parameters ep_val_not2 ON (ep_val_not2.id=8)
   JOIN enum_parameters ep_tm ON (ep_tm.id=9)
   JOIN enum_parameters ep_tz ON (ep_tz.id=10)
+  JOIN enum_parameters ep_tm2 ON (ep_tz.id=14)
 WHERE d.id=o.id;
 
 -- view for actual nsset states
@@ -700,6 +701,7 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
 --    _ex_reg VARCHAR;
     _proc_tm VARCHAR;
     _proc_tz VARCHAR;
+    _proc_tm2 VARCHAR;
   BEGIN
     _nsset_old := NULL;
     _registrant_old := NULL;
@@ -713,6 +715,7 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
 --    SELECT val INTO _ex_reg FROM enum_parameters WHERE id=6;
     SELECT val INTO _proc_tm FROM enum_parameters WHERE id=9;
     SELECT val INTO _proc_tz FROM enum_parameters WHERE id=10;
+    SELECT val INTO _proc_tm2 FROM enum_parameters WHERE id=14;
     -- is it INSERT operation
     IF TG_OP = 'INSERT' THEN
       _registrant_new := NEW.registrant;
@@ -756,7 +759,7 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
         );
         -- state: unguarded
         EXECUTE status_update_state(
-          date_time_test(NEW.exdate::date,_ex_dns,_proc_tm,_proc_tz), 
+          date_time_test(NEW.exdate::date,_ex_dns,_proc_tm2,_proc_tz), 
           10, NEW.id
         );
         -- state: deleteWarning
