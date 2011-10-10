@@ -37,7 +37,7 @@ Určený registrátor: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
 <?cs var:registrar_memo_cz ?><?cs /if ?>
 
 Se žádostí o opravu údajů se neváhejte obrátit na svého vybraného registrátora.
-V případě, že zde uvedené údaje odpovídají skutečnosti, není mutné na tuto zprávu reagovat.
+V případě, že zde uvedené údaje odpovídají skutečnosti, není nutné na tuto zprávu reagovat.
 
 Aktuální, úplné a správné informace v registru znamenají Vaši jistotu,
 že Vás důležité informace o Vaší doméně zastihnou vždy a včas na správné adrese.
@@ -99,7 +99,7 @@ Designated registrator: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
 <?cs if:registrar_memo_en ?>Other information provided by registrar:
 <?cs var:registrar_memo_en ?><?cs /if ?>
 
-Do not hesitate to contact your selected registrar with a correction request.
+Do not hesitate to contact your designated registrar with a correction request.
 
 Having up-to-date, complete and correct information in the registry is crucial
 to reach you with all the important information about your domain name in a timely manner
