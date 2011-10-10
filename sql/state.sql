@@ -331,7 +331,7 @@ FROM
   JOIN enum_parameters ep_val_not2 ON (ep_val_not2.id=8)
   JOIN enum_parameters ep_tm ON (ep_tm.id=9)
   JOIN enum_parameters ep_tz ON (ep_tz.id=10)
-  JOIN enum_parameters ep_tm2 ON (ep_tz.id=14)
+  JOIN enum_parameters ep_tm2 ON (ep_tm2.id=14)
 WHERE d.id=o.id;
 
 -- view for actual nsset states
