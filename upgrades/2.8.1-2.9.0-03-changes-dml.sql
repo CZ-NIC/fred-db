@@ -348,5 +348,5 @@ WHERE eo.id = invoice_operation.operation_id
 	AND eo.operation='RenewDomain';
 	
 UPDATE invoice_operation 
-SET date_from = date_to - (interval '1 year' * quantity);
+SET date_from = date_to - (quantity::text ||' year')::interval;
 
