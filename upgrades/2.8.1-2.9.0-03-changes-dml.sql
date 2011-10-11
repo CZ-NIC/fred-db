@@ -316,3 +316,37 @@ ALTER TABLE invoice_operation_charge_map ADD CONSTRAINT
 ---
 UPDATE request_fee_parameter SET zone_id = z.id FROM zone z WHERE z.fqdn = 'cz';
 
+---
+---  Ticket #5948
+---
+
+UPDATE invoice SET balance = balance + ops.sum_price 
+FROM (SELECT iocm.invoice_id AS invoice_id, sum(iocm.price) AS sum_price 
+		FROM invoice_operation io 
+		JOIN invoice_operation_charge_map iocm ON io.id = iocm.invoice_operation_id
+		WHERE io.ac_invoice_id IS null
+		GROUP BY iocm.invoice_id 
+	) AS ops
+WHERE id = ops.invoice_id;
+
+DELETE FROM invoice_operation_charge_map 
+WHERE invoice_operation_id IN 
+(SELECT io.id 
+	FROM invoice_operation io 
+	JOIN invoice_operation_charge_map iocm ON io.id = iocm.invoice_operation_id
+	WHERE io.ac_invoice_id IS null );
+
+
+UPDATE invoice_operation SET quantity = 1 
+FROM enum_operation eo  
+WHERE eo.id = invoice_operation.operation_id 
+	AND eo.operation='CreateDomain';
+	
+UPDATE invoice_operation SET quantity = quantity / 12 
+FROM enum_operation eo  
+WHERE eo.id = invoice_operation.operation_id 
+	AND eo.operation='RenewDomain';
+	
+UPDATE invoice_operation 
+SET date_from = date_to - (interval '1 year' * quantity);
+
