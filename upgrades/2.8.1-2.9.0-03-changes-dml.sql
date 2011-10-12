@@ -350,3 +350,7 @@ WHERE eo.id = invoice_operation.operation_id
 UPDATE invoice_operation 
 SET date_from = date_to - (quantity::text ||' years')::interval;
 
+UPDATE invoice_operation SET date_to = NULL 
+FROM enum_operation eo  
+WHERE eo.id = invoice_operation.operation_id 
+	AND eo.operation='CreateDomain';
