@@ -16,6 +16,11 @@ ALTER TABLE invoice_generation RENAME TO old_invoice_generation;
 ALTER TABLE invoice_object_registry RENAME TO old_invoice_object_registry;
 ALTER TABLE invoice_object_registry_price_map RENAME TO old_invoice_object_registry_price_map;
 
+---
+--- drop constraints to renamed tables 
+---
+ALTER TABLE invoice_mails DROP CONSTRAINT invoice_mails_genid_fkey;
+ALTER TABLE invoice_mails DROP CONSTRAINT invoice_mails_invoiceid_fkey;
 
 
 ---

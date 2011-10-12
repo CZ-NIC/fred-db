@@ -314,12 +314,20 @@ ALTER TABLE invoice_operation_charge_map ADD CONSTRAINT
 ---
 ---  Ticket #5808
 ---
+
 UPDATE request_fee_parameter SET zone_id = z.id FROM zone z WHERE z.fqdn = 'cz';
 
 ---
 ---  Ticket #5948
 ---
 
+--- return constraints to renamed tables
+ALTER TABLE invoice_mails ADD CONSTRAINT invoice_mails_genid_fkey 
+    FOREIGN KEY (genid) REFERENCES invoice_generation (id);
+ALTER TABLE invoice_mails ADD CONSTRAINT invoice_mails_invoiceid_fkey
+    FOREIGN KEY (invoiceid) REFERENCES invoice (id);
+
+--- fix data
 UPDATE invoice SET balance = balance + ops.sum_price 
 FROM (SELECT iocm.invoice_id AS invoice_id, sum(iocm.price) AS sum_price 
 		FROM invoice_operation io 
