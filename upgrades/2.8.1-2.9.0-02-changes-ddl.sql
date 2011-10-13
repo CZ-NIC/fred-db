@@ -7,29 +7,36 @@
 ---
 --- backup of old tables - these won't be part of replication
 ---
-ALTER TABLE invoice RENAME TO old_invoice;
-ALTER TABLE invoice_prefix DROP CONSTRAINT invoice_prefix_zone_key;
-ALTER TABLE invoice_prefix RENAME TO old_invoice_prefix;
-ALTER TABLE price_list RENAME TO old_price_list;
-ALTER TABLE invoice_credit_payment_map RENAME TO old_invoice_credit_payment_map;
-ALTER TABLE invoice_generation RENAME TO old_invoice_generation;
-ALTER TABLE invoice_object_registry RENAME TO old_invoice_object_registry;
-ALTER TABLE invoice_object_registry_price_map RENAME TO old_invoice_object_registry_price_map;
 
----
---- drop constraints to renamed tables 
----
-ALTER TABLE invoice_mails DROP CONSTRAINT invoice_mails_genid_fkey;
+CREATE TABLE old_invoice AS SELECT * FROM invoice;
+ALTER TABLE invoice_object_registry_price_map DROP CONSTRAINT invoice_object_registry_price_map_invoiceid_fkey;
+ALTER TABLE invoice_object_registry DROP CONSTRAINT invoice_object_registry_invoiceid_fkey;
 ALTER TABLE invoice_mails DROP CONSTRAINT invoice_mails_invoiceid_fkey;
-
-
----
---- TABLE BANK_PAYMENT
----
---- ALTER TABLE bank_payment DROP COLUMN invoice_id;
+ALTER TABLE invoice_generation DROP CONSTRAINT invoice_generation_invoiceid_fkey;
+ALTER TABLE invoice_credit_payment_map DROP CONSTRAINT invoice_credit_payment_map_invoiceid_fkey;
+ALTER TABLE invoice_credit_payment_map DROP CONSTRAINT invoice_credit_payment_map_ainvoiceid_fkey;
 ALTER TABLE bank_payment DROP CONSTRAINT bank_payment_invoice_id_fkey;
+DROP TABLE invoice;
 
+CREATE TABLE old_invoice_prefix AS SELECT * FROM invoice_prefix;
+DROP TABLE invoice_prefix;
 
+CREATE TABLE old_price_list AS SELECT * FROM price_list;
+DROP TABLE price_list;
+
+CREATE TABLE old_invoice_credit_payment_map AS SELECT * FROM invoice_credit_payment_map;
+DROP TABLE invoice_credit_payment_map;
+
+CREATE TABLE old_invoice_generation AS SELECT * FROM invoice_generation;
+ALTER TABLE invoice_mails DROP CONSTRAINT invoice_mails_genid_fkey;
+DROP TABLE invoice_generation;
+
+CREATE TABLE old_invoice_object_registry AS SELECT * FROM invoice_object_registry;
+ALTER TABLE invoice_object_registry_price_map DROP CONSTRAINT invoice_object_registry_price_map_id_fkey;
+DROP TABLE invoice_object_registry;
+
+CREATE TABLE old_invoice_object_registry_price_map AS SELECT * FROM invoice_object_registry_price_map;
+DROP TABLE invoice_object_registry_price_map;
 
 ---
 --- TABLE PRICE_LIST
