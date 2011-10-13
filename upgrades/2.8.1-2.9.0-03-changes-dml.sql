@@ -105,22 +105,22 @@ CREATE TEMP TABLE temp_invoice_operation_charge_map
 
 COPY price_list(id, zone_id, operation_id, valid_from, valid_to, price, quantity)
     FROM '/var/tmp/temp_upgrade_price_list.csv';
-SELECT setval('price_list_id_seq1'::regclass, (SELECT max(id) FROM price_list));
+SELECT setval('price_list_id_seq'::regclass, (SELECT max(id) FROM price_list));
 
 COPY invoice_prefix
     FROM '/var/tmp/temp_upgrade_invoice_prefix.csv';
-SELECT setval('invoice_prefix_id_seq1'::regclass, (SELECT max(id) FROM invoice_prefix));
+SELECT setval('invoice_prefix_id_seq'::regclass, (SELECT max(id) FROM invoice_prefix));
 
 COPY invoice
     FROM '/var/tmp/temp_upgrade_invoice.csv';
-SELECT setval('invoice_id_seq1'::regclass, (SELECT max(id) FROM invoice));
+SELECT setval('invoice_id_seq'::regclass, (SELECT max(id) FROM invoice));
 
 COPY invoice_credit_payment_map
     FROM '/var/tmp/temp_upgrade_invoice_credit_payment_map.csv';
 
 COPY invoice_generation
     FROM '/var/tmp/temp_upgrade_invoice_generation.csv';
-SELECT setval('invoice_generation_id_seq1'::regclass, (SELECT max(id) FROM invoice_generation));
+SELECT setval('invoice_generation_id_seq'::regclass, (SELECT max(id) FROM invoice_generation));
 
 COPY temp_invoice_operation
     FROM '/var/tmp/temp_upgrade_invoice_object_registry.csv';
