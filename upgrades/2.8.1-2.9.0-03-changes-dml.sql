@@ -236,80 +236,14 @@ UPDATE registrar_credit SET credit = reg_credit.balance_change_sum
 --- plus data for FK(registrar_credit_transaction_id)
 ---
 
----
---- first disable foreign keys on invoice_operation
----
-
-ALTER TABLE invoice_operation DROP CONSTRAINT
- invoice_operation_ac_invoice_id_fkey;
-ALTER TABLE invoice_operation DROP CONSTRAINT
- invoice_operation_object_id_fkey;
-ALTER TABLE invoice_operation DROP CONSTRAINT
- invoice_operation_operation_id_fkey;
-ALTER TABLE invoice_operation DROP CONSTRAINT
- invoice_operation_registrar_credit_transaction_id_fkey;
-ALTER TABLE invoice_operation DROP CONSTRAINT
- invoice_operation_registrar_id_fkey;
-ALTER TABLE invoice_operation DROP CONSTRAINT
- invoice_operation_zone_id_fkey;
-
 INSERT INTO invoice_operation (id, ac_invoice_id, crdate, object_id, zone_id, registrar_id, operation_id, date_to, quantity, registrar_credit_transaction_id)
     SELECT tio.id, tio.ac_invoice_id, tio.crdate, tio.object_id, tio.zone_id, tio.registrar_id, tio.operation_id, tio.date_to, tio.quantity, rct.id
         FROM temp_invoice_operation tio
         JOIN temp_rct_minus rct ON tio.id = rct.invoice_operation_id;
 
----
---- return foreign keys back
----
-
-ALTER TABLE invoice_operation ADD CONSTRAINT
- invoice_operation_ac_invoice_id_fkey FOREIGN KEY
- (ac_invoice_id) REFERENCES invoice (id);
-
-ALTER TABLE invoice_operation ADD CONSTRAINT
- invoice_operation_object_id_fkey FOREIGN KEY
- (object_id) REFERENCES object_registry (id);
-
-ALTER TABLE invoice_operation ADD CONSTRAINT
- invoice_operation_operation_id_fkey FOREIGN KEY
- (operation_id) REFERENCES enum_operation (id);
-
-ALTER TABLE invoice_operation ADD CONSTRAINT
- invoice_operation_registrar_credit_transaction_id_fkey FOREIGN KEY
- (registrar_credit_transaction_id) REFERENCES registrar_credit_transaction(id);
-
-ALTER TABLE invoice_operation ADD CONSTRAINT
- invoice_operation_registrar_id_fkey FOREIGN KEY
- (registrar_id) REFERENCES registrar (id);
-
-ALTER TABLE invoice_operation ADD CONSTRAINT
- invoice_operation_zone_id_fkey FOREIGN KEY
- (zone_id) REFERENCES zone (id);
-
----
---- first disable foreign keys on invoice_operation
----
-
-ALTER TABLE invoice_operation_charge_map DROP CONSTRAINT
- invoice_operation_charge_map_invoice_id_fkey;
-
-ALTER TABLE invoice_operation_charge_map DROP CONSTRAINT
- invoice_operation_charge_map_invoice_operation_id_fkey;
 
 INSERT INTO invoice_operation_charge_map
     SELECT * FROM temp_invoice_operation_charge_map;
-
----
---- return foreign keys back
----
-
-ALTER TABLE invoice_operation_charge_map ADD CONSTRAINT
- invoice_operation_charge_map_invoice_id_fkey FOREIGN KEY
- (invoice_id) REFERENCES invoice (id);
-
-ALTER TABLE invoice_operation_charge_map ADD CONSTRAINT
- invoice_operation_charge_map_invoice_operation_id_fkey FOREIGN KEY
- (invoice_operation_id) REFERENCES invoice_operation(id);
 
 ---
 ---  Ticket #5808
@@ -320,12 +254,6 @@ UPDATE request_fee_parameter SET zone_id = z.id FROM zone z WHERE z.fqdn = 'cz';
 ---
 ---  Ticket #5948
 ---
-
---- return constraints to renamed tables
-ALTER TABLE invoice_mails ADD CONSTRAINT invoice_mails_genid_fkey 
-    FOREIGN KEY (genid) REFERENCES invoice_generation (id);
-ALTER TABLE invoice_mails ADD CONSTRAINT invoice_mails_invoiceid_fkey
-    FOREIGN KEY (invoiceid) REFERENCES invoice (id);
 
 --- fix data
 UPDATE invoice SET balance = balance + ops.sum_price 

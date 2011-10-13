@@ -375,3 +375,26 @@ COMMENT ON COLUMN request_fee_registrar_parameter.request_price_limit IS 'limit 
 ---
 ALTER TABLE request_fee_parameter ADD COLUMN zone_id INTEGER REFERENCES zone(id);
 
+---
+--- drop foreign keys 
+---
+
+ALTER TABLE invoice_operation DROP CONSTRAINT
+ invoice_operation_ac_invoice_id_fkey;
+ALTER TABLE invoice_operation DROP CONSTRAINT
+ invoice_operation_object_id_fkey;
+ALTER TABLE invoice_operation DROP CONSTRAINT
+ invoice_operation_operation_id_fkey;
+ALTER TABLE invoice_operation DROP CONSTRAINT
+ invoice_operation_registrar_credit_transaction_id_fkey;
+ALTER TABLE invoice_operation DROP CONSTRAINT
+ invoice_operation_registrar_id_fkey;
+ALTER TABLE invoice_operation DROP CONSTRAINT
+ invoice_operation_zone_id_fkey;
+
+ALTER TABLE invoice_operation_charge_map DROP CONSTRAINT
+ invoice_operation_charge_map_invoice_id_fkey;
+
+ALTER TABLE invoice_operation_charge_map DROP CONSTRAINT
+ invoice_operation_charge_map_invoice_operation_id_fkey;
+
