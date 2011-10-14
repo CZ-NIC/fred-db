@@ -153,6 +153,9 @@ UPDATE
 INSERT INTO enum_parameters (id, name, val)
     VALUES (14, 'regular_day_outzone_procedure_period', '14');
 
+UPDATE enum_parameters
+    SET val = '0' WHERE name = 'regular_day_procedure_period';
+
 DROP VIEW domain_states;
 CREATE VIEW domain_states AS
 SELECT
