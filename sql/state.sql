@@ -287,14 +287,14 @@ SELECT
   CASE WHEN date_test(d.exdate::date,'0')                
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
        THEN ARRAY[9] ELSE '{}' END ||  -- expired
-  CASE WHEN date_time_test(d.exdate::date,ep_ex_dns.val,ep_tm.val,ep_tz.val)
+  CASE WHEN date_time_test(d.exdate::date,ep_ex_dns.val,ep_tm2.val,ep_tz.val)
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
        THEN ARRAY[10] ELSE '{}' END || -- unguarded
   CASE WHEN date_test(e.exdate::date,ep_val_not1.val)
        THEN ARRAY[11] ELSE '{}' END || -- validationWarning1
   CASE WHEN date_test(e.exdate::date,ep_val_not2.val)
        THEN ARRAY[12] ELSE '{}' END || -- validationWarning2
-  CASE WHEN date_time_test(e.exdate::date,'0',ep_tm.val,ep_tz.val)
+  CASE WHEN date_time_test(e.exdate::date,'0',ep_tm2.val,ep_tz.val)
        THEN ARRAY[13] ELSE '{}' END || -- notValidated
   CASE WHEN d.nsset ISNULL 
        THEN ARRAY[14] ELSE '{}' END || -- nssetMissing
@@ -303,7 +303,7 @@ SELECT
     5 = ANY(COALESCE(osr.states,'{}')) OR                -- outzoneManual
     (((date_time_test(d.exdate::date,ep_ex_dns.val,ep_tm2.val,ep_tz.val)
        AND NOT (2 = ANY(COALESCE(osr.states,'{}')))      -- !renewProhibited
-      ) OR date_time_test(e.exdate::date,'0',ep_tm.val,ep_tz.val)) AND 
+      ) OR date_time_test(e.exdate::date,'0',ep_tm2.val,ep_tz.val)) AND 
      NOT (6 = ANY(COALESCE(osr.states,'{}'))))           -- !inzoneManual
        THEN ARRAY[15] ELSE '{}' END || -- outzone
   CASE WHEN date_time_test(d.exdate::date,ep_ex_reg.val,ep_tm.val,ep_tz.val)
