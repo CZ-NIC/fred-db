@@ -1,3 +1,15 @@
+2011-10-17 Jiri Sadek (2.8.5)
+
+    * whois reminder template fixes
+
+    * deleteCandidate status changed to external, description update
+
+    * object regular procedure enum_parameters update
+          - regular_day_outzone_procedure_period (14)
+          - regular_day_procedure_period (0)
+          - domain_states view
+          - status_update_domain
+
 2011-08-11 Jiri Sadek, Juraj Vicenik (2.8.4)
 
     * whois reminder template fixes
