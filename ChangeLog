@@ -1,3 +1,9 @@
+2011-08-11 Jiri Sadek, Juraj Vicenik, Jan Zima (2.9.0)
+
+    * invoicing module rework
+
+    * added credit related tables - separation from invoicing
+
 2011-10-17 Jiri Sadek (2.8.5)
 
     * whois reminder template fixes
