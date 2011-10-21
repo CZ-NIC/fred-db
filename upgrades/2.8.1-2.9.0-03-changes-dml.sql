@@ -272,21 +272,14 @@ WHERE invoice_operation_id IN
 	JOIN invoice_operation_charge_map iocm ON io.id = iocm.invoice_operation_id
 	WHERE io.ac_invoice_id IS null );
 
-
-UPDATE invoice_operation SET quantity = 1 
-FROM enum_operation eo  
-WHERE eo.id = invoice_operation.operation_id 
-	AND eo.operation='CreateDomain';
-	
-UPDATE invoice_operation SET quantity = quantity / 12 
+UPDATE invoice_operation SET (date_from, quantity)  
+  = (date_to - ((quantity / 12 )::text ||' years')::interval, quantity / 12)
 FROM enum_operation eo  
 WHERE eo.id = invoice_operation.operation_id 
 	AND eo.operation='RenewDomain';
-	
-UPDATE invoice_operation 
-SET date_from = date_to - (quantity::text ||' years')::interval;
 
-UPDATE invoice_operation SET date_to = NULL 
+UPDATE invoice_operation SET (quantity, date_from, date_to) 
+  = (1, ((invoice_operation.crdate AT TIME ZONE 'UTC') AT TIME ZONE 'Europe/Prague')::date, NULL)
 FROM enum_operation eo  
 WHERE eo.id = invoice_operation.operation_id 
 	AND eo.operation='CreateDomain';
