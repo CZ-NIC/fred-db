@@ -1,4 +1,10 @@
-2011-08-11 Jiri Sadek, Juraj Vicenik, Jan Zima (2.9.0)
+2011-10-24 Jan Zima (2.9.1)
+
+    * fix migration of invoice_operation.date_from
+
+    * transactions added to upgrade scripts
+
+2011-10-11 Jiri Sadek, Juraj Vicenik, Jan Zima (2.9.0)
 
     * invoicing module rework
 
