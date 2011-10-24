@@ -283,3 +283,9 @@ UPDATE invoice_operation SET (quantity, date_from, date_to)
 FROM enum_operation eo  
 WHERE eo.id = invoice_operation.operation_id 
 	AND eo.operation='CreateDomain';
+
+--set seqences
+select setval('invoice_operation_id_seq', (select max(id) from invoice_operation));
+select setval('registrar_credit_transaction_id_seq', (select max(id) from registrar_credit_transaction));
+
+
