@@ -4,6 +4,7 @@
 --- SO THAT `COPY' CAN WORK
 ---
 
+BEGIN;
 ---
 --- backup of old tables - these won't be part of replication
 ---
@@ -398,3 +399,4 @@ ALTER TABLE invoice_operation_charge_map DROP CONSTRAINT
 ALTER TABLE invoice_operation_charge_map DROP CONSTRAINT
  invoice_operation_charge_map_invoice_operation_id_fkey;
 
+COMMIT;

@@ -14,6 +14,7 @@
 
 --#!sql
 
+BEGIN;
 
 ----- backup old version of invoice_object_registry
 
@@ -32,5 +33,5 @@ COPY
     FROM bank_payment bp)
 TO '/var/tmp/temp_upgrade_bank_payment.csv';
 
-
+COMMIT;
 

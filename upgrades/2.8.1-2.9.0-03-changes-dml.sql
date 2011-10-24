@@ -1,4 +1,6 @@
 
+BEGIN;
+
 ---
 --- don't forget to update database schema version
 ---
@@ -288,4 +290,5 @@ WHERE eo.id = invoice_operation.operation_id
 select setval('invoice_operation_id_seq', (select max(id) from invoice_operation));
 select setval('registrar_credit_transaction_id_seq', (select max(id) from registrar_credit_transaction));
 
+COMMIT;
 
