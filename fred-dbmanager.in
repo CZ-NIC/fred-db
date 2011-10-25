@@ -274,7 +274,7 @@ list_parts_worker() {
     fi
 
     # for table_base in log_entry log_raw_content log_property_value log_session; do
-    for table_base in request request_data request_property_value session; do
+    for table_base in request request_data request_property_value request_object_ref session; do
             for postfix in $SERVICES; do
                     @PGBINDIR@/psql -P tuples_only=on -d @DBNAME@ -U @DBUSER@ -At -p @DBPORT@ \
                     -c "\dt ${table_base}_${postfix}*" | grep fred | cut -d '|' -f 2 >> table_list.txt
@@ -329,13 +329,18 @@ f_create_parts() {
         exit 1
     fi
 
+    if [ $# -lt 2 ]	
+    then
+        echo "Not enough arguments, Usage: $0 <from_date> <to_date>"
+        exit 1
+    fi	
+
     echo
-    echo Argument: $1
+    echo Creating partitions from: $1 to: $2
 
     @PGBINDIR@/psql -d @DBNAME@ -U @DBUSER@ -At -p @DBPORT@ \
                     -c "select create_parts('$1')"  > error_out.txt 2>&1
 
-                    # -c "select create_parts($1)" >/dev/null 2>&1
 
     if [ $? != 0 ]; then
         echo "----- SQL failed, error ouput (file error_out.txt): "
@@ -352,7 +357,7 @@ case $1 in
     "upgrade" ) f_upgrade;;
     "status" ) f_status;;
     "testuser" ) test_user;;
-    "create_partitions") f_create_parts $2;;
+    "create_partitions") f_create_parts $2 $3;;
     "list_partitions") list_parts_worker;;
     "drop_partitions") f_drop_parts;;
     "help" ) f_usage;;

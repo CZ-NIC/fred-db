@@ -527,13 +527,13 @@ END;
 $create_parts_for_month$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION create_parts(term_date TIMESTAMP WITHOUT TIME ZONE) RETURNS VOID AS $create_parts$
+CREATE OR REPLACE FUNCTION create_parts(start_date TIMESTAMP WITHOUT TIME ZONE, term_date TIMESTAMP WITHOUT TIME ZONE) RETURNS VOID AS $create_parts$
 DECLARE
         term_month_beg TIMESTAMP WITHOUT TIME ZONE;
         cur_month_beg  TIMESTAMP WITHOUT TIME ZONE;
 
 BEGIN
-        cur_month_beg := date_trunc('month', now());
+        cur_month_beg := date_trunc('month', start_date);
 
         term_month_beg := date_trunc('month', term_date);
 
