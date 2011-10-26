@@ -285,6 +285,9 @@ UPDATE invoice_operation SET (quantity, date_from, date_to)
 FROM enum_operation eo  
 WHERE eo.id = invoice_operation.operation_id 
 	AND eo.operation='CreateDomain';
+	
+UPDATE price_list pl SET enable_postpaid_operation = 'true' FROM enum_operation eo   
+WHERE pl.operation_id = eo.id AND eo.operation = 'GeneralEppOperation'; 
 
 --set seqences
 select setval('invoice_operation_id_seq', (select max(id) from invoice_operation));
