@@ -1,3 +1,9 @@
+2011-10-26 Jan Zima (2.9.2)
+
+    * fix upgrade script
+        - price_list.enable_postpaid_operation init
+        - unique constraint for (registrar_id, zone_id) in registrar_credit table
+
 2011-10-24 Jan Zima (2.9.1)
 
     * fix migration of invoice_operation.date_from
