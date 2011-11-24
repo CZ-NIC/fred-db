@@ -35,7 +35,7 @@ VALUES (5, 'expiration_letter_warning_period', '34');
 -- unregister domain from system. value is number of dates relative to date 
 -- domain.exdate 
 INSERT INTO enum_parameters (id, name, val) 
-VALUES (6, 'expiration_registration_protection_period', '45');
+VALUES (6, 'expiration_registration_protection_period', '61');
 -- parametr 7 is used to change state of domain to validationWarning1 and 
 -- send poll message to registrar. value is number of dates relative to date 
 -- domain.exdate 
@@ -49,11 +49,11 @@ VALUES (8, 'validation_notify2_period', '-15');
 -- parametr 9 is used to identify hour when objects are deleted
 -- value is number of hours relative to date of operation
 INSERT INTO enum_parameters (id, name, val) 
-VALUES (9, 'regular_day_procedure_period', '14');
+VALUES (9, 'regular_day_procedure_period', '0');
 -- parametr 10 is used to identify time zone in which parameter 9 and 14
 -- are specified
 INSERT INTO enum_parameters (id, name, val) 
-VALUES (10, 'regular_day_procedure_zone', 'CET');
+VALUES (10, 'regular_day_procedure_zone', 'Europe/Prague');
 -- parametr 11 is used to change state of objects other than domain to
 -- deleteCandidate. It is specified in granularity of months and means, period
 -- during which object wasn't linked to other object and wasn't updated 
