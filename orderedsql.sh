@@ -101,6 +101,7 @@ case "$1" in
         cat $DIR/logger_dml_intranet.sql
         cat $DIR/logger_dml_mojeid.sql
         cat $DIR/logger_dml.sql
+        cat $DIR/logger_dml_pubrequest_result.sql
         cat $DIR/logger_partitioning.sql
 		;;
 esac
