@@ -1,11 +1,20 @@
 
+CREATE TABLE invoice_type 
+(
+typ integer
+, description text
+);
 
--- TODO make prefix classifier for every year so that pass between years is available 
+INSERT INTO invoice_type (typ , description) VALUES (0,'advance');
+INSERT INTO invoice_type (typ , description) VALUES (1,'account');
+
+-- TODO make prefix classifier for every year so that pass between years is available
+
 CREATE TABLE invoice_prefix
 (
 id serial NOT NULL PRIMARY KEY, 
 zone_id INTEGER REFERENCES zone (id),
-typ integer default 0,  -- invoice type 0 advanced 1 normal
+typ integer default 0 REFERENCES invoice_type (typ),  -- invoice type 0 advanced 1 normal
 year numeric NOT NULL, --for which year  
 prefix bigint -- counter with prefix of number line invoice 
 , CONSTRAINT invoice_prefix_zone_key UNIQUE (zone_id, typ, year)
