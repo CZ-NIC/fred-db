@@ -1,7 +1,7 @@
 
 CREATE TABLE invoice_type 
 (
-typ integer
+typ serial
 , description text
 );
 
