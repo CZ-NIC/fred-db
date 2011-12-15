@@ -1,14 +1,14 @@
 
 CREATE TABLE invoice_type
 (
-typ serial NOT NULL PRIMARY KEY
-, description text
+id serial NOT NULL PRIMARY KEY
+, name text
 );
 
-INSERT INTO invoice_type (typ,description) VALUES (0,'advance');
-INSERT INTO invoice_type (typ,description) VALUES (1,'account');
+INSERT INTO invoice_type (id,name) VALUES (0,'advance');
+INSERT INTO invoice_type (id,name) VALUES (1,'account');
 
-select setval('invoice_type_typ_seq', 1);
+select setval('invoice_type_id_seq', 1);
 
 -- TODO make prefix classifier for every year so that pass between years is available
 
@@ -16,7 +16,7 @@ CREATE TABLE invoice_prefix
 (
 id serial NOT NULL PRIMARY KEY, 
 zone_id INTEGER REFERENCES zone (id),
-typ INTEGER REFERENCES invoice_type (typ),  -- invoice type 0 advance 1 account ...
+typ INTEGER REFERENCES invoice_type (id),  -- invoice type 0 advance 1 account ...
 year numeric NOT NULL, --for which year  
 prefix bigint -- counter with prefix of number line invoice 
 , CONSTRAINT invoice_prefix_zone_key UNIQUE (zone_id, typ, year)

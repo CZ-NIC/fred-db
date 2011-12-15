@@ -2,7 +2,7 @@
 --- Ticket #6298
 ---
 
-INSERT INTO invoice_type (typ , description) VALUES (0,'advance');
-INSERT INTO invoice_type (typ , description) VALUES (1,'account');
+INSERT INTO invoice_type (id , name) VALUES (0,'advance');
+INSERT INTO invoice_type (id , name) VALUES (1,'account');
 
-select setval('invoice_type_typ_seq', 1);
+select setval('invoice_type_id_seq', 1);

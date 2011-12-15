@@ -4,7 +4,7 @@
 
 CREATE TABLE invoice_type
 (
-typ serial NOT NULL PRIMARY KEY
-, description text
+id serial NOT NULL PRIMARY KEY
+, name text
 );
 
