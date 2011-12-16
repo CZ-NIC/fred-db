@@ -47,22 +47,6 @@ comment on table invoice_number_prefix is
 
 comment on column invoice_number_prefix.prefix is 'two-digit number';
 
-INSERT INTO invoice_number_prefix ( prefix, zone_id, invoice_type_id) 
-VALUES (24 , (select id from zone where fqdn='cz')
-, (select id from invoice_type where name='advance'));
-
-INSERT INTO invoice_number_prefix ( prefix, zone_id, invoice_type_id) 
-VALUES (23 , (select id from zone where fqdn='cz')
-, (select id from invoice_type where name='account'));
-
-INSERT INTO invoice_number_prefix ( prefix, zone_id, invoice_type_id) 
-VALUES (11 , (select id from zone where fqdn='0.2.4.e164.arpa')
-, (select id from invoice_type where name='advance'));
-
-INSERT INTO invoice_number_prefix ( prefix, zone_id, invoice_type_id) 
-VALUES (12 , (select id from zone where fqdn='0.2.4.e164.arpa')
-, (select id from invoice_type where name='account'));
-
 -- advance invoices 
 CREATE TABLE invoice
 (
