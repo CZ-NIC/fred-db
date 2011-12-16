@@ -5,6 +5,10 @@ id serial NOT NULL PRIMARY KEY
 , name text
 );
 
+comment on table invoice_type is
+'invoice types list';
+
+
 INSERT INTO invoice_type (id,name) VALUES (0,'advance');
 INSERT INTO invoice_type (id,name) VALUES (1,'account');
 
@@ -26,6 +30,38 @@ comment on column invoice_prefix.zone_id is 'reference to zone';
 comment on column invoice_prefix.typ is 'invoice type (0-advanced, 1-normal)';
 comment on column invoice_prefix.year is 'for which year';
 comment on column invoice_prefix.prefix is 'counter with prefix of number of invoice';
+
+--invoice number prefix
+
+CREATE TABLE invoice_number_prefix
+(
+id serial NOT NULL PRIMARY KEY
+, prefix integer NOT NULL
+, zone_id bigint NOT NULL REFERENCES zone(id)
+, invoice_type_id bigint NOT NULL REFERENCES invoice_type (id)
+, CONSTRAINT invoice_number_prefix_unique_key UNIQUE (zone_id, invoice_type_id)
+);
+
+comment on table invoice_number_prefix is
+'prefixes to invoice number, next year prefixes are generated according to records in this table';
+
+comment on column invoice_number_prefix.prefix is 'two-digit number';
+
+INSERT INTO invoice_number_prefix ( prefix, zone_id, invoice_type_id) 
+VALUES (24 , (select id from zone where fqdn='cz')
+, (select id from invoice_type where name='advance'));
+
+INSERT INTO invoice_number_prefix ( prefix, zone_id, invoice_type_id) 
+VALUES (23 , (select id from zone where fqdn='cz')
+, (select id from invoice_type where name='account'));
+
+INSERT INTO invoice_number_prefix ( prefix, zone_id, invoice_type_id) 
+VALUES (11 , (select id from zone where fqdn='0.2.4.e164.arpa')
+, (select id from invoice_type where name='advance'));
+
+INSERT INTO invoice_number_prefix ( prefix, zone_id, invoice_type_id) 
+VALUES (12 , (select id from zone where fqdn='0.2.4.e164.arpa')
+, (select id from invoice_type where name='account'));
 
 -- advance invoices 
 CREATE TABLE invoice
