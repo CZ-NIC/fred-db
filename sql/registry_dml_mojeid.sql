@@ -78,6 +78,7 @@ INSERT INTO enum_filetype (id, name) VALUES (7, 'mojeid contact identification r
 INSERT INTO enum_object_states VALUES (21,'conditionallyIdentifiedContact','{1}','t','f');
 INSERT INTO enum_object_states VALUES (22,'identifiedContact','{1}','t','f');
 INSERT INTO enum_object_states VALUES (23,'validatedContact','{1}','t','f');
+INSERT INTO enum_object_states VALUES (24,'mojeidContact','{1}','t','f');
 
 INSERT INTO enum_object_states_desc VALUES (21, 'CS', 'Kontakt je podmínečně identifikován');
 INSERT INTO enum_object_states_desc VALUES (21, 'EN', 'Contact is conditionally identified');
@@ -85,6 +86,9 @@ INSERT INTO enum_object_states_desc VALUES (22, 'CS', 'Kontakt je identifikován
 INSERT INTO enum_object_states_desc VALUES (22, 'EN', 'Contact is identified');
 INSERT INTO enum_object_states_desc VALUES (23, 'CS', 'Kontakt je validován');
 INSERT INTO enum_object_states_desc VALUES (23, 'EN', 'Contact is validated');
+INSERT INTO enum_object_states_desc VALUES (24, 'CS', 'MojeID kontakt');
+INSERT INTO enum_object_states_desc VALUES (24, 'EN', 'MojeID contact');
+
 
 
 
