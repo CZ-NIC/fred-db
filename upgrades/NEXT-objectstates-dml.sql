@@ -5,9 +5,10 @@ INSERT INTO enum_object_states VALUES (24,'mojeidContact','{1}','t','f');
 INSERT INTO enum_object_states_desc VALUES (24, 'CS', 'MojeID kontakt');
 INSERT INTO enum_object_states_desc VALUES (24, 'EN', 'MojeID contact');
 
-INSERT INTO object_state_request (object_id,state_id, valid_from, valid_to)
+INSERT INTO object_state_request (object_id,state_id, valid_from, valid_to, canceled)
 SELECT object_id, (SELECT id FROM enum_object_states WHERE name='mojeidContact') AS state_id, valid_from 
 , (CASE WHEN one_of_valid_to_is_null THEN null ELSE max_valid_to END) as valid_to 
+, (CASE WHEN one_of_valid_to_is_null THEN null ELSE max_valid_to END) as canceled
 FROM (SELECT object_id, MIN(valid_from) AS valid_from
 , MAX(valid_to) AS max_valid_to, bool_or(valid_to is null) AS one_of_valid_to_is_null
 FROM (SELECT os.object_id, os.valid_from, os.valid_to
