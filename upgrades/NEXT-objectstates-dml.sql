@@ -11,8 +11,8 @@ CREATE TEMP TABLE tmp_object_state (object_id,state_id, valid_from, ohid_from, v
 SELECT object_id, (SELECT id FROM enum_object_states WHERE name='mojeidContact') AS state_id
 , valid_from, ohid_from 
 , (CASE WHEN one_of_valid_to_is_null THEN null ELSE max_valid_to END) AS valid_to
-, ohid_to
-FROM (SELECT object_id, MIN(valid_from) AS valid_from, MIN(ohid_from) AS ohid_from ,MAX(ohid_to)AS ohid_to
+, (CASE WHEN one_of_valid_to_is_null THEN null ELSE max_ohid_to END) AS ohid_to
+FROM (SELECT object_id, MIN(valid_from) AS valid_from, MIN(ohid_from) AS ohid_from, MAX(ohid_to)AS max_ohid_to
 , MAX(valid_to) AS max_valid_to, bool_or(valid_to is null) AS one_of_valid_to_is_null
 FROM (SELECT os.object_id, os.valid_from, os.ohid_from, os.valid_to, os.ohid_to
 FROM contact c JOIN object o ON o.id=c.id 
