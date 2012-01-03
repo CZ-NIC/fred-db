@@ -30,22 +30,3 @@ Váš tým <?cs var:defaults.company ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (25, 25);
 
-INSERT INTO mail_type (id, name, subject) VALUES (26, 'contact_validation', 'Validace kontaktu <?cs if:status == #1 ?>provedena<?cs else ?>neprovedena<?cs /if ?>');
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(26, 'plain', 1,
-'
-<?cs if:status == #1 ?>
-Na základě žádosti číslo <?cs var:reqid ?> ze dne <?cs var:reqdate ?> byla provedena validace kontaktu.<?cs else ?>
-Váš kontakt:<?cs /if ?>
-
-Jméno : <?cs var:name ?><?cs if:org ?>
-Organizace : <?cs var:org ?><?cs /if ?><?cs if:ic ?>
-IČ : <?cs var:ic ?><?cs /if ?><?cs if:birthdate ?>
-Datum narození : <?cs var:birthdate ?><?cs /if ?>
-Adresa : <?cs var:address ?>
-<?cs if:status != #1 ?>
-u kterého bylo požádáno o validaci žádostí číslo <?cs var:reqid ?> ze dne <?cs var:reqdate ?> nebyl validován.
-<?cs /if ?>
-Váš tým <?cs var:defaults.company ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (26, 26);
