@@ -325,4 +325,5 @@ INSERT INTO request_property_name(id, name) VALUES
 (301,	'filter_AuthInfo');
 
 
+SELECT setval('request_property_name_id_seq', (SELECT MAX(id) FROM request_property_name));
 
