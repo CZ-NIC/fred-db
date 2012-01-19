@@ -13,4 +13,5 @@ INSERT INTO result_code (service_id, result_code, name) VALUES
 (7, 1 , 'Success'),
 (7, 2 , 'Fail'),
 (7, 3 , 'Error'),
-(7, 4 , 'NotValidated');
+(7, 4 , 'NotValidated'),
+(7, 5 , 'Warning');
