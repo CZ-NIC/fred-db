@@ -62,6 +62,9 @@ write_script()
 	cat $DIR/index.sql
 	# new table for requests from public
 	cat $DIR/public_request.sql
+    cat $DIR/public_request_dml_authinfo.sql
+    cat $DIR/public_request_dml_block.sql
+    cat $DIR/public_request_dml_verification.sql
 	# registrar's certifications and groups
 	cat $DIR/registrar_certification_ddl.sql
     cat $DIR/registrar_disconnect.sql
