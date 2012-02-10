@@ -13,6 +13,13 @@ UPDATE enum_parameters SET val = '2.9.0' WHERE id = 1;
 ---
 
 ---
+--- general registry operation for fee and fine to connect credit change with invoice in invoice_operation
+---
+INSERT INTO enum_operation (id, operation) VALUES (4, 'Fine');
+INSERT INTO enum_operation (id, operation) VALUES (5, 'Fee');
+
+
+---
 --- legacy invoices from old system
 ---
 CREATE TEMPORARY TABLE tmp_zalohy
@@ -205,15 +212,54 @@ INSERT INTO temp_rct_minus
       GROUP BY iocm.invoice_operation_id, rc.id, io.id);
 
 ---
+---  Ticket #6538
+---
+
+SELECT setval('invoice_operation_id_seq', (select max(id) from temp_invoice_operation));
+
+CREATE TEMP TABLE temp_invoice_operation_fine_and_fee
+(
+    id integer NOT NULL, -- unique primary key
+    ac_invoice_id INTEGER, -- REFERENCES invoice (id) , -- id of invoice for which is item counted
+    CrDate timestamp NOT NULL,  -- billing date and time
+    object_id integer, --  REFERENCES object_registry (id),
+    zone_id INTEGER, -- REFERENCES zone (id),
+    registrar_id INTEGER NOT NULL, -- REFERENCES registrar, -- link to registrar 
+    operation_id INTEGER NOT NULL, -- REFERENCES enum_operation, -- operation type of registration or renew
+    date_to date default NULL,  -- final ExDate only for RENEW 
+    quantity integer default 0 -- number of unit for renew in months
+);
+
+INSERT INTO temp_invoice_operation_fine_and_fee
+  SELECT 
+    nextval('invoice_operation_id_seq') AS id
+    , i.id AS  ac_invoice_id
+    , i.crdate AS CrDate
+    , null AS object_id
+    , i.zone AS zone_id
+    , i.registrarid AS registrar_id
+    , (SELECT id FROM enum_operation 
+      WHERE operation = (CASE WHEN i.crdate BETWEEN ig.fromdate AND ig.todate 
+        THEN 'Fee' ELSE 'Fine' END)) AS operation_id
+    , null AS date_to
+    , 0 AS quantity
+    FROM invoice_generation ig
+    JOIN old_invoice i ON i.id = ig.invoice_id
+    JOIN invoice_prefix ip ON ip.id = i.prefix_type
+    LEFT JOIN old_invoice_object_registry ior ON ior.invoiceid = i.id
+    WHERE ip.typ = 1 AND ior.id IS NULL;
+
+---
 --- account invoices with no operation on it (penalties and annual fees)
 ---
 INSERT INTO temp_rct_minus
-    (SELECT nextval('registrar_credit_transaction_id_seq'), i.price * -1, rc.id, ior.id
+    (SELECT nextval('registrar_credit_transaction_id_seq'), i.price * -1, rc.id, tiofaf.id
         FROM old_invoice i
-        JOIN old_invoice_prefix ip on ip.id = i.prefix_type
+        JOIN invoice_prefix ip ON ip.id = i.prefix_type
         JOIN registrar_credit rc ON rc.zone_id = i.zone AND rc.registrar_id = i.registrarid
-        LEFT JOIN old_invoice_object_registry ior on ior.invoiceid = i.id
-      WHERE ip.typ = 1 AND ior.invoiceid IS NULL AND i.price > 0);
+        JOIN temp_invoice_operation_fine_and_fee tiofaf on tiofaf.ac_invoice_id = i.id
+      WHERE  ip.typ = 1 AND i.price > 0);
+
 ---
 --- insert credit changes from operations (minus)
 ---
@@ -243,6 +289,11 @@ INSERT INTO invoice_operation (id, ac_invoice_id, crdate, object_id, zone_id, re
         FROM temp_invoice_operation tio
         JOIN temp_rct_minus rct ON tio.id = rct.invoice_operation_id;
 
+-- fee and fine records
+INSERT INTO invoice_operation (id, ac_invoice_id, crdate, object_id, zone_id, registrar_id, operation_id, date_to, quantity, registrar_credit_transaction_id)
+    SELECT tio.id, tio.ac_invoice_id, tio.crdate, tio.object_id, tio.zone_id, tio.registrar_id, tio.operation_id, tio.date_to, tio.quantity, rct.id
+        FROM temp_invoice_operation_fine_and_fee tio
+        JOIN temp_rct_minus rct ON tio.id = rct.invoice_operation_id;
 
 INSERT INTO invoice_operation_charge_map
     SELECT * FROM temp_invoice_operation_charge_map;
@@ -290,6 +341,7 @@ UPDATE price_list pl SET enable_postpaid_operation = 'true' FROM enum_operation 
 WHERE pl.operation_id = eo.id AND eo.operation = 'GeneralEppOperation'; 
 
 --set seqences
+select setval('enum_operation_id_seq', (select max(id) from enum_operation));
 select setval('invoice_operation_id_seq', (select max(id) from invoice_operation));
 select setval('registrar_credit_transaction_id_seq', (select max(id) from registrar_credit_transaction));
 

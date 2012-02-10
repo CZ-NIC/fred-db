@@ -8,6 +8,9 @@ CREATE TABLE enum_operation (
 
 INSERT INTO enum_operation  VALUES( 1 , 'CreateDomain'); -- registration fee
 INSERT INTO enum_operation  VALUES( 2 , 'RenewDomain'); -- maintainance fee
+--number 3 is request fee in request_fee_dml.sql
+INSERT INTO enum_operation (id, operation) VALUES (4, 'Fine'); -- annual registry contractual fine
+INSERT INTO enum_operation (id, operation) VALUES (5, 'Fee'); -- annual registry contractual fee
 
 select setval('enum_operation_id_seq', 2);
 
