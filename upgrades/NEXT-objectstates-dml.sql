@@ -37,3 +37,9 @@ SELECT object_id, state_id, valid_from, ohid_from, valid_to, ohid_to
 FROM tmp_object_state;
 
 COMMIT;
+
+---
+--- Ticket #6603
+---
+
+UPDATE enum_object_states SET external = true WHERE name = 'mojeidContact';
