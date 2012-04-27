@@ -4,7 +4,6 @@ CREATE TABLE public_request (
   id serial NOT NULL PRIMARY KEY,
   request_type smallint NOT NULL, -- vsechny typy zadosti
 -- further description in src/register/public_request.h, enum Type
-  epp_action_id integer,
   create_time timestamp without time zone DEFAULT now() NOT NULL,
   status smallint NOT NULL,
 -- Request status, values: PRS_NEW,       ///< Request was created and waiting for autorization 
@@ -21,7 +20,6 @@ CREATE TABLE public_request (
 
 comment on table public_request is 'table of general requests give in by public users';
 comment on column public_request.request_type is 'code of request';
-comment on column public_request.epp_action_id is 'reference on action when request is submitted by registrar via EPP protocol (otherwise NULL)';
 comment on column public_request.create_time is 'request creation time';
 comment on column public_request.status is 'code of request actual status';
 comment on column public_request.resolve_time is 'time when request was processed (closed)';

@@ -16,9 +16,6 @@ write_script()
 	cat $DIR/zone.sql
 	#registar and registraracl  tables
 	cat $DIR/registrar.sql
-	#login and action table plus history table
-	cat $DIR/login.sql
-	cat $DIR/action.sql
 	# object table
 	cat $DIR/history_base.sql
 	cat $DIR/ccreg.sql
@@ -74,6 +71,8 @@ write_script()
     cat $DIR/reminder_dml.sql
     # monitoring
     cat $DIR/monitoring_dml.sql
+    # epp login IDs
+    cat $DIR/epp_login.sql
 }
 
 usage()

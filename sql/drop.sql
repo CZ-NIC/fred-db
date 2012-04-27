@@ -1,4 +1,3 @@
-DROP TABLE Action CASCADE;
 -- DROP TABLE ContactAgreement CASCADE;
 DROP TABLE Contact CASCADE;
 DROP TABLE Contact_History CASCADE;
