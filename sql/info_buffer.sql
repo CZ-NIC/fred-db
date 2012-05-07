@@ -1,7 +1,7 @@
 CREATE TABLE epp_info_buffer_content (
 	id INTEGER NOT NULL, 
 	registrar_id INTEGER NOT NULL REFERENCES registrar (id), 
-	object_id INTEGER NOT NULL REFERENCES object_registry (id), 
+	object_id INTEGER NOT NULL, 
 	PRIMARY KEY (id,registrar_id)
 );
 
