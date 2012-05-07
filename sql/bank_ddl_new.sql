@@ -27,7 +27,7 @@ CREATE TABLE bank_payment
     id serial NOT NULL PRIMARY KEY, -- unique primary key
     statement_id int  REFERENCES bank_statement default null, -- link into table heads of bank statements
     account_id int  REFERENCES bank_account default null, -- link into table of accounts
-    account_number varchar(17)  NOT NULL , -- contra-account number from which came or was sent a payment
+    account_number text NOT NULL , -- contra-account number from which came or was sent a payment
     bank_code varchar(4) NOT NULL,   -- bank code
     code int, -- account code 1 debet item 2 credit item 4  cancel debet 5 cancel credit 
     type int NOT NULL default 1, -- transfer type
