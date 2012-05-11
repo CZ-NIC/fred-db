@@ -1,3 +1,12 @@
+2012-05-11 Jiri Sadek, Juraj Vicenik, Jan Zima (2.11.0)
+
+    * bank_payment account.number type to text - was too short for IBAN format
+
+    * refactoring of invoice type and invoice prefix tables
+
+    * drop epp_info_buffer_content foreign key to object_registry for better
+      performance of epp list commands
+
 2012-04-27 Jiri Sadek, Juraj Vicenik, Jan Zima (2.10.0)
 
     * epp action removed from fred
