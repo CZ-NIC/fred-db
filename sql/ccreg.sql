@@ -232,6 +232,3 @@ CREATE TABLE ENUMVal (
         publish BOOLEAN NOT NULL DEFAULT false
         );
 
--- sequence for EPP session idetifiers
-CREATE SEQUENCE epp_login_id_seq;
-
