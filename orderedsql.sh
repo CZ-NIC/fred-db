@@ -2,6 +2,7 @@
 # printing-out sql command in right order to create of new database
 #base system
 
+set -e
 
 DIR=$(dirname $0)/sql
 
