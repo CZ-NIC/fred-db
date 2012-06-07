@@ -491,7 +491,7 @@ Identifikátor <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> handl
 Registrátor / Registrar : <?cs var:registrar ?>
 ======================================================================
 
-Žádost byla úspešně zpracována, požadovaná registrace byla provedena. 
+Žádost byla úspěšně zpracována, požadovaná registrace byla provedena. 
 The request was completed successfully, required registration was done.<?cs if:type == #3 ?>
 
 Při každé změně doporučujeme aktualizovat údaje o doméně, vyhnete se 
@@ -563,7 +563,7 @@ Identifikátor <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> handl
 Registrátor / Registrar : <?cs var:registrar ?>
 =====================================================================
  
-Žádost byla úspešně zpracována, <?cs if:changes == #1 ?>požadované změny byly provedeny<?cs else ?>žádná změna nebyla požadována, údaje zůstaly beze změny<?cs /if ?>.
+Žádost byla úspěšně zpracována, <?cs if:changes == #1 ?>požadované změny byly provedeny<?cs else ?>žádná změna nebyla požadována, údaje zůstaly beze změny<?cs /if ?>.
 The request was completed successfully, <?cs if:changes == #1 ?>required changes were done<?cs else ?>no changes were found in the request.<?cs /if ?>
 
 <?cs if:changes == #1 ?>
@@ -609,7 +609,7 @@ Identifikátor <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> handl
 Registrátor / Registrar : <?cs var:registrar ?>
 =====================================================================
  
-Žádost byla úspešně zpracována, transfer byl proveden. 
+Žádost byla úspěšně zpracována, transfer byl proveden. 
 The request was completed successfully, transfer was completed. 
 
 Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>.
@@ -634,7 +634,7 @@ Domény / Domain : <?cs var:handle ?>
 Registrátor / Registrar : <?cs var:registrar ?>
 =====================================================================
 
-Žádost byla úspešně zpracována, prodloužení platnosti bylo provedeno. 
+Žádost byla úspěšně zpracována, prodloužení platnosti bylo provedeno. 
 The request was completed successfully, domain was renewed. 
 
 Při každé změně doporučujeme aktualizovat údaje o doméně, vyhnete se 
