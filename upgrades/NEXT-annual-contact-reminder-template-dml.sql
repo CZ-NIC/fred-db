@@ -1,12 +1,8 @@
 ---
---- Ticket #5102 - reminder - mail template
---- Ticket #5739 - fixed missing translations of identification type
+--- Ticket #6936 annual_contact_reminder template
 ---
 
-INSERT INTO mail_type (id, name, subject) VALUES (23, 'annual_contact_reminder', 'Ověření správnosti údajů');
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
- (23, 'plain', 1,
-'
+UPDATE mail_templates SET template = '
 This is a bilingual message. Please see below for the English version
 
 Vážená paní, vážený pane,
@@ -121,6 +117,4 @@ Sets of name servers where the contact is a technical contact:<?cs each:item = n
 
 Keysets where the contact is a technical contact:<?cs each:item = keysets ?>
 <?cs var:item ?><?cs /each ?><?cs /if ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (23, 23);
-
+' WHERE id = 23;
