@@ -1,4 +1,10 @@
 ---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.11.1' WHERE id = 1;
+
+
+---
 --- Ticket #6936 annual_contact_reminder template
 ---
 
@@ -118,3 +124,4 @@ Sets of name servers where the contact is a technical contact:<?cs each:item = n
 Keysets where the contact is a technical contact:<?cs each:item = keysets ?>
 <?cs var:item ?><?cs /each ?><?cs /if ?>
 ' WHERE id = 23;
+
