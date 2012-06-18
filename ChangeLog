@@ -1,3 +1,7 @@
+2012-06-18 Jan Zima (2.11.2)
+
+    * fix update notification mail template (disclose address changes)
+
 2012-06-11 Jan Zima (2.11.1)
 
     * fix whois reminder template (removed temporary contact)
