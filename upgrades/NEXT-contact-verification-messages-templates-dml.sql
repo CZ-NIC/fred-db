@@ -18,7 +18,7 @@ e-mail:      <?cs var:email ?>
 Pro aktivaci Vašeho kontaktu je nutné vložit kódy PIN1 a PIN2.
 
 PIN1: <?cs var:passwd ?>
-PIN2: Vám byl zaslán <?cs if:rtype == #1 ?>pomocí SMS.<?cs elif:rtype == #2 ?>poštou.<?cs /if ?><?cs if:passwd2?>
+PIN2: Vám byl zaslán pomocí SMS.<?cs if:passwd2?>
 V demo režimu není odesílání SMS a pošty aktivní. PIN2: <?cs var:passwd2 ?> <?cs /if ?><?cs if:passwd3?>
 V demo režimu není odesílání SMS a pošty aktivní. PIN3: <?cs var:passwd3 ?> <?cs /if ?>
 

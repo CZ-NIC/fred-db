@@ -61,3 +61,20 @@ CREATE TABLE public_request_messages_map
 );
 
 
+CREATE TABLE enum_public_request_type
+(
+  id INTEGER PRIMARY KEY NOT NULL,
+  name VARCHAR(64) UNIQUE NOT NULL,
+  description VARCHAR(256)
+);
+
+
+
+CREATE TABLE enum_public_request_status
+(
+  id INTEGER PRIMARY KEY NOT NULL,
+  name VARCHAR(32) UNIQUE NOT NULL,
+  description VARCHAR(128)
+);
+
+
