@@ -53,13 +53,13 @@ comment on table Message is 'Evidence of messages for registrars, which can be p
 CREATE TABLE poll_credit (
   msgid INTEGER PRIMARY KEY REFERENCES message (id),
   zone INTEGER REFERENCES zone (id),
-  credlimit INTEGER NOT NULL,
-  credit INTEGER NOT NULL
+  credlimit numeric(10,2) NOT NULL,
+  credit numeric(10,2) NOT NULL
 );
 
 CREATE TABLE poll_credit_zone_limit (
   zone INTEGER PRIMARY KEY REFERENCES zone(id),
-  credlimit INTEGER NOT NULL
+  credlimit numeric(10,2) NOT NULL
 );
 
 CREATE TABLE poll_eppaction (
