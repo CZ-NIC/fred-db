@@ -1,3 +1,7 @@
+2012-07-23 Vlastimil Zima (2.11.3)
+
+    * update country codes enumeration
+
 2012-06-18 Jan Zima (2.11.2)
 
     * fix update notification mail template (disclose address changes)
