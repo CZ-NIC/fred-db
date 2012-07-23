@@ -1,3 +1,9 @@
+---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.11.3' WHERE id = 1;
+
+
 -- Add new countries
 INSERT INTO enum_country (id,country) VALUES ( 'BL' , 'Saint Barthélemy' );
 INSERT INTO enum_country (id,country) VALUES ( 'BQ' , 'Bonaire, Sint Eustatius and Saba' );
