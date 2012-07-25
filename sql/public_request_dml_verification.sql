@@ -8,5 +8,5 @@ INSERT INTO enum_public_request_type (id, name, description) VALUES (14, 'mojeid
 
 INSERT INTO enum_public_request_type (id, name, description) VALUES (15, 'contact_conditional_identification', 'Conditional identification');
 INSERT INTO enum_public_request_type (id, name, description) VALUES (16, 'contact_identification', 'Full identification');
-INSERT INTO enum_public_request_type (id, name, description) VALUES (17, 'contact_validation', 'Validation');
+
 
