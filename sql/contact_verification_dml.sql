@@ -1,5 +1,12 @@
 ---
---- Ticket #6164
+--- sms types
+---
+
+INSERT INTO message_type (id, type) VALUES (6, 'contact_verification_pin2');
+INSERT INTO message_type (id, type) VALUES (7, 'contact_verification_pin3');
+
+---
+--- email types
 ---
 
 INSERT INTO mail_type (id, name, subject) VALUES (25, 'conditional_contact_identification', 'Podmíněná identifikace kontaktu');
@@ -24,7 +31,7 @@ V demo režimu není odesílání SMS a pošty aktivní. PIN3: <?cs var:passwd3 
 
 Aktivaci kontaktu proveďte kliknutím na následující odkaz:
 
-<?cs var:url ?>?handle=<?cs var:handle ?>
+<?cs var:url ?>?password1=<?cs var:passwd ?>
 
 Váš tým <?cs var:defaults.company ?>
 ');
@@ -54,9 +61,11 @@ V demo režimu není odesílání SMS a pošty aktivní. PIN3: <?cs var:passwd3 
 
 Aktivaci kontaktu proveďte kliknutím na následující odkaz:
 
-<?cs var:url ?>?password1=<?cs var:passwd ?>
+<?cs var:url ?>?handle=<?cs var:handle ?>
 
 Váš tým <?cs var:defaults.company ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (26, 26);
+
+
 

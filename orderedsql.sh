@@ -78,6 +78,8 @@ write_script()
     cat $DIR/monitoring_dml.sql
     # epp login IDs
     cat $DIR/epp_login.sql
+    # contact verification
+    cat $DIR/contact_verification_dml.sql
 }
 
 usage()
