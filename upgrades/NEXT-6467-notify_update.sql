@@ -1,4 +1,36 @@
-UPDATE mail_templates SET template = '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>
+UPDATE mail_templates SET template = '
+<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>
+======================================================================
+Oznámení o registraci / Registration notification
+======================================================================
+Registrace <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> create 
+Identifikátor <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> handle : <?cs var:handle ?>
+Číslo žádosti / Ticket :  <?cs var:ticket ?>
+Registrátor / Registrar : <?cs var:registrar ?>
+======================================================================
+
+Žádost byla úspěšně zpracována, požadovaná registrace byla provedena. 
+The request was completed successfully, required registration was done.<?cs if:type == #3 ?>
+
+Při každé změně doporučujeme aktualizovat údaje o doméně, vyhnete se 
+tak možným problémům souvisejícím s prodlužováním platnosti či manipulací 
+s doménou osobami, které již nejsou oprávněny je provádět.
+Update domain data in the registry after any changes to avoid possible 
+problems with domain renewal or with domain manipulation done by persons 
+who are not authorized anymore.<?cs /if ?>
+
+Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
+For detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
+
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
+' WHERE id = 10;
+
+
+
+UPDATE mail_templates SET template = '
+<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>
 
 <?cs def:print_value(which, varname) ?><?cs if:which == "old" ?><?cs set:lvarname = varname.old ?><?cs elif:which == "new" ?><?cs set:lvarname = varname.new ?><?cs /if ?><?cs alt:lvarname ?><?cs if:which == "old" ?>hodnota nenastavena / value not set<?cs elif:which == "new" ?>hodnota smazána / value deleted<?cs /if ?><?cs /alt ?><?cs /def ?>
 <?cs def:print_value_bool(which, varname, if_true, if_false) ?><?cs if:which == "old" ?><?cs set:lvarname = varname.old ?><?cs elif:which == "new" ?><?cs set:lvarname = varname.new ?><?cs /if ?><?cs if:lvarname == "1" ?><?cs var:if_true ?><?cs elif:lvarname == "0" ?><?cs var:if_false ?><?cs /if ?><?cs /def ?>
@@ -81,3 +113,58 @@ oblíbeným webovým službám jediným jménem a heslem.
                                              S pozdravem
                                              podpora <?cs var:defaults.company ?>
 ' WHERE id = 11;
+
+
+
+UPDATE mail_templates SET template = '
+<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>
+=====================================================================
+Oznámení o transferu / Transfer notification
+=====================================================================
+Transfer <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> transfer
+Identifikátor <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> handle : <?cs var:handle ?>
+Číslo žádosti / Ticket :  <?cs var:ticket ?>
+Registrátor / Registrar : <?cs var:registrar ?>
+=====================================================================
+ 
+Žádost byla úspěšně zpracována, transfer byl proveden. 
+The request was completed successfully, transfer was completed. 
+
+Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
+For detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
+
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
+' WHERE id = 12;
+
+
+
+UPDATE mail_templates SET template = '
+=====================================================================
+Oznámení o prodloužení platnosti / Notification about renewal
+===================================================================== 
+Obnovení domény / Domain renew
+Domény / Domain : <?cs var:handle ?>
+Číslo žádosti / Ticket :  <?cs var:ticket ?>
+Registrátor / Registrar : <?cs var:registrar ?>
+=====================================================================
+
+Žádost byla úspěšně zpracována, prodloužení platnosti bylo provedeno. 
+The request was completed successfully, domain was renewed. 
+
+Při každé změně doporučujeme aktualizovat údaje o doméně, vyhnete se 
+tak možným problémům souvisejícím s prodlužováním platnosti či manipulací 
+s doménou osobami, které již nejsou oprávněny je provádět.
+Update domain data in the registry after any changes to avoid possible 
+problems with domain renewal or with domain manipulation done by persons 
+who are not authorized anymore.
+
+Detail domény najdete na <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
+For detail information about domain visit <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
+
+
+                                             S pozdravem
+                                             podpora <?cs var:defaults.company ?>
+' WHERE id = 13;
+
