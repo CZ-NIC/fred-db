@@ -68,7 +68,6 @@ Other data wasn''t modified.
 
 
 Úplný detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
-
 For full detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
 
 
