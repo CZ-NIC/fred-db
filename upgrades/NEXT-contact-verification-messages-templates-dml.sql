@@ -8,23 +8,22 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 '
 Vážený uživateli,
 
-podmíněná identifikace kontaktu s těmito údaji:
+tento e-mail potvrzuje úspěšné zahájení procesu verifikace kontaktu v centrálním registru:
 
-kontakt: <?cs var:handle ?>
+ID kontaktu: <?cs var:handle ?>
 jméno:       <?cs var:firstname ?>
 příjmení:    <?cs var:lastname ?>
 e-mail:      <?cs var:email ?>
 
-Pro aktivaci Vašeho kontaktu je nutné vložit kódy PIN1 a PIN2.
+Pro dokončení prvního ze dvou kroků verifikace je nutné ověření pomocí kódů PIN1 a PIN2.
 
 PIN1: <?cs var:passwd ?>
 PIN2: Vám byl zaslán pomocí SMS.<?cs if:passwd2?>
 V demo režimu není odesílání SMS a pošty aktivní. PIN2: <?cs var:passwd2 ?> <?cs /if ?><?cs if:passwd3?>
 V demo režimu není odesílání SMS a pošty aktivní. PIN3: <?cs var:passwd3 ?> <?cs /if ?>
 
-Aktivaci kontaktu proveďte kliknutím na následující odkaz:
-
-<?cs var:url ?>?handle=<?cs var:handle ?>
+Zadání PIN1 a PIN2 bude možné po kliknutí na následující odkaz: 
+https://<?cs var:hostname ?>/verification/identification/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
 
 Váš tým <?cs var:defaults.company ?>
 ');
@@ -38,23 +37,18 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 '
 Vážený uživateli,
 
-identifikace kontaktu kontaktu s těmito údaji:
+pro dokončení procesu verifikace kontaktu s následujícími údaji
 
-kontakt: <?cs var:handle ?>
+ID kontaktu: <?cs var:handle ?>
 jméno:       <?cs var:firstname ?>
 příjmení:    <?cs var:lastname ?>
 e-mail:      <?cs var:email ?>
 
-Pro aktivaci Vašeho kontaktu je nutné vložit kódy PIN1 a PIN2.
+<?cs if:passwd3?>
+budete potřebovat tento kód PIN3: <?cs var:passwd3 ?>
+<?cs /if ?>
 
-PIN1: <?cs var:passwd ?>
-PIN2: Vám byl zaslán pomocí SMS.<?cs if:passwd2?>
-V demo režimu není odesílání SMS a pošty aktivní. PIN2: <?cs var:passwd2 ?> <?cs /if ?><?cs if:passwd3?>
-V demo režimu není odesílání SMS a pošty aktivní. PIN3: <?cs var:passwd3 ?> <?cs /if ?>
-
-Aktivaci kontaktu proveďte kliknutím na následující odkaz:
-
-<?cs var:url ?>?password1=<?cs var:passwd ?>
+Navštivte prosím adresu https://<?cs var:hostname ?>/verification/finish/?handle=<?cs var:handle ?> a zadejte PIN3 do příslušného pole.
 
 Váš tým <?cs var:defaults.company ?>
 ');
