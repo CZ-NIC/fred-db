@@ -14,4 +14,4 @@ INSERT INTO enum_public_request_status (id, name, description) VALUES (0, 'new',
 INSERT INTO enum_public_request_status (id, name, description) VALUES (1, 'answered', 'Answered');
 INSERT INTO enum_public_request_status (id, name, description) VALUES (2, 'invalidated', 'Invalidated');
 
-ALTER TABLE public_request ADD CONTRAINT public_request_status_fkey FOREIGN KEY(status) REFERENCES enum_public_request_status(id);
+ALTER TABLE public_request ADD CONSTRAINT public_request_status_fkey FOREIGN KEY(status) REFERENCES enum_public_request_status(id);
