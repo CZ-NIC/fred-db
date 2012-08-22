@@ -92,18 +92,18 @@ BEGIN
   RAISE NOTICE 'lock_public_request start NEW.id: % NEW.request_type: %'
   , NEW.id, NEW.request_type;
 
-  FOR nobject IN SELECT prom.object_id 
+  FOR nobject IN SELECT prom.object_id
     FROM public_request_objects_map prom
     JOIN object_registry obr ON obr.id = prom.object_id
-    WHERE prom.request_id = NEW.id 
+    WHERE prom.request_id = NEW.id
   LOOP
     RAISE NOTICE 'lock_public_request nobject.object_id: %'
     , nobject.object_id;
-  
-    --PERFORM * FROM public_request_lock
-    --WHERE request_type = NEW.request_type
-    --AND object_id = nobject.object_id FOR UPDATE; --wait if locked
-    --IF NOT FOUND THEN
+
+    PERFORM * FROM public_request_lock
+    WHERE request_type = NEW.request_type
+    AND object_id = nobject.object_id FOR UPDATE; --wait if locked
+    IF NOT FOUND THEN
       INSERT INTO public_request_lock
       (id, request_type, object_id)
       VALUES (DEFAULT, NEW.request_type, nobject.object_id);
@@ -114,9 +114,9 @@ BEGIN
       IF NOT FOUND THEN
         RAISE EXCEPTION 'Failed to lock';
       END IF;
-    --END IF;
+    END IF;
   END LOOP;
-        
+
   --try cleanup
   --BEGIN
   --  PERFORM * FROM public_request_lock 
