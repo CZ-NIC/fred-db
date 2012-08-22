@@ -501,8 +501,8 @@ Update domain data in the registry after any changes to avoid possible
 problems with domain renewal or with domain manipulation done by persons 
 who are not authorized anymore.<?cs /if ?>
 
-Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>.
-For detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>.
+Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
+For detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
 
 
                                              S pozdravem
@@ -582,8 +582,9 @@ Other data wasn''t modified.
 <?cs /if ?>
 
 
-Úplný detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>.
-For full detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>.
+Úplný detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
+For full detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
+
 
 <?cs if:type == #1 ?>
 Chcete mít snadnější přístup ke správě Vašich údajů? Založte si mojeID. Kromě 
@@ -613,8 +614,8 @@ Registrátor / Registrar : <?cs var:registrar ?>
 Žádost byla úspěšně zpracována, transfer byl proveden. 
 The request was completed successfully, transfer was completed. 
 
-Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>.
-For detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>.
+Detail <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
+For detail information about <?cs call:typesubst("en") ?> visit <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
 
 
                                              S pozdravem
@@ -645,8 +646,8 @@ Update domain data in the registry after any changes to avoid possible
 problems with domain renewal or with domain manipulation done by persons 
 who are not authorized anymore.
 
-Detail domény najdete na <?cs var:defaults.whoispage ?>.
-For detail information about domain visit <?cs var:defaults.whoispage ?>.
+Detail domény najdete na <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
+For detail information about domain visit <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
 
 
                                              S pozdravem
