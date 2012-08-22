@@ -60,15 +60,12 @@ CREATE TABLE public_request_messages_map
   UNIQUE (public_request_id, mail_archive_id)
 );
 
-
 CREATE TABLE enum_public_request_type
 (
   id INTEGER PRIMARY KEY NOT NULL,
   name VARCHAR(64) UNIQUE NOT NULL,
   description VARCHAR(256)
 );
-
-
 
 CREATE TABLE enum_public_request_status
 (
@@ -77,4 +74,68 @@ CREATE TABLE enum_public_request_status
   description VARCHAR(128)
 );
 
+-- #7122 test
+
+CREATE TABLE public_request_lock
+(
+    id serial PRIMARY KEY -- lock id
+    , request_type smallint NOT NULL REFERENCES enum_public_request_type(id)
+    , object_id integer NOT NULL REFERENCES object_registry (id)
+);
+
+-- lock public request
+CREATE OR REPLACE FUNCTION lock_public_request() 
+RETURNS "trigger" AS $$
+DECLARE
+  nobject RECORD;
+BEGIN
+  RAISE NOTICE 'lock_public_request start NEW.id: % NEW.request_type: %'
+  , NEW.id, NEW.request_type;
+
+  FOR nobject IN SELECT prom.object_id 
+    FROM public_request_objects_map prom
+    JOIN object_registry obr ON obr.id = prom.object_id
+    WHERE prom.request_id = NEW.id 
+  LOOP
+    RAISE NOTICE 'lock_public_request nobject.object_id: %'
+    , nobject.object_id;
+  
+    --PERFORM * FROM public_request_lock
+    --WHERE request_type = NEW.request_type
+    --AND object_id = nobject.object_id FOR UPDATE; --wait if locked
+    --IF NOT FOUND THEN
+      INSERT INTO public_request_lock
+      (id, request_type, object_id)
+      VALUES (DEFAULT, NEW.request_type, nobject.object_id);
+
+      PERFORM * FROM public_request_lock
+      WHERE request_type = NEW.request_type
+      AND object_id = nobject.object_id FOR UPDATE; --lock
+      IF NOT FOUND THEN
+        RAISE EXCEPTION 'Failed to lock';
+      END IF;
+    --END IF;
+  END LOOP;
+        
+  --try cleanup
+  --BEGIN
+  --  PERFORM * FROM public_request_lock 
+  --    WHERE id < (NEW.id - 10) FOR UPDATE NOWAIT;
+  --  IF FOUND THEN
+  --    DELETE FROM public_request_lock 
+  --      WHERE id < (NEW.id - 10);
+  --  END IF;
+  --EXCEPTION WHEN lock_not_available THEN
+  --END;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION lock_public_request()
+	IS 'lock changes of public requests by object and request type'; 
+
+CREATE TRIGGER "trigger_lock_public_request"
+  AFTER INSERT OR UPDATE ON public_request
+  FOR EACH ROW EXECUTE PROCEDURE lock_public_request();
 
