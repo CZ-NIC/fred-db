@@ -78,7 +78,7 @@ CREATE TABLE enum_public_request_status
 
 CREATE TABLE public_request_lock
 (
-    id serial PRIMARY KEY -- lock id
+    id bigserial PRIMARY KEY -- lock id
     , request_type smallint NOT NULL REFERENCES enum_public_request_type(id)
     , object_id integer NOT NULL REFERENCES object_registry (id)
 );
