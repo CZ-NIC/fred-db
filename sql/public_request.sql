@@ -74,7 +74,7 @@ CREATE TABLE enum_public_request_status
   description VARCHAR(128)
 );
 
--- #7122 test
+-- #7122 lock public_request insert or update by its type and object to the end of db transaction
 
 CREATE TABLE public_request_lock
 (
