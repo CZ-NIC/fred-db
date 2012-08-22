@@ -118,22 +118,23 @@ BEGIN
   END LOOP;
 
   --try cleanup
-  --BEGIN
-  --  PERFORM * FROM public_request_lock 
-  --    WHERE id < (NEW.id - 10) FOR UPDATE NOWAIT;
-  --  IF FOUND THEN
-  --    DELETE FROM public_request_lock 
-  --      WHERE id < (NEW.id - 10);
-  --  END IF;
-  --EXCEPTION WHEN lock_not_available THEN
-  --END;
+  BEGIN
+    PERFORM * FROM public_request_lock
+      WHERE id < (NEW.id - 100) FOR UPDATE NOWAIT;
+    IF FOUND THEN
+      DELETE FROM public_request_lock
+        WHERE id < (NEW.id - 100);
+    END IF;
+  EXCEPTION WHEN lock_not_available THEN
+    RAISE NOTICE 'cleanup lock not available';
+  END;
 
-    RETURN NEW;
+  RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION lock_public_request()
-	IS 'lock changes of public requests by object and request type'; 
+IS 'lock changes of public requests by object and request type';
 
 CREATE TRIGGER "trigger_lock_public_request"
   AFTER INSERT OR UPDATE ON public_request
