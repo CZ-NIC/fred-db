@@ -9,8 +9,31 @@ CREATE TABLE public_request_lock
     , object_id integer NOT NULL REFERENCES object_registry (id)
 );
 
+CREATE OR REPLACE FUNCTION lock_public_request_lock( f_request_type_id BIGINT, f_object_id BIGINT)
+RETURNS void AS $$
+DECLARE
+BEGIN
+    PERFORM * FROM public_request_lock
+    WHERE request_type = f_request_type_id
+    AND object_id = f_object_id ORDER BY id FOR UPDATE; --wait if locked
+    IF NOT FOUND THEN
+      INSERT INTO public_request_lock
+      (id, request_type, object_id)
+      VALUES (DEFAULT, NEW.request_type, nobject.object_id);
+
+      PERFORM * FROM public_request_lock
+      WHERE request_type = f_request_type_id
+      AND object_id = f_object_id ORDER BY id FOR UPDATE; --lock
+      IF NOT FOUND THEN
+        RAISE EXCEPTION 'Failed to lock';
+      END IF;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+
 -- lock public request
-CREATE OR REPLACE FUNCTION lock_public_request() 
+CREATE OR REPLACE FUNCTION lock_public_request()
 RETURNS "trigger" AS $$
 DECLARE
   nobject RECORD;
@@ -25,22 +48,7 @@ BEGIN
   LOOP
     RAISE NOTICE 'lock_public_request nobject.object_id: %'
     , nobject.object_id;
-
-    PERFORM * FROM public_request_lock
-    WHERE request_type = NEW.request_type
-    AND object_id = nobject.object_id FOR UPDATE; --wait if locked
-    IF NOT FOUND THEN
-      INSERT INTO public_request_lock
-      (id, request_type, object_id)
-      VALUES (DEFAULT, NEW.request_type, nobject.object_id);
-
-      PERFORM * FROM public_request_lock
-      WHERE request_type = NEW.request_type
-      AND object_id = nobject.object_id FOR UPDATE; --lock
-      IF NOT FOUND THEN
-        RAISE EXCEPTION 'Failed to lock';
-      END IF;
-    END IF;
+    PERFORM lock_public_request_lock( NEW.request_type, nobject.object_id);
   END LOOP;
 
   --try cleanup
