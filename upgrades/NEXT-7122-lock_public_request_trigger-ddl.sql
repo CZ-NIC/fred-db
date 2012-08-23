@@ -7,7 +7,6 @@ CREATE TABLE public_request_lock
     id bigserial PRIMARY KEY -- lock id
     , request_type smallint NOT NULL REFERENCES enum_public_request_type(id)
     , object_id integer NOT NULL REFERENCES object_registry (id)
-    , CONSTRAINT public_request_lock_unique_key UNIQUE (request_type, object_id)
 );
 
 -- lock public request
