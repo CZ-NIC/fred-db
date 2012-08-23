@@ -93,7 +93,7 @@ BEGIN
     IF NOT FOUND THEN
       INSERT INTO public_request_lock
       (id, request_type, object_id)
-      VALUES (DEFAULT, NEW.request_type, nobject.object_id);
+      VALUES (DEFAULT, f_request_type_id, f_object_id);
 
       PERFORM * FROM public_request_lock
       WHERE request_type = f_request_type_id
