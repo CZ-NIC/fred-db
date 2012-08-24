@@ -44,7 +44,7 @@ BEGIN
   END IF;
   
   RAISE NOTICE 'lock_object_state_request NEW.id: % NEW.state_id: % NEW.object_id: %'
-  , NEW.id, NEW.state_id;
+  , NEW.id, NEW.state_id, NEW.object_id ;
     PERFORM lock_object_state_request_lock( NEW.state_id, NEW.object_id);
   --try cleanup
   BEGIN
