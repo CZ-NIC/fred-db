@@ -21,7 +21,7 @@ PIN2: Vám byl zaslán pomocí SMS.
 
 Aktivaci účtu proveďte kliknutím na následující odkaz:
 
-https://<?cs var:hostname ?>/identification/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
+https://<?cs var:hostname ?>/identify/email-sms/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
 
 Váš tým <?cs var:defaults.company ?>
 ');
@@ -76,7 +76,7 @@ PIN1: <?cs var:passwd ?>
 
 Aktivaci účtu proveďte kliknutím na následující odkaz:
 
-https://<?cs var:hostname ?>/identification/email/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
+https://<?cs var:hostname ?>/identify/email/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
 
 Váš tým <?cs var:defaults.company ?>
 ');
