@@ -77,7 +77,7 @@ e-mail:      <?cs var:email ?>
 Současně Vám byl vygenerován PIN3, který v následujících několika dnech obdržíte poštou na adresu uvedenou v kontaktu.
 
 Verifikaci tohoto kontaktu dokončíte zadáním PIN3 do příslušného pole na této adrese:
-Navštivte prosím adresu https://<?cs var:hostname ?>/verification/identify/letter/?handle=<?cs var:handle ?> a zadejte PIN3 do příslušného pole.
+https://<?cs var:hostname ?>/verification/identify/letter/?handle=<?cs var:handle ?>
 
 Váš tým <?cs var:defaults.company ?>
 
