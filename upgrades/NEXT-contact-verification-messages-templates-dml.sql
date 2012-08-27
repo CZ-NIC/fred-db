@@ -22,8 +22,8 @@ PIN2: Vám byl zaslán pomocí SMS.<?cs if:passwd2?>
 V demo režimu není odesílání SMS a pošty aktivní. PIN2: <?cs var:passwd2 ?> <?cs /if ?><?cs if:passwd3?>
 V demo režimu není odesílání SMS a pošty aktivní. PIN3: <?cs var:passwd3 ?> <?cs /if ?>
 
-Zadání PIN1 a PIN2 bude možné po kliknutí na následující odkaz: 
-https://<?cs var:hostname ?>/verification/identification/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
+Zadání PIN1 a PIN2 bude možné po kliknutí na následující odkaz:
+https://<?cs var:hostname ?>/verification/identify/email-sms/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
 
 Váš tým <?cs var:defaults.company ?>
 
@@ -44,7 +44,7 @@ PIN1: <?cs var:passwd ?>
 PIN2: was sent to you by a text message (SMS).
 
 You will be able to enter your PIN1 and PIN2 by following this link:
-https://<?cs var:hostname ?>/verification/identification/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
+https://<?cs var:hostname ?>/verification/identify/email-sms/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
 
 Your <?cs var:defaults.company ?> team
 ');
@@ -68,7 +68,7 @@ e-mail:      <?cs var:email ?>
 Současně Vám byl vygenerován PIN3, který v následujících několika dnech obdržíte poštou na adresu uvedenou v kontaktu.
 
 Verifikaci tohoto kontaktu dokončíte zadáním PIN3 do příslušného pole na této adrese:
-Navštivte prosím adresu https://<?cs var:hostname ?>/verification/finish/?handle=<?cs var:handle ?> a zadejte PIN3 do příslušného pole.
+https://<?cs var:hostname ?>/verification/identify/letter/?handle=<?cs var:handle ?>
 
 Váš tým <?cs var:defaults.company ?>
 
@@ -85,7 +85,8 @@ e-mail:     <?cs var:email ?>
 
 Your PIN3 has now also been generated; you will receive it by mail within a few days at the address listed in the contact.
 
-Verification of this contact will be complete once you enter your PIN3 into the corresponding field at this address: https://<?cs var:hostname ?>/verification/finish/?handle=<?cs var:handle ?>
+Verification of this contact will be complete once you enter your PIN3 into the corresponding field at this address:
+https://<?cs var:hostname ?>/verification/identify/letter/?handle=<?cs var:handle ?>
 
 Your <?cs var:defaults.company ?> team
 ');
