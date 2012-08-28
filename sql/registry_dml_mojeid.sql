@@ -21,7 +21,7 @@ PIN2: Vám byl zaslán pomocí SMS.
 
 Aktivaci účtu proveďte kliknutím na následující odkaz:
 
-https://<?cs var:hostname ?>/identification/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
+https://<?cs var:hostname ?>/identify/email-sms/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
 
 Váš tým <?cs var:defaults.company ?>
 ');
@@ -56,6 +56,32 @@ k dokončení procedury změny emailu zadejte prosím kód PIN1: <?cs var:pin ?>
 
 Váš tým CZ.NIC');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (24, 24);
+
+INSERT INTO mail_type (id, name, subject) VALUES (27, 'mojeid_verified_contact_transfer', 'Založení účtu mojeID');
+INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
+(27, 'plain', 1,
+'
+Vážený uživateli,
+
+tento e-mail potvrzuje úspěšné založení účtu mojeID s těmito údaji:
+
+účet mojeID: <?cs var:handle ?>
+jméno:       <?cs var:firstname ?>
+příjmení:    <?cs var:lastname ?>
+e-mail:      <?cs var:email ?>
+
+Pro aktivaci Vašeho účtu je nutné vložit kód PIN1.
+
+PIN1: <?cs var:passwd ?>
+
+Aktivaci účtu proveďte kliknutím na následující odkaz:
+
+https://<?cs var:hostname ?>/identify/email/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
+
+Váš tým <?cs var:defaults.company ?>
+');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (27, 27);
+
 
 ---
 --- sms types
