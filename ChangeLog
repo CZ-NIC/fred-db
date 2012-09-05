@@ -1,3 +1,23 @@
+2012-09-06 Jiri Sadek, Juraj Vicenik, Jan Zima (2.12.0)
+
+    * mojeid mail templates update (removed demo mode)
+
+    * contact verification
+        - mail templates
+        - sms, letter types
+        - public request types
+
+    * epp mail notifications - direct whois link added
+
+    * public request - enum tables for type and status
+
+    * contact identification and validation states are now external
+
+    * fix low credit poll message table - credit and creditlimit are now
+      numeric types
+
+    * fix differences between new schema and consecutive upgrades
+
 2012-07-23 Vlastimil Zima (2.11.3)
 
     * update country codes enumeration
