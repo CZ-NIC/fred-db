@@ -114,11 +114,15 @@ host @DBNAME@ @DBUSER@ @CIDRIPV6@ @METHOD@ \
     fi
 
     if [ "$(get_db_version)" = "" ]; then
-        @PGBINDIR@/createuser @DBUSER@ -SDR -p @DBPORT@ > /dev/null 2>&1
+        @PGBINDIR@/createuser @DBUSER@ -sDR -p @DBPORT@ > /dev/null 2>&1
         @PGBINDIR@/createdb @DBNAME@ -O @DBUSER@ -E UTF8 \
                             -p @DBPORT@ > /dev/null 2>&1
         @PGBINDIR@/createlang plpgsql @DBNAME@ \
                               -p @DBPORT@ > /dev/null 2>&1
+
+        @PGBINDIR@/psql -d @DBNAME@ -U @DBUSER@ -At -p @DBPORT@ \
+            -f /usr/share/postgresql/8.3/contrib/dblink.sql 2>&1 > /dev/null;
+
         error_msg=$(( @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -f $STRUCTSQL -p @DBPORT@ ) 2>&1 | grep "ERROR" )
 	if [ "$error_msg" != "" ]; then
 	    echo -e "There are errors in SQL script file $STRUCTSQL. Installation terminated.\nError message: $error_msg"
