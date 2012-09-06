@@ -83,7 +83,9 @@ CREATE TABLE public_request_lock
     , object_id integer NOT NULL REFERENCES object_registry (id)
 );
 
-CREATE OR REPLACE FUNCTION lock_public_request_lock( f_request_type_id BIGINT, f_object_id BIGINT)
+
+-- commit separately
+CREATE OR REPLACE FUNCTION insert_and_lock_public_request_lock( f_request_type_id BIGINT, f_object_id BIGINT)
 RETURNS void AS $$
 DECLARE
 BEGIN
@@ -101,6 +103,20 @@ BEGIN
       IF NOT FOUND THEN
         RAISE EXCEPTION 'Failed to lock';
       END IF;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION lock_public_request_lock( f_request_type_id BIGINT, f_object_id BIGINT)
+RETURNS void AS $$
+DECLARE
+BEGIN
+    PERFORM * FROM public_request_lock
+    WHERE request_type = f_request_type_id
+    AND object_id = f_object_id ORDER BY id FOR UPDATE; --wait if locked
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Failed to lock';
     END IF;
 END;
 $$ LANGUAGE plpgsql;

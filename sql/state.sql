@@ -960,7 +960,8 @@ CREATE TABLE object_state_request_lock
     , object_id integer NOT NULL REFERENCES object_registry (id)
 );
 
-CREATE OR REPLACE FUNCTION lock_object_state_request_lock( f_state_id BIGINT, f_object_id BIGINT)
+-- commit separately
+CREATE OR REPLACE FUNCTION insert_and_lock_object_state_request_lock( f_state_id BIGINT, f_object_id BIGINT)
 RETURNS void AS $$
 DECLARE
 BEGIN
@@ -978,6 +979,20 @@ BEGIN
       IF NOT FOUND THEN
         RAISE EXCEPTION 'Failed to lock';
       END IF;
+    END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE OR REPLACE FUNCTION lock_object_state_request_lock( f_state_id BIGINT, f_object_id BIGINT)
+RETURNS void AS $$
+DECLARE
+BEGIN
+    PERFORM * FROM object_state_request_lock
+    WHERE state_id = f_state_id
+    AND object_id = f_object_id ORDER BY id FOR UPDATE; --wait if locked
+    IF NOT FOUND THEN
+        RAISE EXCEPTION 'Failed to lock';
     END IF;
 END;
 $$ LANGUAGE plpgsql;
