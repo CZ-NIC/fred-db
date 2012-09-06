@@ -83,19 +83,6 @@ CREATE TABLE public_request_lock
     , object_id integer NOT NULL REFERENCES object_registry (id)
 );
 
-
--- commit separately
-CREATE OR REPLACE FUNCTION insert_public_request_lock( f_request_type_id BIGINT, f_object_id BIGINT)
-RETURNS void AS $$
-DECLARE
-BEGIN
-      INSERT INTO public_request_lock
-      (id, request_type, object_id)
-      VALUES (DEFAULT, f_request_type_id, f_object_id);
-END;
-$$ LANGUAGE plpgsql;
-
-
 CREATE OR REPLACE FUNCTION lock_public_request_lock( f_request_type_id BIGINT, f_object_id BIGINT)
 RETURNS void AS $$
 DECLARE

@@ -9,17 +9,6 @@ CREATE TABLE object_state_request_lock
     , object_id integer NOT NULL REFERENCES object_registry (id)
 );
 
--- commit separately
-CREATE OR REPLACE FUNCTION insert_object_state_request_lock( f_state_id BIGINT, f_object_id BIGINT)
-RETURNS void AS $$
-DECLARE
-BEGIN
-      INSERT INTO object_state_request_lock
-      (id, state_id, object_id)
-      VALUES (DEFAULT, f_state_id, f_object_id);
-END;
-$$ LANGUAGE plpgsql;
-
 
 CREATE OR REPLACE FUNCTION lock_object_state_request_lock( f_state_id BIGINT, f_object_id BIGINT)
 RETURNS void AS $$
