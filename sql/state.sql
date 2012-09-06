@@ -1012,3 +1012,5 @@ CREATE TRIGGER "trigger_lock_object_state_request"
   FOR EACH ROW EXECUTE PROCEDURE lock_object_state_request();
 
 
+--enable trigger at the end of script
+ALTER TABLE object_state_request DISABLE TRIGGER trigger_lock_object_state_request;
