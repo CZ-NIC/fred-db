@@ -1,5 +1,5 @@
 ---
---- Ticket #6814
+--- Ticket #6814 - contact verification logging
 ---
 INSERT INTO request_type (id, name, service_id) VALUES
     (1605, 'Verification', 2),
