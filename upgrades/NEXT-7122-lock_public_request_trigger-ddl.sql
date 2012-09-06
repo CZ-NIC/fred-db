@@ -17,7 +17,7 @@ BEGIN
     WHERE request_type = f_request_type_id
     AND object_id = f_object_id ORDER BY id FOR UPDATE; --wait if locked
     IF NOT FOUND THEN
-        RAISE EXCEPTION 'Failed to lock';
+        RAISE EXCEPTION 'Failed to lock request_type_id: % object_id: %', f_request_type_id, f_object_id;
     END IF;
 END;
 $$ LANGUAGE plpgsql;

@@ -968,7 +968,7 @@ BEGIN
     WHERE state_id = f_state_id
     AND object_id = f_object_id ORDER BY id FOR UPDATE; --wait if locked
     IF NOT FOUND THEN
-        RAISE EXCEPTION 'Failed to lock';
+        RAISE EXCEPTION 'Failed to lock state_id: % object_id: %', f_state_id, f_object_id;
     END IF;
 END;
 $$ LANGUAGE plpgsql;
