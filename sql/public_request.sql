@@ -85,25 +85,13 @@ CREATE TABLE public_request_lock
 
 
 -- commit separately
-CREATE OR REPLACE FUNCTION insert_and_lock_public_request_lock( f_request_type_id BIGINT, f_object_id BIGINT)
+CREATE OR REPLACE FUNCTION insert_public_request_lock( f_request_type_id BIGINT, f_object_id BIGINT)
 RETURNS void AS $$
 DECLARE
 BEGIN
-    PERFORM * FROM public_request_lock
-    WHERE request_type = f_request_type_id
-    AND object_id = f_object_id ORDER BY id FOR UPDATE; --wait if locked
-    IF NOT FOUND THEN
       INSERT INTO public_request_lock
       (id, request_type, object_id)
       VALUES (DEFAULT, f_request_type_id, f_object_id);
-
-      PERFORM * FROM public_request_lock
-      WHERE request_type = f_request_type_id
-      AND object_id = f_object_id ORDER BY id FOR UPDATE; --lock
-      IF NOT FOUND THEN
-        RAISE EXCEPTION 'Failed to lock';
-      END IF;
-    END IF;
 END;
 $$ LANGUAGE plpgsql;
 
