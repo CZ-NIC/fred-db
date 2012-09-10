@@ -6,7 +6,7 @@ CREATE TABLE object_state_request_lock
 (
     id bigserial PRIMARY KEY -- lock id
     , state_id integer NOT NULL REFERENCES enum_object_states (id)
-    , object_id integer NOT NULL REFERENCES object_registry (id)
+    , object_id integer NOT NULL --REFERENCES object_registry (id)
 );
 
 

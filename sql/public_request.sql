@@ -80,7 +80,7 @@ CREATE TABLE public_request_lock
 (
     id bigserial PRIMARY KEY -- lock id
     , request_type smallint NOT NULL REFERENCES enum_public_request_type(id)
-    , object_id integer NOT NULL REFERENCES object_registry (id)
+    , object_id integer NOT NULL --REFERENCES object_registry (id)
 );
 
 CREATE OR REPLACE FUNCTION lock_public_request_lock( f_request_type_id BIGINT, f_object_id BIGINT)

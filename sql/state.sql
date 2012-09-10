@@ -957,7 +957,7 @@ CREATE TABLE object_state_request_lock
 (
     id bigserial PRIMARY KEY -- lock id
     , state_id integer NOT NULL REFERENCES enum_object_states (id)
-    , object_id integer NOT NULL REFERENCES object_registry (id)
+    , object_id integer NOT NULL --REFERENCES object_registry (id)
 );
 
 CREATE OR REPLACE FUNCTION lock_object_state_request_lock( f_state_id BIGINT, f_object_id BIGINT)
