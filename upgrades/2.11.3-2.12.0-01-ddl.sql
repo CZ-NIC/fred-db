@@ -51,3 +51,8 @@ ALTER TABLE contact_history ALTER COLUMN disclosevat SET NOT NULL;
 ALTER TABLE contact_history ALTER COLUMN discloseident SET NOT NULL;
 ALTER TABLE contact_history ALTER COLUMN disclosenotifyemail SET NOT NULL;
 
+---
+--- Ticket #7265
+---
+CREATE INDEX object_state_valid_from_idx ON object_state (valid_from);
+

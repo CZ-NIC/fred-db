@@ -183,6 +183,7 @@ WHERE valid_to ISNULL;
 
 CREATE INDEX object_state_object_id_idx ON object_state (object_id) WHERE valid_to ISNULL;
 CREATE INDEX object_state_object_id_all_idx ON object_state (object_id);
+CREATE INDEX object_state_valid_from_idx ON object_state (valid_from);
 
 comment on table object_state is 'main table of object states and their changes';
 comment on column object_state.object_id is 'id of object that has this new status';
