@@ -18,6 +18,8 @@
 
     * fix differences between new schema and consecutive upgrades
 
+    * added object_state.valid_from index for mojeid/cv contact checks speedup
+
 2012-07-23 Vlastimil Zima (2.11.3)
 
     * update country codes enumeration
