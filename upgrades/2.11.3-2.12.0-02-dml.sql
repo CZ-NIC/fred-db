@@ -117,7 +117,7 @@ jméno:       <?cs var:firstname ?>
 příjmení:    <?cs var:lastname ?>
 e-mail:      <?cs var:email ?>
 
-Pro dokončení prvního ze dvou kroků ověření je nutné ověření pomocí kódů PIN1 a PIN2.
+Pro dokončení prvního ze dvou kroků ověření je nutné zadat kódy PIN1 a PIN2.
 
 PIN1: <?cs var:passwd ?>
 PIN2: Vám byl zaslán pomocí SMS.<?cs if:passwd2?>
