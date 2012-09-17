@@ -17,7 +17,7 @@ English version of the e-mail is entered below the Czech version
 
 Vážený uživateli,
 
-tento e-mail potvrzuje úspěšné zahájení procesu ověření kontaktu v centrálním registru:
+tento e-mail potvrzuje úspěšné zahájení procesu ověření kontaktu v Centrálním registru:
 
 ID kontaktu: <?cs var:handle ?>
 jméno:       <?cs var:firstname ?>

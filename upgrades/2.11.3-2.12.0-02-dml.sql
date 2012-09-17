@@ -110,7 +110,7 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 '
 Vážený uživateli,
 
-tento e-mail potvrzuje úspěšné zahájení procesu ověření kontaktu v centrálním registru:
+tento e-mail potvrzuje úspěšné zahájení procesu ověření kontaktu v Centrálním registru:
 
 ID kontaktu: <?cs var:handle ?>
 jméno:       <?cs var:firstname ?>
