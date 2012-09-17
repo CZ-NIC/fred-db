@@ -17,14 +17,14 @@ English version of the e-mail is entered below the Czech version
 
 Vážený uživateli,
 
-tento e-mail potvrzuje úspěšné zahájení procesu verifikace kontaktu v centrálním registru:
+tento e-mail potvrzuje úspěšné zahájení procesu ověření kontaktu v centrálním registru:
 
 ID kontaktu: <?cs var:handle ?>
 jméno:       <?cs var:firstname ?>
 příjmení:    <?cs var:lastname ?>
 e-mail:      <?cs var:email ?>
 
-Pro dokončení prvního ze dvou kroků verifikace je nutné ověření pomocí kódů PIN1 a PIN2.
+Pro dokončení prvního ze dvou kroků ověření je nutné ověření pomocí kódů PIN1 a PIN2.
 
 PIN1: <?cs var:passwd ?>
 PIN2: Vám byl zaslán pomocí SMS.
