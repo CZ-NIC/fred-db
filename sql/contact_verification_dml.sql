@@ -17,14 +17,14 @@ English version of the e-mail is entered below the Czech version
 
 Vážený uživateli,
 
-tento e-mail potvrzuje úspěšné zahájení procesu verifikace kontaktu v centrálním registru:
+tento e-mail potvrzuje úspěšné zahájení procesu ověření kontaktu v Centrálním registru:
 
 ID kontaktu: <?cs var:handle ?>
 jméno:       <?cs var:firstname ?>
 příjmení:    <?cs var:lastname ?>
 e-mail:      <?cs var:email ?>
 
-Pro dokončení prvního ze dvou kroků verifikace je nutné ověření pomocí kódů PIN1 a PIN2.
+Pro dokončení prvního ze dvou kroků ověření je nutné zadat kódy PIN1 a PIN2.
 
 PIN1: <?cs var:passwd ?>
 PIN2: Vám byl zaslán pomocí SMS.
@@ -67,17 +67,23 @@ English version of the e-mail is entered below the Czech version
 
 Vážený uživateli,
 
-první krok verifikace níže uvedeného kontaktu v centrálním registru je úspěšně za Vámi.
+první část ověření kontaktu v Centrálním registru je úspěšně za Vámi.
 
-ID kontaktu: <?cs var:handle ?>
-jméno:       <?cs var:firstname ?>
-příjmení:    <?cs var:lastname ?>
-e-mail:      <?cs var:email ?>
+identifikátor: <?cs var:handle ?>
+jméno:         <?cs var:firstname ?>
+příjmení:      <?cs var:lastname ?>
+e-mail:        <?cs var:email ?>
 
-Současně Vám byl vygenerován PIN3, který v následujících několika dnech obdržíte poštou na adresu uvedenou v kontaktu.
+V nejbližších dnech ještě očekávejte zásilku s kódem PIN3, jehož pomocí 
+ověříme Vaši poštovní adresu. Zadáním kódu PIN3 do formuláře na stránce
+https://<?cs var:hostname ?>/verification/finish/?handle=<?cs var:handle ?>
+dokončíte proces ověření kontaktu.
 
-Verifikaci tohoto kontaktu dokončíte zadáním PIN3 do příslušného pole na této adrese:
-https://<?cs var:hostname ?>/verification/identify/letter/?handle=<?cs var:handle ?>
+Rádi bychom Vás také upozornili, že až do okamžiku zadání kódu PIN3 
+nelze údaje v kontaktu měnit. Případná editace údajů v této fázi 
+ověřovacího procesu by měla za následek jeho přerušení.
+
+Děkujeme za pochopení.
 
 Váš tým <?cs var:defaults.company ?>
 
