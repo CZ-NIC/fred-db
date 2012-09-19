@@ -74,13 +74,13 @@ jméno:         <?cs var:firstname ?>
 příjmení:      <?cs var:lastname ?>
 e-mail:        <?cs var:email ?>
 
-V nejbližších dnech ještě očekávejte zásilku s kódem PIN3, jehož pomocí 
+V nejbližších dnech ještě očekávejte zásilku s kódem PIN3, jehož pomocí
 ověříme Vaši poštovní adresu. Zadáním kódu PIN3 do formuláře na stránce
-https://<?cs var:hostname ?>/verification/finish/?handle=<?cs var:handle ?>
+https://<?cs var:hostname ?>/verification/identify/letter/?handle=<?cs var:handle ?>
 dokončíte proces ověření kontaktu.
 
-Rádi bychom Vás také upozornili, že až do okamžiku zadání kódu PIN3 
-nelze údaje v kontaktu měnit. Případná editace údajů v této fázi 
+Rádi bychom Vás také upozornili, že až do okamžiku zadání kódu PIN3
+nelze údaje v kontaktu měnit. Případná editace údajů v této fázi
 ověřovacího procesu by měla za následek jeho přerušení.
 
 Děkujeme za pochopení.
@@ -91,16 +91,19 @@ Váš tým <?cs var:defaults.company ?>
 
 Dear User,
 
-The first step of the verification of the central registry contact details provided below has been successfully completed.
+The first step of the verification of the central registry contact details provided below
+has been successfully completed.
 
 contact ID: <?cs var:handle ?>
 first name: <?cs var:firstname ?>
 last name:  <?cs var:lastname ?>
 e-mail:     <?cs var:email ?>
 
-Your PIN3 has now also been generated; you will receive it by mail within a few days at the address listed in the contact.
+Your PIN3 has now also been generated; you will receive it by mail within a few days
+at the address listed in the contact.
 
-Verification of this contact will be complete once you enter your PIN3 into the corresponding field at this address:
+Verification of this contact will be complete once you enter your PIN3
+into the corresponding field at this address:
 https://<?cs var:hostname ?>/verification/identify/letter/?handle=<?cs var:handle ?>
 
 Your <?cs var:defaults.company ?> team
