@@ -171,7 +171,7 @@ e-mail:        <?cs var:email ?>
 
 V nejbližších dnech ještě očekávejte zásilku s kódem PIN3, jehož pomocí 
 ověříme Vaši poštovní adresu. Zadáním kódu PIN3 do formuláře na stránce
-https://<?cs var:hostname ?>/verification/finish/?handle=<?cs var:handle ?>
+https://<?cs var:hostname ?>/verification/identify/letter/?handle=<?cs var:handle ?>
 dokončíte proces ověření kontaktu.
 
 Rádi bychom Vás také upozornili, že až do okamžiku zadání kódu PIN3 
