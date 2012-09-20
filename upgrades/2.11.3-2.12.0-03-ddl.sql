@@ -44,6 +44,7 @@ CREATE OR REPLACE FUNCTION lock_public_request()
 RETURNS "trigger" AS $$
 DECLARE
   nobject RECORD;
+  max_id_to_delete BIGINT;
 BEGIN
   RAISE NOTICE 'lock_public_request start NEW.id: % NEW.request_type: %'
   , NEW.id, NEW.request_type;
@@ -60,11 +61,12 @@ BEGIN
 
   --try cleanup
   BEGIN
+    SELECT MAX(id) - 100 FROM public_request_lock INTO max_id_to_delete;
     PERFORM * FROM public_request_lock
-      WHERE id < (NEW.id - 100) FOR UPDATE NOWAIT;
+      WHERE id < max_id_to_delete FOR UPDATE NOWAIT;
     IF FOUND THEN
       DELETE FROM public_request_lock
-        WHERE id < (NEW.id - 100);
+        WHERE id < max_id_to_delete;
     END IF;
   EXCEPTION WHEN lock_not_available THEN
     RAISE NOTICE 'cleanup lock not available';
@@ -112,6 +114,7 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION lock_object_state_request()
 RETURNS "trigger" AS $$
 DECLARE
+max_id_to_delete BIGINT;
 BEGIN
   --lock for manual states
   PERFORM * FROM enum_object_states WHERE id = NEW.state_id AND manual = true;
@@ -124,11 +127,12 @@ BEGIN
     PERFORM lock_object_state_request_lock( NEW.state_id, NEW.object_id);
   --try cleanup
   BEGIN
+    SELECT MAX(id) - 100 FROM object_state_request_lock INTO max_id_to_delete;
     PERFORM * FROM object_state_request_lock
-      WHERE id < (NEW.id - 100) FOR UPDATE NOWAIT;
+      WHERE id < max_id_to_delete FOR UPDATE NOWAIT;
     IF FOUND THEN
       DELETE FROM object_state_request_lock
-        WHERE id < (NEW.id - 100);
+        WHERE id < max_id_to_delete;
     END IF;
   EXCEPTION WHEN lock_not_available THEN
     RAISE NOTICE 'cleanup lock not available';
