@@ -108,6 +108,8 @@ INSERT INTO mail_type (id, name, subject) VALUES (25, 'conditional_contact_ident
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (25, 'plain', 1,
 '
+English version of the e-mail is entered below the Czech version
+
 Vážený uživateli,
 
 tento e-mail potvrzuje úspěšné zahájení procesu ověření kontaktu v Centrálním registru:
