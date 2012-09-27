@@ -108,6 +108,8 @@ INSERT INTO mail_type (id, name, subject) VALUES (25, 'conditional_contact_ident
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (25, 'plain', 1,
 '
+English version of the e-mail is entered below the Czech version
+
 Vážený uživateli,
 
 tento e-mail potvrzuje úspěšné zahájení procesu ověření kontaktu v Centrálním registru:
@@ -120,9 +122,7 @@ e-mail:      <?cs var:email ?>
 Pro dokončení prvního ze dvou kroků ověření je nutné zadat kódy PIN1 a PIN2.
 
 PIN1: <?cs var:passwd ?>
-PIN2: Vám byl zaslán pomocí SMS.<?cs if:passwd2?>
-V demo režimu není odesílání SMS a pošty aktivní. PIN2: <?cs var:passwd2 ?> <?cs /if ?><?cs if:passwd3?>
-V demo režimu není odesílání SMS a pošty aktivní. PIN3: <?cs var:passwd3 ?> <?cs /if ?>
+PIN2: Vám byl zaslán pomocí SMS.
 
 Zadání PIN1 a PIN2 bude možné po kliknutí na následující odkaz:
 https://<?cs var:hostname ?>/verification/identify/email-sms/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
