@@ -56,3 +56,26 @@ ALTER TABLE contact_history ALTER COLUMN disclosenotifyemail SET NOT NULL;
 ---
 CREATE INDEX object_state_valid_from_idx ON object_state (valid_from);
 
+
+
+---
+--- Ticket #7122 - lock public_request insert or update by its type and object to the end of db transaction
+---
+CREATE TABLE public_request_lock
+(
+    id bigserial PRIMARY KEY -- lock id
+    , request_type smallint NOT NULL REFERENCES enum_public_request_type(id)
+    , object_id integer NOT NULL --REFERENCES object_registry (id)
+);
+
+
+---
+--- Ticket #7122 - lock object_state_request for manual state insert or update by state and object to the end of db transaction
+---
+CREATE TABLE object_state_request_lock
+(
+    id bigserial PRIMARY KEY -- lock id
+    , state_id integer NOT NULL REFERENCES enum_object_states (id)
+    , object_id integer NOT NULL --REFERENCES object_registry (id)
+);
+

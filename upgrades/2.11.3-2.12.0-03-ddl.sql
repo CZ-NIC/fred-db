@@ -18,13 +18,6 @@ DROP TABLE login CASCADE;
 ---
 --- Ticket #7122 - lock public_request insert or update by its type and object to the end of db transaction
 ---
-CREATE TABLE public_request_lock
-(
-    id bigserial PRIMARY KEY -- lock id
-    , request_type smallint NOT NULL REFERENCES enum_public_request_type(id)
-    , object_id integer NOT NULL --REFERENCES object_registry (id)
-);
-
 CREATE OR REPLACE FUNCTION lock_public_request_lock( f_request_type_id BIGINT, f_object_id BIGINT)
 RETURNS void AS $$
 DECLARE
@@ -88,14 +81,6 @@ CREATE TRIGGER "trigger_lock_public_request"
 ---
 --- Ticket #7122 - lock object_state_request for manual state insert or update by state and object to the end of db transaction
 ---
-CREATE TABLE object_state_request_lock
-(
-    id bigserial PRIMARY KEY -- lock id
-    , state_id integer NOT NULL REFERENCES enum_object_states (id)
-    , object_id integer NOT NULL --REFERENCES object_registry (id)
-);
-
-
 CREATE OR REPLACE FUNCTION lock_object_state_request_lock( f_state_id BIGINT, f_object_id BIGINT)
 RETURNS void AS $$
 DECLARE
