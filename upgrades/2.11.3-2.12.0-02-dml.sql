@@ -57,37 +57,51 @@ INSERT INTO enum_object_states_desc VALUES (24, 'EN', 'MojeID contact');
 
 
 ---
---- Ticket #6304
+--- Ticket #6304 and #7454
 ---
+
 BEGIN;
 
 CREATE TEMP TABLE tmp_object_state (object_id,state_id, valid_from, ohid_from, valid_to, ohid_to) AS
 SELECT object_id, (SELECT id FROM enum_object_states WHERE name='mojeidContact') AS state_id
-, valid_from, ohid_from 
+, valid_from, ohid_from
 , (CASE WHEN one_of_valid_to_is_null THEN null ELSE max_valid_to END) AS valid_to
 , (CASE WHEN one_of_valid_to_is_null THEN null ELSE max_ohid_to END) AS ohid_to
 FROM (SELECT object_id, MIN(valid_from) AS valid_from, MIN(ohid_from) AS ohid_from, MAX(ohid_to)AS max_ohid_to
 , MAX(valid_to) AS max_valid_to, bool_or(valid_to is null) AS one_of_valid_to_is_null
-FROM (SELECT os.object_id, os.valid_from, os.ohid_from, os.valid_to, os.ohid_to
-FROM contact c JOIN object o ON o.id=c.id 
-JOIN object_registry obr ON obr.id = o.id
-JOIN registrar r ON r.id=o.clid
-JOIN object_state os ON os.object_id = obr.id
+FROM (SELECT os.object_id, os.valid_from, os.ohid_from, os.valid_to, os.ohid_to FROM
+(SELECT old_mojeid_contact.cid FROM
+(SELECT oh.id AS cid -- mojeid contacts in object_history
+FROM object_history oh
+JOIN registrar creg ON oh.clid=creg.id
+JOIN object_registry oreg ON oreg.id=oh.id
+JOIN object_state os ON oreg.id = os.object_id
 JOIN enum_object_states eos ON eos.id=os.state_id
-WHERE r.handle='REG-MOJEID'
+WHERE (creg.handle='REG-MOJEID' )
 AND (eos.name='conditionallyIdentifiedContact'
 OR eos.name='identifiedContact'
-OR eos.name='validatedContact')  
+OR eos.name='validatedContact')
+AND oreg.type = 1 group by oh.id ) AS old_mojeid_contact
+JOIN object_history oh ON old_mojeid_contact.cid = oh.id
+JOIN history h ON oh.historyid = h.id
+JOIN registrar creg ON creg.id = oh.clid
+WHERE (creg.handle='REG-MOJEID' )
+group by old_mojeid_contact.cid) AS unprocessedmojeidcontact
+JOIN object_state os ON os.object_id = unprocessedmojeidcontact.cid
+JOIN enum_object_states eos ON eos.id=os.state_id
+WHERE (eos.name='conditionallyIdentifiedContact'
+OR eos.name='identifiedContact'
+OR eos.name='validatedContact')
 ) AS tmp1
 GROUP BY object_id
 ) AS tmp2;
 
-INSERT INTO object_state_request (object_id, state_id, valid_from, valid_to, crdate, canceled) 
-SELECT object_id, state_id, valid_from, valid_to, valid_from, valid_to  
+INSERT INTO object_state_request (object_id, state_id, valid_from, valid_to, crdate, canceled)
+SELECT object_id, state_id, valid_from, valid_to, valid_from, valid_to
 FROM tmp_object_state;
 
-INSERT INTO object_state (object_id, state_id, valid_from, ohid_from, valid_to, ohid_to) 
-SELECT object_id, state_id, valid_from, ohid_from, valid_to, ohid_to 
+INSERT INTO object_state (object_id, state_id, valid_from, ohid_from, valid_to, ohid_to)
+SELECT object_id, state_id, valid_from, ohid_from, valid_to, ohid_to
 FROM tmp_object_state;
 
 COMMIT;
