@@ -96,13 +96,9 @@ OR eos.name='validatedContact')
 GROUP BY object_id
 ) AS tmp2;
 
-ALTER TABLE object_state_request DISABLE TRIGGER trigger_lock_object_state_request;
-
 INSERT INTO object_state_request (object_id, state_id, valid_from, valid_to, crdate, canceled)
 SELECT object_id, state_id, valid_from, valid_to, valid_from, valid_to
 FROM tmp_object_state;
-
-ALTER TABLE object_state_request ENABLE TRIGGER trigger_lock_object_state_request;
 
 INSERT INTO object_state (object_id, state_id, valid_from, ohid_from, valid_to, ohid_to)
 SELECT object_id, state_id, valid_from, ohid_from, valid_to, ohid_to
