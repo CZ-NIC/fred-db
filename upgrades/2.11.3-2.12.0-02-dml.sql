@@ -60,18 +60,26 @@ INSERT INTO enum_object_states_desc VALUES (24, 'EN', 'MojeID contact');
 --- Ticket #6304 and #7454
 ---
 
-BEGIN;
+CREATE TYPE contact_object_state_type AS (object_id BIGINT, state_id BIGINT, valid_from TIMESTAMP, ohid_from BIGINT, valid_to TIMESTAMP, ohid_to BIGINT);
 
-CREATE TEMP TABLE tmp_object_state (object_id,state_id, valid_from, ohid_from, valid_to, ohid_to) AS
-SELECT object_id, (SELECT id FROM enum_object_states WHERE name='mojeidContact') AS state_id
-, valid_from, ohid_from
-, (CASE WHEN one_of_valid_to_is_null THEN null ELSE max_valid_to END) AS valid_to
-, (CASE WHEN one_of_valid_to_is_null THEN null ELSE max_ohid_to END) AS ohid_to
-FROM (SELECT object_id, MIN(valid_from) AS valid_from, MIN(ohid_from) AS ohid_from, MAX(ohid_to)AS max_ohid_to
-, MAX(valid_to) AS max_valid_to, bool_or(valid_to is null) AS one_of_valid_to_is_null
-FROM (SELECT os.object_id, os.valid_from, os.ohid_from, os.valid_to, os.ohid_to FROM
-(SELECT old_mojeid_contact.cid FROM
-(SELECT oh.id AS cid -- mojeid contacts in object_history
+CREATE OR REPLACE FUNCTION mojeid_contact_state_history()
+RETURNS SETOF contact_object_state_type AS $$
+DECLARE
+    contact_states_history CURSOR (c_contact_id BIGINT) FOR
+        SELECT oreg.name, eos.name, os.id, os.object_id, os.state_id, os.valid_from, os.valid_to, os.ohid_from, os.ohid_to
+        FROM object_state os JOIN enum_object_states eos ON eos.id = os.state_id JOIN object_registry oreg ON oreg.id = os.object_id
+        WHERE os.object_id = c_contact_id AND (eos.name = 'conditionallyIdentifiedContact' OR eos.name = 'identifiedContact'
+        OR eos.name = 'validatedContact') ORDER BY valid_from, valid_to;
+    contact_states_history_record RECORD;
+    contact_object_state_arr contact_object_state_type[];
+    contact_object_state_empty_arr contact_object_state_type[];
+    contact_object_state_all_arr contact_object_state_type[];
+    tmp_contact_object_state contact_object_state_type;
+    i INTEGER;
+    tmp_mojeid_contact_record RECORD;
+BEGIN
+
+FOR tmp_mojeid_contact_record IN SELECT oh.id -- mojeid contacts in object_history
 FROM object_history oh
 JOIN registrar creg ON oh.clid=creg.id
 JOIN object_registry oreg ON oreg.id=oh.id
@@ -81,20 +89,148 @@ WHERE (creg.handle='REG-MOJEID' )
 AND (eos.name='conditionallyIdentifiedContact'
 OR eos.name='identifiedContact'
 OR eos.name='validatedContact')
-AND oreg.type = 1 group by oh.id ) AS old_mojeid_contact
-JOIN object_history oh ON old_mojeid_contact.cid = oh.id
-JOIN history h ON oh.historyid = h.id
-JOIN registrar creg ON creg.id = oh.clid
-WHERE (creg.handle='REG-MOJEID' )
-group by old_mojeid_contact.cid) AS unprocessedmojeidcontact
-JOIN object_state os ON os.object_id = unprocessedmojeidcontact.cid
-JOIN enum_object_states eos ON eos.id=os.state_id
-WHERE (eos.name='conditionallyIdentifiedContact'
-OR eos.name='identifiedContact'
-OR eos.name='validatedContact')
-) AS tmp1
-GROUP BY object_id
-) AS tmp2;
+AND oreg.type = 1 GROUP BY oh.id ORDER BY oh.id LOOP
+
+RAISE NOTICE 'mojeid_contact_state_history object_id: %',tmp_mojeid_contact_record.id;
+OPEN contact_states_history(tmp_mojeid_contact_record.id);
+LOOP -- through contact identification states
+    FETCH contact_states_history INTO contact_states_history_record;
+    IF NOT FOUND THEN -- no states here
+        EXIT;
+    END IF;
+    -- log found contact state
+    RAISE NOTICE 'contact_states_history_record: %',contact_states_history_record;
+    -- check valid from timestamp of the state in database
+    IF contact_states_history_record.valid_from IS NULL THEN
+        RAISE WARNING 'ignoring invalid contact_states_history_record valid_from is null : %',contact_states_history_record;
+        CONTINUE;
+    END IF;
+    -- if array not empty
+    IF(array_lower( contact_object_state_arr, 1 ) IS NOT NULL AND array_upper( contact_object_state_arr, 1 ) IS NOT NULL) THEN
+        i:=array_lower( contact_object_state_arr, 1 ) -1;
+        LOOP -- through aggregated states in array
+            i:=i+1;
+            IF i > array_upper(contact_object_state_arr, 1 ) THEN --need to check in every iteration, array may grow
+                EXIT; --exit loop
+            END IF;
+            RAISE NOTICE 'i: %', contact_object_state_arr[i]; -- log array element
+            IF contact_states_history_record.valid_from IS NULL THEN -- invalid from in array, this should not happen
+                RAISE EXCEPTION 'invalid contact_object_state_arr[i] element valid_from is null : %',contact_object_state_arr[i];
+            END IF;
+            -- conditions of aggregation
+            IF contact_states_history_record.valid_to IS NOT NULL AND contact_object_state_arr[i].valid_to IS NOT NULL THEN
+                IF NOT((contact_states_history_record.valid_to < contact_object_state_arr[i].valid_from)
+                    OR (contact_object_state_arr[i].valid_to <  contact_states_history_record.valid_from)) THEN
+                   -- edit array element
+                   tmp_contact_object_state := contact_object_state_arr[i]; -- get element from array
+                   IF(contact_states_history_record.valid_from < contact_object_state_arr[i].valid_from) THEN
+                       tmp_contact_object_state.valid_from := contact_states_history_record.valid_from;
+                       tmp_contact_object_state.ohid_from := contact_states_history_record.ohid_from;
+                   END IF;
+                   IF(contact_states_history_record.valid_to > contact_object_state_arr[i].valid_to) THEN
+                       tmp_contact_object_state.valid_to := contact_states_history_record.valid_to;
+                       tmp_contact_object_state.ohid_to := contact_states_history_record.ohid_to;
+                   END IF;
+                   contact_object_state_arr[i] := tmp_contact_object_state; -- set element into array
+                   CONTINUE;-- process next array record
+                END IF;
+            END IF;
+
+            IF contact_states_history_record.valid_to IS NOT NULL AND contact_object_state_arr[i].valid_to IS NULL THEN
+                IF NOT(contact_states_history_record.valid_to < contact_object_state_arr[i].valid_from) THEN
+                   -- edit array element
+                   tmp_contact_object_state := contact_object_state_arr[i]; -- get element from array
+                   IF(contact_states_history_record.valid_from < contact_object_state_arr[i].valid_from) THEN
+                       tmp_contact_object_state.valid_from := contact_states_history_record.valid_from;
+                       tmp_contact_object_state.ohid_from := contact_states_history_record.ohid_from;
+                   END IF;
+                   tmp_contact_object_state.valid_to := contact_states_history_record.valid_to;
+                   tmp_contact_object_state.ohid_to := contact_states_history_record.ohid_to;
+                   contact_object_state_arr[i] := tmp_contact_object_state; -- set element into array
+                   CONTINUE;-- process next array record
+                END IF;
+            END IF;
+
+            IF contact_states_history_record.valid_to IS NULL AND contact_object_state_arr[i].valid_to IS NOT NULL THEN
+                IF NOT(contact_object_state_arr[i].valid_to < contact_states_history_record.valid_from ) THEN
+                   -- edit array element
+                   tmp_contact_object_state := contact_object_state_arr[i]; -- get element from array
+                   IF(contact_states_history_record.valid_from < contact_object_state_arr[i].valid_from) THEN
+                       tmp_contact_object_state.valid_from := contact_states_history_record.valid_from;
+                       tmp_contact_object_state.ohid_from := contact_states_history_record.ohid_from;
+                   END IF;
+                   tmp_contact_object_state.valid_to := contact_states_history_record.valid_to;
+                   tmp_contact_object_state.ohid_to := contact_states_history_record.ohid_to;
+                   contact_object_state_arr[i] := tmp_contact_object_state; -- set element into array
+                   CONTINUE;-- process next array record
+                END IF;
+            END IF;
+
+            IF contact_states_history_record.valid_to IS NULL AND contact_object_state_arr[i].valid_to IS NULL THEN
+               -- edit array element
+               tmp_contact_object_state := contact_object_state_arr[i]; -- get element from array
+               IF(contact_states_history_record.valid_from < contact_object_state_arr[i].valid_from) THEN
+                   tmp_contact_object_state.valid_from := contact_states_history_record.valid_from;
+                   tmp_contact_object_state.ohid_from := contact_states_history_record.ohid_from;
+               END IF;
+               tmp_contact_object_state.valid_to := contact_states_history_record.valid_to;
+               tmp_contact_object_state.ohid_to := contact_states_history_record.ohid_to;
+               contact_object_state_arr[i] := tmp_contact_object_state; -- set element into array
+               CONTINUE;-- process next array record
+            END IF;
+            --add new mojeidContact state record into array, no previous record in array overlaped with this one
+            tmp_contact_object_state:=(contact_states_history_record.object_id
+            ,24,contact_states_history_record.valid_from, contact_states_history_record.ohid_from
+            ,contact_states_history_record.valid_to,contact_states_history_record.ohid_to)::contact_object_state_type;
+            RAISE NOTICE 'tmp_contact_object_state: %', tmp_contact_object_state;
+            contact_object_state_arr := array_append(contact_object_state_arr, tmp_contact_object_state);
+
+        END LOOP; -- for array
+    ELSE --new mojeidContact state record, first record into array
+        tmp_contact_object_state:=(contact_states_history_record.object_id
+        ,24,contact_states_history_record.valid_from, contact_states_history_record.ohid_from
+        ,contact_states_history_record.valid_to,contact_states_history_record.ohid_to)::contact_object_state_type;
+        RAISE NOTICE 'tmp_contact_object_state: %', tmp_contact_object_state;
+        contact_object_state_arr := array_append(contact_object_state_arr, tmp_contact_object_state);
+    END IF;
+END LOOP;
+
+--save array for current_object_id
+contact_object_state_all_arr:=array_cat(contact_object_state_all_arr, contact_object_state_arr);
+contact_object_state_arr:=contact_object_state_empty_arr;
+
+CLOSE contact_states_history;
+
+END LOOP;--for tmp_mojeid_contact_record.id
+
+
+-- dump array
+-- if array not empty
+IF(array_lower( contact_object_state_all_arr, 1 ) IS NOT NULL AND array_upper( contact_object_state_all_arr, 1 ) IS NOT NULL) THEN
+    FOR i IN array_lower( contact_object_state_all_arr, 1 )..array_upper( contact_object_state_all_arr, 1 ) LOOP -- through aggregated states in array
+        RAISE NOTICE 'dump: object_id: % state_id: % valid_from: % ohid_from: % valid_to: % ohid_to: %'
+        , contact_object_state_all_arr[i].object_id , contact_object_state_all_arr[i].state_id
+        , contact_object_state_all_arr[i].valid_from, contact_object_state_all_arr[i].ohid_from
+        , contact_object_state_all_arr[i].valid_to, contact_object_state_all_arr[i].ohid_to;
+
+        IF contact_object_state_all_arr[i].valid_from IS NULL THEN -- invalid from in array, this should not happen
+            RAISE EXCEPTION 'invalid contact_object_state_all_arr[i] element valid_from is null : %',contact_object_state_all_arr[i];
+        END IF;
+
+        tmp_contact_object_state:=contact_object_state_all_arr[i];
+        RETURN NEXT tmp_contact_object_state;
+
+    END LOOP; -- for array
+END IF;
+
+RETURN;
+END;
+$$ LANGUAGE plpgsql;
+
+BEGIN;
+
+CREATE TEMP TABLE tmp_object_state (object_id,state_id, valid_from, ohid_from, valid_to, ohid_to) AS
+SELECT object_id,state_id,valid_from, ohid_from,valid_to, ohid_to  FROM mojeid_contact_state_history();
 
 INSERT INTO object_state_request (object_id, state_id, valid_from, valid_to, crdate, canceled)
 SELECT object_id, state_id, valid_from, valid_to, valid_from, valid_to
@@ -106,6 +242,8 @@ FROM tmp_object_state;
 
 COMMIT;
 
+DROP FUNCTION mojeid_contact_state_history();
+DROP TYPE contact_object_state_type;
 
 
 ---
