@@ -77,6 +77,7 @@ DECLARE
     tmp_contact_object_state contact_object_state_type;
     i INTEGER;
     tmp_mojeid_contact_record RECORD;
+    add_new_array_record BOOLEAN;
 BEGIN
 
 FOR tmp_mojeid_contact_record IN SELECT oh.id -- mojeid contacts in object_history
@@ -108,21 +109,26 @@ LOOP -- through contact identification states
     -- if array not empty
     IF(array_lower( contact_object_state_arr, 1 ) IS NOT NULL AND array_upper( contact_object_state_arr, 1 ) IS NOT NULL) THEN
         i:=array_lower( contact_object_state_arr, 1 ) -1;
+        add_new_array_record:=TRUE;
+        RAISE NOTICE 'array is not empty, loop through aggregated states in array from i: %',i;
         LOOP -- through aggregated states in array
             i:=i+1;
             IF i > array_upper(contact_object_state_arr, 1 ) THEN --need to check in every iteration, array may grow
                 EXIT; --exit loop
             END IF;
-            RAISE NOTICE 'i: %', contact_object_state_arr[i]; -- log array element
+            RAISE NOTICE 'array[i]: %', contact_object_state_arr[i]; -- log array element
             IF contact_states_history_record.valid_from IS NULL THEN -- invalid from in array, this should not happen
                 RAISE EXCEPTION 'invalid contact_object_state_arr[i] element valid_from is null : %',contact_object_state_arr[i];
             END IF;
             -- conditions of aggregation
             IF contact_states_history_record.valid_to IS NOT NULL AND contact_object_state_arr[i].valid_to IS NOT NULL THEN
-                IF NOT((contact_states_history_record.valid_to < contact_object_state_arr[i].valid_from)
+                RAISE NOTICE 'c.t not null and a.t not null';
+                IF NOT((contact_states_history_record.valid_to < contact_object_state_arr[i].valid_from) 
                     OR (contact_object_state_arr[i].valid_to <  contact_states_history_record.valid_from)) THEN
+                    RAISE NOTICE 'overlaps: not((c.t < a.f) or (a.t < c.f))';
                    -- edit array element
                    tmp_contact_object_state := contact_object_state_arr[i]; -- get element from array
+                   RAISE NOTICE 'before edit tmp_contact_object_state: %', tmp_contact_object_state;
                    IF(contact_states_history_record.valid_from < contact_object_state_arr[i].valid_from) THEN
                        tmp_contact_object_state.valid_from := contact_states_history_record.valid_from;
                        tmp_contact_object_state.ohid_from := contact_states_history_record.ohid_from;
@@ -131,67 +137,90 @@ LOOP -- through contact identification states
                        tmp_contact_object_state.valid_to := contact_states_history_record.valid_to;
                        tmp_contact_object_state.ohid_to := contact_states_history_record.ohid_to;
                    END IF;
+                   RAISE NOTICE 'after edit tmp_contact_object_state: %', tmp_contact_object_state;
                    contact_object_state_arr[i] := tmp_contact_object_state; -- set element into array
-                   CONTINUE;-- process next array record
+                   add_new_array_record:=FALSE;
+                   EXIT;
                 END IF;
             END IF;
 
             IF contact_states_history_record.valid_to IS NOT NULL AND contact_object_state_arr[i].valid_to IS NULL THEN
+                RAISE NOTICE 'c.t not null and a.t null';
                 IF NOT(contact_states_history_record.valid_to < contact_object_state_arr[i].valid_from) THEN
+                   RAISE NOTICE 'overlaps: not(c.t < a.f)';
                    -- edit array element
                    tmp_contact_object_state := contact_object_state_arr[i]; -- get element from array
+                   RAISE NOTICE 'before edit tmp_contact_object_state: %', tmp_contact_object_state;
                    IF(contact_states_history_record.valid_from < contact_object_state_arr[i].valid_from) THEN
                        tmp_contact_object_state.valid_from := contact_states_history_record.valid_from;
                        tmp_contact_object_state.ohid_from := contact_states_history_record.ohid_from;
                    END IF;
                    tmp_contact_object_state.valid_to := contact_states_history_record.valid_to;
                    tmp_contact_object_state.ohid_to := contact_states_history_record.ohid_to;
+                   RAISE NOTICE 'after edit tmp_contact_object_state: %', tmp_contact_object_state;
                    contact_object_state_arr[i] := tmp_contact_object_state; -- set element into array
-                   CONTINUE;-- process next array record
+                   add_new_array_record:=FALSE;
+                   EXIT;
                 END IF;
             END IF;
 
             IF contact_states_history_record.valid_to IS NULL AND contact_object_state_arr[i].valid_to IS NOT NULL THEN
+                RAISE NOTICE 'c.t null and a.t not null if not( a.t: %  < c.f: %) %'
+                 ,contact_object_state_arr[i].valid_to, contact_states_history_record.valid_from
+                 ,NOT(contact_object_state_arr[i].valid_to < contact_states_history_record.valid_from);
+                 
                 IF NOT(contact_object_state_arr[i].valid_to < contact_states_history_record.valid_from ) THEN
+                   RAISE NOTICE 'overlaps: not(a.t < c.f)';
                    -- edit array element
                    tmp_contact_object_state := contact_object_state_arr[i]; -- get element from array
+                   RAISE NOTICE 'before edit tmp_contact_object_state: %', tmp_contact_object_state;
                    IF(contact_states_history_record.valid_from < contact_object_state_arr[i].valid_from) THEN
                        tmp_contact_object_state.valid_from := contact_states_history_record.valid_from;
                        tmp_contact_object_state.ohid_from := contact_states_history_record.ohid_from;
                    END IF;
                    tmp_contact_object_state.valid_to := contact_states_history_record.valid_to;
                    tmp_contact_object_state.ohid_to := contact_states_history_record.ohid_to;
+                   RAISE NOTICE 'after edit tmp_contact_object_state: %', tmp_contact_object_state;
                    contact_object_state_arr[i] := tmp_contact_object_state; -- set element into array
-                   CONTINUE;-- process next array record
+                   add_new_array_record:=FALSE;
+                   EXIT;
                 END IF;
             END IF;
 
             IF contact_states_history_record.valid_to IS NULL AND contact_object_state_arr[i].valid_to IS NULL THEN
-               -- edit array element
-               tmp_contact_object_state := contact_object_state_arr[i]; -- get element from array
-               IF(contact_states_history_record.valid_from < contact_object_state_arr[i].valid_from) THEN
-                   tmp_contact_object_state.valid_from := contact_states_history_record.valid_from;
-                   tmp_contact_object_state.ohid_from := contact_states_history_record.ohid_from;
-               END IF;
-               tmp_contact_object_state.valid_to := contact_states_history_record.valid_to;
-               tmp_contact_object_state.ohid_to := contact_states_history_record.ohid_to;
-               contact_object_state_arr[i] := tmp_contact_object_state; -- set element into array
-               CONTINUE;-- process next array record
+                RAISE NOTICE 'overlaps: c.t null and a.t null';
+                -- edit array element
+                tmp_contact_object_state := contact_object_state_arr[i]; -- get element from array
+                RAISE NOTICE 'before edit tmp_contact_object_state: %', tmp_contact_object_state;
+                IF(contact_states_history_record.valid_from < contact_object_state_arr[i].valid_from) THEN
+                    tmp_contact_object_state.valid_from := contact_states_history_record.valid_from;
+                    tmp_contact_object_state.ohid_from := contact_states_history_record.ohid_from;
+                END IF;
+                tmp_contact_object_state.valid_to := contact_states_history_record.valid_to;
+                tmp_contact_object_state.ohid_to := contact_states_history_record.ohid_to;
+                RAISE NOTICE 'after edit tmp_contact_object_state: %', tmp_contact_object_state;
+                contact_object_state_arr[i] := tmp_contact_object_state; -- set element into array
+                add_new_array_record:=FALSE;
+                EXIT;
             END IF;
+        END LOOP; -- for array
+
+        IF add_new_array_record THEN
             --add new mojeidContact state record into array, no previous record in array overlaped with this one
             tmp_contact_object_state:=(contact_states_history_record.object_id
             ,24,contact_states_history_record.valid_from, contact_states_history_record.ohid_from
             ,contact_states_history_record.valid_to,contact_states_history_record.ohid_to)::contact_object_state_type;
-            RAISE NOTICE 'tmp_contact_object_state: %', tmp_contact_object_state;
+            RAISE NOTICE 'non overlaped -add new array record tmp_contact_object_state: %', tmp_contact_object_state;
             contact_object_state_arr := array_append(contact_object_state_arr, tmp_contact_object_state);
-
-        END LOOP; -- for array
+        END IF;
+        
     ELSE --new mojeidContact state record, first record into array
         tmp_contact_object_state:=(contact_states_history_record.object_id
         ,24,contact_states_history_record.valid_from, contact_states_history_record.ohid_from
         ,contact_states_history_record.valid_to,contact_states_history_record.ohid_to)::contact_object_state_type;
-        RAISE NOTICE 'tmp_contact_object_state: %', tmp_contact_object_state;
+        RAISE NOTICE 'first record into array tmp_contact_object_state: %', tmp_contact_object_state;
         contact_object_state_arr := array_append(contact_object_state_arr, tmp_contact_object_state);
+        
     END IF;
 END LOOP;
 
@@ -203,7 +232,6 @@ CLOSE contact_states_history;
 
 END LOOP;--for tmp_mojeid_contact_record.id
 
-
 -- dump array
 -- if array not empty
 IF(array_lower( contact_object_state_all_arr, 1 ) IS NOT NULL AND array_upper( contact_object_state_all_arr, 1 ) IS NOT NULL) THEN
@@ -212,14 +240,14 @@ IF(array_lower( contact_object_state_all_arr, 1 ) IS NOT NULL AND array_upper( c
         , contact_object_state_all_arr[i].object_id , contact_object_state_all_arr[i].state_id
         , contact_object_state_all_arr[i].valid_from, contact_object_state_all_arr[i].ohid_from
         , contact_object_state_all_arr[i].valid_to, contact_object_state_all_arr[i].ohid_to;
-
+        
         IF contact_object_state_all_arr[i].valid_from IS NULL THEN -- invalid from in array, this should not happen
             RAISE EXCEPTION 'invalid contact_object_state_all_arr[i] element valid_from is null : %',contact_object_state_all_arr[i];
         END IF;
-
+        
         tmp_contact_object_state:=contact_object_state_all_arr[i];
         RETURN NEXT tmp_contact_object_state;
-
+        
     END LOOP; -- for array
 END IF;
 
