@@ -1,3 +1,7 @@
+2012-10-31 Jan Zima (2.12.1)
+
+    * fix setting of mojeidContact in upgrade script
+
 2012-09-06 Jiri Sadek, Juraj Vicenik, Jan Zima (2.12.0)
 
     * mojeid mail templates update (removed demo mode)
