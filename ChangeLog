@@ -1,6 +1,8 @@
-2012-10-31 Jan Zima (2.12.1)
+2012-11-15 Jan Zima, Jaromir Talir (2.12.1)
 
     * fix setting of mojeidContact in upgrade script
+
+    * mojeid pin1 email template changes
 
 2012-09-06 Jiri Sadek, Juraj Vicenik, Jan Zima (2.12.0)
 
