@@ -1,3 +1,7 @@
+2012-11-23 Jaromir Talir (2.12.2)
+
+    * add new letter type (mojeid_pin3_reminder)
+
 2012-11-15 Jan Zima, Jaromir Talir (2.12.1)
 
     * fix setting of mojeidContact in upgrade script
