@@ -13,19 +13,29 @@ Vážený zákazníku,
 Došlo ke sjednocení duplicitních kontaktů, které mají různé identifikátory a přitom obsahují shodné údaje. Všechny duplicitní kontakty byly převedeny pod jeden s identifikátorem <?cs var:dst_contact_handle ?>
 
 Držitel byl změněn u domén:
-<?cs var:domain_registrant_list ?>
+<?cs each:item = domain_registrant_list ?>
+    <?cs var:item ?>
+<?cs /each ?>
 
 Administrativní kontakt byl změněn u domén:
-<?cs var:domain_admin_list ?>
+<?cs each:item = domain_admin_list ?>
+    <?cs var:item ?>
+<?cs /each ?>
 
 Technický kontakt byl změněn u sad nameserverů:
-<?cs var:nsset_tech_list ?>
+<?cs each:item = nsset_tech_list ?>
+    <?cs var:item ?>
+<?cs /each ?>
 
 Technický kontakt byl změněn u sad klíčů:
-<?cs var:keyset_tech_list ?>
+<?cs each:item = keyset_tech_list ?>
+    <?cs var:item ?>
+<?cs /each ?>
 
 Následující duplicitní kontakty byly odstraněny:
-<?cs var:removed_list ?>
+<?cs each:item = removed_list ?>
+    <?cs var:item ?>
+<?cs /each ?>
 
                                             S pozdravem
                                             podpora <?cs var:defaults.company ?>
