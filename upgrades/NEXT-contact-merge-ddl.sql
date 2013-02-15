@@ -1,7 +1,6 @@
 ---
---- #7652
+--- Ticket #7652
 ---
-
 
 -- if value is null then raise exception with errmsg, else return value
 -- for compatibility with OperationException process variable data in errmsg by ex_data function
@@ -40,3 +39,4 @@ CREATE TABLE enum_object_type
   CONSTRAINT enum_object_type_pkey PRIMARY KEY (id),
   CONSTRAINT enum_object_type_name_key UNIQUE (name)
 );
+

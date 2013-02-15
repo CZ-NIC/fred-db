@@ -1,7 +1,20 @@
 ---
---- #7732
+--- don't forget to update database schema version
 ---
+UPDATE enum_parameters SET val = '2.14.0-merge-contact-test' WHERE id = 1;
 
+
+---
+--- Ticket #7653
+---
+INSERT INTO MessageType VALUES (17, 'update_domain');
+INSERT INTO MessageType VALUES (18, 'update_nsset');
+INSERT INTO MessageType VALUES (19, 'update_keyset');
+
+
+---
+--- Ticket #7732
+---
 INSERT INTO mail_type (id, name, subject) VALUES (28, 'merge_contacts_auto', 'Oznámení o sloučení duplicitních záznamů');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (28, 'plain', 1,
@@ -41,4 +54,16 @@ Následující duplicitní kontakty byly odstraněny:
                                             podpora <?cs var:defaults.company ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (28, 28);
+
+
+---
+--- Ticket #7652
+---
+INSERT INTO enum_object_type (id,name) VALUES ( 1 , 'contact' );
+INSERT INTO enum_object_type (id,name) VALUES ( 2 , 'nsset' );
+INSERT INTO enum_object_type (id,name) VALUES ( 3 , 'domain' );
+INSERT INTO enum_object_type (id,name) VALUES ( 4 , 'keyset' );
+
+ALTER TABLE object_registry ADD CONSTRAINT object_registry_type_fkey FOREIGN KEY (type)
+      REFERENCES enum_object_type (id);
 
