@@ -40,3 +40,16 @@ CREATE TABLE enum_object_type
   CONSTRAINT enum_object_type_name_key UNIQUE (name)
 );
 
+
+---
+--- unnest function for postgres <= 8.3
+---
+CREATE OR REPLACE FUNCTION unnest(anyarray)
+  RETURNS SETOF anyelement AS
+$BODY$
+SELECT $1[i] FROM
+    generate_series(array_lower($1, 1),
+                    array_upper($1, 1)) i;
+$BODY$
+LANGUAGE 'sql' IMMUTABLE;
+
