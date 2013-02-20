@@ -27,28 +27,23 @@ Došlo ke sjednocení duplicitních kontaktů, které mají různé identifikát
 
 <?cs if:domain_registrant_list.0 ?>Držitel byl změněn u domén:
 <?cs each:item = domain_registrant_list ?>
-    <?cs var:item ?>
-<?cs /each ?><?cs /if ?>
+    <?cs var:item ?><?cs /each ?><?cs /if ?>
 
 <?cs domain_admin_list.0 ?>Administrativní kontakt byl změněn u domén:
 <?cs each:item = domain_admin_list ?>
-    <?cs var:item ?>
-<?cs /each ?><?cs /if ?>
+    <?cs var:item ?><?cs /each ?><?cs /if ?>
 
 <?cs nsset_tech_list.0 ?>Technický kontakt byl změněn u sad nameserverů:
 <?cs each:item = nsset_tech_list ?>
-    <?cs var:item ?>
-<?cs /each ?><?cs /if ?>
+    <?cs var:item ?><?cs /each ?><?cs /if ?>
 
 <?cs keyset_tech_list.0 ?>Technický kontakt byl změněn u sad klíčů:
 <?cs each:item = keyset_tech_list ?>
-    <?cs var:item ?>
-<?cs /each ?><?cs /if ?>
+    <?cs var:item ?><?cs /each ?><?cs /if ?>
 
 <?cs removed_list.0 ?>Následující duplicitní kontakty byly odstraněny:
 <?cs each:item = removed_list ?>
-    <?cs var:item ?>
-<?cs /each ?><?cs /if ?>
+    <?cs var:item ?><?cs /each ?><?cs /if ?>
 
                                             S pozdravem
                                             podpora <?cs var:defaults.company ?>
