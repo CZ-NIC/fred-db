@@ -19,6 +19,8 @@ comment on column enum_object_states.types is 'what types of objects can have th
 comment on column enum_object_states.manual is 'if this status is set manualy';
 comment on column enum_object_states.external is 'if this status is exported to public';
 
+-- Watch out! Do not use the letter "|" (vertival line) in the names.
+-- It is used as a separator in functions get_object_states and external_state_description.
 INSERT INTO enum_object_states 
   VALUES (01,'serverDeleteProhibited','{1,2,3}','t','t');
 INSERT INTO enum_object_states 
@@ -79,6 +81,8 @@ comment on table enum_object_states_desc is 'description for states in different
 comment on column enum_object_states_desc.lang is 'code of language';
 comment on column enum_object_states_desc.description is 'descriptive text';
 
+-- Watch out! Do not use the letter "|" (vertival line) in the text.
+-- It is used as a separator in functions get_object_states and external_state_description.
 INSERT INTO enum_object_states_desc 
   VALUES (01,'CS','Není povoleno smazání');
 INSERT INTO enum_object_states_desc 
@@ -1014,3 +1018,40 @@ CREATE TRIGGER "trigger_lock_object_state_request"
   AFTER INSERT OR UPDATE ON object_state_request
   FOR EACH ROW EXECUTE PROCEDURE lock_object_state_request();
 
+
+CREATE OR REPLACE FUNCTION external_state_description(object_id BIGINT, lang_code varchar)
+RETURNS TEXT
+AS $$
+    --Usage:
+    --  SELECT
+    --    og.id,
+    --    og.name,
+    --    external_state_description(og.id, 'CS') AS states
+    --  FROM object_registry og
+    --  WHERE og.name = 'test.cz'
+
+SELECT array_to_string(ARRAY((
+    SELECT osd.description
+    FROM object_state os
+    LEFT JOIN enum_object_states eos ON eos.id = os.state_id
+    LEFT JOIN enum_object_states_desc osd ON osd.state_id = eos.id AND lang = $2
+    WHERE os.object_id = $1
+        AND eos.external = 't'
+        AND os.valid_from <= CURRENT_TIMESTAMP
+        AND (os.valid_to IS NULL OR os.valid_to > CURRENT_TIMESTAMP)
+    ORDER BY osd.description
+)), '|')
+$$ LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION get_object_states(object_id BIGINT)
+RETURNS TEXT
+AS $$
+SELECT array_to_string(ARRAY((
+    SELECT name
+    FROM object_state os
+    LEFT JOIN enum_object_states eos ON eos.id = os.state_id
+    WHERE os.object_id = $1
+        AND os.valid_from <= CURRENT_TIMESTAMP
+        AND (os.valid_to IS NULL OR os.valid_to > CURRENT_TIMESTAMP)
+)), '|')
+$$ LANGUAGE SQL;
