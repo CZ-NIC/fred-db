@@ -19,6 +19,9 @@ INSERT INTO result_code (service_id, result_code, name) VALUES
 (7, 5 , 'Warning')
 ;
 
+-- Fix error typing:
+UPDATE enum_object_states_desc SET description = 'Není povolena změna určeného registrátora' WHERE lang = 'CS' AND state_id = 3;
+
 
 CREATE OR REPLACE FUNCTION external_state_description(object_id BIGINT, lang_code varchar)
 RETURNS TEXT
