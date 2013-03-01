@@ -10,7 +10,9 @@ CREATE TABLE enum_object_states (
   -- if this status is set manualy
   manual BOOLEAN NOT NULL,
   -- if this status is exported to public
-  external BOOLEAN NOT NULL
+  external BOOLEAN NOT NULL,
+  -- status importance (ticket #8289)
+  importance INTEGER
 );
 
 comment on table enum_object_states is 'list of all supported status types';
@@ -22,45 +24,53 @@ comment on column enum_object_states.external is 'if this status is exported to 
 -- Watch out! Do not use the letter "|" (vertival line) in the names.
 -- It is used as a separator in functions get_object_states and external_state_description.
 INSERT INTO enum_object_states 
-  VALUES (01,'serverDeleteProhibited','{1,2,3}','t','t');
+  VALUES (01,'serverDeleteProhibited','{1,2,3}','t','t', 80);
 INSERT INTO enum_object_states 
-  VALUES (02,'serverRenewProhibited','{3}','t','t');
+  VALUES (02,'serverRenewProhibited','{3}','t','t', 70);
 INSERT INTO enum_object_states 
-  VALUES (03,'serverTransferProhibited','{1,2,3}','t','t');
+  VALUES (03,'serverTransferProhibited','{1,2,3}','t','t', 50);
 INSERT INTO enum_object_states 
-  VALUES (04,'serverUpdateProhibited','{1,2,3}','t','t');
+  VALUES (04,'serverUpdateProhibited','{1,2,3}','t','t', 40);
 INSERT INTO enum_object_states 
-  VALUES (05,'serverOutzoneManual','{3}','t','t');
+  VALUES (05,'serverOutzoneManual','{3}','t','t', 30);
 INSERT INTO enum_object_states 
-  VALUES (06,'serverInzoneManual','{3}','t','t');
+  VALUES (06,'serverInzoneManual','{3}','t','t', 30);
 INSERT INTO enum_object_states 
-  VALUES (07,'serverBlocked','{3}','t','t');
+  VALUES (07,'serverBlocked','{3}','t','t', 90);
 INSERT INTO enum_object_states 
-  VALUES (08,'expirationWarning','{3}','f','f');
+  VALUES (08,'expirationWarning','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
-  VALUES (09,'expired','{3}','f','t');
+  VALUES (09,'expired','{3}','f','t', 10);
 INSERT INTO enum_object_states 
-  VALUES (10,'unguarded','{3}','f','f');
+  VALUES (10,'unguarded','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
-  VALUES (11,'validationWarning1','{3}','f','f');
+  VALUES (11,'validationWarning1','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
-  VALUES (12,'validationWarning2','{3}','f','f');
+  VALUES (12,'validationWarning2','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
-  VALUES (13,'notValidated','{3}','f','t');
+  VALUES (13,'notValidated','{3}','f','t', 30);
 INSERT INTO enum_object_states 
-  VALUES (14,'nssetMissing','{3}','f','f');
+  VALUES (14,'nssetMissing','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
-  VALUES (15,'outzone','{3}','f','t');
+  VALUES (15,'outzone','{3}','f','t', 20);
 INSERT INTO enum_object_states 
-  VALUES (16,'linked','{1,2}','f','t');
+  VALUES (16,'linked','{1,2}','f','t', 30);
 INSERT INTO enum_object_states 
-  VALUES (17,'deleteCandidate','{1,2,3}','f','t');
+  VALUES (17,'deleteCandidate','{1,2,3}','f','t', NULL);
 INSERT INTO enum_object_states 
-  VALUES (18,'serverRegistrantChangeProhibited','{3}','t','t');
+  VALUES (18,'serverRegistrantChangeProhibited','{3}','t','t', 60);
 INSERT INTO enum_object_states 
-  VALUES (19,'deleteWarning','{3}','f','f');
+  VALUES (19,'deleteWarning','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
-  VALUES (20,'outzoneUnguarded','{3}','f','f');
+  VALUES (20,'outzoneUnguarded','{3}','f','f', NULL);
+INSERT INTO enum_object_states
+  VALUES (21,'conditionallyIdentifiedContact','{1}','t','t', NULL);
+INSERT INTO enum_object_states
+  VALUES (22,'identifiedContact','{1}','t','t', 20);
+INSERT INTO enum_object_states
+  VALUES (23,'validatedContact','{1}','t','t', 20);
+INSERT INTO enum_object_states
+  VALUES (24,'mojeidContact','{1}','t','t', 10);
 
 
 -- update for keyset
@@ -96,7 +106,7 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (03,'EN','Sponsoring registrar change prohibited');
 INSERT INTO enum_object_states_desc 
-  VALUES (04,'CS','Není povolena aktualizace');
+  VALUES (04,'CS','Není povolena změna údajů');
 INSERT INTO enum_object_states_desc 
   VALUES (04,'EN','Update prohibited');
 INSERT INTO enum_object_states_desc 
@@ -144,7 +154,7 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (15,'EN','Domain is not generated into zone');
 INSERT INTO enum_object_states_desc 
-  VALUES (16,'CS','Je navázáno na další záznam v registru');
+  VALUES (16,'CS','Je navázán na další záznam v registru');
 INSERT INTO enum_object_states_desc 
   VALUES (16,'EN','Has relation to other records in registry');
 INSERT INTO enum_object_states_desc 
@@ -163,6 +173,24 @@ INSERT INTO enum_object_states_desc
   VALUES (20,'CS','Doména vyřazena ze zóny po 30 dnech od expirace');
 INSERT INTO enum_object_states_desc 
   VALUES (20,'EN','Domain is out of zone after 30 days from expiration');
+INSERT INTO enum_object_states_desc
+  VALUES (21,'CS','Kontakt je částečně identifikován');
+INSERT INTO enum_object_states_desc
+  VALUES (21,'EN','Contact is conditionally identified');
+INSERT INTO enum_object_states_desc
+  VALUES (22,'CS','Kontakt je identifikován');
+INSERT INTO enum_object_states_desc
+  VALUES (22,'EN','Contact is identified');
+INSERT INTO enum_object_states_desc
+  VALUES (23,'CS','Kontakt je validován');
+INSERT INTO enum_object_states_desc
+  VALUES (23,'EN','Contact is validated');
+INSERT INTO enum_object_states_desc
+  VALUES (24,'CS','MojeID kontakt');
+INSERT INTO enum_object_states_desc
+  VALUES (24,'EN','MojeID contact');
+
+
 
 -- main table of object states and their changes
 CREATE TABLE object_state (

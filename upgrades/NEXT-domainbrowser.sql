@@ -19,6 +19,31 @@ INSERT INTO result_code (service_id, result_code, name) VALUES
 (7, 5 , 'Warning')
 ;
 
+-- Ticket #8289 - new column 'importance'
+ALTER TABLE enum_object_states ADD COLUMN importance INTEGER;
+
+UPDATE enum_object_states SET importance = 10 WHERE name = 'expired';
+UPDATE enum_object_states SET importance = 10 WHERE name = 'mojeidContact';
+UPDATE enum_object_states SET importance = 20 WHERE name = 'outzone';
+UPDATE enum_object_states SET importance = 20 WHERE name = 'identifiedContact';
+UPDATE enum_object_states SET importance = 20 WHERE name = 'conditionallyIdentifiedContact';
+UPDATE enum_object_states SET importance = 20 WHERE name = 'validatedContact';
+UPDATE enum_object_states SET importance = 30 WHERE name = 'serverOutzoneManual';
+UPDATE enum_object_states SET importance = 30 WHERE name = 'serverInzoneManual';
+UPDATE enum_object_states SET importance = 30 WHERE name = 'notValidated';
+UPDATE enum_object_states SET importance = 30 WHERE name = 'linked';
+UPDATE enum_object_states SET importance = 40 WHERE name = 'serverUpdateProhibited';
+UPDATE enum_object_states SET importance = 50 WHERE name = 'serverTransferProhibited';
+UPDATE enum_object_states SET importance = 60 WHERE name = 'serverRegistrantChangeProhibited';
+UPDATE enum_object_states SET importance = 70 WHERE name = 'serverRenewProhibited';
+UPDATE enum_object_states SET importance = 80 WHERE name = 'serverDeleteProhibited';
+UPDATE enum_object_states SET importance = 90 WHERE name = 'serverBlocked';
+
+-- Ticket #8289 - correct error typing
+UPDATE enum_object_states_desc SET description = 'Kontakt je částečně identifikován' WHERE lang = 'CS' AND state_id = 21; -- conditionallyIdentifiedContact
+UPDATE enum_object_states_desc SET description = 'Je navázán na další záznam v registru' WHERE lang = 'CS' AND state_id = 16; -- linked
+UPDATE enum_object_states_desc SET description = 'Není povolena změna údajů' WHERE lang = 'CS' AND state_id = 4; -- serverUpdateProhibited
+
 -- Fix error typing:
 UPDATE enum_object_states_desc SET description = 'Není povolena změna určeného registrátora' WHERE lang = 'CS' AND state_id = 3;
 
