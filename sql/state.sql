@@ -24,23 +24,23 @@ comment on column enum_object_states.external is 'if this status is exported to 
 -- Watch out! Do not use the letter "|" (vertival line) in the names.
 -- It is used as a separator in functions get_object_states and external_state_description.
 INSERT INTO enum_object_states 
-  VALUES (01,'serverDeleteProhibited','{1,2,3}','t','t', 80);
+  VALUES (01,'serverDeleteProhibited','{1,2,3}','t','t', 15*2);
 INSERT INTO enum_object_states 
-  VALUES (02,'serverRenewProhibited','{3}','t','t', 70);
+  VALUES (02,'serverRenewProhibited','{3}','t','t', 14*2);
 INSERT INTO enum_object_states 
-  VALUES (03,'serverTransferProhibited','{1,2,3}','t','t', 50);
+  VALUES (03,'serverTransferProhibited','{1,2,3}','t','t', 12*2);
 INSERT INTO enum_object_states 
-  VALUES (04,'serverUpdateProhibited','{1,2,3}','t','t', 40);
+  VALUES (04,'serverUpdateProhibited','{1,2,3}','t','t', 11*2);
 INSERT INTO enum_object_states 
-  VALUES (05,'serverOutzoneManual','{3}','t','t', 30);
+  VALUES (05,'serverOutzoneManual','{3}','t','t', 7*2);
 INSERT INTO enum_object_states 
-  VALUES (06,'serverInzoneManual','{3}','t','t', 30);
+  VALUES (06,'serverInzoneManual','{3}','t','t', 8*2);
 INSERT INTO enum_object_states 
-  VALUES (07,'serverBlocked','{3}','t','t', 90);
+  VALUES (07,'serverBlocked','{3}','t','t', 16*2);
 INSERT INTO enum_object_states 
   VALUES (08,'expirationWarning','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
-  VALUES (09,'expired','{3}','f','t', 10);
+  VALUES (09,'expired','{3}','f','t', 1*2);
 INSERT INTO enum_object_states 
   VALUES (10,'unguarded','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
@@ -48,29 +48,29 @@ INSERT INTO enum_object_states
 INSERT INTO enum_object_states 
   VALUES (12,'validationWarning2','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
-  VALUES (13,'notValidated','{3}','f','t', 30);
+  VALUES (13,'notValidated','{3}','f','t', 9*2);
 INSERT INTO enum_object_states 
   VALUES (14,'nssetMissing','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
-  VALUES (15,'outzone','{3}','f','t', 20);
+  VALUES (15,'outzone','{3}','f','t', 3*2);
 INSERT INTO enum_object_states 
-  VALUES (16,'linked','{1,2}','f','t', 30);
+  VALUES (16,'linked','{1,2}','f','t', 10*2);
 INSERT INTO enum_object_states 
   VALUES (17,'deleteCandidate','{1,2,3}','f','t', NULL);
 INSERT INTO enum_object_states 
-  VALUES (18,'serverRegistrantChangeProhibited','{3}','t','t', 60);
+  VALUES (18,'serverRegistrantChangeProhibited','{3}','t','t', 13*2);
 INSERT INTO enum_object_states 
   VALUES (19,'deleteWarning','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
   VALUES (20,'outzoneUnguarded','{3}','f','f', NULL);
 INSERT INTO enum_object_states
-  VALUES (21,'conditionallyIdentifiedContact','{1}','t','t', NULL);
+  VALUES (21,'conditionallyIdentifiedContact','{1}','t','t', 5*2);
 INSERT INTO enum_object_states
-  VALUES (22,'identifiedContact','{1}','t','t', 20);
+  VALUES (22,'identifiedContact','{1}','t','t', 4*2);
 INSERT INTO enum_object_states
-  VALUES (23,'validatedContact','{1}','t','t', 20);
+  VALUES (23,'validatedContact','{1}','t','t', 6*2);
 INSERT INTO enum_object_states
-  VALUES (24,'mojeidContact','{1}','t','t', 10);
+  VALUES (24,'mojeidContact','{1}','t','t', 2*2);
 
 
 -- update for keyset
@@ -1047,17 +1047,23 @@ CREATE TRIGGER "trigger_lock_object_state_request"
   FOR EACH ROW EXECUTE PROCEDURE lock_object_state_request();
 
 --
--- Collect states into the string
+-- Collect states into one string
 -- Usage: SELECT get_state_descriptions(53, 'CS');
--- retval: string in the format pattern '(?P<external>t|f)(?P<importance>\d+)(?P<status_name>\w+);(?P<status_description>[^|]+)|'
--- example: 't10mojeidContact;MojeID contact|t50serverTransferProhibited;Sponsoring registrar change prohibited'
+-- retval: string ca be splited by row delimiter '\n' and column delimiter '\t':
+--      [[external, importance, name, description], ...]
+-- example: 't\t20\toutzone\tDomain is not generated into zone\nf\t\texpirationWarning\tExpires '
+--          'within 30 days\nf\t\tunguarded\tDomain is 30 days after expiration\nf\t\tnssetMissi'
+--          'ng\tDomain has not associated nsset'
 --
 CREATE OR REPLACE FUNCTION get_state_descriptions(object_id BIGINT, lang_code varchar)
 RETURNS TEXT
 AS $$
-    SELECT array_to_string(ARRAY((
+SELECT array_to_string(ARRAY((
     SELECT
-        eos.external::char || eos.importance || eos.name || ';' || osd.description
+        array_to_string(ARRAY[eos.external::char,
+        COALESCE(eos.importance::varchar, ''),
+        eos.name,
+        COALESCE(osd.description, '')], '\t')
     FROM object_state os
     LEFT JOIN enum_object_states eos ON eos.id = os.state_id
     LEFT JOIN enum_object_states_desc osd ON osd.state_id = eos.id AND lang = $2
@@ -1065,5 +1071,5 @@ AS $$
         AND os.valid_from <= CURRENT_TIMESTAMP
         AND (os.valid_to IS NULL OR os.valid_to > CURRENT_TIMESTAMP)
     ORDER BY eos.importance
-    )), '|')
+)), '\n')
 $$ LANGUAGE SQL;
