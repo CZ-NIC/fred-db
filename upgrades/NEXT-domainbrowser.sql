@@ -47,6 +47,14 @@ UPDATE enum_object_states_desc SET description = 'Není povolena změna údajů'
 -- Fix error typing:
 UPDATE enum_object_states_desc SET description = 'Není povolena změna určeného registrátora' WHERE lang = 'CS' AND state_id = 3;
 
+-- pyfred + domainbrowser
+CREATE OR REPLACE VIEW domains_by_nsset_view AS
+    SELECT nsset, COUNT(nsset) AS number FROM domain WHERE nsset IS NOT NULL GROUP BY nsset
+;
+CREATE OR REPLACE VIEW domains_by_keyset_view AS
+    SELECT keyset, COUNT(keyset) AS number FROM domain WHERE keyset IS NOT NULL GROUP BY keyset
+;
+
 --
 -- Collect states into one string
 -- Usage: SELECT get_state_descriptions(53, 'CS');
