@@ -42,14 +42,26 @@ CREATE TABLE enum_object_type
 
 
 ---
---- unnest function for postgres <= 8.3
+--- create unnest array function if missing
 ---
-CREATE OR REPLACE FUNCTION unnest(anyarray)
-  RETURNS SETOF anyelement AS
-$BODY$
-SELECT $1[i] FROM
-    generate_series(array_lower($1, 1),
-                    array_upper($1, 1)) i;
-$BODY$
-LANGUAGE 'sql' IMMUTABLE;
+CREATE OR REPLACE FUNCTION create_unnest_if_missing()
+  RETURNS void AS $$
+  DECLARE
+  BEGIN
+    PERFORM * FROM pg_proc WHERE proname = 'unnest';
+    IF NOT FOUND THEN
+        CREATE OR REPLACE FUNCTION unnest(anyarray)
+          RETURNS SETOF anyelement AS
+        $BODY$
+        SELECT $1[i] FROM
+            generate_series(array_lower($1, 1),
+                            array_upper($1, 1)) i;
+        $BODY$
+        LANGUAGE 'sql' IMMUTABLE;
+    END IF;
+    DROP FUNCTION create_unnest_if_missing();
+  END;
+$$ LANGUAGE plpgsql;
+
+SELECT  create_unnest_if_missing();
 
