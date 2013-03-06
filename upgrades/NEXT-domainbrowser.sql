@@ -72,7 +72,7 @@ SELECT array_to_string(ARRAY((
         array_to_string(ARRAY[eos.external::char,
         COALESCE(eos.importance::varchar, ''),
         eos.name,
-        COALESCE(osd.description, '')], E'\t')
+        COALESCE(osd.description, '')], E'#')
     FROM object_state os
     LEFT JOIN enum_object_states eos ON eos.id = os.state_id
     LEFT JOIN enum_object_states_desc osd ON osd.state_id = eos.id AND lang = $2
@@ -80,5 +80,5 @@ SELECT array_to_string(ARRAY((
         AND os.valid_from <= CURRENT_TIMESTAMP
         AND (os.valid_to IS NULL OR os.valid_to > CURRENT_TIMESTAMP)
     ORDER BY eos.importance
-)), E'\n')
+)), E'&')
 $$ LANGUAGE SQL;

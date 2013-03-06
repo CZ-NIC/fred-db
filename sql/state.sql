@@ -21,8 +21,9 @@ comment on column enum_object_states.types is 'what types of objects can have th
 comment on column enum_object_states.manual is 'if this status is set manualy';
 comment on column enum_object_states.external is 'if this status is exported to public';
 
--- Watch out! Do not use the letter "|" (vertival line) in the names.
--- It is used as a separator in functions get_object_states and external_state_description.
+--
+-- Watch out! Do not use chars "#" and "&" in the text. They are used as delimiters in get_state_descriptions().
+--
 INSERT INTO enum_object_states 
   VALUES (01,'serverDeleteProhibited','{1,2,3}','t','t', 15*2);
 INSERT INTO enum_object_states 
@@ -91,8 +92,9 @@ comment on table enum_object_states_desc is 'description for states in different
 comment on column enum_object_states_desc.lang is 'code of language';
 comment on column enum_object_states_desc.description is 'descriptive text';
 
--- Watch out! Do not use the letter "|" (vertival line) in the text.
--- It is used as a separator in functions get_object_states and external_state_description.
+--
+-- Watch out! Do not use chars "#" and "&" in the text. They are used as delimiters in get_state_descriptions().
+--
 INSERT INTO enum_object_states_desc 
   VALUES (01,'CS','Není povoleno smazání');
 INSERT INTO enum_object_states_desc 
@@ -1072,7 +1074,7 @@ SELECT array_to_string(ARRAY((
         array_to_string(ARRAY[eos.external::char,
         COALESCE(eos.importance::varchar, ''),
         eos.name,
-        COALESCE(osd.description, '')], E'\t')
+        COALESCE(osd.description, '')], E'#')
     FROM object_state os
     LEFT JOIN enum_object_states eos ON eos.id = os.state_id
     LEFT JOIN enum_object_states_desc osd ON osd.state_id = eos.id AND lang = $2
@@ -1080,5 +1082,5 @@ SELECT array_to_string(ARRAY((
         AND os.valid_from <= CURRENT_TIMESTAMP
         AND (os.valid_to IS NULL OR os.valid_to > CURRENT_TIMESTAMP)
     ORDER BY eos.importance
-)), E'\n')
+)), E'&')
 $$ LANGUAGE SQL;
