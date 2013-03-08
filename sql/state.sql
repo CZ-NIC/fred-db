@@ -174,7 +174,7 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (20,'CS','Doména vyřazena ze zóny po 30 dnech od expirace');
 INSERT INTO enum_object_states_desc 
-  VALUES (20,'EN','The domain is out of zone after 30 days in expiration');
+  VALUES (20,'EN','The domain is out of zone after 30 days in expiration state');
 INSERT INTO enum_object_states_desc
   VALUES (21,'CS','Kontakt je částečně identifikován');
 INSERT INTO enum_object_states_desc
