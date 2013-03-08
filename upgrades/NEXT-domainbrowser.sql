@@ -45,7 +45,23 @@ UPDATE enum_object_states_desc SET description = 'Je navázán na další zázna
 UPDATE enum_object_states_desc SET description = 'Není povolena změna údajů' WHERE lang = 'CS' AND state_id = 4; -- serverUpdateProhibited
 
 -- Fix error typing:
-UPDATE enum_object_states_desc SET description = 'Není povolena změna určeného registrátora' WHERE lang = 'CS' AND state_id = 3;
+
+UPDATE enum_object_states_desc SET description = 'Deletion unauthorised' WHERE lang = 'EN' AND state_id = 01;
+UPDATE enum_object_states_desc SET description = 'Registration renewal unauthorised' WHERE lang = 'EN' AND state_id = 02;
+UPDATE enum_object_states_desc SET description = 'Sponsoring registrar change unauthorised' WHERE lang = 'EN' AND state_id = 03;
+UPDATE enum_object_states_desc SET description = 'Update unauthorised' WHERE lang = 'EN' AND state_id = 04;
+UPDATE enum_object_states_desc SET description = 'The domain is administratively kept out of zone' WHERE lang = 'EN' AND state_id = 05;
+UPDATE enum_object_states_desc SET description = 'The domain is administratively kept in zone' WHERE lang = 'EN' AND state_id = 06;
+UPDATE enum_object_states_desc SET description = 'The domain expires in 30 days' WHERE lang = 'EN' AND state_id = 08;
+UPDATE enum_object_states_desc SET description = 'The domain is 30 days after expiration' WHERE lang = 'EN' AND state_id = 10;
+UPDATE enum_object_states_desc SET description = 'The domain validation expires in 30 daysThe domain validatio' WHERE lang = 'EN' AND state_id = 11;
+UPDATE enum_object_states_desc SET description = 'The domain validation expires in 15 days' WHERE lang = 'EN' AND state_id = 12;
+UPDATE enum_object_states_desc SET description = 'The domain doesn\'t have associated nsset' WHERE lang = 'EN' AND state_id = 14;
+UPDATE enum_object_states_desc SET description = 'The domain isn\'t generated in the zone' WHERE lang = 'EN' AND state_id = 15;
+UPDATE enum_object_states_desc SET description = 'Has relation to other records in the registry' WHERE lang = 'EN' AND state_id = 16;
+UPDATE enum_object_states_desc SET description = 'Registrant change unauthorised' WHERE lang = 'EN' AND state_id = 18;
+UPDATE enum_object_states_desc SET description = 'The domain will be deleted in 11 days' WHERE lang = 'EN' AND state_id = 19;
+UPDATE enum_object_states_desc SET description = 'The domain is out of zone after 30 days in expiration state' WHERE lang = 'EN' AND state_id = 20;
 
 -- pyfred + domainbrowser
 CREATE OR REPLACE VIEW domains_by_nsset_view AS

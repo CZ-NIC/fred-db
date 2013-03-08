@@ -98,27 +98,27 @@ comment on column enum_object_states_desc.description is 'descriptive text';
 INSERT INTO enum_object_states_desc 
   VALUES (01,'CS','Není povoleno smazání');
 INSERT INTO enum_object_states_desc 
-  VALUES (01,'EN','Delete prohibited');
+  VALUES (01,'EN','Deletion unauthorised');
 INSERT INTO enum_object_states_desc 
   VALUES (02,'CS','Není povoleno prodloužení registrace objektu');
 INSERT INTO enum_object_states_desc 
-  VALUES (02,'EN','Registration renewal prohibited');
+  VALUES (02,'EN','Registration renewal unauthorised');
 INSERT INTO enum_object_states_desc 
   VALUES (03,'CS','Není povolena změna určeného registrátora');
 INSERT INTO enum_object_states_desc 
-  VALUES (03,'EN','Sponsoring registrar change prohibited');
+  VALUES (03,'EN','Sponsoring registrar change unauthorised');
 INSERT INTO enum_object_states_desc 
   VALUES (04,'CS','Není povolena změna údajů');
 INSERT INTO enum_object_states_desc 
-  VALUES (04,'EN','Update prohibited');
+  VALUES (04,'EN','Update unauthorised');
 INSERT INTO enum_object_states_desc 
   VALUES (05,'CS','Doména je administrativně vyřazena ze zóny');
 INSERT INTO enum_object_states_desc 
-  VALUES (05,'EN','Domain is administratively kept out of zone');
+  VALUES (05,'EN','The domain is administratively kept out of zone');
 INSERT INTO enum_object_states_desc 
   VALUES (06,'CS','Doména je administrativně zařazena do zóny');
 INSERT INTO enum_object_states_desc 
-  VALUES (06,'EN','Domain is administratively kept in zone');
+  VALUES (06,'EN','The domain is administratively kept in zone');
 INSERT INTO enum_object_states_desc 
   VALUES (07,'CS','Doména je blokována');
 INSERT INTO enum_object_states_desc 
@@ -126,23 +126,23 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (08,'CS','Doména expiruje do 30 dní');
 INSERT INTO enum_object_states_desc 
-  VALUES (08,'EN','Expires within 30 days');
+  VALUES (08,'EN','The domain expires in 30 days');
 INSERT INTO enum_object_states_desc 
   VALUES (09,'CS','Doména je po expiraci');
 INSERT INTO enum_object_states_desc 
-  VALUES (09,'EN','Expired');
+  VALUES (09,'EN','Domain expired');
 INSERT INTO enum_object_states_desc 
   VALUES (10,'CS','Doména je 30 dnů po expiraci');
 INSERT INTO enum_object_states_desc 
-  VALUES (10,'EN','Domain is 30 days after expiration');
+  VALUES (10,'EN','The domain is 30 days after expiration');
 INSERT INTO enum_object_states_desc 
   VALUES (11,'CS','Validace domény skončí za 30 dní');
 INSERT INTO enum_object_states_desc 
-  VALUES (11,'EN','Validation of domain expire in 30 days');
+  VALUES (11,'EN','The domain validation expires in 30 days');
 INSERT INTO enum_object_states_desc 
   VALUES (12,'CS','Validace domény skončí za 15 dní');
 INSERT INTO enum_object_states_desc 
-  VALUES (12,'EN','Validation of domain expire in 15 days');
+  VALUES (12,'EN','The domain validation expires in 15 days');
 INSERT INTO enum_object_states_desc 
   VALUES (13,'CS','Doména není validována');
 INSERT INTO enum_object_states_desc 
@@ -150,15 +150,15 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (14,'CS','Doména nemá přiřazen nsset');
 INSERT INTO enum_object_states_desc 
-  VALUES (14,'EN','Domain has not associated nsset');
+  VALUES (14,'EN','The domain doesn\'t have associated nsset');
 INSERT INTO enum_object_states_desc 
   VALUES (15,'CS','Doména není generována do zóny');
 INSERT INTO enum_object_states_desc 
-  VALUES (15,'EN','Domain is not generated into zone');
+  VALUES (15,'EN','The domain isn\'t generated in the zone');
 INSERT INTO enum_object_states_desc 
   VALUES (16,'CS','Je navázán na další záznam v registru');
 INSERT INTO enum_object_states_desc 
-  VALUES (16,'EN','Has relation to other records in registry');
+  VALUES (16,'EN','Has relation to other records in the registry');
 INSERT INTO enum_object_states_desc 
   VALUES (17,'CS','Určeno ke zrušení');
 INSERT INTO enum_object_states_desc 
@@ -166,15 +166,15 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (18,'CS','Není povolena změna držitele');
 INSERT INTO enum_object_states_desc 
-  VALUES (18,'EN','Registrant change prohibited');
+  VALUES (18,'EN','Registrant change unauthorised');
 INSERT INTO enum_object_states_desc 
   VALUES (19,'CS','Registrace domény bude zrušena za 11 dní');
 INSERT INTO enum_object_states_desc 
-  VALUES (19,'EN','Domain will be deleted in 11 days');
+  VALUES (19,'EN','The domain will be deleted in 11 days');
 INSERT INTO enum_object_states_desc 
   VALUES (20,'CS','Doména vyřazena ze zóny po 30 dnech od expirace');
 INSERT INTO enum_object_states_desc 
-  VALUES (20,'EN','Domain is out of zone after 30 days from expiration');
+  VALUES (20,'EN','The domain is out of zone after 30 days in expiration');
 INSERT INTO enum_object_states_desc
   VALUES (21,'CS','Kontakt je částečně identifikován');
 INSERT INTO enum_object_states_desc
@@ -191,8 +191,6 @@ INSERT INTO enum_object_states_desc
   VALUES (24,'CS','MojeID kontakt');
 INSERT INTO enum_object_states_desc
   VALUES (24,'EN','MojeID contact');
-
-
 
 -- main table of object states and their changes
 CREATE TABLE object_state (
