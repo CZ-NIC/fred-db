@@ -231,6 +231,13 @@ CREATE TABLE ENUMVal (
         ExDate date NOT NULL,
         publish BOOLEAN NOT NULL DEFAULT false
         );
+        
+---
+--- Ticket #7873
+---
+
+-- enumval domainid unique constraint
+ALTER TABLE enumval ADD CONSTRAINT enumval_domainid_key UNIQUE (domainid);
 
 ---
 --- #7652
