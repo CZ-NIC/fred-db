@@ -42,6 +42,31 @@ Následující duplicitní kontakty byly odstraněny:<?cs each:item = removed_li
 
                                             S pozdravem
                                             podpora <?cs var:defaults.company ?>
+
+Information concerning the merging of duplicate entries
+
+Dear Customer,
+
+    To simplify the administration and management of contact data in the register, the following changes have been implemented in accordance with the Domain Name Registration Rules, Section 11.10:
+Duplicate contact entries with different identifiers but identical contents were unified. All duplicate contact details were merged into a single entry carrying the identifier <?cs var:dst_contact_handle ?>. The identification number of the request is <?cs var:request_id ?>.
+
+<?cs if:domain_registrant_list.0 ?>Holders were changed for the following domains:<?cs each:item = domain_registrant_list ?>
+    <?cs var:item ?><?cs /each ?><?cs /if ?><?cs if:domain_admin_list.0 ?>
+
+Administrative contacts were changed for the following domains:<?cs each:item = domain_admin_list ?>
+    <?cs var:item ?><?cs /each ?><?cs /if ?><?cs if:nsset_tech_list.0 ?>
+
+Technical contacts were changed for the following nameserver sets:<?cs each:item = nsset_tech_list ?>
+    <?cs var:item ?><?cs /each ?><?cs /if ?><?cs if:keyset_tech_list.0 ?>
+
+Technical contacts were changed for the following key sets:<?cs each:item = keyset_tech_list ?>
+    <?cs var:item ?><?cs /each ?><?cs /if ?><?cs if:removed_list.0 ?>
+
+The following duplicate contact entries were removed:<?cs each:item = removed_list ?>
+    <?cs var:item ?><?cs /each ?><?cs /if ?>
+
+                                            Yours sincerely
+                                            support <?cs var:defaults.company ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (28, 28);
 
