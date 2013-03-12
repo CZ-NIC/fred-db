@@ -911,7 +911,7 @@ Oznámení o sloučení duplicitních záznamů
 Vážený zákazníku,
 
     z důvodu zjednodušení administrace a správy kontaktů v registru byly v souladu s Pravidly registrace doménových jmen odstavec 11.10 provedeny následující změny:
-Došlo ke sjednocení duplicitních kontaktů, které mají různé identifikátory a přitom obsahují shodné údaje. Všechny duplicitní kontakty byly převedeny pod jeden s identifikátorem <?cs var:dst_contact_handle ?>. Identifikační číslo požadavku je <?cs var:request_id ?>.
+Došlo ke sjednocení duplicitních kontaktů, které mají různé identifikátory a přitom obsahují shodné údaje. Všechny duplicitní kontakty byly převedeny pod jeden s identifikátorem <?cs var:dst_contact_handle ?>
 
 <?cs if:domain_registrant_list.0 ?>Držitel byl změněn u domén:<?cs each:item = domain_registrant_list ?>
     <?cs var:item ?><?cs /each ?><?cs /if ?><?cs if:domain_admin_list.0 ?>
