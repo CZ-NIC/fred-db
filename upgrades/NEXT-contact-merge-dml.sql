@@ -23,7 +23,7 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 Vážený zákazníku,
 
     z důvodu zjednodušení administrace a správy kontaktů v registru byly v souladu s Pravidly registrace doménových jmen odstavec 11.10 provedeny následující změny:
-Došlo ke sjednocení duplicitních kontaktů, které mají různé identifikátory a přitom obsahují shodné údaje. Všechny duplicitní kontakty byly převedeny pod jeden s identifikátorem <?cs var:dst_contact_handle ?>. Identifikační číslo požadavku je <?cs var:request_id ?>.
+Došlo ke sjednocení duplicitních kontaktů, které mají různé identifikátory a přitom obsahují shodné údaje. Všechny duplicitní kontakty byly převedeny pod jeden s identifikátorem <?cs var:dst_contact_handle ?>
 
 <?cs if:domain_registrant_list.0 ?>Držitel byl změněn u domén:<?cs each:item = domain_registrant_list ?>
     <?cs var:item ?><?cs /each ?><?cs /if ?><?cs if:domain_admin_list.0 ?>
@@ -48,7 +48,7 @@ Information concerning the merging of duplicate entries
 Dear Customer,
 
     To simplify the administration and management of contact data in the register, the following changes have been implemented in accordance with the Domain Name Registration Rules, Section 11.10:
-Duplicate contact entries with different identifiers but identical contents were unified. All duplicate contact details were merged into a single entry carrying the identifier <?cs var:dst_contact_handle ?>. The identification number of the request is <?cs var:request_id ?>.
+Duplicate contact entries with different identifiers but identical contents were unified. All duplicate contact details were merged into a single entry carrying the identifier <?cs var:dst_contact_handle ?>.
 
 <?cs if:domain_registrant_list.0 ?>Holders were changed for the following domains:<?cs each:item = domain_registrant_list ?>
     <?cs var:item ?><?cs /each ?><?cs /if ?><?cs if:domain_admin_list.0 ?>
