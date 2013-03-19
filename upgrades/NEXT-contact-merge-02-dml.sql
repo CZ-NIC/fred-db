@@ -17,6 +17,11 @@ UPDATE MessageType SET name = 'idle_delete_domain' WHERE id = 8;
 UPDATE MessageType SET name = 'idle_delete_keyset' WHERE id = 15;
 
 ---
+---
+---
+INSERT INTO MessageType VALUES (20, 'delete_contact');
+
+---
 --- Ticket #7732
 ---
 INSERT INTO mail_type (id, name, subject) VALUES (28, 'merge_contacts_auto', 'Oznámení o sloučení duplicitních záznamů');
