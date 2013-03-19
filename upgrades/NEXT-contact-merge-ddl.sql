@@ -65,3 +65,9 @@ $$ LANGUAGE plpgsql;
 
 SELECT  create_unnest_if_missing();
 
+
+---
+--- Ticket #7873 - enumval domainid unique constraint
+---
+ALTER TABLE enumval ADD CONSTRAINT enumval_domainid_key UNIQUE (domainid);
+
