@@ -11,6 +11,10 @@ INSERT INTO MessageType VALUES (17, 'update_domain');
 INSERT INTO MessageType VALUES (18, 'update_nsset');
 INSERT INTO MessageType VALUES (19, 'update_keyset');
 
+UPDATE MessageType SET name = 'idle_delete_contact' WHERE id = 6;
+UPDATE MessageType SET name = 'idle_delete_nsset' WHERE id = 7;
+UPDATE MessageType SET name = 'idle_delete_domain' WHERE id = 8;
+UPDATE MessageType SET name = 'idle_delete_keyset' WHERE id = 15;
 
 ---
 --- Ticket #7732
