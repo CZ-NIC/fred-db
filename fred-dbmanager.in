@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export PGHOST=@DBHOST@
+
 get_num_connections () {
     CONNECTIONSQL="SELECT GREATEST(COUNT(*)-1,0) FROM pg_stat_activity"
     @PGBINDIR@/psql -d @DBNAME@ -U @DBUSER@ -At -p @DBPORT@ \
