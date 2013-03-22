@@ -207,7 +207,7 @@ create_upgrade_script () {
     upgradesqldir=@datadir@/@PACKAGE@/upgrades/
     curr_dir=`pwd`
     cd $upgradesqldir
-    for i in `ls *.sql`
+    for i in `ls *.sql | sort -V`
     do
         vv=`echo $i | sed -r 's/([0-9_]+)-([0-9_]+)\.sql/\1/' | sed '/_/s//\./g'`
         compare_versions $1 $vv
