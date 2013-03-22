@@ -8,19 +8,20 @@ INSERT INTO MessageType VALUES (02, 'techcheck');
 INSERT INTO MessageType VALUES (03, 'transfer_contact');
 INSERT INTO MessageType VALUES (04, 'transfer_nsset');
 INSERT INTO MessageType VALUES (05, 'transfer_domain');
-INSERT INTO MessageType VALUES (06, 'delete_contact');
-INSERT INTO MessageType VALUES (07, 'delete_nsset');
-INSERT INTO MessageType VALUES (08, 'delete_domain');
+INSERT INTO MessageType VALUES (06, 'idle_delete_contact');
+INSERT INTO MessageType VALUES (07, 'idle_delete_nsset');
+INSERT INTO MessageType VALUES (08, 'idle_delete_domain');
 INSERT INTO MessageType VALUES (09, 'imp_expiration');
 INSERT INTO MessageType VALUES (10, 'expiration');
 INSERT INTO MessageType VALUES (11, 'imp_validation');
 INSERT INTO MessageType VALUES (12, 'validation');
 INSERT INTO MessageType VALUES (13, 'outzone');
 INSERT INTO MessageType VALUES (14, 'transfer_keyset');
-INSERT INTO MessageType VALUES (15, 'delete_keyset');
+INSERT INTO MessageType VALUES (15, 'idle_delete_keyset');
 INSERT INTO MessageType VALUES (17, 'update_domain');
 INSERT INTO MessageType VALUES (18, 'update_nsset');
 INSERT INTO MessageType VALUES (19, 'update_keyset');
+INSERT INTO MessageType VALUES (20, 'delete_contact');
 
 comment on table MessageType is
 'table with message number codes and its names
