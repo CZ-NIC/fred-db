@@ -197,52 +197,44 @@ compare_versions () {
     return 0
 }
 
-#add content of $2 file to $1 file
-add_to_list () {
-    cat $2 >> $1
-}
-
-# create upgrade sctipt against version in $1 and store it in file $2
-create_upgrade_script () {
+f_upgrade () {
+    test_db
+    if [ $? != 0 ]
+    then
+        echo "@DBNAME@ database does not exist or postgres server does not running."
+        exit 1
+    fi
+    ver=$(get_db_version)
+    upgrade_script="/tmp/fred-upgrade.sql.$$"
     prefix=@prefix@
     datarootdir=@datarootdir@
     upgradesqldir=@datadir@/@PACKAGE@/upgrades/
     curr_dir=`pwd`
     cd $upgradesqldir
-    for i in `ls *.sql | sort -V`
+    for FILE in `ls *.sql | sort -V`
     do
-        vv=`echo $i | sed -r 's/([0-9_]+)-([0-9_]+)\.sql/\1/' | sed '/_/s//\./g'`
-        compare_versions $1 $vv
-        last=$?
-        if [ $last = 0 ]
+        FILE_VER=`echo $FILE | sed -r 's/^([0-9.]+)-([0-9.]+).*\.sql/\1/'`
+	if [ "$FILE_VER" = "$FILE" ]; then break; fi
+        compare_versions $ver $FILE_VER
+        if [ $? != 1 ]
         then
-            vvv=`echo $i | sed -r 's/([0-9_]+)-([0-9_]+)\.sql/\2/' | sed '/_/s//\./g'`
-            compare_versions $1 $vvv
-            if [ $? = 2 ]
-            then
-                add_to_list $2 $i
-            fi
-        elif [ $last = 2 ]
-        then
-            add_to_list $2 $i
+	    # if filename contains "superuser", psql will be running as
+	    # superuser
+	    USER="-U @DBUSER@"
+	    echo $FILE | grep "superuser" > /dev/null && USER=""
+	    @PGBINDIR@/psql --set ON_ERROR_STOP=1 @DBNAME@ $USER -p @DBPORT@ -f $FILE > /tmp/aaa 2>&1
+	    res=$?
+            echo -n $FILE
+	    if [ "$res" = "0" ]; then 
+		echo " OK";
+	    else
+		echo " Failed (check /tmp/aaa)"
+		grep -i error /tmp/aaa
+		break;
+	    fi
         fi
-
     done
     cd $curr_dir
-}
-
-f_upgrade () {
-    test_db
-    if [ $? != 0 ]
-    then
-        echo "@DBNAME@ database does not exist or postgres server does not runnint."
-        exit 1
-    fi
-    ver=$(get_db_version)
-    upgrade_script="/tmp/fred-upgrade.sql.$$"
-    create_upgrade_script $ver $upgrade_script
-    @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -p @PDBORT@ \
-                    -f $upgrade_script >/dev/null 2>&1
 }
 
 f_status () {
@@ -353,6 +345,17 @@ f_create_parts() {
     fi
 }
 
+f_shell() {
+    test_db
+    shift
+    @PGBINDIR@/psql -d @DBNAME@ -U @DBUSER@ -p @DBPORT@ $@
+}
+
+f_schema() {
+    test_db
+    @PGBINDIR@/pg_dump -U @DBUSER@ -p @DBPORT@ @DBNAME@
+}
+
 case $1 in
     "install") f_install;;
     "uninstall") f_uninstall;;
@@ -362,6 +365,8 @@ case $1 in
     "create_partitions") f_create_parts $2 $3;;
     "list_partitions") list_parts_worker;;
     "drop_partitions") f_drop_parts;;
+    "shell" ) f_shell $@;;
+    "schema" ) f_schema;;
     "help" ) f_usage;;
     "") f_usage;;
     *)
