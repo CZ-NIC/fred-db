@@ -1,3 +1,14 @@
+2013-04-02 Jiri Sadek, Jan Zime (2.13.0)
+
+    * contact merge auto procedure
+        - email templates
+        - logger request types
+
+	* object update poll messages types
+
+	* schema fixes - add enumval constraint
+	               - add enum_object_type table
+
 2012-11-23 Jaromir Talir (2.12.2)
 
     * add new letter type (mojeid_pin3_reminder)
