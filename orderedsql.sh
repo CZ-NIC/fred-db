@@ -109,6 +109,7 @@ case "$1" in
         cat $DIR/logger_dml_domainbrowser.sql
         cat $DIR/logger_dml.sql
         cat $DIR/logger_dml_pubrequest_result.sql
+        cat $DIR/logger_dml_admin.sql
         cat $DIR/logger_partitioning.sql
 		;;
 esac
