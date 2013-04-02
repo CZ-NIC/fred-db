@@ -64,14 +64,6 @@ INSERT INTO enum_object_states
   VALUES (19,'deleteWarning','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
   VALUES (20,'outzoneUnguarded','{3}','f','f', NULL);
-INSERT INTO enum_object_states
-  VALUES (21,'conditionallyIdentifiedContact','{1}','t','t', 5*2);
-INSERT INTO enum_object_states
-  VALUES (22,'identifiedContact','{1}','t','t', 4*2);
-INSERT INTO enum_object_states
-  VALUES (23,'validatedContact','{1}','t','t', 6*2);
-INSERT INTO enum_object_states
-  VALUES (24,'mojeidContact','{1}','t','t', 2*2);
 
 
 -- update for keyset
@@ -150,11 +142,11 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (14,'CS','Doména nemá přiřazen nsset');
 INSERT INTO enum_object_states_desc 
-  VALUES (14,'EN','The domain doesn\'t have associated nsset');
+  VALUES (14,'EN','The domain doesn''t have associated nsset');
 INSERT INTO enum_object_states_desc 
   VALUES (15,'CS','Doména není generována do zóny');
 INSERT INTO enum_object_states_desc 
-  VALUES (15,'EN','The domain isn\'t generated in the zone');
+  VALUES (15,'EN','The domain isn''t generated in the zone');
 INSERT INTO enum_object_states_desc 
   VALUES (16,'CS','Je navázán na další záznam v registru');
 INSERT INTO enum_object_states_desc 
@@ -175,22 +167,7 @@ INSERT INTO enum_object_states_desc
   VALUES (20,'CS','Doména vyřazena ze zóny po 30 dnech od expirace');
 INSERT INTO enum_object_states_desc 
   VALUES (20,'EN','The domain is out of zone after 30 days in expiration state');
-INSERT INTO enum_object_states_desc
-  VALUES (21,'CS','Kontakt je částečně identifikován');
-INSERT INTO enum_object_states_desc
-  VALUES (21,'EN','Contact is conditionally identified');
-INSERT INTO enum_object_states_desc
-  VALUES (22,'CS','Kontakt je identifikován');
-INSERT INTO enum_object_states_desc
-  VALUES (22,'EN','Contact is identified');
-INSERT INTO enum_object_states_desc
-  VALUES (23,'CS','Kontakt je validován');
-INSERT INTO enum_object_states_desc
-  VALUES (23,'EN','Contact is validated');
-INSERT INTO enum_object_states_desc
-  VALUES (24,'CS','MojeID kontakt');
-INSERT INTO enum_object_states_desc
-  VALUES (24,'EN','MojeID contact');
+
 
 -- main table of object states and their changes
 CREATE TABLE object_state (
