@@ -238,11 +238,11 @@ AC_ARG_WITH([dbport], [AS_HELP_STRING([--with-dbport],
             ### [AC_SUBST([DBPASS], [$withval])],
             ### [AC_SUBST([DBPASS], [""])])
 
-### #database host
-### AC_ARG_WITH([hostname], [AS_HELP_STRING([--with-hostname],
-            ### [Database host address [localhost]])],
-            ### [AC_SUBST([HOSTNAME], [$withval])],
-            ### [AC_SUBST([HOSTNAME], [localhost])])
+#database host
+AC_ARG_WITH([hostname], [AS_HELP_STRING([--with-dbhost],
+            [Database host address [localhost]])],
+            [AC_SUBST([DBHOST], [$withval])],
+            [AC_SUBST([DBHOST], [localhost])])
 
 #database cidr-address for IPv4(in file pg_hba.conf)
 AC_ARG_WITH([cidripv4], [AS_HELP_STRING([--with-cidripv4],

@@ -54,8 +54,6 @@ CREATE TABLE price_list
     enable_postpaid_operation boolean DEFAULT 'false'
 );
 
-ALTER TABLE price_list OWNER TO fred;
-
 COMMENT ON TABLE price_list IS 'list of operation prices';
 COMMENT ON COLUMN price_list.id IS 'unique automatically generated identifier';
 COMMENT ON COLUMN price_list.zone_id IS 'link to zone, for which is price list valid if it is domain (if it is not domain then it is NULL)';
@@ -80,8 +78,6 @@ CREATE TABLE invoice_prefix
     prefix bigint, -- counter with prefix of number line invoice
     CONSTRAINT invoice_prefix_zone_key UNIQUE (zone_id, typ, year)
 );
-
-ALTER TABLE invoice_prefix OWNER TO fred;
 
 COMMENT ON TABLE invoice_prefix IS 'list of invoice prefixes';
 COMMENT ON COLUMN invoice_prefix.zone_id IS 'reference to zone';
@@ -111,8 +107,6 @@ CREATE TABLE invoice
    file INTEGER REFERENCES files,-- link to generated PDF (it can be null till is generated)
    fileXML INTEGER REFERENCES files -- link to generated XML (it can be null till is generated)
 );
-
-ALTER TABLE invoice OWNER TO fred;
 
 COMMENT ON TABLE invoice IS 'table of invoices';
 COMMENT ON COLUMN invoice.id IS 'unique automatically generated identifier';
@@ -144,8 +138,6 @@ CREATE TABLE registrar_credit
     CONSTRAINT registrar_credit_unique_key UNIQUE (registrar_id, zone_id)
 );
 
-ALTER TABLE registrar_credit OWNER TO fred;
-
 COMMENT ON TABLE registrar_credit IS 'current credit by registrar and zone';
 
 
@@ -159,8 +151,6 @@ CREATE TABLE registrar_credit_transaction
     balance_change numeric(10,2) NOT NULL,
     registrar_credit_id bigint NOT NULL REFERENCES registrar_credit(id)
 );
-
-ALTER TABLE registrar_credit_transaction OWNER TO fred;
 
 COMMENT ON TABLE registrar_credit_transaction IS 'balance changes';
 
@@ -183,8 +173,6 @@ CREATE TABLE invoice_operation
     quantity integer default 0, -- number of unit for renew in months
     registrar_credit_transaction_id bigint UNIQUE NOT NULL REFERENCES registrar_credit_transaction(id)
 );
-
-ALTER TABLE invoice_operation OWNER TO fred;
 
 COMMENT ON COLUMN invoice_operation.id IS 'unique automatically generated identifier';
 COMMENT ON COLUMN invoice_operation.ac_invoice_id IS 'id of invoice for which is item counted';
@@ -210,8 +198,6 @@ CREATE TABLE invoice_operation_charge_map
     PRIMARY KEY ( invoice_operation_id ,  invoice_id ) -- unique key
 );
 
-ALTER TABLE invoice_operation_charge_map OWNER TO fred;
-
 COMMENT ON COLUMN invoice_operation_charge_map.invoice_id IS 'id of advanced invoice';
 COMMENT ON COLUMN invoice_operation_charge_map.price IS 'operation cost';
 
@@ -230,8 +216,6 @@ CREATE TABLE invoice_credit_payment_map
     balance numeric(10,2)  NOT NULL DEFAULT 0.0, -- actual tax balance advance invoice
     PRIMARY KEY (ac_invoice_id, ad_invoice_id)
 );
-
-ALTER TABLE invoice_credit_payment_map OWNER TO fred;
 
 COMMENT ON COLUMN invoice_credit_payment_map.ac_invoice_id IS 'id of normal invoice';
 COMMENT ON COLUMN invoice_credit_payment_map.ad_invoice_id IS 'id of advance invoice';
@@ -255,8 +239,6 @@ CREATE TABLE invoice_generation
     zone_id INTEGER REFERENCES Zone (id),
     invoice_id INTEGER REFERENCES invoice (id) -- id of normal invoice
 );
-
-ALTER TABLE invoice_generation OWNER TO fred;
 
 COMMENT ON COLUMN invoice_generation.id IS 'unique automatically generated identifier';
 COMMENT ON COLUMN invoice_generation.invoice_id IS 'id of normal invoice';
@@ -296,8 +278,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-ALTER FUNCTION registrar_credit_change_lock() OWNER TO fred;
-
 COMMENT ON FUNCTION registrar_credit_change_lock()
         IS 'check and lock insert into registrar_credit_transaction disable update and delete';
 
@@ -313,8 +293,6 @@ CREATE TABLE bank_payment_registrar_credit_transaction_map
     registrar_credit_transaction_id bigint UNIQUE NOT NULL REFERENCES registrar_credit_transaction(id)
 );
 
-ALTER TABLE bank_payment_registrar_credit_transaction_map OWNER TO fred;
-
 COMMENT ON TABLE bank_payment_registrar_credit_transaction_map
         IS 'payment assigned to credit items';
 
@@ -329,8 +307,6 @@ CREATE TABLE invoice_registrar_credit_transaction_map
     invoice_id bigint NOT NULL REFERENCES invoice(id),
     registrar_credit_transaction_id bigint UNIQUE NOT NULL REFERENCES registrar_credit_transaction(id)
 );
-
-ALTER TABLE invoice_registrar_credit_transaction_map OWNER TO fred;
 
 COMMENT ON TABLE invoice_registrar_credit_transaction_map 
         IS 'positive credit item from payment assigned to deposit or account invoice';
@@ -349,8 +325,6 @@ CREATE TABLE registrar_disconnect
     unblock_request_id BIGINT
 );
 
-ALTER TABLE registrar_disconnect OWNER TO fred;
-
 COMMENT ON TABLE registrar_disconnect IS 'registrars with blocked access to registry';
 
 
@@ -364,8 +338,6 @@ CREATE TABLE request_fee_registrar_parameter
     email varchar(200) NOT NULL,
     telephone varchar(64) NOT NULL
 );
-
-ALTER TABLE request_fee_registrar_parameter OWNER TO fred;
 
 COMMENT ON TABLE request_fee_registrar_parameter IS 'parameters for request fee module';
 COMMENT ON COLUMN request_fee_registrar_parameter.request_price_limit IS 'limit for requests price (when reached, registrar is blocked)';

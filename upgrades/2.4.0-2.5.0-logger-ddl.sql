@@ -63,6 +63,7 @@ END;
 $tr_request$ LANGUAGE plpgsql;
 */
 
+DROP FUNCTION tr_request_data(entry_time_begin timestamp without time zone, entry_service integer, entry_monitoring boolean, entry_id integer, content text, is_response boolean) CASCADE;
 CREATE OR REPLACE FUNCTION tr_request_data(request_time_begin timestamp, request_service_id INTEGER,  request_monitoring BOOLEAN, request_id INTEGER, content TEXT, is_response BOOLEAN) RETURNS VOID AS $tr_request_data$
 DECLARE 
         table_name VARCHAR(50);
@@ -90,7 +91,7 @@ EXCEPTION
 END;
 $tr_request_data$ LANGUAGE plpgsql;
 
-
+DROP FUNCTION tr_request_property_value(entry_time_begin timestamp without time zone, entry_service integer, entry_monitoring boolean, id integer, entry_id integer, name_id integer, value text, output boolean, parent_id integer) CASCADE;
 CREATE OR REPLACE FUNCTION tr_request_property_value(request_time_begin TIMESTAMP WITHOUT TIME ZONE, request_service_id INTEGER, request_monitoring BOOLEAN, id INTEGER, request_id INTEGER, property_name_id INTEGER, value TEXT, output BOOLEAN, parent_id INTEGER) RETURNS VOID AS $tr_request_property_value$
 DECLARE 
         table_name VARCHAR(50);
@@ -140,7 +141,7 @@ BEGIN
 END;
 $partition_postfix_alt$ LANGUAGE plpgsql;
 
-
+DROP FUNCTION create_tbl_request(time_begin timestamp without time zone, service integer, monitoring boolean);
 CREATE OR REPLACE FUNCTION create_tbl_request(time_begin TIMESTAMP WITHOUT TIME ZONE, service_id INTEGER, monitoring BOOLEAN) RETURNS VOID AS $create_tbl_request$
 DECLARE 
         table_name VARCHAR(60);
@@ -198,6 +199,7 @@ BEGIN
 END;
 $create_indexes_request$ LANGUAGE plpgsql;
 
+DROP FUNCTION create_tbl_request_data(time_begin TIMESTAMP WITHOUT TIME ZONE, service INTEGER, monitoring BOOLEAN);
 CREATE OR REPLACE FUNCTION create_tbl_request_data(time_begin TIMESTAMP WITHOUT TIME ZONE, service_id INTEGER, monitoring BOOLEAN) RETURNS VOID AS $create_tbl_request_data$
 DECLARE 
         table_name VARCHAR(60);
@@ -247,6 +249,7 @@ BEGIN
 END;
 $create_indexes_request_data$ LANGUAGE plpgsql;
 
+DROP FUNCTION create_tbl_request_property_value(time_begin TIMESTAMP WITHOUT TIME ZONE, service INTEGER, monitoring BOOLEAN);
 CREATE OR REPLACE FUNCTION create_tbl_request_property_value(time_begin TIMESTAMP WITHOUT TIME ZONE, service_id INTEGER, monitoring BOOLEAN) RETURNS VOID AS $create_tbl_request_property_value$
 DECLARE 
         table_name VARCHAR(60);
@@ -367,7 +370,7 @@ ALTER TABLE request_property_name ADD UNIQUE (name);
 ALTER TABLE request ADD COLUMN user_id INTEGER;
 
 
-
+DROP FUNCTION tr_request(id integer, time_begin timestamp without time zone, time_end timestamp without time zone, source_ip inet, service integer, action_type integer, session_id integer, user_name character varying, is_monitoring boolean) CASCADE;
 CREATE OR REPLACE FUNCTION tr_request(id INTEGER, time_begin TIMESTAMP WITHOUT TIME ZONE, time_end TIMESTAMP WITHOUT TIME ZONE, source_ip INET, service_id INTEGER, request_type_id INTEGER, session_id INTEGER, user_name VARCHAR(255), user_id INTEGER, is_monitoring BOOLEAN ) RETURNS VOID AS $tr_request$
 DECLARE 
         table_name VARCHAR(50);

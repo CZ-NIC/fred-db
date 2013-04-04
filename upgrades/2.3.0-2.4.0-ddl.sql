@@ -275,11 +275,3 @@ DROP TABLE bank_statement_item;
 DROP TABLE bank_statement_head;
 
 
----
---- set owner to fred user for new tables
----
-ALTER TABLE registrar_certification OWNER TO fred;
-ALTER TABLE registrar_group OWNER TO fred;
-ALTER TABLE registrar_group_map OWNER TO fred;
-ALTER TABLE letter_archive OWNER TO fred;
-ALTER TABLE enum_send_status OWNER TO fred;
