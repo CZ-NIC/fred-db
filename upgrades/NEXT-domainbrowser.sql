@@ -54,7 +54,7 @@ UPDATE enum_object_states_desc SET description = 'The domain is administratively
 UPDATE enum_object_states_desc SET description = 'The domain is administratively kept in zone' WHERE lang = 'EN' AND state_id = 06;
 UPDATE enum_object_states_desc SET description = 'The domain expires in 30 days' WHERE lang = 'EN' AND state_id = 08;
 UPDATE enum_object_states_desc SET description = 'The domain is 30 days after expiration' WHERE lang = 'EN' AND state_id = 10;
-UPDATE enum_object_states_desc SET description = 'The domain validation expires in 30 daysThe domain validatio' WHERE lang = 'EN' AND state_id = 11;
+UPDATE enum_object_states_desc SET description = 'The domain validation expires in 30 days' WHERE lang = 'EN' AND state_id = 11;
 UPDATE enum_object_states_desc SET description = 'The domain validation expires in 15 days' WHERE lang = 'EN' AND state_id = 12;
 UPDATE enum_object_states_desc SET description = 'The domain doesn''t have associated nsset' WHERE lang = 'EN' AND state_id = 14;
 UPDATE enum_object_states_desc SET description = 'The domain isn''t generated in the zone' WHERE lang = 'EN' AND state_id = 15;
