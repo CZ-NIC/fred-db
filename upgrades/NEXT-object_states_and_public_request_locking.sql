@@ -21,11 +21,12 @@ END;
 $$ LANGUAGE plpgsql;
 
 
+DROP FUNCTION lock_object_state_request();
+
 -- lock object_state_request for manual states
 CREATE OR REPLACE FUNCTION lock_object_state_request()
 RETURNS "trigger" AS $$
 DECLARE
-max_id_to_delete BIGINT;
 BEGIN
   --lock for manual states
   PERFORM * FROM enum_object_states WHERE id = NEW.state_id AND manual = true;
@@ -40,6 +41,9 @@ BEGIN
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION lock_object_state_request()
+IS 'lock changes of object state requests by object';
 
 
 
