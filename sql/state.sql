@@ -964,25 +964,20 @@ CREATE TRIGGER trigger_object_history AFTER INSERT
 
 ---
 --- Ticket #7122 - lock object_state_request for manual state insert or update by state and object to the end of db transaction
+--- Ticket #8135 - lock object_state_request for state insert or update by object to the end of db transaction
 ---
 
 CREATE TABLE object_state_request_lock
 (
-    id bigserial PRIMARY KEY -- lock id
-    , state_id integer NOT NULL REFERENCES enum_object_states (id)
-    , object_id integer NOT NULL --REFERENCES object_registry (id)
+    object_id integer PRIMARY KEY --REFERENCES object_registry (id)
 );
 
-CREATE OR REPLACE FUNCTION lock_object_state_request_lock( f_state_id BIGINT, f_object_id BIGINT)
+CREATE OR REPLACE FUNCTION lock_object_state_request_lock(f_object_id BIGINT)
 RETURNS void AS $$
 DECLARE
 BEGIN
-    PERFORM * FROM object_state_request_lock
-    WHERE state_id = f_state_id
-    AND object_id = f_object_id ORDER BY id FOR UPDATE; --wait if locked
-    IF NOT FOUND THEN
-        RAISE EXCEPTION 'Failed to lock state_id: % object_id: %', f_state_id, f_object_id;
-    END IF;
+    INSERT INTO object_state_request_lock (object_id) VALUES (f_object_id);
+    DELETE FROM object_state_request_lock WHERE object_id = f_object_id;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -1001,26 +996,14 @@ BEGIN
   
   RAISE NOTICE 'lock_object_state_request NEW.id: % NEW.state_id: % NEW.object_id: %'
   , NEW.id, NEW.state_id, NEW.object_id ;
-    PERFORM lock_object_state_request_lock( NEW.state_id, NEW.object_id);
-  --try cleanup
-  BEGIN
-    SELECT MAX(id) - 100 FROM object_state_request_lock INTO max_id_to_delete;
-    PERFORM * FROM object_state_request_lock
-      WHERE id < max_id_to_delete FOR UPDATE NOWAIT;
-    IF FOUND THEN
-      DELETE FROM object_state_request_lock
-        WHERE id < max_id_to_delete;
-    END IF;
-  EXCEPTION WHEN lock_not_available THEN
-    RAISE NOTICE 'cleanup lock not available';
-  END;
+    PERFORM lock_object_state_request_lock(NEW.object_id);
 
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION lock_object_state_request()
-IS 'lock changes of object state requests by object and state';
+IS 'lock changes of object state requests by object';
 
 CREATE TRIGGER "trigger_lock_object_state_request"
   AFTER INSERT OR UPDATE ON object_state_request
