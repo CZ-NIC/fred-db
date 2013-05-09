@@ -222,3 +222,13 @@ CREATE TABLE mail_handles (
 comment on table mail_handles is 'handles associated with email in mail_archive';
 comment on column mail_handles.mailid is 'id of email in archive';
 comment on column mail_handles.associd is 'handle of associated object';
+
+--
+-- Mail send priority
+--
+CREATE TABLE mail_type_priority
+(
+    mail_type_id integer primary key references mail_type(id),
+    priority integer not null
+);
+

@@ -121,5 +121,12 @@ INSERT INTO enum_object_states_desc VALUES (24, 'CS', 'MojeID kontakt');
 INSERT INTO enum_object_states_desc VALUES (24, 'EN', 'MojeID contact');
 
 
-
+---
+--- mail priority
+---
+INSERT INTO mail_type_priority VALUES
+  ((SELECT id FROM mail_type WHERE name = 'mojeid_identification'), 1),
+  ((SELECT id FROM mail_type WHERE name = 'mojeid_validation'), 1),
+  ((SELECT id FROM mail_type WHERE name = 'mojeid_email_change'), 1),
+  ((SELECT id FROM mail_type WHERE name = 'mojeid_verified_contact_transfer'), 1);
 
