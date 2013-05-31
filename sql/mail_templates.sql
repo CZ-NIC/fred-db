@@ -5,6 +5,7 @@
 --
 
 INSERT INTO mail_type (id, name, subject) VALUES (1, 'sendauthinfo_pif', 'Zaslání autorizační informace / Sending authorization information');
+INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'sendauthinfo_pif'), 2);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (1, 'plain', 1,
 'English version of the e-mail is entered below the Czech version
@@ -49,6 +50,7 @@ this fact at the following address <?cs var:defaults.emailsupport ?>.
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (1, 1);
 
 INSERT INTO mail_type (id, name, subject) VALUES (2, 'sendauthinfo_epp', 'Zaslání autorizační informace / Sending authorization information');
+INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'sendauthinfo_epp'), 2);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (2, 'plain', 1,
 ' English version of the e-mail is entered below the Czech version
@@ -479,6 +481,7 @@ Registrar: <?cs var:registrar ?>
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (9, 9);
 
 INSERT INTO mail_type (id, name, subject) VALUES (10, 'notification_create', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o registraci <?cs call:typesubst("cs") ?> <?cs var:handle ?> / <?cs call:typesubst("en") ?> <?cs var:handle ?> registration notification');
+INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'notification_create'), 3);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (10, 'plain', 1,
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs elif:lang == "ensmall" ?><?cs if:type == #3 ?>domain<?cs elif:type == #1 ?>contact<?cs elif:type == #2 ?>nsset<?cs elif:type == #4 ?>keyset<?cs /if ?><?cs /if ?><?cs /def ?>
@@ -511,6 +514,7 @@ For detail information about <?cs call:typesubst("ensmall") ?> visit <?cs var:de
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (10, 10);
 
 INSERT INTO mail_type (id, name, subject) VALUES (11, 'notification_update', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>domain<?cs elif:type == #1 ?>contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení změn <?cs call:typesubst("cs") ?> <?cs var:handle ?>/ Notification of <?cs call:typesubst("en") ?> <?cs var:handle ?> changes');
+INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'notification_update'), 3);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (11, 'plain', 1,
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs elif:lang == "ensmall" ?><?cs if:type == #3 ?>domain<?cs elif:type == #1 ?>contact<?cs elif:type == #2 ?>nsset<?cs elif:type == #4 ?>keyset<?cs /if ?><?cs /if ?><?cs /def ?>
@@ -599,6 +603,7 @@ oblíbeným webovým službám jediným jménem a heslem.
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (11, 11);
 
 INSERT INTO mail_type (id, name, subject) VALUES (12, 'notification_transfer', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o transferu <?cs call:typesubst("cs") ?> <?cs var:handle ?> / <?cs call:typesubst("en") ?> <?cs var:handle ?> transfer notification');
+INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'notification_transfer'), 3);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (12, 'plain', 1,
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs elif:lang == "ensmall" ?><?cs if:type == #3 ?>domain<?cs elif:type == #1 ?>contact<?cs elif:type == #2 ?>nsset<?cs elif:type == #4 ?>keyset<?cs /if ?><?cs /if ?><?cs /def ?>
@@ -624,6 +629,7 @@ For detail information about <?cs call:typesubst("ensmall") ?> visit <?cs var:de
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (12, 12);
 
 INSERT INTO mail_type (id, name, subject) VALUES (13, 'notification_renew', 'Oznámení o prodloužení platnosti domény <?cs var:handle ?> / Domain name <?cs var:handle ?> renew notification');
+INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'notification_renew'), 3);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (13, 'plain', 1,
 '
@@ -656,6 +662,7 @@ For detail information about domain visit <?cs var:defaults.whoispage ?>?q=<?cs 
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (13, 13);
 
 INSERT INTO mail_type (id, name, subject) VALUES (14, 'notification_unused', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o zrušení <?cs call:typesubst("cs") ?> <?cs var:handle ?> / <?cs call:typesubst("en") ?> <?cs var:handle ?> delete notification');
+INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'notification_unused'), 3);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (14, 'plain', 1,
 '
@@ -684,6 +691,7 @@ registred domains.
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (14, 14);
 
 INSERT INTO mail_type (id, name, subject) VALUES (15, 'notification_delete', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o zrušení <?cs call:typesubst("cs") ?> <?cs var:handle ?> / <?cs call:typesubst("en") ?> <?cs var:handle ?> delete notification');
+INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'notification_delete'), 3);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (15, 'plain', 1,
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>
@@ -861,6 +869,7 @@ period.
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (19, 19);
 
 INSERT INTO mail_type (id, name, subject) VALUES (20, 'request_block', 'Informace o vyřízení žádosti / Information about processing of request ');
+INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'request_block'), 3);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (20, 'plain', 1,
 'English version of the e-mail is entered below the Czech version

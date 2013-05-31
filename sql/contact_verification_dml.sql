@@ -111,4 +111,10 @@ Your <?cs var:defaults.company ?> team
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (26, 26);
 
 
+---
+--- mail priority
+---
+INSERT INTO mail_type_priority VALUES
+  ((SELECT id FROM mail_type WHERE name = 'conditional_contact_identification'), 2),
+  ((SELECT id FROM mail_type WHERE name = 'contact_identification'), 2);
 
