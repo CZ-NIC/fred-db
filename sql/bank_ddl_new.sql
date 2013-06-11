@@ -41,7 +41,7 @@ CREATE TABLE bank_payment
     account_memo  varchar(64), -- note
     account_name  varchar(64), -- account name
     crtime timestamp NOT NULL default now(),
-    UNIQUE(account_id, account_evid)
+    CONSTRAINT bank_payment_account_id_account_evid_key UNIQUE(account_id, account_evid)
 );
 
 comment on column bank_payment.id is 'unique automatically generated identifier';

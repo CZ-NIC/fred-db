@@ -31,7 +31,7 @@ CREATE TABLE request_type (
         name varchar(64) NOT NULL,
         service_id integer NOT NULL REFERENCES service(id)
 );
-ALTER TABLE request_type ADD UNIQUE(name, service_id);
+ALTER TABLE request_type ADD CONSTRAINT request_type_name_service_id_key UNIQUE(name, service_id);
 
 CREATE TABLE result_code (
     id SERIAL PRIMARY KEY,

@@ -56,8 +56,8 @@ CREATE TABLE public_request_messages_map
   public_request_id INTEGER REFERENCES public_request (id),
   message_archive_id INTEGER, -- REFERENCES message_archive (id), 
   mail_archive_id INTEGER, -- REFERENCES mail_archive (id),
-  UNIQUE (public_request_id, message_archive_id),
-  UNIQUE (public_request_id, mail_archive_id)
+  CONSTRAINT public_request_messages_map_public_request_id_message_archi_key UNIQUE (public_request_id, message_archive_id),
+  CONSTRAINT public_request_messages_map_public_request_id_mail_archive__key UNIQUE (public_request_id, mail_archive_id)
 );
 
 CREATE TABLE enum_public_request_type
