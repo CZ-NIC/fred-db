@@ -1,19 +1,19 @@
 -- Public requests
 
 CREATE TABLE public_request (
-  id serial NOT NULL PRIMARY KEY,
+  id serial NOT NULL CONSTRAINT public_request_pkey PRIMARY KEY,
   request_type smallint NOT NULL, -- vsechny typy zadosti
 -- further description in src/register/public_request.h, enum Type
   create_time timestamp without time zone DEFAULT now() NOT NULL,
   status smallint NOT NULL,
--- Request status, values: PRS_NEW,       ///< Request was created and waiting for autorization 
+-- Request status, values: PRS_NEW,       ///< Request was created and waiting for autorization
 --                         PRS_ANSWERED,  ///< Email with answer was sent
---                         PRS_INVALID    ///< Time passed without authorization   
+--                         PRS_INVALID    ///< Time passed without authorization
   resolve_time timestamp without time zone,
   reason character varying(512),
   email_to_answer character varying(255),
-  answer_email_id integer REFERENCES mail_archive(id),
-  registrar_id integer REFERENCES registrar(id),
+  answer_email_id integer CONSTRAINT public_request_answer_email_id_fkey REFERENCES mail_archive(id),
+  registrar_id integer CONSTRAINT public_request_registrar_id_fkey REFERENCES registrar(id),
   create_request_id bigint,
   resolve_request_id bigint
 );
@@ -29,32 +29,35 @@ comment on column public_request.answer_email_id is 'reference to mail which was
 comment on column public_request.registrar_id is 'reference to registrar when request is submitted via EPP protocol (otherwise NULL)';
 
 CREATE TABLE public_request_objects_map (
-  request_id integer REFERENCES public_request(id) PRIMARY KEY,
-  object_id integer REFERENCES object_registry(id)
+  request_id integer CONSTRAINT public_request_objects_map_request_id_fkey REFERENCES public_request(id)
+  CONSTRAINT public_request_objects_map_pkey PRIMARY KEY,
+  object_id integer CONSTRAINT public_request_objects_map_object_id_fkey REFERENCES object_registry(id)
 );
 
 comment on table public_request_objects_map is 'table with objects associated with given request';
 
 CREATE TABLE public_request_state_request_map (
-  state_request_id integer PRIMARY KEY REFERENCES object_state_request(id),
-  block_request_id integer NOT NULL REFERENCES public_request(id),
-  unblock_request_id integer REFERENCES public_request(id)
+  state_request_id integer CONSTRAINT public_request_state_request_map_pkey PRIMARY KEY
+  CONSTRAINT public_request_state_request_map_state_request_id_fkey REFERENCES object_state_request(id),
+  block_request_id integer NOT NULL CONSTRAINT public_request_state_request_map_block_request_id_fkey REFERENCES public_request(id),
+  unblock_request_id integer CONSTRAINT public_request_state_request_map_unblock_request_id_fkey REFERENCES public_request(id)
 );
 
 comment on table public_request_state_request_map is 'table with state request associated with given request';
 
 
 CREATE TABLE public_request_auth (
-      id integer PRIMARY KEY NOT NULL REFERENCES public_request(id),
-      identification varchar(32) NOT NULL UNIQUE,
+      id integer CONSTRAINT public_request_auth_pkey PRIMARY KEY NOT NULL
+      CONSTRAINT public_request_auth_id_fkey REFERENCES public_request(id),
+      identification varchar(32) NOT NULL CONSTRAINT public_request_auth_identification_key UNIQUE,
       password varchar(64) NOT NULL
 );
 
 CREATE TABLE public_request_messages_map
 (
-  id serial PRIMARY KEY NOT NULL,
-  public_request_id INTEGER REFERENCES public_request (id),
-  message_archive_id INTEGER, -- REFERENCES message_archive (id), 
+  id serial CONSTRAINT public_request_messages_map_pkey PRIMARY KEY NOT NULL,
+  public_request_id INTEGER CONSTRAINT public_request_messages_map_public_request_id_fkey REFERENCES public_request (id),
+  message_archive_id INTEGER, -- REFERENCES message_archive (id),
   mail_archive_id INTEGER, -- REFERENCES mail_archive (id),
   CONSTRAINT public_request_messages_map_public_request_id_message_archi_key UNIQUE (public_request_id, message_archive_id),
   CONSTRAINT public_request_messages_map_public_request_id_mail_archive__key UNIQUE (public_request_id, mail_archive_id)
@@ -62,15 +65,15 @@ CREATE TABLE public_request_messages_map
 
 CREATE TABLE enum_public_request_type
 (
-  id INTEGER PRIMARY KEY NOT NULL,
-  name VARCHAR(64) UNIQUE NOT NULL,
+  id INTEGER CONSTRAINT enum_public_request_type_pkey PRIMARY KEY NOT NULL,
+  name VARCHAR(64) CONSTRAINT enum_public_request_type_name_key UNIQUE NOT NULL,
   description VARCHAR(256)
 );
 
 CREATE TABLE enum_public_request_status
 (
-  id INTEGER PRIMARY KEY NOT NULL,
-  name VARCHAR(32) UNIQUE NOT NULL,
+  id INTEGER CONSTRAINT enum_public_request_status_pkey PRIMARY KEY NOT NULL,
+  name VARCHAR(32) CONSTRAINT enum_public_request_status_name_key UNIQUE NOT NULL,
   description VARCHAR(128)
 );
 
@@ -78,8 +81,8 @@ CREATE TABLE enum_public_request_status
 
 CREATE TABLE public_request_lock
 (
-    id bigserial PRIMARY KEY -- lock id
-    , request_type smallint NOT NULL REFERENCES enum_public_request_type(id)
+    id bigserial CONSTRAINT public_request_lock_pkey PRIMARY KEY -- lock id
+    , request_type smallint NOT NULL CONSTRAINT public_request_lock_request_type_fkey REFERENCES enum_public_request_type(id)
     , object_id integer NOT NULL --REFERENCES object_registry (id)
 );
 

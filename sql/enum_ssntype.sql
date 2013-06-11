@@ -1,9 +1,9 @@
 -- function classifier
 -- DROP TABLE enum_ssntype CASCADE;
 CREATE TABLE enum_ssntype (
-        id SERIAL PRIMARY KEY,
-        type varchar(8) UNIQUE NOT NULL,
-        description varchar(64) UNIQUE NOT NULL
+        id SERIAL CONSTRAINT enum_ssntype_pkey PRIMARY KEY,
+        type varchar(8) CONSTRAINT enum_ssntype_type_key UNIQUE NOT NULL,
+        description varchar(64) CONSTRAINT enum_ssntype_description_key UNIQUE NOT NULL
         );
 
 -- login function

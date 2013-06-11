@@ -1,10 +1,10 @@
 
 
 CREATE TABLE OBJECT_history (
-        historyID INTEGER PRIMARY KEY REFERENCES History, -- link into history
-        ID INTEGER  REFERENCES object_registry (id),
-        ClID INTEGER NOT NULL REFERENCES Registrar,
-        UpID INTEGER REFERENCES Registrar,
+        historyID INTEGER CONSTRAINT object_history_pkey PRIMARY KEY CONSTRAINT object_history_historyid_fkey REFERENCES History, -- link into history
+        ID INTEGER CONSTRAINT object_history_id_fkey REFERENCES object_registry (id),
+        ClID INTEGER NOT NULL CONSTRAINT object_history_clid_fkey REFERENCES Registrar,
+        UpID INTEGER CONSTRAINT object_history_upid_fkey REFERENCES Registrar,
         Trdate timestamp,
         UpDate timestamp,
         AuthInfoPw varchar(300)
@@ -14,8 +14,8 @@ CREATE TABLE OBJECT_history (
   
 -- DROP TABLE Contact_History CASCADE;
 CREATE TABLE Contact_History (
-        HISTORYID INTEGER PRIMARY  KEY REFERENCES History,
-        ID INTEGER  REFERENCES object_registry (id),
+        HISTORYID INTEGER CONSTRAINT contact_history_pkey PRIMARY KEY CONSTRAINT contact_history_historyid_fkey REFERENCES History,
+        ID INTEGER CONSTRAINT contact_history_id_fkey REFERENCES object_registry (id),
         Name varchar(1024),
         Organization varchar(1024),
         Street1 varchar(1024),
@@ -24,7 +24,7 @@ CREATE TABLE Contact_History (
         City varchar(1024),
         StateOrProvince varchar(1024),
         PostalCode varchar(32),
-        Country char(2) REFERENCES enum_country,
+        Country char(2) CONSTRAINT contact_history_country_fkey REFERENCES enum_country,
         Telephone varchar(64),
         Fax varchar(64),
         Email varchar(1024),
@@ -37,7 +37,7 @@ CREATE TABLE Contact_History (
         NotifyEmail varchar(1024),
         VAT varchar(32),
         SSN varchar(64),
-        SSNtype integer REFERENCES enum_ssntype,
+        SSNtype integer CONSTRAINT contact_history_ssntype_fkey REFERENCES enum_ssntype,
         DiscloseVAT boolean NOT NULL DEFAULT False,
         DiscloseIdent boolean NOT NULL DEFAULT False,
         DiscloseNotifyEmail boolean NOT NULL DEFAULT False
@@ -50,9 +50,9 @@ creation - actual data will be copied here from original table in case of any ch
 
 -- DROP TABLE Domain_History CASCADE;
 CREATE TABLE Domain_History (
-        HISTORYID INTEGER PRIMARY KEY REFERENCES History,          
-        Zone INTEGER REFERENCES Zone (ID),
-        ID INTEGER   REFERENCES object_registry (id),
+        HISTORYID INTEGER CONSTRAINT domain_history_pkey PRIMARY KEY CONSTRAINT domain_history_historyid_fkey REFERENCES History,
+        Zone INTEGER CONSTRAINT domain_history_zone_fkey REFERENCES Zone (ID),
+        ID INTEGER CONSTRAINT domain_history_id_fkey REFERENCES object_registry (id),
         ExDate date NOT NULL,
         Registrant INTEGER , -- canceled references
         NSSet INTEGER  -- canceled references
@@ -66,12 +66,12 @@ creation - in case of any change in domain table, including changes in bindings 
 
 -- DROP TABLE domain_contact_map_history CASCADE;
 CREATE TABLE domain_contact_map_history  (
-        historyID INTEGER REFERENCES History,       
-        DomainID INTEGER  REFERENCES object_registry (id),
-        ContactID INTEGER REFERENCES object_registry (id),
+        historyID INTEGER CONSTRAINT domain_contact_map_history_historyid_fkey REFERENCES History,
+        DomainID INTEGER CONSTRAINT domain_contact_map_history_domainid_fkey REFERENCES object_registry (id),
+        ContactID INTEGER CONSTRAINT domain_contact_map_history_contactid_fkey REFERENCES object_registry (id),
         Role INTEGER NOT NULL DEFAULT 1,
 -- TODO         ContactHistoryID INTEGER REFERENCES  History(id) --  Contact in state in which was by the change  
-       PRIMARY KEY(historyID,DomainID,ContactID)
+       CONSTRAINT domain_contact_map_history_pkey PRIMARY KEY(historyID,DomainID,ContactID)
         );
 
 comment on table domain_contact_map_history is
@@ -81,8 +81,8 @@ creation - all contacts links which are linked to changed domain are copied here
 
 -- DROP TABLE NSSet_history  CASCADE;
 CREATE TABLE NSSet_history  (
-        historyID INTEGER PRIMARY KEY REFERENCES History, -- only one nsset 
-        ID INTEGER  REFERENCES object_registry (id),
+        historyID INTEGER CONSTRAINT nsset_history_pkey PRIMARY KEY CONSTRAINT nsset_history_historyid_fkey REFERENCES History, -- only one nsset 
+        ID INTEGER CONSTRAINT nsset_history_id_fkey REFERENCES object_registry (id),
         checklevel smallint default 0 --write up check level
         );
 CREATE INDEX nsset_history_historyid_idx ON NSSet_History (historyID);
@@ -94,11 +94,11 @@ creation - in case of any change in nsset table, including changes in bindings t
 
 -- DROP TABLE nsset_contact_map_history  CASCADE;
 CREATE TABLE nsset_contact_map_history (
-        historyID INTEGER  REFERENCES History,
-        NSSetID INTEGER REFERENCES object_registry (id), 
-        ContactID INTEGER REFERENCES object_registry (id),
+        historyID INTEGER CONSTRAINT nsset_contact_map_history_historyid_fkey REFERENCES History,
+        NSSetID INTEGER CONSTRAINT nsset_contact_map_history_nssetid_fkey REFERENCES object_registry (id), 
+        ContactID INTEGER CONSTRAINT nsset_contact_map_history_contactid_fkey REFERENCES object_registry (id),
 -- TODO   ContactHistoryID 
-        PRIMARY KEY (historyID,NSSetID, ContactID)
+        CONSTRAINT nsset_contact_map_history_pkey PRIMARY KEY (historyID,NSSetID, ContactID)
         );
 
 comment on table nsset_contact_map_history is
@@ -108,11 +108,11 @@ creation - all contact links which are linked to changed nsset are copied here';
 
 -- DROP TABLE Host_history  CASCADE;
 CREATE TABLE Host_history  (
-        historyID INTEGER  REFERENCES History,  -- it can exist more hosts so that it isn't primary key 
+        historyID INTEGER CONSTRAINT host_history_historyid_fkey REFERENCES History,  -- it can exist more hosts so that it isn't primary key
         ID  INTEGER  NOT NULL,
-        NSSetID INTEGER REFERENCES object_registry (id), -- REFERENCES NSSet ON UPDATE CASCADE,
+        NSSetID INTEGER CONSTRAINT host_history_nssetid_fkey REFERENCES object_registry (id), -- REFERENCES NSSet ON UPDATE CASCADE,
         FQDN VARCHAR(255)  NOT NULL,
-        PRIMARY KEY(historyID,ID)
+        CONSTRAINT host_history_pkey PRIMARY KEY(historyID,ID)
         );
 -- replaced
 
@@ -122,20 +122,20 @@ comment on table Host_history is
 creation - all entries from host table which exist for given nsset are copied here when nsset is altering';
 
 CREATE TABLE host_ipaddr_map_history (
-	historyID INTEGER  REFERENCES History,
+	historyID INTEGER CONSTRAINT host_ipaddr_map_history_historyid_fkey REFERENCES History,
         ID INTEGER NOT NULL,
 	HostID  INTEGER NOT NULL,
-	NSSetID INTEGER REFERENCES object_registry (id),
+	NSSetID INTEGER CONSTRAINT host_ipaddr_map_history_nssetid_fkey REFERENCES object_registry (id),
 	IpAddr INET NOT NULL,
-        PRIMARY KEY(historyID,ID)
+       CONSTRAINT host_ipaddr_map_history_pkey PRIMARY KEY(historyID,ID)
 	);
 
 
 
 -- DROP TABLE ENUMVal_history  CASCADE;
 CREATE TABLE ENUMVal_history (
-        historyID INTEGER PRIMARY KEY REFERENCES History, -- only one nsset 
-        DomainID INTEGER REFERENCES object_registry (id),
+        historyID INTEGER CONSTRAINT enumval_history_pkey PRIMARY KEY CONSTRAINT enumval_history_historyid_fkey REFERENCES History, -- only one nsset
+        DomainID INTEGER CONSTRAINT enumval_history_domainid_fkey REFERENCES object_registry (id),
         ExDate date NOT NULL,
         publish BOOLEAN NOT NULL DEFAULT false
         );

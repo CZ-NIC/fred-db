@@ -1,7 +1,7 @@
 -- DROP TABLE zone CASCADE;
 CREATE TABLE zone (
-        id SERIAL PRIMARY KEY,
-        fqdn VARCHAR(255) UNIQUE NOT NULL,  --zone fully qualified name
+        id SERIAL CONSTRAINT zone_pkey PRIMARY KEY,
+        fqdn VARCHAR(255) CONSTRAINT zone_fqdn_key UNIQUE NOT NULL,  --zone fully qualified name
         ex_period_min int NOT NULL,  --minimal prolongation of the period of domains validity in months
         ex_period_max int NOT NULL,  --maximal prolongation of the period of domains validity in months
         val_period int NOT NULL,  --enum domains revalidation period in months

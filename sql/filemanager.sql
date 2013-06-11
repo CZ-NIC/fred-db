@@ -1,5 +1,5 @@
 CREATE TABLE enum_filetype (
-	id smallint PRIMARY KEY,
+	id smallint CONSTRAINT enum_filetype_pkey PRIMARY KEY,
 	name varchar(300)
 );
 
@@ -19,13 +19,13 @@ id - name
  5 - expiration warning letter';
 
 CREATE TABLE files (
-	id SERIAL PRIMARY KEY,
+	id SERIAL CONSTRAINT files_pkey PRIMARY KEY,
 	name varchar(300) NOT NULL,
 	path varchar(300) NOT NULL,
 	mimetype varchar(100) NOT NULL DEFAULT 'application/octet-stream',
 	crdate timestamp NOT NULL DEFAULT now(),
 	filesize integer NOT NULL,
-	filetype smallint REFERENCES enum_filetype(id)
+	filetype smallint CONSTRAINT files_filetype_fkey REFERENCES enum_filetype(id)
 );
 
 comment on table files is

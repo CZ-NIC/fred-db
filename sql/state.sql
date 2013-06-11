@@ -2,7 +2,7 @@
 -- all supported status types
 CREATE TABLE enum_object_states (
   -- id of status
-  id INTEGER PRIMARY KEY,
+  id INTEGER CONSTRAINT enum_object_states_pkey PRIMARY KEY,
   -- code name for status
   name VARCHAR(50) NOT NULL,
   -- what types of objects can have this status (object_registry.type list)
@@ -67,12 +67,12 @@ update enum_object_states set types = types || array[4] where 2 = any (types);
 -- descriptions fo states in different languages 
 CREATE TABLE enum_object_states_desc (
   -- id of status
-  state_id INTEGER NOT NULL REFERENCES enum_object_states (id),
+  state_id INTEGER NOT NULL CONSTRAINT enum_object_states_desc_state_id_fkey REFERENCES enum_object_states (id),
   -- char code of language
   lang CHAR(2) NOT NULL,
   -- descriptive text
   description VARCHAR(255),
-  PRIMARY KEY (state_id,lang)
+  CONSTRAINT enum_object_states_desc_pkey PRIMARY KEY (state_id,lang)
 );
 
 comment on table enum_object_states_desc is 'description for states in different languages';
@@ -163,19 +163,19 @@ INSERT INTO enum_object_states_desc
 -- main table of object states and their changes
 CREATE TABLE object_state (
   -- id of moment when object gain status
-  id SERIAL PRIMARY KEY,
+  id SERIAL CONSTRAINT object_state_pkey PRIMARY KEY,
   -- id of object that has this new status
-  object_id INTEGER NOT NULL REFERENCES object_registry (id),
+  object_id INTEGER NOT NULL CONSTRAINT object_state_object_id_fkey REFERENCES object_registry (id),
   -- id of status
-  state_id INTEGER NOT NULL REFERENCES enum_object_states (id),
+  state_id INTEGER NOT NULL CONSTRAINT object_state_state_id_fkey REFERENCES enum_object_states (id),
   -- timestamp when object entered state
   valid_from TIMESTAMP NOT NULL,
   -- timestamp when object leaved state or null if still has status
   valid_to TIMESTAMP,
   -- history id of object in the moment of entering state  (may be NULL)
-  ohid_from INTEGER REFERENCES object_history (historyid),
+  ohid_from INTEGER CONSTRAINT object_state_ohid_from_fkey REFERENCES object_history (historyid),
   -- history id of object in the moment of leaving state or null
-  ohid_to INTEGER REFERENCES object_history (historyid)
+  ohid_to INTEGER CONSTRAINT object_state_ohid_to_fkey REFERENCES object_history (historyid)
 );
 
 CREATE UNIQUE INDEX object_state_now_idx ON object_state (object_id, state_id)
@@ -211,11 +211,11 @@ GROUP BY object_id;
 -- request for setting manual state
 CREATE TABLE object_state_request (
   -- id of request
-  id SERIAL PRIMARY KEY,
+  id SERIAL CONSTRAINT object_state_request_pkey PRIMARY KEY,
   -- id of object gaining requested state
-  object_id INTEGER NOT NULL REFERENCES object_registry (id),
+  object_id INTEGER NOT NULL CONSTRAINT object_state_request_object_id_fkey REFERENCES object_registry (id),
   -- id of requested state
-  state_id INTEGER NOT NULL REFERENCES enum_object_states (id),
+  state_id INTEGER NOT NULL CONSTRAINT object_state_request_state_id_fkey REFERENCES enum_object_states (id),
   -- when object should enter requested state
   valid_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   -- when object should leave requested state

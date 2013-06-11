@@ -1,8 +1,8 @@
--- 
+--
 --  create temporary table and if temporary table already
 --  exists truncate it for immediate usage (used for querying)
 --
-CREATE OR REPLACE FUNCTION create_tmp_table(tname VARCHAR) 
+CREATE OR REPLACE FUNCTION create_tmp_table(tname VARCHAR)
 RETURNS VOID AS $$
 BEGIN
  EXECUTE 'CREATE TEMPORARY TABLE ' || tname || ' (id BIGINT PRIMARY KEY)';
@@ -13,35 +13,35 @@ $$ LANGUAGE plpgsql;
 
 
 CREATE TABLE session (
-	id bigserial primary key,
-	user_name varchar(255) not null,       -- user name for Webadmin or id from registrar table for EPP
-	login_date timestamp not null, 
-	logout_date timestamp,
+    id bigserial CONSTRAINT session_pkey primary key,
+    user_name varchar(255) not null,       -- user name for Webadmin or id from registrar table for EPP
+    login_date timestamp not null,
+    logout_date timestamp,
         user_id integer
 );
 
 CREATE TABLE service (
-	id SERIAL PRIMARY KEY,
-	partition_postfix varchar(10) UNIQUE NOT NULL,
-	name varchar(64) UNIQUE NOT NULL
+    id SERIAL CONSTRAINT service_pkey PRIMARY KEY,
+    partition_postfix varchar(10) CONSTRAINT service_partition_postfix_key UNIQUE NOT NULL,
+    name varchar(64) CONSTRAINT service_name_key UNIQUE NOT NULL
 );
 
 CREATE TABLE request_type (
-        id SERIAL PRIMARY KEY, 
+        id SERIAL CONSTRAINT request_type_pkey PRIMARY KEY,
         name varchar(64) NOT NULL,
-        service_id integer NOT NULL REFERENCES service(id)
+        service_id integer NOT NULL CONSTRAINT request_type_service_id_fkey REFERENCES service(id)
 );
 ALTER TABLE request_type ADD CONSTRAINT request_type_name_service_id_key UNIQUE(name, service_id);
 
 CREATE TABLE result_code (
-    id SERIAL PRIMARY KEY,
-    service_id INTEGER REFERENCES service(id),
+    id SERIAL CONSTRAINT result_code_pkey PRIMARY KEY,
+    service_id INTEGER CONSTRAINT result_code_service_id_fkey REFERENCES service(id),
     result_code INTEGER NOT NULL,
-    name VARCHAR(64) NOT NULL    
+    name VARCHAR(64) NOT NULL
 );
 
 CREATE TABLE request_object_type (
-    id SERIAL PRIMARY KEY,
+    id SERIAL CONSTRAINT request_object_type_pkey PRIMARY KEY,
     name VARCHAR(64)
 );
 
@@ -56,14 +56,14 @@ COMMENT ON COLUMN result_code.result_code IS 'result code as returned by the spe
 COMMENT ON COLUMN result_code.name IS 'short name for error (abbreviation) written in camelcase';
 
 -- for CloseRequest result_code_id updates, exception commented out until request.result_code_id optional
-CREATE OR REPLACE FUNCTION get_result_code_id( integer, integer) 
+CREATE OR REPLACE FUNCTION get_result_code_id( integer, integer)
 RETURNS integer AS $$
 DECLARE
     result_code_id INTEGER;
 BEGIN
 
     SELECT id FROM result_code INTO result_code_id
-        WHERE service_id=$1 and result_code=$2 ; 
+        WHERE service_id=$1 and result_code=$2 ;
 
     IF result_code_id is null THEN
         RAISE WARNING 'result_code.id not found for service_id=% and result_code=% ', $1, $2;
@@ -73,67 +73,67 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TABLE request (
-	id BIGSERIAL PRIMARY KEY,
-	time_begin timestamp NOT NULL,	-- begin of the transaction
-	time_end timestamp,		-- end of transaction, it is set if the information is complete 
-					-- e.g. if an error message from backend is successfully logged, it's still set	
-					-- NULL in cases like crash of the server
-	source_ip INET,
-	service_id integer NOT NULL REFERENCES service(id),   -- service_id code - enum LogServiceType in IDL
-	request_type_id integer REFERENCES request_type(id) DEFAULT 1000,
-	session_id  bigint,            --  REFERENCES session(id),
+    id BIGSERIAL CONSTRAINT request_pkey PRIMARY KEY,
+    time_begin timestamp NOT NULL,    -- begin of the transaction
+    time_end timestamp,        -- end of transaction, it is set if the information is complete
+                    -- e.g. if an error message from backend is successfully logged, it's still set
+                    -- NULL in cases like crash of the server
+    source_ip INET,
+    service_id integer NOT NULL CONSTRAINT request_service_id_fkey REFERENCES service(id),   -- service_id code - enum LogServiceType in IDL
+    request_type_id integer CONSTRAINT request_request_type_id_fkey REFERENCES request_type(id) DEFAULT 1000,
+    session_id  bigint,            --  REFERENCES session(id),
         user_name varchar(255),         -- name of the user who issued the request (from session table)
-		
-	is_monitoring boolean NOT NULL, 
-	result_code_id INTEGER,
+
+    is_monitoring boolean NOT NULL,
+    result_code_id INTEGER,
         user_id INTEGER
 );
 
 CREATE TABLE request_object_ref (
-    id BIGSERIAL PRIMARY KEY,
+    id BIGSERIAL CONSTRAINT request_object_ref_pkey PRIMARY KEY,
     request_time_begin TIMESTAMP NOT NULL,
-    request_service_id INTEGER  NOT NULL,                                     
-    request_monitoring BOOLEAN NOT NULL,                                      
-    request_id BIGINT NOT NULL REFERENCES request(id),                       
+    request_service_id INTEGER  NOT NULL,
+    request_monitoring BOOLEAN NOT NULL,
+    request_id BIGINT NOT NULL CONSTRAINT request_object_ref_request_id_fkey REFERENCES request(id),
 
-    object_type_id INTEGER  NOT NULL REFERENCES request_object_type(id),             
+    object_type_id INTEGER  NOT NULL CONSTRAINT request_object_ref_object_type_id_fkey REFERENCES request_object_type(id),
     object_id INTEGER NOT NULL
 );
 
 
-ALTER TABLE request ADD FOREIGN KEY (result_code_id) REFERENCES result_code(id); 
+ALTER TABLE request ADD CONSTRAINT request_result_code_id_fkey FOREIGN KEY (result_code_id) REFERENCES result_code(id);
 
 COMMENT ON COLUMN request.result_code_id IS 'result code as returned by the specific service, it''s only unique within the service';
 
 CREATE TABLE request_data (
-        id BIGSERIAL PRIMARY KEY,
-	request_time_begin timestamp NOT NULL, -- TEMP: for partitioning
-	request_service_id integer NOT NULL, -- TEMP: for partitioning
-	request_monitoring boolean NOT NULL, -- TEMP: for partitioning
+        id BIGSERIAL CONSTRAINT request_data_pkey PRIMARY KEY,
+    request_time_begin timestamp NOT NULL, -- TEMP: for partitioning
+    request_service_id integer NOT NULL, -- TEMP: for partitioning
+    request_monitoring boolean NOT NULL, -- TEMP: for partitioning
 
-	request_id bigint NOT NULL REFERENCES request(id),
-	content text NOT NULL,
-	is_response boolean DEFAULT False -- true if the content is response, false if it's request
+    request_id bigint NOT NULL CONSTRAINT request_data_request_id_fkey REFERENCES request(id),
+    content text NOT NULL,
+    is_response boolean DEFAULT False -- true if the content is response, false if it's request
 );
 
 CREATE TABLE request_property_name (
-	id SERIAL PRIMARY KEY,
-	name varchar(256) UNIQUE NOT NULL
+    id SERIAL CONSTRAINT request_property_name_pkey PRIMARY KEY,
+    name varchar(256) CONSTRAINT request_property_name_name_key UNIQUE NOT NULL
 );
-	
-CREATE TABLE request_property_value (
-	request_time_begin timestamp NOT NULL, -- TEMP: for partitioning
-	request_service_id integer NOT NULL, -- TEMP: for partitioning
-	request_monitoring boolean NOT NULL, -- TEMP: for partitioning
-	
-	id BIGSERIAL PRIMARY KEY,
-	request_id bigint NOT NULL REFERENCES request(id), 
-	property_name_id integer NOT NULL REFERENCES request_property_name(id),
-	value text NOT NULL,		-- property value
-	output boolean DEFAULT False,		-- whether it's output (response) property; if False it's input (request)
 
-	parent_id bigint REFERENCES request_property_value(id)
-						-- in case of child property, the id of the parent, NULL otherwise
+CREATE TABLE request_property_value (
+    request_time_begin timestamp NOT NULL, -- TEMP: for partitioning
+    request_service_id integer NOT NULL, -- TEMP: for partitioning
+    request_monitoring boolean NOT NULL, -- TEMP: for partitioning
+
+    id BIGSERIAL CONSTRAINT request_property_value_pkey PRIMARY KEY,
+    request_id bigint NOT NULL CONSTRAINT request_property_value_request_id_fkey REFERENCES request(id),
+    property_name_id integer NOT NULL CONSTRAINT request_property_value_property_name_id_fkey REFERENCES request_property_name(id),
+    value text NOT NULL,        -- property value
+    output boolean DEFAULT False,        -- whether it's output (response) property; if False it's input (request)
+
+    parent_id bigint CONSTRAINT request_property_value_parent_id_fkey REFERENCES request_property_value(id)
+                        -- in case of child property, the id of the parent, NULL otherwise
 );
 
 CREATE INDEX request_time_begin_idx ON request(time_begin);
@@ -149,14 +149,14 @@ CREATE INDEX request_data_entry_time_begin_idx ON request_data(request_time_begi
 CREATE INDEX request_data_entry_id_idx ON request_data(request_id);
 CREATE INDEX request_data_is_response_idx ON request_data(is_response);
 
-CREATE INDEX request_property_name_idx ON request_property_name(name); 
+CREATE INDEX request_property_name_idx ON request_property_name(name);
 
 CREATE INDEX request_property_value_entry_time_begin_idx ON request_property_value(request_time_begin);
-CREATE INDEX request_property_value_entry_id_idx ON request_property_value(request_id); 
-CREATE INDEX request_property_value_name_id_idx ON request_property_value(property_name_id); 
-CREATE INDEX request_property_value_value_idx ON request_property_value(value); 
-CREATE INDEX request_property_value_output_idx ON request_property_value(output); 
-CREATE INDEX request_property_value_parent_id_idx ON request_property_value(parent_id); 
+CREATE INDEX request_property_value_entry_id_idx ON request_property_value(request_id);
+CREATE INDEX request_property_value_name_id_idx ON request_property_value(property_name_id);
+CREATE INDEX request_property_value_value_idx ON request_property_value(value);
+CREATE INDEX request_property_value_output_idx ON request_property_value(output);
+CREATE INDEX request_property_value_parent_id_idx ON request_property_value(parent_id);
 
 CREATE INDEX request_object_ref_id_idx ON request_object_ref(request_id);
 CREATE INDEX request_object_ref_time_begin_idx ON request_object_ref(request_time_begin);
@@ -167,10 +167,10 @@ CREATE INDEX request_object_ref_object_id_idx ON request_object_ref(object_id);
 CREATE INDEX session_user_name_idx ON session(user_name);
 CREATE INDEX session_login_date_idx ON session(login_date);
 CREATE INDEX session_user_id_idx ON session(user_id);
- 
 
-   
-COMMENT ON TABLE request_type IS 
+
+
+COMMENT ON TABLE request_type IS
 'List of requests which can be used by clients
 
 id  - status
@@ -230,7 +230,7 @@ id  - status
 1210 - InfoGetResults
 
 1300 - Login
-1301 - Logout 
+1301 - Logout
 1302 - DomainFilter
 1303 - ContactFilter
 1304 - NSSetFilter
@@ -240,7 +240,7 @@ id  - status
 1308 - EmailsFilter
 1309 - FileFilter
 1310 - ActionsFilter
-1311 - PublicRequestFilter 
+1311 - PublicRequestFilter
 
 1312 - DomainDetail
 1313 - ContactDetail
@@ -251,16 +251,16 @@ id  - status
 1318 - EmailsDetail
 1319 - FileDetail
 1320 - ActionsDetail
-1321 - PublicRequestDetail 
+1321 - PublicRequestDetail
 
 1322 - RegistrarCreate
-1323 - RegistrarUpdate 
+1323 - RegistrarUpdate
 
 1324 - PublicRequestAccept
-1325 - PublicRequestInvalidate 
+1325 - PublicRequestInvalidate
 
 1326 - DomainDig
-1327 - FilterCreate 
+1327 - FilterCreate
 
 1328 - RequestDetail
 1329 - RequestFilter
@@ -268,7 +268,7 @@ id  - status
 1330 - BankStatementDetail
 1331 - BankStatementFilter
 
-1400 -  Login 
+1400 -  Login
 1401 -  Logout
 
 1402 -  DisplaySummary

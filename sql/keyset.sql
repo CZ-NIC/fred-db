@@ -3,7 +3,7 @@
 ---
 
 CREATE TABLE Keyset (
-    id integer PRIMARY KEY REFERENCES object (id)
+    id integer CONSTRAINT keyset_pkey PRIMARY KEY CONSTRAINT keyset_id_fkey REFERENCES object (id)
 );
 
 comment on table Keyset is 'Evidence of Keysets';
@@ -11,16 +11,16 @@ comment on column Keyset.id is 'reference into object table';
 
 
 CREATE TABLE keyset_contact_map (
-    keysetid integer REFERENCES Keyset(id) ON UPDATE CASCADE NOT NULL,
-    contactid integer REFERENCES Contact(ID) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+    keysetid integer CONSTRAINT keyset_contact_map_keysetid_fkey REFERENCES Keyset(id) ON UPDATE CASCADE NOT NULL,
+    contactid integer CONSTRAINT keyset_contact_map_contactid_fkey REFERENCES Contact(ID) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
     CONSTRAINT keyset_contact_map_pkey PRIMARY KEY (contactid, keysetid)
 );
 CREATE INDEX keyset_contact_map_contact_idx ON keyset_contact_map (contactid);
 CREATE INDEX keyset_contact_map_keyset_idx ON keyset_contact_map (keysetid);
 
 CREATE TABLE DSRecord (
-    id serial PRIMARY KEY,
-    keysetid integer REFERENCES Keyset(id) ON UPDATE CASCADE NOT NULL,
+    id serial CONSTRAINT dsrecord_pkey PRIMARY KEY,
+    keysetid integer CONSTRAINT dsrecord_keysetid_fkey REFERENCES Keyset(id) ON UPDATE CASCADE NOT NULL,
     keyTag integer NOT NULL,
     alg integer NOT NULL,
     digestType integer NOT NULL,
@@ -38,8 +38,8 @@ comment on column DSRecord.digest is 'digest of DNSKEY';
 comment on column DSRecord.maxSigLife is 'record TTL';
 
 CREATE TABLE dnskey (
-    id serial PRIMARY KEY,
-    keysetid integer REFERENCES Keyset(id) ON UPDATE CASCADE NOT NULL,
+    id serial CONSTRAINT dnskey_pkey PRIMARY KEY,
+    keysetid integer CONSTRAINT dnskey_keysetid_fkey REFERENCES Keyset(id) ON UPDATE CASCADE NOT NULL,
     flags integer NOT NULL,
     protocol integer NOT NULL,
     alg integer NOT NULL,
@@ -67,21 +67,22 @@ comment on column dnskey.key is 'base64 decoded key';
 ---
 
 CREATE TABLE Keyset_history (
-    historyid integer PRIMARY KEY REFERENCES History,
-    id integer REFERENCES object_registry(id)
+    historyid integer CONSTRAINT keyset_history_pkey PRIMARY KEY
+    CONSTRAINT keyset_history_historyid_fkey REFERENCES History,
+    id integer CONSTRAINT keyset_history_id_fkey REFERENCES object_registry(id)
 );
 
 comment on table Keyset_history is 'historic data from Keyset table';
 
 CREATE TABLE keyset_contact_map_history (
-    historyid integer REFERENCES History,
-    keysetid integer REFERENCES object_registry(id),
-    contactid integer REFERENCES object_registry(id),
-    PRIMARY KEY (historyid, contactid, keysetid)
+    historyid integer CONSTRAINT keyset_contact_map_history_historyid_fkey REFERENCES History,
+    keysetid integer CONSTRAINT keyset_contact_map_history_keysetid_fkey REFERENCES object_registry(id),
+    contactid integer CONSTRAINT keyset_contact_map_history_contactid_fkey REFERENCES object_registry(id),
+    CONSTRAINT keyset_contact_map_history_pkey PRIMARY KEY (historyid, contactid, keysetid)
 );
 
 CREATE TABLE DSRecord_history (
-    historyid integer REFERENCES History,
+    historyid integer CONSTRAINT dsrecord_history_historyid_fkey REFERENCES History,
     id integer NOT NULL,
     keysetid integer NOT NULL,
     keyTag integer NOT NULL,
@@ -89,20 +90,20 @@ CREATE TABLE DSRecord_history (
     digestType integer NOT NULL,
     digest varchar(255) NOT NULL,
     maxSigLife integer,
-    PRIMARY KEY (historyid, id)
+    CONSTRAINT dsrecord_history_pkey PRIMARY KEY (historyid, id)
 );
 
 comment on table DSRecord_history is 'historic data from DSRecord table';
 
 CREATE TABLE dnskey_history (
-    historyid integer REFERENCES History,
+    historyid integer CONSTRAINT dnskey_history_historyid_fkey REFERENCES History,
     id integer NOT NULL,
     keysetid integer NOT NULL,
     flags integer NOT NULL,
     protocol integer NOT NULL,
     alg integer NOT NULL,
     key text NOT NULL,
-    PRIMARY KEY (historyid, id)
+    CONSTRAINT dnskey_history_pkey PRIMARY KEY (historyid, id)
 );
 
 comment on table dnskey_history is 'historic data from dnskey table';
@@ -111,23 +112,11 @@ comment on table dnskey_history is 'historic data from dnskey table';
 --- changes in existing tables
 ---
 
-ALTER TABLE Domain ADD COLUMN keyset integer REFERENCES Keyset(id);
+ALTER TABLE Domain ADD COLUMN keyset integer CONSTRAINT domain_keyset_fkey REFERENCES Keyset(id);
 
 comment on column Domain.keyset is 'reference to used keyset';
 
 ALTER TABLE Domain_History ADD COLUMN keyset integer;
-
----
---- new records in existing tables
---- 
---- !! moved into ``reason.sql'' file
----
-
----
---- error reason values
----
---- !! moved into ``enum_reason.sql'' file
----
 
 CREATE INDEX object_registry_upper_name_4_idx 
  ON object_registry (UPPER(name)) WHERE type=4;
