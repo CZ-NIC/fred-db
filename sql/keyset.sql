@@ -13,7 +13,7 @@ comment on column Keyset.id is 'reference into object table';
 CREATE TABLE keyset_contact_map (
     keysetid integer REFERENCES Keyset(id) ON UPDATE CASCADE NOT NULL,
     contactid integer REFERENCES Contact(ID) ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
-    PRIMARY KEY (contactid, keysetid)
+    CONSTRAINT keyset_contact_map_pkey PRIMARY KEY (contactid, keysetid)
 );
 CREATE INDEX keyset_contact_map_contact_idx ON keyset_contact_map (contactid);
 CREATE INDEX keyset_contact_map_keyset_idx ON keyset_contact_map (keysetid);

@@ -144,7 +144,7 @@ CREATE TABLE NSSet (
 CREATE TABLE nsset_contact_map (
         NSSetID INTEGER REFERENCES NSSet ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
         ContactID INTEGER REFERENCES Contact ON UPDATE CASCADE NOT NULL,
-        PRIMARY KEY (NSSetID, ContactID)
+        CONSTRAINT nsset_contact_map_pkey PRIMARY KEY (NSSetID, ContactID)
         );
 CREATE INDEX nsset_contact_map_nssetid_idx ON nsset_contact_map (NSSetID);
 CREATE INDEX nsset_contact_map_contactid_idx ON nsset_contact_map (ContactID);
@@ -155,7 +155,7 @@ CREATE TABLE Host (
         ID SERIAL PRIMARY KEY,
         NSSetID INTEGER REFERENCES NSSet ON UPDATE CASCADE,
         FQDN VARCHAR(255)   NOT NULL,  -- it cannot be UNIQUE for two different NSSET same dns host 
-        UNIQUE (NSSetID, FQDN ) -- unique key
+        CONSTRAINT host_nssetid_fqdn_key UNIQUE (NSSetID, FQDN ) -- unique key
         );
 
 
@@ -204,7 +204,7 @@ CREATE TABLE domain_contact_map (
         DomainID INTEGER REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
         ContactID INTEGER REFERENCES Contact ON UPDATE CASCADE NOT NULL,
         Role INTEGER NOT NULL DEFAULT 1,
-        PRIMARY KEY (DomainID, ContactID)
+        CONSTRAINT domain_contact_map_pkey PRIMARY KEY (DomainID, ContactID)
         );
 CREATE INDEX domain_contact_map_domainid_idx ON domain_contact_map (DomainID);
 CREATE INDEX domain_contact_map_contactid_idx ON domain_contact_map (ContactID);
