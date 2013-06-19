@@ -1051,11 +1051,18 @@ SELECT array_to_string(ARRAY((
         eos.name,
         COALESCE(osd.description, '')], E'#')
     FROM object_state os
-    LEFT JOIN enum_object_states eos ON eos.id = os.state_id
-    LEFT JOIN enum_object_states_desc osd ON osd.state_id = eos.id AND lang = $2
+    JOIN enum_object_states eos ON eos.id = os.state_id
+    JOIN enum_object_states_desc osd ON osd.state_id = eos.id AND lang = $2
     WHERE os.object_id = $1
         AND os.valid_from <= CURRENT_TIMESTAMP
         AND (os.valid_to IS NULL OR os.valid_to > CURRENT_TIMESTAMP)
     ORDER BY eos.importance
 )), E'&')
 $$ LANGUAGE SQL;
+
+-- For PostgreSQL versions < 8.4
+CREATE AGGREGATE array_agg(anyelement) (
+    SFUNC=array_append,
+    STYPE=anyarray,
+    INITCOND='{}'
+);
