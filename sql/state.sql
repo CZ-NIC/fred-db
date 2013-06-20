@@ -1059,10 +1059,3 @@ SELECT array_to_string(ARRAY((
     ORDER BY eos.importance
 )), E'&')
 $$ LANGUAGE SQL;
-
--- For PostgreSQL versions < 8.4
-CREATE AGGREGATE array_agg(anyelement) (
-    SFUNC=array_append,
-    STYPE=anyarray,
-    INITCOND='{}'
-);
