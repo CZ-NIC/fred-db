@@ -1,4 +1,13 @@
 ---
+--- #8645, #8716
+---
+CREATE TABLE mail_type_priority
+(
+    mail_type_id integer primary key references mail_type(id),
+    priority integer not null
+);
+
+---
 --- Ticket #8289 - new column 'importance'
 ---
 ALTER TABLE enum_object_states ADD COLUMN importance INTEGER;

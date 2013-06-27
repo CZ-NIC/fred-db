@@ -4,6 +4,26 @@
 UPDATE enum_parameters SET val = '2.14.0' WHERE id = 1;
 
 ---
+--- Set values for mail type priorities
+---
+INSERT INTO mail_type_priority VALUES
+  ((SELECT id FROM mail_type WHERE name = 'mojeid_identification'), 1),
+  ((SELECT id FROM mail_type WHERE name = 'mojeid_validation'), 1),
+  ((SELECT id FROM mail_type WHERE name = 'mojeid_email_change'), 1),
+  ((SELECT id FROM mail_type WHERE name = 'mojeid_verified_contact_transfer'), 1),
+  ((SELECT id FROM mail_type WHERE name = 'conditional_contact_identification'), 2),
+  ((SELECT id FROM mail_type WHERE name = 'contact_identification'), 2),
+  ((SELECT id FROM mail_type WHERE name = 'sendauthinfo_epp'), 2),
+  ((SELECT id FROM mail_type WHERE name = 'sendauthinfo_pif'), 2),
+  ((SELECT id FROM mail_type WHERE name = 'notification_create'), 3),
+  ((SELECT id FROM mail_type WHERE name = 'notification_update'), 3),
+  ((SELECT id FROM mail_type WHERE name = 'notification_transfer'), 3),
+  ((SELECT id FROM mail_type WHERE name = 'notification_renew'), 3),
+  ((SELECT id FROM mail_type WHERE name = 'notification_unused'), 3),
+  ((SELECT id FROM mail_type WHERE name = 'notification_delete'), 3),
+  ((SELECT id FROM mail_type WHERE name = 'request_block'), 3);
+
+---
 --- Set values for new importance column
 ---
 UPDATE enum_object_states SET importance =  1*2 WHERE name = 'expired';
