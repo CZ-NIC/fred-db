@@ -10,7 +10,9 @@ CREATE TABLE enum_object_states (
   -- if this status is set manualy
   manual BOOLEAN NOT NULL,
   -- if this status is exported to public
-  external BOOLEAN NOT NULL
+  external BOOLEAN NOT NULL,
+  -- status importance (ticket #8289)
+  importance INTEGER
 );
 
 comment on table enum_object_states is 'list of all supported status types';
@@ -19,46 +21,49 @@ comment on column enum_object_states.types is 'what types of objects can have th
 comment on column enum_object_states.manual is 'if this status is set manualy';
 comment on column enum_object_states.external is 'if this status is exported to public';
 
+--
+-- Watch out! Do not use chars "#" and "&" in the text. They are used as delimiters in get_state_descriptions().
+--
 INSERT INTO enum_object_states 
-  VALUES (01,'serverDeleteProhibited','{1,2,3}','t','t');
+  VALUES (01,'serverDeleteProhibited','{1,2,3}','t','t', 15*2);
 INSERT INTO enum_object_states 
-  VALUES (02,'serverRenewProhibited','{3}','t','t');
+  VALUES (02,'serverRenewProhibited','{3}','t','t', 14*2);
 INSERT INTO enum_object_states 
-  VALUES (03,'serverTransferProhibited','{1,2,3}','t','t');
+  VALUES (03,'serverTransferProhibited','{1,2,3}','t','t', 12*2);
 INSERT INTO enum_object_states 
-  VALUES (04,'serverUpdateProhibited','{1,2,3}','t','t');
+  VALUES (04,'serverUpdateProhibited','{1,2,3}','t','t', 11*2);
 INSERT INTO enum_object_states 
-  VALUES (05,'serverOutzoneManual','{3}','t','t');
+  VALUES (05,'serverOutzoneManual','{3}','t','t', 7*2);
 INSERT INTO enum_object_states 
-  VALUES (06,'serverInzoneManual','{3}','t','t');
+  VALUES (06,'serverInzoneManual','{3}','t','t', 8*2);
 INSERT INTO enum_object_states 
-  VALUES (07,'serverBlocked','{3}','t','t');
+  VALUES (07,'serverBlocked','{3}','t','t', 16*2);
 INSERT INTO enum_object_states 
-  VALUES (08,'expirationWarning','{3}','f','f');
+  VALUES (08,'expirationWarning','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
-  VALUES (09,'expired','{3}','f','t');
+  VALUES (09,'expired','{3}','f','t', 1*2);
 INSERT INTO enum_object_states 
-  VALUES (10,'unguarded','{3}','f','f');
+  VALUES (10,'unguarded','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
-  VALUES (11,'validationWarning1','{3}','f','f');
+  VALUES (11,'validationWarning1','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
-  VALUES (12,'validationWarning2','{3}','f','f');
+  VALUES (12,'validationWarning2','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
-  VALUES (13,'notValidated','{3}','f','t');
+  VALUES (13,'notValidated','{3}','f','t', 9*2);
 INSERT INTO enum_object_states 
-  VALUES (14,'nssetMissing','{3}','f','f');
+  VALUES (14,'nssetMissing','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
-  VALUES (15,'outzone','{3}','f','t');
+  VALUES (15,'outzone','{3}','f','t', 3*2);
 INSERT INTO enum_object_states 
-  VALUES (16,'linked','{1,2}','f','t');
+  VALUES (16,'linked','{1,2}','f','t', 10*2);
 INSERT INTO enum_object_states 
-  VALUES (17,'deleteCandidate','{1,2,3}','f','t');
+  VALUES (17,'deleteCandidate','{1,2,3}','f','t', NULL);
 INSERT INTO enum_object_states 
-  VALUES (18,'serverRegistrantChangeProhibited','{3}','t','t');
+  VALUES (18,'serverRegistrantChangeProhibited','{3}','t','t', 13*2);
 INSERT INTO enum_object_states 
-  VALUES (19,'deleteWarning','{3}','f','f');
+  VALUES (19,'deleteWarning','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
-  VALUES (20,'outzoneUnguarded','{3}','f','f');
+  VALUES (20,'outzoneUnguarded','{3}','f','f', NULL);
 
 
 -- update for keyset
@@ -79,30 +84,33 @@ comment on table enum_object_states_desc is 'description for states in different
 comment on column enum_object_states_desc.lang is 'code of language';
 comment on column enum_object_states_desc.description is 'descriptive text';
 
+--
+-- Watch out! Do not use chars "#" and "&" in the text. They are used as delimiters in get_state_descriptions().
+--
 INSERT INTO enum_object_states_desc 
   VALUES (01,'CS','Není povoleno smazání');
 INSERT INTO enum_object_states_desc 
-  VALUES (01,'EN','Delete prohibited');
+  VALUES (01,'EN','Deletion unauthorised');
 INSERT INTO enum_object_states_desc 
   VALUES (02,'CS','Není povoleno prodloužení registrace objektu');
 INSERT INTO enum_object_states_desc 
-  VALUES (02,'EN','Registration renewal prohibited');
+  VALUES (02,'EN','Registration renewal unauthorised');
 INSERT INTO enum_object_states_desc 
-  VALUES (03,'CS','Není povolena změna určeného regsitrátora');
+  VALUES (03,'CS','Není povolena změna určeného registrátora');
 INSERT INTO enum_object_states_desc 
-  VALUES (03,'EN','Sponsoring registrar change prohibited');
+  VALUES (03,'EN','Sponsoring registrar change unauthorised');
 INSERT INTO enum_object_states_desc 
-  VALUES (04,'CS','Není povolena aktualizace');
+  VALUES (04,'CS','Není povolena změna údajů');
 INSERT INTO enum_object_states_desc 
-  VALUES (04,'EN','Update prohibited');
+  VALUES (04,'EN','Update unauthorised');
 INSERT INTO enum_object_states_desc 
   VALUES (05,'CS','Doména je administrativně vyřazena ze zóny');
 INSERT INTO enum_object_states_desc 
-  VALUES (05,'EN','Domain is administratively kept out of zone');
+  VALUES (05,'EN','The domain is administratively kept out of zone');
 INSERT INTO enum_object_states_desc 
   VALUES (06,'CS','Doména je administrativně zařazena do zóny');
 INSERT INTO enum_object_states_desc 
-  VALUES (06,'EN','Domain is administratively kept in zone');
+  VALUES (06,'EN','The domain is administratively kept in zone');
 INSERT INTO enum_object_states_desc 
   VALUES (07,'CS','Doména je blokována');
 INSERT INTO enum_object_states_desc 
@@ -110,23 +118,23 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (08,'CS','Doména expiruje do 30 dní');
 INSERT INTO enum_object_states_desc 
-  VALUES (08,'EN','Expires within 30 days');
+  VALUES (08,'EN','The domain expires in 30 days');
 INSERT INTO enum_object_states_desc 
   VALUES (09,'CS','Doména je po expiraci');
 INSERT INTO enum_object_states_desc 
-  VALUES (09,'EN','Expired');
+  VALUES (09,'EN','Domain expired');
 INSERT INTO enum_object_states_desc 
   VALUES (10,'CS','Doména je 30 dnů po expiraci');
 INSERT INTO enum_object_states_desc 
-  VALUES (10,'EN','Domain is 30 days after expiration');
+  VALUES (10,'EN','The domain is 30 days after expiration');
 INSERT INTO enum_object_states_desc 
   VALUES (11,'CS','Validace domény skončí za 30 dní');
 INSERT INTO enum_object_states_desc 
-  VALUES (11,'EN','Validation of domain expire in 30 days');
+  VALUES (11,'EN','The domain validation expires in 30 days');
 INSERT INTO enum_object_states_desc 
   VALUES (12,'CS','Validace domény skončí za 15 dní');
 INSERT INTO enum_object_states_desc 
-  VALUES (12,'EN','Validation of domain expire in 15 days');
+  VALUES (12,'EN','The domain validation expires in 15 days');
 INSERT INTO enum_object_states_desc 
   VALUES (13,'CS','Doména není validována');
 INSERT INTO enum_object_states_desc 
@@ -134,15 +142,15 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (14,'CS','Doména nemá přiřazen nsset');
 INSERT INTO enum_object_states_desc 
-  VALUES (14,'EN','Domain has not associated nsset');
+  VALUES (14,'EN','The domain doesn''t have associated nsset');
 INSERT INTO enum_object_states_desc 
   VALUES (15,'CS','Doména není generována do zóny');
 INSERT INTO enum_object_states_desc 
-  VALUES (15,'EN','Domain is not generated into zone');
+  VALUES (15,'EN','The domain isn''t generated in the zone');
 INSERT INTO enum_object_states_desc 
-  VALUES (16,'CS','Je navázáno na další záznam v registru');
+  VALUES (16,'CS','Je navázán na další záznam v registru');
 INSERT INTO enum_object_states_desc 
-  VALUES (16,'EN','Has relation to other records in registry');
+  VALUES (16,'EN','Has relation to other records in the registry');
 INSERT INTO enum_object_states_desc 
   VALUES (17,'CS','Určeno ke zrušení');
 INSERT INTO enum_object_states_desc 
@@ -150,15 +158,16 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (18,'CS','Není povolena změna držitele');
 INSERT INTO enum_object_states_desc 
-  VALUES (18,'EN','Registrant change prohibited');
+  VALUES (18,'EN','Registrant change unauthorised');
 INSERT INTO enum_object_states_desc 
   VALUES (19,'CS','Registrace domény bude zrušena za 11 dní');
 INSERT INTO enum_object_states_desc 
-  VALUES (19,'EN','Domain will be deleted in 11 days');
+  VALUES (19,'EN','The domain will be deleted in 11 days');
 INSERT INTO enum_object_states_desc 
   VALUES (20,'CS','Doména vyřazena ze zóny po 30 dnech od expirace');
 INSERT INTO enum_object_states_desc 
-  VALUES (20,'EN','Domain is out of zone after 30 days from expiration');
+  VALUES (20,'EN','The domain is out of zone after 30 days in expiration state');
+
 
 -- main table of object states and their changes
 CREATE TABLE object_state (
@@ -1014,3 +1023,39 @@ CREATE TRIGGER "trigger_lock_object_state_request"
   AFTER INSERT OR UPDATE ON object_state_request
   FOR EACH ROW EXECUTE PROCEDURE lock_object_state_request();
 
+
+-- pyfred + domainbrowser
+CREATE OR REPLACE VIEW domains_by_nsset_view AS
+    SELECT nsset, COUNT(nsset) AS number FROM domain WHERE nsset IS NOT NULL GROUP BY nsset
+;
+CREATE OR REPLACE VIEW domains_by_keyset_view AS
+    SELECT keyset, COUNT(keyset) AS number FROM domain WHERE keyset IS NOT NULL GROUP BY keyset
+;
+
+--
+-- Collect states into one string
+-- Usage: SELECT get_state_descriptions(53, 'CS');
+-- retval: string ca be splited by row delimiter '\n' and column delimiter '\t':
+--      [[external, importance, name, description], ...]
+-- example: 't\t20\toutzone\tDomain is not generated into zone\nf\t\texpirationWarning\tExpires '
+--          'within 30 days\nf\t\tunguarded\tDomain is 30 days after expiration\nf\t\tnssetMissi'
+--          'ng\tDomain has not associated nsset'
+--
+CREATE OR REPLACE FUNCTION get_state_descriptions(object_id BIGINT, lang_code varchar)
+RETURNS TEXT
+AS $$
+SELECT array_to_string(ARRAY((
+    SELECT
+        array_to_string(ARRAY[eos.external::char,
+        COALESCE(eos.importance::varchar, ''),
+        eos.name,
+        COALESCE(osd.description, '')], E'#')
+    FROM object_state os
+    JOIN enum_object_states eos ON eos.id = os.state_id
+    JOIN enum_object_states_desc osd ON osd.state_id = eos.id AND lang = $2
+    WHERE os.object_id = $1
+        AND os.valid_from <= CURRENT_TIMESTAMP
+        AND (os.valid_to IS NULL OR os.valid_to > CURRENT_TIMESTAMP)
+    ORDER BY eos.importance
+)), E'&')
+$$ LANGUAGE SQL;
