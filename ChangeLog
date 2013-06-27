@@ -1,3 +1,12 @@
+2013-06-27 Jiri Sadek, Zdeněk Böhm (2.14.0)
+
+    * mail type priority table
+
+    * domain browser schema changes
+        - new column to enum_object_states table
+        - new views for number of domains for keyset/nsset
+        - function to get list of object states as parsable string
+
 2013-04-02 Jiri Sadek, Jan Zime (2.13.0)
 
     * contact merge auto procedure
