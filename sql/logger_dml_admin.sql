@@ -4,7 +4,8 @@ INSERT INTO service (id, partition_postfix, name)
 
 INSERT INTO request_type (service_id, id, name)
     VALUES
-        (8, 1, 'ContactMerge');
+        (8, 1, 'ContactMerge'),
+        (8, 2, 'CancelMojeidAccount');
 
 INSERT INTO result_code (service_id, result_code, name)
     VALUES
