@@ -240,9 +240,9 @@ AC_ARG_WITH([dbport], [AS_HELP_STRING([--with-dbport],
 
 #database host
 AC_ARG_WITH([hostname], [AS_HELP_STRING([--with-dbhost],
-            [Database host address [localhost]])],
+            [Database host address []])],
             [AC_SUBST([DBHOST], [$withval])],
-            [AC_SUBST([DBHOST], [localhost])])
+            [AC_SUBST([DBHOST], [""])])
 
 #database cidr-address for IPv4(in file pg_hba.conf)
 AC_ARG_WITH([cidripv4], [AS_HELP_STRING([--with-cidripv4],
