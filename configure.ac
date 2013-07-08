@@ -239,7 +239,7 @@ AC_ARG_WITH([dbport], [AS_HELP_STRING([--with-dbport],
             ### [AC_SUBST([DBPASS], [""])])
 
 #database host
-AC_ARG_WITH([hostname], [AS_HELP_STRING([--with-dbhost],
+AC_ARG_WITH([dbhost], [AS_HELP_STRING([--with-dbhost],
             [Database host address []])],
             [AC_SUBST([DBHOST], [$withval])],
             [AC_SUBST([DBHOST], [""])])
