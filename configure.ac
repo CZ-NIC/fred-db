@@ -1,4 +1,4 @@
-AC_INIT([fred-db], 2.13.0)
+AC_INIT([fred-db], 2.14.0)
 AC_CONFIG_FILES([Makefile
 		 fred-db.spec fred-dbmanager])
 AM_INIT_AUTOMAKE([-Wall -Werror])
@@ -239,10 +239,10 @@ AC_ARG_WITH([dbport], [AS_HELP_STRING([--with-dbport],
             ### [AC_SUBST([DBPASS], [""])])
 
 #database host
-AC_ARG_WITH([hostname], [AS_HELP_STRING([--with-dbhost],
-            [Database host address [localhost]])],
+AC_ARG_WITH([dbhost], [AS_HELP_STRING([--with-dbhost],
+            [Database host address []])],
             [AC_SUBST([DBHOST], [$withval])],
-            [AC_SUBST([DBHOST], [localhost])])
+            [AC_SUBST([DBHOST], [""])])
 
 #database cidr-address for IPv4(in file pg_hba.conf)
 AC_ARG_WITH([cidripv4], [AS_HELP_STRING([--with-cidripv4],

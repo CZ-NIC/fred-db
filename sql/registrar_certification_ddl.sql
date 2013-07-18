@@ -1,17 +1,3 @@
----
---- don't forget to update database schema version
----
-UPDATE enum_parameters SET val = '<insert version here>' WHERE id = 1;
-
----
---- Ticket #3747
----
-
--- DROP TABLE registrar_group_map;
--- DROP TABLE registrar_group;
--- DROP TABLE registrar_certification;
--- DROP DOMAIN classification_type;
-
 CREATE DOMAIN classification_type AS integer NOT NULL
     CONSTRAINT classification_type_check CHECK (VALUE IN (0, 1, 2, 3, 4, 5)); 
 
