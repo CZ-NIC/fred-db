@@ -1,7 +1,7 @@
 INSERT INTO service (id, partition_postfix, name) VALUES 
 (4, 'webadmin_', 'WebAdmin');
 
-INSERT INTO request_type (service_id, id, name) VALUES 
+INSERT INTO request_type (service_id, id, name) VALUES
 (4, 1300, 'Login'),
 (4, 1301, 'Logout'), 
 (4, 1302, 'DomainFilter'),
@@ -42,7 +42,11 @@ INSERT INTO request_type (service_id, id, name) VALUES
 (4, 1337, 'DeleteRegistrarGroup'),
 (4, 1338, 'UpdateRegistrarGroup'),
 (4, 1339, 'MessageDetail'),
-(4, 1340, 'MessageFilter');
+(4, 1340, 'MessageFilter'),
+(4, 1341, 'DomainsBlock'),
+(4, 1342, 'DomainsBlockUpdate'),
+(4, 1343, 'DomainsUnblock'),
+(4, 1344, 'DomainsBlacklist');
 
 INSERT INTO result_code (service_id, result_code, name) VALUES 
 (4, 1 , 'Success'),
