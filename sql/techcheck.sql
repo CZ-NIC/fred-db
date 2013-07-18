@@ -93,6 +93,8 @@ CREATE TABLE check_nsset (
 	attempt SMALLINT NOT NULL DEFAULT 1
 );
 
+CREATE INDEX check_nsset_nsset_hid_idx ON check_nsset (nsset_hid);
+
 CREATE TABLE check_result (
 	id SERIAL PRIMARY KEY,
 	checkid INTEGER references check_nsset(id) ON UPDATE CASCADE ON DELETE CASCADE,
