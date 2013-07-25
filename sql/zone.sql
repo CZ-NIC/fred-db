@@ -40,7 +40,7 @@ COMMENT ON COLUMN enum_domain_name_validation_checker.description IS 'descriptio
 CREATE TABLE domain_name_validation_config_by_zone (
   id BIGSERIAL CONSTRAINT domain_name_validation_config_by_zone_pkey PRIMARY KEY,
   checker_id INTEGER NOT NULL CONSTRAINT domain_name_validation_config_by_zone_checker_id_fkey
-    REFERENCES domain_name_validation_config_by_zone (id),
+    REFERENCES enum_domain_name_validation_checker (id),
   zone_id INTEGER NOT NULL CONSTRAINT domain_name_validation_config_by_zone_zone_id_fkey
     REFERENCES zone (id),
   CONSTRAINT domain_name_validation_config_by_zone_key UNIQUE (checker_id, zone_id)
