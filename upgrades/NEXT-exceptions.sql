@@ -69,3 +69,10 @@ $$ LANGUAGE plpgsql;
 
 SELECT rename_logger_constraints_ticket_8703();
 
+---
+---  #8703 removal of git rebase -obsoleted exception functions
+---
+DROP FUNCTION raise_exception_ifnull(anyelement, text);
+DROP FUNCTION ex_data(text);
+
+
