@@ -37,17 +37,17 @@ COMMENT ON COLUMN enum_domain_name_validation_checker.id IS 'unique automaticall
 COMMENT ON COLUMN enum_domain_name_validation_checker.name IS 'name of the checker';
 COMMENT ON COLUMN enum_domain_name_validation_checker.description IS 'description of the checker';
 
-CREATE TABLE domain_name_validation_config_by_zone (
-  id BIGSERIAL CONSTRAINT domain_name_validation_config_by_zone_pkey PRIMARY KEY,
-  checker_id INTEGER NOT NULL CONSTRAINT domain_name_validation_config_by_zone_checker_id_fkey
+CREATE TABLE zone_domain_name_validation_checker_map (
+  id BIGSERIAL CONSTRAINT zone_domain_name_validation_checker_map_pkey PRIMARY KEY,
+  checker_id INTEGER NOT NULL CONSTRAINT zone_domain_name_validation_checker_map_checker_id_fkey
     REFERENCES enum_domain_name_validation_checker (id),
-  zone_id INTEGER NOT NULL CONSTRAINT domain_name_validation_config_by_zone_zone_id_fkey
+  zone_id INTEGER NOT NULL CONSTRAINT zone_domain_name_validation_checker_map_zone_id_fkey
     REFERENCES zone (id),
-  CONSTRAINT domain_name_validation_config_by_zone_key UNIQUE (checker_id, zone_id)
+  CONSTRAINT zone_domain_name_validation_checker_map_key UNIQUE (checker_id, zone_id)
 );
 
-COMMENT ON TABLE domain_name_validation_config_by_zone IS
+COMMENT ON TABLE zone_domain_name_validation_checker_map IS
 'This table domain name checkers applied to domain names by zone';
-COMMENT ON COLUMN domain_name_validation_config_by_zone.id IS 'unique automatically generated identifier';
-COMMENT ON COLUMN domain_name_validation_config_by_zone.checker_id IS 'checker';
-COMMENT ON COLUMN domain_name_validation_config_by_zone.zone_id IS 'zone';
+COMMENT ON COLUMN zone_domain_name_validation_checker_map.id IS 'unique automatically generated identifier';
+COMMENT ON COLUMN zone_domain_name_validation_checker_map.checker_id IS 'checker';
+COMMENT ON COLUMN zone_domain_name_validation_checker_map.zone_id IS 'zone';
