@@ -1,7 +1,7 @@
 --list of statuses when sending a general message to a contact';
 CREATE TABLE enum_send_status (
-    id INTEGER PRIMARY KEY,
-    status_name VARCHAR(64) UNIQUE,
+    id INTEGER CONSTRAINT enum_send_status_pkey PRIMARY KEY,
+    status_name VARCHAR(64) CONSTRAINT enum_send_status_status_name_key UNIQUE,
     description TEXT
 );
 
@@ -18,8 +18,8 @@ INSERT INTO enum_send_status (id, status_name, description) VALUES (6, 'being_se
 -- The default names must be prefixed with 'defaults' namespace when used
 --   in template
 CREATE TABLE mail_defaults (
-	id SERIAL PRIMARY KEY,
-	name varchar(300) UNIQUE NOT NULL, -- key of default
+	id SERIAL CONSTRAINT mail_defaults_pkey PRIMARY KEY,
+	name varchar(300) CONSTRAINT mail_defaults_name_key UNIQUE NOT NULL, -- key of default
 	value text NOT NULL                -- value of default
 );
 INSERT INTO mail_defaults (name, value) VALUES ('company', 'CZ.NIC, z.s.p.o');
@@ -41,7 +41,7 @@ comment on column mail_defaults.value is 'value of default';
 -- mail footer is defined here and not in templates in order to reduce
 -- size of templates
 CREATE TABLE mail_footer (
-	id integer PRIMARY KEY,
+	id integer CONSTRAINT mail_footer_pkey PRIMARY KEY,
 	footer text NOT NULL
 );
 INSERT INTO mail_footer (id, footer) VALUES (1,
@@ -63,7 +63,7 @@ comment on table mail_footer is 'Mail footer is defided in this table and not in
 --   duplicated information
 CREATE TABLE mail_vcard (
 	vcard text NOT NULL,
-	id SERIAL PRIMARY KEY
+	id SERIAL CONSTRAINT mail_vcard_pkey PRIMARY KEY
 );
 INSERT INTO mail_vcard (vcard) VALUES
 ('BEGIN:VCARD
@@ -86,7 +86,7 @@ comment on table mail_vcard is 'vcard is attached to every email message';
 -- some header defaults which are likely not a subject to change are specified 
 -- in database and used in absence
 CREATE TABLE mail_header_defaults (
-	id SERIAL PRIMARY KEY,
+	id SERIAL CONSTRAINT mail_header_defaults_pkey PRIMARY KEY,
 	h_from varchar(300),           -- 'From:' header
 	h_replyto varchar(300),        -- 'Reply-to:' header
 	h_errorsto varchar(300),       -- 'Errors-to:' header
@@ -123,10 +123,10 @@ comment on column mail_header_defaults.h_messageidserver is 'Message id cannot b
 -- Here are stored email templates which represent one text attachment of
 -- email message
 CREATE TABLE mail_templates (
-	id integer PRIMARY KEY,
+	id integer CONSTRAINT mail_templates_pkey PRIMARY KEY,
 	contenttype varchar(100) NOT NULL, -- subtype of content type text
 	template text NOT NULL,            -- clearsilver template
-	footer integer REFERENCES mail_footer(id) -- should footer be
+	footer integer CONSTRAINT mail_templates_footer_fkey REFERENCES mail_footer(id) -- should footer be
 	                                          -- concatenated with template?
 	);
 
@@ -137,8 +137,8 @@ comment on column mail_templates.footer is 'should footer be concatenated with t
 
 -- Type of email gathers templates from which email is composed
 CREATE TABLE mail_type (
-	id integer PRIMARY KEY,
-	name varchar(100) UNIQUE NOT NULL, -- name of type
+	id integer CONSTRAINT mail_type_pkey PRIMARY KEY,
+	name varchar(100) CONSTRAINT mail_type_name_key UNIQUE NOT NULL, -- name of type
 	subject varchar(550) NOT NULL      -- template of email subject
 	);
 
@@ -149,16 +149,16 @@ comment on column mail_type.subject is 'template of email subject';
 -- One type may consists from multiple templates and one template may be
 -- part of multiple mailtypes. This is binding table.
 CREATE TABLE mail_type_template_map (
-	typeid integer references mail_type(id),
-	templateid integer references mail_templates(id),
-        PRIMARY KEY (  typeid  , templateid  )
+	typeid integer CONSTRAINT mail_type_template_map_typeid_fkey references mail_type(id),
+	templateid integer CONSTRAINT mail_type_template_map_templateid_fkey references mail_templates(id),
+       CONSTRAINT mail_type_template_map_pkey PRIMARY KEY (  typeid  , templateid  )
 	);
 
 -- Here are stored emails which are going to be sent and email which have
 -- already been sent (they differ in status value).
 CREATE TABLE mail_archive (
-	id SERIAL PRIMARY KEY,
-	mailtype integer references mail_type(id),-- email type
+	id SERIAL CONSTRAINT mail_archive_pkey PRIMARY KEY,
+	mailtype integer CONSTRAINT mail_archive_mailtype_fkey references mail_type(id),-- email type
 	crdate timestamp NOT NULL DEFAULT now(),  -- date of insertion in table
 	moddate timestamp,    -- date of sending (even if unsuccesfull)
 	-- status value has following meanings:
@@ -201,9 +201,9 @@ comment on column mail_archive.attempt is
 
 -- List of attachment ids bound to email in mail_archive
 CREATE TABLE mail_attachments (
-	id SERIAL PRIMARY KEY,
-	mailid integer references mail_archive(id), -- id of email in archive
-	attachid integer references files(id)       -- Attachment id
+	id SERIAL CONSTRAINT mail_attachments_pkey PRIMARY KEY,
+	mailid integer CONSTRAINT mail_attachments_mailid_fkey references mail_archive(id), -- id of email in archive
+	attachid integer CONSTRAINT mail_attachments_attachid_fkey references files(id)       -- Attachment id
 	);
 
 CREATE INDEX mail_attachments_mailid_idx ON mail_attachments (mailid);
@@ -214,8 +214,8 @@ comment on column mail_attachments.attachid is 'attachment id';
 
 -- Handles associated with email in mail_archive
 CREATE TABLE mail_handles (
-	id SERIAL PRIMARY KEY,
-	mailid integer references mail_archive(id),-- id of email in archive
+	id SERIAL CONSTRAINT mail_handles_pkey PRIMARY KEY,
+	mailid integer CONSTRAINT mail_handles_mailid_fkey references mail_archive(id),-- id of email in archive
 	associd varchar(255)                       -- handle of associated object
 	);
 
@@ -228,7 +228,8 @@ comment on column mail_handles.associd is 'handle of associated object';
 --
 CREATE TABLE mail_type_priority
 (
-    mail_type_id integer primary key references mail_type(id),
+    mail_type_id integer CONSTRAINT mail_type_priority_pkey primary key
+    CONSTRAINT mail_type_priority_mail_type_id_fkey references mail_type(id),
     priority integer not null
 );
 

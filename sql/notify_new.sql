@@ -1,10 +1,10 @@
 -- notification processing rules - direct notifier what mails
 -- need to be send and whom upon object state change
 CREATE TABLE notify_statechange_map (
-  id INTEGER PRIMARY KEY, 
-  state_id INTEGER NOT NULL REFERENCES enum_object_states (id), 
-  obj_type INTEGER NOT NULL, 
-  mail_type_id INTEGER NOT NULL REFERENCES mail_type (id),
+  id INTEGER CONSTRAINT notify_statechange_map_pkey PRIMARY KEY,
+  state_id INTEGER NOT NULL CONSTRAINT notify_statechange_map_state_id_fkey REFERENCES enum_object_states (id),
+  obj_type INTEGER NOT NULL,
+  mail_type_id INTEGER NOT NULL CONSTRAINT notify_statechange_map_mail_type_id_fkey REFERENCES mail_type (id),
   emails INTEGER
 );
 
@@ -57,12 +57,12 @@ INSERT INTO notify_statechange_map VALUES (12, 20, 3, 4, 3);
 -- store information about successfull notification
 CREATE TABLE notify_statechange (
   -- which statechange triggered notification
-  state_id INTEGER NOT NULL REFERENCES object_state (id),
+  state_id INTEGER NOT NULL CONSTRAINT notify_statechange_state_id_fkey REFERENCES object_state (id),
   -- what notificaton was done
-  type INTEGER NOT NULL REFERENCES notify_statechange_map (id),
+  type INTEGER NOT NULL CONSTRAINT notify_statechange_type_fkey REFERENCES notify_statechange_map (id),
   -- email with result of notification (null if contacts have no email)
-  mail_id INTEGER REFERENCES mail_archive (id),
-  PRIMARY KEY (state_id, type)
+  mail_id INTEGER CONSTRAINT notify_statechange_mail_id_fkey REFERENCES mail_archive (id),
+  CONSTRAINT notify_statechange_pkey PRIMARY KEY (state_id, type)
 );
 
 comment on table notify_statechange is 'store information about successfull notification';
@@ -74,7 +74,7 @@ comment on column notify_statechange.mail_id is 'email with result of notificati
 
 CREATE TABLE comm_type
 (
-  id  SERIAL PRIMARY KEY,
+  id  SERIAL CONSTRAINT comm_type_pkey PRIMARY KEY,
   type VARCHAR(64) -- email, letter, sms
 );
 
@@ -87,7 +87,7 @@ INSERT INTO comm_type (id,type) VALUES (4,'registered_letter');
 
 CREATE TABLE message_type
 (
-  id  SERIAL PRIMARY KEY,
+  id  SERIAL CONSTRAINT message_type_pkey PRIMARY KEY,
   type VARCHAR(64) -- domain_expiration, mojeid_pin2, mojeid_pin3,...
 );
 
@@ -97,13 +97,13 @@ INSERT INTO message_type (id,type) VALUES (1,'domain_expiration');
 
 CREATE TABLE message_archive
 (
-  id  SERIAL PRIMARY KEY,
+  id  SERIAL CONSTRAINT message_archive_pkey PRIMARY KEY,
   crdate timestamp without time zone NOT NULL DEFAULT now(), -- date of insertion in table
   moddate timestamp without time zone, -- date of sending (even if unsuccesfull)
   attempt smallint NOT NULL DEFAULT 0, -- failed attempts to send data
-  status_id INTEGER REFERENCES enum_send_status (id), -- message_status
-  comm_type_id INTEGER REFERENCES comm_type (id), --  communication channel
-  message_type_id INTEGER REFERENCES message_type (id) --  message type
+  status_id INTEGER CONSTRAINT message_archive_status_id_fkey REFERENCES enum_send_status (id), -- message_status
+  comm_type_id INTEGER CONSTRAINT message_archive_comm_type_id_fkey REFERENCES comm_type (id), --  communication channel
+  message_type_id INTEGER CONSTRAINT message_archive_message_type_id_fkey REFERENCES message_type (id) --  message type
 );
 
 CREATE INDEX message_archive_crdate_idx ON message_archive (crdate);
@@ -116,16 +116,17 @@ comment on column message_archive.status_id is 'status';
 
 CREATE TABLE message_contact_history_map
 (
-  id  SERIAL PRIMARY KEY,
+  id  SERIAL CONSTRAINT message_contact_history_map_pkey PRIMARY KEY,
   contact_object_registry_id INTEGER,-- REFERENCES object_registry (id), -- id type contact
   contact_history_historyid INTEGER, -- REFERENCES contact_history (historyid), -- historyid 
-  message_archive_id INTEGER REFERENCES message_archive (id) -- message
+  message_archive_id INTEGER CONSTRAINT message_contact_history_map_message_archive_id_fkey REFERENCES message_archive (id) -- message
 );
 
 --sms archive
 CREATE TABLE sms_archive
 (
-  id INTEGER PRIMARY KEY REFERENCES message_archive (id), -- message_archive id
+  id INTEGER CONSTRAINT sms_archive_pkey PRIMARY KEY
+  CONSTRAINT sms_archive_id_fkey REFERENCES message_archive (id), -- message_archive id
   phone_number VARCHAR(64) NOT NULL, -- copy of phone number
   phone_number_id INTEGER, -- unused 
   content TEXT -- sms text content
@@ -136,8 +137,9 @@ CREATE TABLE sms_archive
 
 CREATE TABLE letter_archive
 (
-  id INTEGER PRIMARY KEY REFERENCES message_archive (id),
-  file_id integer REFERENCES files (id), -- file with pdf about notification (null for old)
+  id INTEGER CONSTRAINT letter_archive_pkey PRIMARY KEY
+  CONSTRAINT letter_archive_id_fkey REFERENCES message_archive (id),
+  file_id integer CONSTRAINT letter_archive_file_id_fkey REFERENCES files (id), -- file with pdf about notification (null for old)
   batch_id character varying(64), -- postservis batch id - multiple letters are bundled into batches
   postal_address_name character varying(1024),
   postal_address_organization character varying(1024),
@@ -159,9 +161,10 @@ CREATE INDEX letter_archive_batch_id ON letter_archive (batch_id);
 
 CREATE TABLE notify_letters (
   -- which statechange triggered notification
-  state_id INTEGER NOT NULL PRIMARY KEY REFERENCES object_state (id),
+  state_id INTEGER NOT NULL CONSTRAINT notify_letters_pkey PRIMARY KEY 
+  CONSTRAINT notify_letters_state_id_fkey REFERENCES object_state (id),
   -- which message notifies the state change
-  letter_id INTEGER REFERENCES letter_archive (id)
+  letter_id INTEGER CONSTRAINT notify_letters_letter_id_fkey REFERENCES letter_archive (id)
 );  
 
 CREATE INDEX notify_letters_status_idx ON notify_letters (state_id);
@@ -174,8 +177,10 @@ comment on column notify_letters.letter_id is 'which message notifies the state 
 
 CREATE TABLE notify_request
 (
-    request_id BIGINT NOT NULL, 
-    message_id INTEGER UNIQUE NOT NULL REFERENCES mail_archive(id),
-    PRIMARY KEY (request_id, message_id)
+    request_id BIGINT NOT NULL,
+    message_id INTEGER NOT NULL
+    CONSTRAINT notify_request_message_id_key UNIQUE
+    CONSTRAINT notify_request_message_id_fkey REFERENCES mail_archive(id),
+    CONSTRAINT notify_request_pkey PRIMARY KEY (request_id, message_id)
 );
 

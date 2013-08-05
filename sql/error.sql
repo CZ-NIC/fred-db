@@ -1,9 +1,9 @@
 -- error messages classifier
 -- DROP TABLE enum_error  CASCADE;
 CREATE TABLE enum_error (
-        id SERIAL PRIMARY KEY,
-        status varchar(128) UNIQUE NOT NULL,
-        status_cs varchar(128) UNIQUE NOT NULL -- czech translation
+        id SERIAL CONSTRAINT enum_error_pkey PRIMARY KEY,
+        status varchar(128) CONSTRAINT enum_error_status_key UNIQUE NOT NULL,
+        status_cs varchar(128) CONSTRAINT enum_error_status_cs_key UNIQUE NOT NULL -- czech translation
         );
                         
                         

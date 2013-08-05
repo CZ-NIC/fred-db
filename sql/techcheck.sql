@@ -8,7 +8,7 @@
 --INSERT INTO check_enum_reason (reason) VALUES ('OTHER');
 
 CREATE TABLE check_test (
-	id INTEGER PRIMARY KEY, -- provide test order
+	id INTEGER CONSTRAINT check_test_pkey PRIMARY KEY, -- provide test order
 	name VARCHAR(100) NOT NULL, -- test name
 	severity SMALLINT NOT NULL, -- test level
 	description VARCHAR(300) NOT NULL, -- test description
@@ -46,9 +46,9 @@ INSERT INTO check_test (id, name, severity, description, disabled, script,
 VALUES (70, 'dnsseckeychase', 3, '', False, 'dnsseckeychase.py', 3);
 
 CREATE TABLE check_dependance (
-	id SERIAL PRIMARY KEY,
-	addictid INTEGER REFERENCES check_test (id),
-	testid INTEGER REFERENCES check_test (id)
+	id SERIAL CONSTRAINT check_dependance_pkey PRIMARY KEY,
+	addictid INTEGER CONSTRAINT check_dependance_addictid_fkey REFERENCES check_test (id),
+	testid INTEGER CONSTRAINT check_dependance_testid_fkey REFERENCES check_test (id)
 );
 
 INSERT INTO check_dependance (addictid, testid) VALUES ( 1, 0);
@@ -71,9 +71,9 @@ INSERT INTO check_dependance (addictid, testid) VALUES (70, 20);
 select setval('check_dependance_id_seq', 16);
 
 CREATE TABLE check_nsset (
-	id SERIAL PRIMARY KEY,
+	id SERIAL CONSTRAINT check_nsset_pkey PRIMARY KEY,
 	-- nsset version, actual in time of record creation
-	nsset_hid INTEGER REFERENCES nsset_history (historyid),
+	nsset_hid INTEGER CONSTRAINT check_nsset_nsset_hid_fkey REFERENCES nsset_history (historyid),
 	checkdate TIMESTAMP NOT NULL DEFAULT now(),
 	-- 0 = UNKNOWN
 	-- 1 = EPP
@@ -96,9 +96,9 @@ CREATE TABLE check_nsset (
 CREATE INDEX check_nsset_nsset_hid_idx ON check_nsset (nsset_hid);
 
 CREATE TABLE check_result (
-	id SERIAL PRIMARY KEY,
-	checkid INTEGER references check_nsset(id) ON UPDATE CASCADE ON DELETE CASCADE,
-	testid INTEGER references check_test(id),
+	id SERIAL CONSTRAINT check_result_pkey PRIMARY KEY,
+	checkid INTEGER CONSTRAINT check_result_checkid_fkey references check_nsset(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	testid INTEGER CONSTRAINT check_result_testid_fkey references check_test(id),
 	-- three-state logic (0=passed, 1=failed, 2=unknown)
 	--    unknown occurs if script failed for unknown reason
 	status SMALLINT NOT NULL,
