@@ -37,7 +37,7 @@ INSERT INTO enum_object_states
 INSERT INTO enum_object_states 
   VALUES (06,'serverInzoneManual','{3}','t','t', 8*2);
 INSERT INTO enum_object_states 
-  VALUES (07,'serverBlocked','{3}','t','t', 16*2);
+  VALUES (07,'serverBlocked','{1,3}','t','t', 16*2);
 INSERT INTO enum_object_states 
   VALUES (08,'expirationWarning','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
