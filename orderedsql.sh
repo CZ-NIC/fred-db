@@ -80,6 +80,9 @@ write_script()
     cat $DIR/epp_login.sql
     # contact verification
     cat $DIR/contact_verification_dml.sql
+    # admin contact verification
+    cat $DIR/admin_contact_verification_ddl.sql
+    cat $DIR/admin_contact_verification_dml.sql
 }
 
 usage()
