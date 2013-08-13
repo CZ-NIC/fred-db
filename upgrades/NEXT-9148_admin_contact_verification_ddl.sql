@@ -37,7 +37,7 @@ create table enum_contact_testsuite (
 create table contact_check (
    id                           bigserial        not null                           ,
    create_time                  timestamp         default current_timestamp NOT NULL,
-   contact_history_id           bigint           NOT NULL                           ,
+   contact_history_id           int              NOT NULL                           ,
    log_request_id               bigint           NOT NULL                           ,
    enum_contact_testsuite_id    bigint           NOT NULL                           ,
    update_time                  timestamp        NOT NULL                           ,
