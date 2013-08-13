@@ -4,7 +4,7 @@
 -- Architecture         x86_64-linux-gnu-thread-multi             
 -- Target Database      postgres                                  
 -- Input file           db_rev5_source.dia                        
--- Generated at         Mon Aug 12 09:45:37 2013                  
+-- Generated at         Tue Aug 13 09:58:45 2013                  
 -- Typemap for postgres not found in input file                   
 
 -- get_constraints_drop 
@@ -19,19 +19,19 @@
 CREATE DOMAIN cont_chck_handle AS CHAR(20);
 -- get_schema_create
 create table enum_contact_test (
-   id          bigserial not null,
-   name        varchar   NOT NULL,
-   description varchar   NULL    ,
+   id          serial  not null,
+   name        varchar NOT NULL,
+   description varchar NULL    ,
    constraint pk_enum_contact_test primary key (id)
 )   ;
 create table contact_testsuite_map (
-   enum_contact_test_id      bigint NOT NULL,
-   enum_contact_testsuite_id bigint NOT NULL
+   enum_contact_test_id      int NOT NULL,
+   enum_contact_testsuite_id int NOT NULL
 )   ;
 create table enum_contact_testsuite (
-   id          bigserial not null,
-   name        varchar   NOT NULL,
-   description varchar   NULL    ,
+   id          serial  not null,
+   name        varchar NOT NULL,
+   description varchar NULL    ,
    constraint pk_enum_contact_testsuite primary key (id)
 )   ;
 create table contact_check (
@@ -39,7 +39,7 @@ create table contact_check (
    create_time                  timestamp         default current_timestamp NOT NULL,
    contact_history_id           int              NOT NULL                           ,
    log_request_id               bigint           NOT NULL                           ,
-   enum_contact_testsuite_id    bigint           NOT NULL                           ,
+   enum_contact_testsuite_id    int              NOT NULL                           ,
    update_time                  timestamp        NOT NULL                           ,
    enum_contact_check_status_id int              NOT NULL                           ,
    handle                       cont_chck_handle                                    ,
@@ -54,7 +54,7 @@ create table enum_contact_check_status (
 create table contact_test_result (
    id                          bigserial not null,
    contact_check_id            bigint    NOT NULL,
-   enum_contact_test_id        bigint    NOT NULL,
+   enum_contact_test_id        int       NOT NULL,
    error_msg                   varchar   NULL    ,
    log_request_id              bigint    NULL    ,
    enum_contact_test_status_id int       NOT NULL,
