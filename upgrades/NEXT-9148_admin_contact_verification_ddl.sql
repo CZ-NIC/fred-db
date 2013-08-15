@@ -46,7 +46,7 @@ create table contact_check (
    constraint pk_contact_check primary key (id)
 )   ;
 create table enum_contact_check_status (
-   id          serial  not null,
+   id          integer not null,
    name        varchar NOT NULL,
    description varchar NOT NULL,
    constraint pk_enum_contact_check_status primary key (id)
@@ -63,7 +63,7 @@ create table contact_test_result (
    constraint pk_contact_test_result primary key (id)
 )   ;
 create table enum_contact_test_status (
-   id          serial  not null,
+   id          integer not null,
    name        varchar NOT NULL,
    description varchar NOT NULL,
    constraint pk_enum_contact_test_status primary key (id)
