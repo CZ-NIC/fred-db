@@ -4,7 +4,7 @@
 -- Architecture         x86_64-linux-gnu-thread-multi             
 -- Target Database      postgres                                  
 -- Input file           db_rev5_source.dia                        
--- Generated at         Thu Aug 15 09:04:39 2013                  
+-- Generated at         Thu Aug 15 10:08:59 2013                  
 -- Typemap for postgres not found in input file                   
 
 -- get_constraints_drop 
@@ -129,7 +129,11 @@ BEGIN
 			OLD.update_time,
 			OLD.enum_contact_check_status_id
 		);
+		IF OLD.update_time = NEW.update_time THEN
+         		NEW.update_time = NOW();
+		END IF;
 	END IF;
+
 	RETURN NEW;
 END;
 $contact_check_change$ 
@@ -141,7 +145,7 @@ CREATE TRIGGER update_contact_check_history
 
 COMMENT ON TRIGGER update_contact_check_history ON contact_check IS 
 'creates history of each contact_check changes: contact_check -> contact_check_history';
-CREATE FUNCTION propagate_test_result_change_into_test_result_history() 
+CREATE FUNCTION propagate_contact_test_result_change_into_test_result_history() 
 RETURNS trigger 
 AS 
 $contact_test_result_change$
@@ -160,17 +164,20 @@ BEGIN
 			OLD.enum_contact_test_status_id, 
 			OLD.update_time
 		);
+		IF OLD.update_time = NEW.update_time THEN
+			NEW.update_time = NOW();
+		END IF;
 	END IF;		
 	RETURN NEW;
 END;
 $contact_test_result_change$ 
 LANGUAGE plpgsql;
   
-CREATE TRIGGER trigger_test_result_history 
+CREATE TRIGGER update_contact_test_result_history 
    BEFORE UPDATE ON contact_test_result
-   FOR EACH ROW EXECUTE PROCEDURE propagate_test_result_change_into_test_result_history();
+   FOR EACH ROW EXECUTE PROCEDURE propagate_contact_test_result_change_into_test_result_history();
 
-COMMENT ON TRIGGER trigger_test_result_history ON contact_test_result IS 
+COMMENT ON TRIGGER update_contact_test_result_history ON contact_test_result IS 
 'creates history of each contact_test_result changes: contact_test_result -> contact_test_result_history';
 COMMENT ON COLUMN contact_check_history.update_time IS 
 'time when contact_check got into state represented by this record';
