@@ -90,19 +90,19 @@ comment on column enum_object_states_desc.description is 'descriptive text';
 INSERT INTO enum_object_states_desc 
   VALUES (01,'CS','Není povoleno smazání');
 INSERT INTO enum_object_states_desc 
-  VALUES (01,'EN','Deletion unauthorised');
+  VALUES (01,'EN','Deletion forbidden');
 INSERT INTO enum_object_states_desc 
   VALUES (02,'CS','Není povoleno prodloužení registrace objektu');
 INSERT INTO enum_object_states_desc 
-  VALUES (02,'EN','Registration renewal unauthorised');
+  VALUES (02,'EN','Registration renewal forbidden');
 INSERT INTO enum_object_states_desc 
   VALUES (03,'CS','Není povolena změna určeného registrátora');
 INSERT INTO enum_object_states_desc 
-  VALUES (03,'EN','Sponsoring registrar change unauthorised');
+  VALUES (03,'EN','Sponsoring registrar change forbidden');
 INSERT INTO enum_object_states_desc 
   VALUES (04,'CS','Není povolena změna údajů');
 INSERT INTO enum_object_states_desc 
-  VALUES (04,'EN','Update unauthorised');
+  VALUES (04,'EN','Update forbidden');
 INSERT INTO enum_object_states_desc 
   VALUES (05,'CS','Doména je administrativně vyřazena ze zóny');
 INSERT INTO enum_object_states_desc 
@@ -158,7 +158,7 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (18,'CS','Není povolena změna držitele');
 INSERT INTO enum_object_states_desc 
-  VALUES (18,'EN','Registrant change unauthorised');
+  VALUES (18,'EN','Registrant change forbidden');
 INSERT INTO enum_object_states_desc 
   VALUES (19,'CS','Registrace domény bude zrušena za 11 dní');
 INSERT INTO enum_object_states_desc 
