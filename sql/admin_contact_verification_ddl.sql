@@ -4,7 +4,7 @@
 -- Architecture         x86_64-linux-gnu-thread-multi             
 -- Target Database      postgres                                  
 -- Input file           db_rev5_source.dia                        
--- Generated at         Tue Aug 13 09:58:45 2013                  
+-- Generated at         Thu Aug 15 09:04:39 2013                  
 -- Typemap for postgres not found in input file                   
 
 -- get_constraints_drop 
@@ -38,7 +38,7 @@ create table contact_check (
    id                           bigserial        not null                           ,
    create_time                  timestamp         default current_timestamp NOT NULL,
    contact_history_id           int              NOT NULL                           ,
-   log_request_id               bigint           NOT NULL                           ,
+   logd_request_id              bigint           NULL                               ,
    enum_contact_testsuite_id    int              NOT NULL                           ,
    update_time                  timestamp        NOT NULL                           ,
    enum_contact_check_status_id int              NOT NULL                           ,
@@ -56,7 +56,7 @@ create table contact_test_result (
    contact_check_id            bigint    NOT NULL,
    enum_contact_test_id        int       NOT NULL,
    error_msg                   varchar   NULL    ,
-   log_request_id              bigint    NULL    ,
+   logd_request_id             bigint    NULL    ,
    enum_contact_test_status_id int       NOT NULL,
    create_time                 timestamp NOT NULL,
    update_time                 timestamp NOT NULL,
@@ -72,7 +72,7 @@ create table contact_test_result_history (
    id                          bigserial not null,
    contact_test_result_id      bigint    NOT NULL,
    error_msg                   varchar   NULL    ,
-   log_request_id              bigint    NULL    ,
+   logd_request_id             bigint    NULL    ,
    enum_contact_test_status_id int       NOT NULL,
    update_time                 timestamp NOT NULL,
    constraint pk_contact_test_result_history primary key (id)
@@ -80,7 +80,7 @@ create table contact_test_result_history (
 create table contact_check_history (
    id                           bigserial not null,
    contact_check_id             bigint    NOT NULL,
-   log_request_id               bigint    NOT NULL,
+   logd_request_id              bigint    NULL    ,
    update_time                  timestamp NOT NULL,
    enum_contact_check_status_id int       NOT NULL,
    constraint pk_contact_check_history primary key (id)
@@ -150,13 +150,13 @@ BEGIN
 		INSERT INTO contact_test_result_history 
 		(	contact_test_result_id,
 			error_msg,
-			log_request_id,
+			logd_request_id,
 			enum_contact_test_status_id,
 			update_time )
 		VALUES (
 			OLD.id, 
 			OLD.error_msg, 
-			OLD.log_request_id, 
+			OLD.logd_request_id, 
 			OLD.enum_contact_test_status_id, 
 			OLD.update_time
 		);
@@ -240,21 +240,21 @@ create index idx_contact_testsuite_map_enum_testsuite_id on contact_testsuite_ma
 create unique index idx_contact_testsuite_map_unique_pair on contact_testsuite_map (enum_contact_test_id,enum_contact_testsuite_id) ;
 create unique index idx_enum_contact_testsuite_name on enum_contact_testsuite (name) ;
 create index idx_contact_check_contact_history_id on contact_check (contact_history_id) ;
-create index idx_contact_check_log_request_id on contact_check (log_request_id) ;
+create index idx_contact_check_log_request_id on contact_check (logd_request_id) ;
 create index idx_contact_check_enum_testsuite_id on contact_check (enum_contact_testsuite_id) ;
 create index idx_contact_check_enum_check_status_id on contact_check (enum_contact_check_status_id) ;
 create unique index idx_enum_contact_check_status_name on enum_contact_check_status (name) ;
 create index idx_contact_test_result_contact_check_id on contact_test_result (contact_check_id) ;
 create index idx_contact_test_result_enum_test_id on contact_test_result (enum_contact_test_id) ;
-create index idx_contact_test_result_log_request_id on contact_test_result (log_request_id) ;
+create index idx_contact_test_result_log_request_id on contact_test_result (logd_request_id) ;
 create index idx_contact_test_result_enum_test_status_id on contact_test_result (enum_contact_test_status_id) ;
 create unique index idx_contact_test_result_unique_check_test_pair on contact_test_result (contact_check_id,enum_contact_test_id) ;
 create unique index idx_enum_contact_test_status_name on enum_contact_test_status (name) ;
 create index idx_contact_test_result_history_contact_test_result_id on contact_test_result_history (contact_test_result_id) ;
-create index idx_contact_test_result_history_log_request_id on contact_test_result_history (log_request_id) ;
+create index idx_contact_test_result_history_log_request_id on contact_test_result_history (logd_request_id) ;
 create index idx_contact_test_result_history_enum_test_status_id on contact_test_result_history (enum_contact_test_status_id) ;
 create index idx_contact_check_history_contact_check_id on contact_check_history (contact_check_id) ;
-create index idx_contact_check_history_log_request_id on contact_check_history (log_request_id) ;
+create index idx_contact_check_history_log_request_id on contact_check_history (logd_request_id) ;
 create index idx_contact_check_history_enum_check_status_id on contact_check_history (enum_contact_check_status_id) ;
 create index idx_contact_check_message_map_contact_check_id on contact_check_message_map (contact_check_id) ;
 create index idx_contact_check_message_map_mail_archive_id on contact_check_message_map (mail_archive_id) 		;
