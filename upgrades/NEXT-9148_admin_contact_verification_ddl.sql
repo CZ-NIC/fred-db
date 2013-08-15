@@ -4,7 +4,7 @@
 -- Architecture         x86_64-linux-gnu-thread-multi             
 -- Target Database      postgres                                  
 -- Input file           db_rev5_source.dia                        
--- Generated at         Thu Aug 15 10:08:59 2013                  
+-- Generated at         Thu Aug 15 16:57:03 2013                  
 -- Typemap for postgres not found in input file                   
 
 -- get_constraints_drop 
@@ -121,11 +121,12 @@ BEGIN
 	IF NEW.enum_contact_check_status_id != OLD.enum_contact_check_status_id THEN
 		INSERT INTO contact_check_history 
 		(	contact_check_id,
+                        logd_request_id,
 			update_time,
 			enum_contact_check_status_id )
 		VALUES (
 			OLD.id, 
-			OLD.error_msg, 
+			OLD.logd_request_id, 
 			OLD.update_time,
 			OLD.enum_contact_check_status_id
 		);
