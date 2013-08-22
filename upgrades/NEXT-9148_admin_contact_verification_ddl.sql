@@ -4,7 +4,7 @@
 -- Architecture         x86_64-linux-gnu-thread-multi             
 -- Target Database      postgres                                  
 -- Input file           db_rev5_source.dia                        
--- Generated at         Thu Aug 15 16:57:03 2013                  
+-- Generated at         Thu Aug 22 09:54:42 2013                  
 -- Typemap for postgres not found in input file                   
 
 -- get_constraints_drop 
@@ -35,13 +35,13 @@ create table enum_contact_testsuite (
    constraint pk_enum_contact_testsuite primary key (id)
 )   ;
 create table contact_check (
-   id                           bigserial        not null                           ,
-   create_time                  timestamp         default current_timestamp NOT NULL,
-   contact_history_id           int              NOT NULL                           ,
-   logd_request_id              bigint           NULL                               ,
-   enum_contact_testsuite_id    int              NOT NULL                           ,
-   update_time                  timestamp        NOT NULL                           ,
-   enum_contact_check_status_id int              NOT NULL                           ,
+   id                           bigserial not null                           ,
+   create_time                  timestamp  default (NOW() AT TIME ZONE 'utc'),
+   contact_history_id           int       NOT NULL                           ,
+   logd_request_id              bigint    NULL                               ,
+   enum_contact_testsuite_id    int       NOT NULL                           ,
+   update_time                  timestamp NOT NULL                           ,
+   enum_contact_check_status_id int       NOT NULL                           ,
    handle                       cont_chck_handle                                    ,
    constraint pk_contact_check primary key (id)
 )   ;
@@ -52,14 +52,14 @@ create table enum_contact_check_status (
    constraint pk_enum_contact_check_status primary key (id)
 )   ;
 create table contact_test_result (
-   id                          bigserial not null,
-   contact_check_id            bigint    NOT NULL,
-   enum_contact_test_id        int       NOT NULL,
-   error_msg                   varchar   NULL    ,
-   logd_request_id             bigint    NULL    ,
-   enum_contact_test_status_id int       NOT NULL,
-   create_time                 timestamp NOT NULL,
-   update_time                 timestamp NOT NULL,
+   id                          bigserial not null                           ,
+   contact_check_id            bigint    NOT NULL                           ,
+   enum_contact_test_id        int       NOT NULL                           ,
+   error_msg                   varchar   NULL                               ,
+   logd_request_id             bigint    NULL                               ,
+   enum_contact_test_status_id int       NOT NULL                           ,
+   create_time                 timestamp  default (NOW() AT TIME ZONE 'utc'),
+   update_time                 timestamp NOT NULL                           ,
    constraint pk_contact_test_result primary key (id)
 )   ;
 create table enum_contact_test_status (
@@ -130,8 +130,8 @@ BEGIN
 			OLD.update_time,
 			OLD.enum_contact_check_status_id
 		);
-		IF OLD.update_time = NEW.update_time THEN
-         		NEW.update_time = NOW();
+		IF NEW.update_time IS NULL THEN
+         		NEW.update_time = NOW() AT TIME ZONE 'utc';
 		END IF;
 	END IF;
 
@@ -165,8 +165,8 @@ BEGIN
 			OLD.enum_contact_test_status_id, 
 			OLD.update_time
 		);
-		IF OLD.update_time = NEW.update_time THEN
-			NEW.update_time = NOW();
+		IF NEW.update_time IS NULL THEN
+			NEW.update_time = NOW() AT TIME ZONE 'utc';
 		END IF;
 	END IF;		
 	RETURN NEW;
