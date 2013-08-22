@@ -16,7 +16,7 @@
 -- get_schema_drop
 
 -- get_smallpackage_pre_sql 
-CREATE DOMAIN cont_chck_handle AS CHAR(20);
+
 -- get_schema_create
 create table enum_contact_test (
    id          serial  not null,
@@ -42,7 +42,7 @@ create table contact_check (
    enum_contact_testsuite_id    int       NOT NULL                           ,
    update_time                  timestamp NOT NULL                           ,
    enum_contact_check_status_id int       NOT NULL                           ,
-   handle                       cont_chck_handle                                    ,
+   handle                       uuid                                         ,
    constraint pk_contact_check primary key (id)
 )   ;
 create table enum_contact_check_status (
