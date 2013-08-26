@@ -4,7 +4,7 @@
 -- Architecture         x86_64-linux-gnu-thread-multi             
 -- Target Database      postgres                                  
 -- Input file           db_rev5_source.dia                        
--- Generated at         Mon Aug 26 12:10:08 2013                  
+-- Generated at         Mon Aug 26 16:36:47 2013                  
 -- Typemap for postgres not found in input file                   
 
 -- get_inserts

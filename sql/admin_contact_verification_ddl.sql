@@ -4,7 +4,7 @@
 -- Architecture         x86_64-linux-gnu-thread-multi             
 -- Target Database      postgres                                  
 -- Input file           db_rev5_source.dia                        
--- Generated at         Mon Aug 26 12:10:08 2013                  
+-- Generated at         Mon Aug 26 16:36:47 2013                  
 -- Typemap for postgres not found in input file                   
 
 -- get_constraints_drop 
@@ -42,7 +42,7 @@ create table contact_check (
    enum_contact_testsuite_id    int       NOT NULL                           ,
    update_time                  timestamp NOT NULL                           ,
    enum_contact_check_status_id int       NOT NULL                           ,
-   handle                       uuid                                         ,
+   handle                       uuid      NOT NULL                           ,
    constraint pk_contact_check primary key (id)
 )   ;
 create table enum_contact_check_status (
@@ -223,29 +223,6 @@ CREATE TRIGGER contact_test_name_to_change
 
 COMMENT ON TRIGGER contact_test_name_to_change ON enum_contact_test IS 
 'There is at least one history record of this test execution so the name must stay unchanged.';
-CREATE SEQUENCE contact_check_handle_sequence;
-
-CREATE FUNCTION generate_next_check_handle()
-RETURNS trigger 
-AS 
-$contact_check_change$
-BEGIN
-	IF NEW.handle IS NULL OR NEW.handle = '''' THEN
-		NEW.handle := lpad( cast ( nextval(contact_check_handle_sequence) as varchar), 20, '0'); 
-	END IF;
-END;
-$contact_check_change$ 
-LANGUAGE plpgsql;
-  
-CREATE TRIGGER new_contact_check_handle
-   BEFORE UPDATE ON contact_check
-   FOR EACH ROW EXECUTE PROCEDURE generate_next_check_handle();
-
-COMMENT ON TRIGGER new_contact_check_handle ON contact_check IS 
-'trigger for generating contact_check.handle used for public interface';
-
-COMMENT ON SEQUENCE contact_check_handle_sequence IS 
-'sequence for generating contact_check.handle via new_check_handle';
 -- get_associations_create
 create unique index idx_enum_contact_test_name on enum_contact_test (name) ;
 create index idx_contact_testsuite_map_enum_test_id on contact_testsuite_map (enum_contact_test_id) ;
