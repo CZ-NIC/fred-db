@@ -4,7 +4,7 @@
 -- Architecture         x86_64-linux-gnu-thread-multi             
 -- Target Database      postgres                                  
 -- Input file           db_rev5_source.dia                        
--- Generated at         Wed Aug 28 16:21:56 2013                  
+-- Generated at         Wed Aug 28 17:00:18 2013                  
 -- Typemap for postgres not found in input file                   
 
 -- get_constraints_drop 
@@ -233,6 +233,7 @@ create index idx_contact_check_contact_history_id on contact_check (contact_hist
 create index idx_contact_check_log_request_id on contact_check (logd_request_id) ;
 create index idx_contact_check_enum_testsuite_id on contact_check (enum_contact_testsuite_id) ;
 create index idx_contact_check_enum_check_status_id on contact_check (enum_contact_check_status_id) ;
+create unique index idx_contact_check_handle on contact_check (handle) ;
 create unique index idx_enum_contact_check_status_name on enum_contact_check_status (name) ;
 create index idx_contact_test_result_contact_check_id on contact_test_result (contact_check_id) ;
 create index idx_contact_test_result_enum_test_id on contact_test_result (enum_contact_test_id) ;
