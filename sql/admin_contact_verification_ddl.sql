@@ -4,7 +4,7 @@
 -- Architecture         x86_64-linux-gnu-thread-multi             
 -- Target Database      postgres                                  
 -- Input file           db_rev5_source.dia                        
--- Generated at         Mon Aug 26 16:36:47 2013                  
+-- Generated at         Wed Aug 28 16:21:56 2013                  
 -- Typemap for postgres not found in input file                   
 
 -- get_constraints_drop 
@@ -35,14 +35,14 @@ create table enum_contact_testsuite (
    constraint pk_enum_contact_testsuite primary key (id)
 )   ;
 create table contact_check (
-   id                           bigserial not null                           ,
-   create_time                  timestamp  default (NOW() AT TIME ZONE 'utc'),
-   contact_history_id           int       NOT NULL                           ,
-   logd_request_id              bigint    NULL                               ,
-   enum_contact_testsuite_id    int       NOT NULL                           ,
-   update_time                  timestamp NOT NULL                           ,
-   enum_contact_check_status_id int       NOT NULL                           ,
-   handle                       uuid      NOT NULL                           ,
+   id                           bigserial not null                                    ,
+   create_time                  timestamp  default (NOW() AT TIME ZONE 'utc') NOT NULL,
+   contact_history_id           int       NOT NULL                                    ,
+   logd_request_id              bigint    NULL                                        ,
+   enum_contact_testsuite_id    int       NOT NULL                                    ,
+   update_time                  timestamp  default (NOW() AT TIME ZONE 'utc') NOT NULL,
+   enum_contact_check_status_id int       NOT NULL                                    ,
+   handle                       uuid      NOT NULL                                    ,
    constraint pk_contact_check primary key (id)
 )   ;
 create table enum_contact_check_status (
@@ -52,14 +52,14 @@ create table enum_contact_check_status (
    constraint pk_enum_contact_check_status primary key (id)
 )   ;
 create table contact_test_result (
-   id                          bigserial not null                           ,
-   contact_check_id            bigint    NOT NULL                           ,
-   enum_contact_test_id        int       NOT NULL                           ,
-   error_msg                   varchar   NULL                               ,
-   logd_request_id             bigint    NULL                               ,
-   enum_contact_test_status_id int       NOT NULL                           ,
-   create_time                 timestamp  default (NOW() AT TIME ZONE 'utc'),
-   update_time                 timestamp NOT NULL                           ,
+   id                          bigserial not null                                    ,
+   contact_check_id            bigint    NOT NULL                                    ,
+   enum_contact_test_id        int       NOT NULL                                    ,
+   error_msg                   varchar   NULL                                        ,
+   logd_request_id             bigint    NULL                                        ,
+   enum_contact_test_status_id int       NOT NULL                                    ,
+   create_time                 timestamp  default (NOW() AT TIME ZONE 'utc') NOT NULL,
+   update_time                 timestamp  default (NOW() AT TIME ZONE 'utc') NOT NULL,
    constraint pk_contact_test_result primary key (id)
 )   ;
 create table enum_contact_test_status (
