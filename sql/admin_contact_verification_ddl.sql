@@ -4,7 +4,7 @@
 -- Architecture         x86_64-linux-gnu-thread-multi             
 -- Target Database      postgres                                  
 -- Input file           db_rev5_source.dia                        
--- Generated at         Wed Aug 28 17:00:18 2013                  
+-- Generated at         Wed Sep  4 16:51:33 2013                  
 -- Typemap for postgres not found in input file                   
 
 -- get_constraints_drop 
@@ -118,8 +118,8 @@ RETURNS trigger
 AS 
 $contact_check_change$
 BEGIN
-	IF NEW.enum_contact_check_status_id != OLD.enum_contact_check_status_id 
-           OR NEW.logd_request_id != OLD.logd_request_id
+	IF NEW.enum_contact_check_status_id IS DISTINCT FROM OLD.enum_contact_check_status_id 
+           OR NEW.logd_request_id IS DISTINCT FROM OLD.logd_request_id
         THEN
 		INSERT INTO contact_check_history 
 		(	contact_check_id,
@@ -153,9 +153,9 @@ RETURNS trigger
 AS 
 $contact_test_result_change$
 BEGIN
-	IF NEW.enum_contact_test_status_id != OLD.enum_contact_test_status_id 
-           OR NEW.error_msg != OLD.error_msg
-           OR NEW.logd_request_id != OLD.logd_request_id 
+	IF NEW.enum_contact_test_status_id IS DISTINCT FROM OLD.enum_contact_test_status_id 
+           OR NEW.error_msg IS DISTINCT FROM OLD.error_msg
+           OR NEW.logd_request_id IS DISTINCT FROM OLD.logd_request_id 
         THEN
 		INSERT INTO contact_test_result_history 
 		(	contact_test_result_id,
