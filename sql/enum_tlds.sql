@@ -1,6 +1,6 @@
 -- list of available tlds for checking of dns host tld
 CREATE TABLE enum_tlds (
-  tld VARCHAR(64) NOT NULL PRIMARY KEY
+  tld VARCHAR(64) NOT NULL CONSTRAINT enum_tlds_pkey PRIMARY KEY
 );
 
 INSERT INTO enum_tlds (tld) VALUES ('AC');

@@ -1,7 +1,7 @@
 CREATE TABLE bank_statement 
 (
-    id serial NOT NULL PRIMARY KEY, -- unique primary key
-    account_id int  REFERENCES bank_account, -- processing for given account link to account tabel
+    id serial NOT NULL CONSTRAINT bank_statement_pkey PRIMARY KEY, -- unique primary key
+    account_id int CONSTRAINT bank_statement_account_id_fkey REFERENCES bank_account, -- processing for given account link to account tabel
     num int, -- serial number statement
     create_date date , --  create date of a statement
     balance_old_date date , -- date of a last balance
@@ -9,7 +9,7 @@ CREATE TABLE bank_statement
     balance_new numeric(10,2) ,  -- new balance
     balance_credit  numeric(10,2) , -- income during statement ( credit balance )
     balance_debet numeric(10,2), -- expenses during statement ( debet balance )
-    file_id INTEGER REFERENCES Files default NULL
+    file_id INTEGER CONSTRAINT bank_statement_file_id_fkey REFERENCES Files default NULL
 );
 
 comment on column bank_statement.id is 'unique automatically generated identifier';
@@ -24,9 +24,9 @@ comment on column bank_statement.file_id is 'xml file identifier number';
 
 CREATE TABLE bank_payment
 (
-    id serial NOT NULL PRIMARY KEY, -- unique primary key
-    statement_id int  REFERENCES bank_statement default null, -- link into table heads of bank statements
-    account_id int  REFERENCES bank_account default null, -- link into table of accounts
+    id serial NOT NULL CONSTRAINT bank_payment_pkey PRIMARY KEY, -- unique primary key
+    statement_id int CONSTRAINT bank_payment_statement_id_fkey REFERENCES bank_statement default null, -- link into table heads of bank statements
+    account_id int CONSTRAINT bank_payment_account_id_fkey REFERENCES bank_account default null, -- link into table of accounts
     account_number text NOT NULL , -- contra-account number from which came or was sent a payment
     bank_code varchar(4) NOT NULL,   -- bank code
     code int, -- account code 1 debet item 2 credit item 4  cancel debet 5 cancel credit 
@@ -41,7 +41,7 @@ CREATE TABLE bank_payment
     account_memo  varchar(64), -- note
     account_name  varchar(64), -- account name
     crtime timestamp NOT NULL default now(),
-    UNIQUE(account_id, account_evid)
+    CONSTRAINT bank_payment_account_id_account_evid_key UNIQUE(account_id, account_evid)
 );
 
 comment on column bank_payment.id is 'unique automatically generated identifier';
@@ -64,9 +64,12 @@ comment on column bank_payment.crtime is 'create timestamp';
 
 CREATE TABLE bank_payment_registrar_credit_transaction_map
 (
-    id BIGSERIAL PRIMARY KEY
+    id BIGSERIAL CONSTRAINT bank_payment_registrar_credit_transaction_map_pkey PRIMARY KEY
     , bank_payment_id bigint NOT NULL REFERENCES bank_payment(id)
-    , registrar_credit_transaction_id bigint UNIQUE NOT NULL REFERENCES registrar_credit_transaction(id)
+    , registrar_credit_transaction_id bigint
+    CONSTRAINT bank_payment_registrar_credit_registrar_credit_transaction__key UNIQUE
+    NOT NULL
+    CONSTRAINT bank_payment_registrar_credit_registrar_credit_transaction_fkey REFERENCES registrar_credit_transaction(id)
 );
 
 COMMENT ON TABLE bank_payment_registrar_credit_transaction_map

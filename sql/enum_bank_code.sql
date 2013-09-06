@@ -1,9 +1,9 @@
 -- classifier of error messages reason
 -- DROP TABLE enum_bank_code  CASCADE;
 CREATE TABLE enum_bank_code (
-      code char(4) PRIMARY KEY,
-      name_short varchar(4) UNIQUE NOT NULL , -- short cut 
-      name_full varchar(64) UNIQUE  NOT NULL -- full name
+      code char(4) CONSTRAINT enum_bank_code_pkey PRIMARY KEY,
+      name_short varchar(4) CONSTRAINT enum_bank_code_name_short_key UNIQUE NOT NULL , -- short cut 
+      name_full varchar(64) CONSTRAINT enum_bank_code_name_full_key UNIQUE  NOT NULL -- full name
 );
 
 comment on table enum_bank_code is 'list of bank codes';

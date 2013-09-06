@@ -1,11 +1,11 @@
 -- DROP TABLE Registrar CASCADE;
 CREATE TABLE Registrar (
-  ID SERIAL PRIMARY KEY,
+  ID SERIAL CONSTRAINT registrar_pkey PRIMARY KEY,
   ICO  varchar(50), -- ICO of registrar
   DIC  varchar(50), -- DIC of registrar
   varsymb  char(10)  , -- coupling variable symbol ( ico )
   VAT boolean DEFAULT True, -- whether VAT should be count by invoicing 
-  Handle varchar(255) UNIQUE NOT NULL,
+  Handle varchar(255) CONSTRAINT registrar_handle_key UNIQUE NOT NULL,
   Name varchar(1024),
   Organization varchar(1024),
   Street1 varchar(1024),
@@ -14,7 +14,7 @@ CREATE TABLE Registrar (
   City varchar(1024),
   StateOrProvince varchar(1024),
   PostalCode varchar(32),
-  Country char(2) REFERENCES enum_country,
+  Country char(2) CONSTRAINT registrar_country_fkey REFERENCES enum_country,
   Telephone varchar(32),
   Fax varchar(32),
   Email varchar(1024),
@@ -46,8 +46,8 @@ comment on column Registrar.Url is 'registrars web address';
 
 -- DROP TABLE RegistrarACL CASCADE;
 CREATE TABLE RegistrarACL (
-  ID SERIAL PRIMARY KEY,
-  RegistrarID INTEGER NOT NULL REFERENCES Registrar,
+  ID SERIAL CONSTRAINT registraracl_pkey PRIMARY KEY,
+  RegistrarID INTEGER NOT NULL CONSTRAINT registraracl_registrarid_fkey REFERENCES Registrar,
   Cert varchar(1024) NOT NULL, -- certificate fingerprint
   Password varchar(64) NOT NULL
 );
@@ -57,9 +57,9 @@ comment on column RegistrarACL.Cert is 'certificate fingerprint';
 comment on column RegistrarACL.Password is 'login password';
 
 CREATE TABLE RegistrarInvoice (
-  ID SERIAL PRIMARY KEY,
-  RegistrarID INTEGER NOT NULL REFERENCES Registrar, -- registrar id
-  Zone integer NOT NULL REFERENCES Zone,  --  zone for which has registrar an access
+  ID SERIAL CONSTRAINT registrarinvoice_pkey PRIMARY KEY,
+  RegistrarID INTEGER NOT NULL CONSTRAINT registrarinvoice_registrarid_fkey REFERENCES Registrar, -- registrar id
+  Zone integer NOT NULL CONSTRAINT registrarinvoice_zone_fkey REFERENCES Zone,  --  zone for which has registrar an access
   FromDate date NOT NULL , -- date when began registrar work in a zone
   toDate date -- after this date registrar is not allowed to register
 );

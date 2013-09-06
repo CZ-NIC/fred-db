@@ -2,15 +2,15 @@
 
 
 CREATE TABLE OBJECT_registry (
-       ID SERIAL PRIMARY KEY,
-       ROID varchar(255) UNIQUE NOT NULL , -- unique roid
+       ID SERIAL CONSTRAINT object_registry_pkey PRIMARY KEY,
+       ROID varchar(255) CONSTRAINT object_registry_roid_key UNIQUE NOT NULL , -- unique roid
        type smallint , -- object type 1 contact 2 nsset 3 domain
        NAME varchar(255)  NOT NULL , -- handle or FQDN
-       CrID INTEGER NOT NULL REFERENCES Registrar,
+       CrID INTEGER NOT NULL CONSTRAINT object_registry_crid_fkey REFERENCES Registrar,
        CrDate timestamp NOT NULL DEFAULT now(),
        ErDate timestamp DEFAULT NULL, -- erase date 
-       CrhistoryID INTEGER  REFERENCES History, -- link into create history
-       historyID integer REFERENCES history -- link to last change in history                 
+       CrhistoryID INTEGER CONSTRAINT object_registry_crhistoryid_fkey REFERENCES History, -- link into create history
+       historyID integer CONSTRAINT object_registry_historyid_fkey REFERENCES history -- link to last change in history                 
        );
 
 -- index
@@ -61,9 +61,9 @@ CREATE TRIGGER trigger_object_registry_update_history_rec AFTER UPDATE
 
 
 CREATE TABLE OBJECT (
-        ID INTEGER PRIMARY KEY  REFERENCES object_registry (id),
-        ClID INTEGER NOT NULL REFERENCES Registrar,
-        UpID INTEGER REFERENCES Registrar,
+        ID INTEGER CONSTRAINT object_pkey PRIMARY KEY CONSTRAINT object_id_fkey REFERENCES object_registry (id),
+        ClID INTEGER NOT NULL CONSTRAINT object_clid_fkey REFERENCES Registrar,
+        UpID INTEGER CONSTRAINT object_upid_fkey REFERENCES Registrar,
         TrDate timestamp DEFAULT NULL,
         UpDate timestamp DEFAULT NULL,
         AuthInfoPw varchar(300) -- in XML schemas
@@ -76,7 +76,7 @@ CREATE INDEX object_clid_idx ON "object" (clid);
 
 -- DROP TABLE Contact CASCADE;
 CREATE TABLE Contact (
-        ID INTEGER PRIMARY KEY REFERENCES object (id),
+        ID INTEGER CONSTRAINT contact_pkey PRIMARY KEY CONSTRAINT contact_id_fkey REFERENCES object (id),
         Name varchar(1024),
         Organization varchar(1024),
         Street1 varchar(1024),
@@ -85,7 +85,7 @@ CREATE TABLE Contact (
         City varchar(1024),
         StateOrProvince varchar(1024),
         PostalCode varchar(32),
-        Country char(2) REFERENCES enum_country,
+        Country char(2) CONSTRAINT contact_country_fkey REFERENCES enum_country,
         Telephone varchar(64),
         Fax varchar(64),
         Email varchar(1024),
@@ -98,7 +98,7 @@ CREATE TABLE Contact (
         NotifyEmail varchar(1024),
         VAT varchar(32),
         SSN varchar(64),
-	    SSNtype INTEGER REFERENCES enum_ssntype,
+	    SSNtype INTEGER CONSTRAINT contact_ssntype_fkey REFERENCES enum_ssntype,
         DiscloseVAT boolean NOT NULL DEFAULT False,
         DiscloseIdent boolean NOT NULL DEFAULT False,
         DiscloseNotifyEmail boolean NOT NULL DEFAULT False
@@ -136,15 +136,15 @@ comment on column Contact.DiscloseNotifyEmail is 'whether reveal notify email';
 
 -- DROP TABLE NSSet CASCADE;
 CREATE TABLE NSSet (
-        ID INTEGER PRIMARY KEY REFERENCES object (id),
+        ID INTEGER CONSTRAINT nsset_pkey PRIMARY KEY CONSTRAINT nsset_id_fkey REFERENCES object (id),
         checklevel smallint default 0
         );
 
 -- DROP TABLE nsset_contact_map CASCADE;
 CREATE TABLE nsset_contact_map (
-        NSSetID INTEGER REFERENCES NSSet ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
-        ContactID INTEGER REFERENCES Contact ON UPDATE CASCADE NOT NULL,
-        PRIMARY KEY (NSSetID, ContactID)
+        NSSetID INTEGER CONSTRAINT nsset_contact_map_nssetid_fkey REFERENCES NSSet ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+        ContactID INTEGER CONSTRAINT nsset_contact_map_contactid_fkey REFERENCES Contact ON UPDATE CASCADE NOT NULL,
+        CONSTRAINT nsset_contact_map_pkey PRIMARY KEY (NSSetID, ContactID)
         );
 CREATE INDEX nsset_contact_map_nssetid_idx ON nsset_contact_map (NSSetID);
 CREATE INDEX nsset_contact_map_contactid_idx ON nsset_contact_map (ContactID);
@@ -152,10 +152,10 @@ CREATE INDEX nsset_contact_map_contactid_idx ON nsset_contact_map (ContactID);
 
 -- DROP TABLE Host CASCADE;
 CREATE TABLE Host (
-        ID SERIAL PRIMARY KEY,
-        NSSetID INTEGER REFERENCES NSSet ON UPDATE CASCADE,
+        ID SERIAL CONSTRAINT host_pkey PRIMARY KEY,
+        NSSetID INTEGER CONSTRAINT host_nssetid_fkey REFERENCES NSSet ON UPDATE CASCADE,
         FQDN VARCHAR(255)   NOT NULL,  -- it cannot be UNIQUE for two different NSSET same dns host 
-        UNIQUE (NSSetID, FQDN ) -- unique key
+        CONSTRAINT host_nssetid_fqdn_key UNIQUE (NSSetID, FQDN ) -- unique key
         );
 
 
@@ -169,9 +169,9 @@ comment on column Host.FQDN is 'fully qualified domain name that is in zone file
 
 -- DROP TABLE  host_ipaddr_map  CASCADE;
 CREATE TABLE host_ipaddr_map (
-           ID SERIAL PRIMARY KEY,
-           HostID  INTEGER NOT NULL REFERENCES HOST ON UPDATE CASCADE ON DELETE CASCADE,
-           NSSetID INTEGER NOT NULL REFERENCES NSSET ON UPDATE CASCADE ON DELETE CASCADE, 
+           ID SERIAL CONSTRAINT host_ipaddr_map_pkey PRIMARY KEY,
+           HostID  INTEGER NOT NULL CONSTRAINT host_ipaddr_map_hostid_fkey REFERENCES HOST ON UPDATE CASCADE ON DELETE CASCADE,
+           NSSetID INTEGER NOT NULL CONSTRAINT host_ipaddr_map_nssetid_fkey REFERENCES NSSET ON UPDATE CASCADE ON DELETE CASCADE, 
            IpAddr INET NOT NULL -- IP address
          );
 
@@ -181,10 +181,10 @@ CREATE INDEX host_ipaddr_map_nssetid_idx ON host_ipaddr_map (nssetid);
 
 -- DROP TABLE Domain CASCADE;
 CREATE TABLE Domain (
-        ID INTEGER PRIMARY KEY REFERENCES object (ID),
-        Zone INTEGER REFERENCES Zone (ID),
-        Registrant INTEGER NOT NULL REFERENCES Contact,
-        NSSet INTEGER NULL REFERENCES NSSet, -- link to nsset can be also NULL, it can register domain without nsset
+        ID INTEGER CONSTRAINT domain_pkey PRIMARY KEY CONSTRAINT domain_id_fkey REFERENCES object (ID),
+        Zone INTEGER CONSTRAINT domain_zone_fkey REFERENCES Zone (ID),
+        Registrant INTEGER NOT NULL CONSTRAINT domain_registrant_fkey REFERENCES Contact,
+        NSSet INTEGER NULL CONSTRAINT domain_nsset_fkey REFERENCES NSSet, -- link to nsset can be also NULL, it can register domain without nsset
         Exdate date NOT NULL
         );
 CREATE INDEX domain_zone_idx ON Domain (Zone);
@@ -201,10 +201,10 @@ comment on column Domain.Exdate is 'domain expiry date';
 
 -- DROP TABLE domain_contact_map CASCADE;
 CREATE TABLE domain_contact_map (
-        DomainID INTEGER REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
-        ContactID INTEGER REFERENCES Contact ON UPDATE CASCADE NOT NULL,
+        DomainID INTEGER CONSTRAINT domain_contact_map_domainid_fkey REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE NOT NULL,
+        ContactID INTEGER CONSTRAINT domain_contact_map_contactid_fkey REFERENCES Contact ON UPDATE CASCADE NOT NULL,
         Role INTEGER NOT NULL DEFAULT 1,
-        PRIMARY KEY (DomainID, ContactID)
+        CONSTRAINT domain_contact_map_pkey PRIMARY KEY (DomainID, ContactID)
         );
 CREATE INDEX domain_contact_map_domainid_idx ON domain_contact_map (DomainID);
 CREATE INDEX domain_contact_map_contactid_idx ON domain_contact_map (ContactID);
@@ -213,21 +213,23 @@ CREATE INDEX domain_contact_map_contactid_idx ON domain_contact_map (ContactID);
 
 -- DROP TABLE DNSSEC CASCADE;
 CREATE TABLE DNSSEC (
-        DomainID INTEGER PRIMARY KEY REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE,
+        DomainID INTEGER CONSTRAINT dnssec_pkey PRIMARY KEY CONSTRAINT dnssec_domainid_fkey REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE,
         KeyTag varchar(255) NOT NULL,
-        Alg smallint NOT NULL CHECK (Alg >= 0 AND Alg <= 255),
+        Alg smallint NOT NULL CONSTRAINT dnssec_alg_check CHECK (Alg >= 0 AND Alg <= 255),
         DigestType smallint NOT NULL,
         Digest character varying (255) NOT NULL,
         MaxSigLive interval NULL,
-        KeyFlags BIT(16) CHECK (BIT '1000000010000000' & KeyFlags = KeyFlags),
-        KeyProtocol smallint CHECK (KeyProtocol = 3),
-        KeyAlg smallint CHECK (KeyAlg >= 0 AND KeyAlg <= 255),
+        KeyFlags BIT(16) CONSTRAINT dnssec_keyflags_check CHECK (BIT '1000000010000000' & KeyFlags = KeyFlags),
+        KeyProtocol smallint CONSTRAINT dnssec_keyprotocol_check CHECK (KeyProtocol = 3),
+        KeyAlg smallint CONSTRAINT dnssec_keyalg_check CHECK (KeyAlg >= 0 AND KeyAlg <= 255),
         PubKey character varying(1024)
         );        
 
 -- DROP TABLE ENUMVal CASCADE;
 CREATE TABLE ENUMVal (
-        DomainID INTEGER NOT NULL PRIMARY KEY REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE,
+        DomainID INTEGER NOT NULL
+        CONSTRAINT enumval_pkey PRIMARY KEY
+        CONSTRAINT enumval_domainid_fkey REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE,
         ExDate date NOT NULL,
         publish BOOLEAN NOT NULL DEFAULT false
         );
@@ -238,40 +240,6 @@ CREATE TABLE ENUMVal (
 
 -- enumval domainid unique constraint
 ALTER TABLE enumval ADD CONSTRAINT enumval_domainid_key UNIQUE (domainid);
-
----
---- #7652
----
-
--- if value is null then raise exception with errmsg, else return value
--- for compatibility with OperationException process variable data in errmsg by ex_data function
-CREATE OR REPLACE FUNCTION raise_exception_ifnull(value anyelement,errmsg text)
-RETURNS anyelement AS
-$BODY$
-DECLARE
-BEGIN
-    IF value IS NULL THEN
-        RAISE EXCEPTION '%', errmsg;
-    END IF;
-    RETURN value;
-END;
-$BODY$
-LANGUAGE 'plpgsql';
-
--- preprocess data for raise_exception_ifnull  errmsg for compatibility with OperationException
--- if value is null then replace with '[null]' and replace '|' by '[pipe]'
-CREATE OR REPLACE FUNCTION ex_data(value text)
-RETURNS text AS
-$BODY$
-DECLARE
-    return_value TEXT;
-BEGIN
-    return_value := COALESCE(REPLACE(value, '|', '[pipe]'),'[null]');
-    RETURN return_value;
-END;
-$BODY$
-LANGUAGE 'plpgsql';
-
 
 CREATE TABLE enum_object_type
 (

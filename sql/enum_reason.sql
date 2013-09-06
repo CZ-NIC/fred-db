@@ -1,8 +1,8 @@
 -- classifier of error messages  reason
 CREATE TABLE enum_reason (
-        id SERIAL PRIMARY KEY,
-        reason varchar(128) UNIQUE NOT NULL,
-        reason_cs varchar(128)  UNIQUE  NOT NULL -- czech translation
+        id SERIAL CONSTRAINT enum_reason_pkey PRIMARY KEY,
+        reason varchar(128) CONSTRAINT enum_reason_reason_key UNIQUE NOT NULL,
+        reason_cs varchar(128) CONSTRAINT enum_reason_reason_cs_key UNIQUE  NOT NULL -- czech translation
         );
 
 

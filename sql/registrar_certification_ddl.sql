@@ -1,17 +1,17 @@
 CREATE DOMAIN classification_type AS integer NOT NULL
-	CONSTRAINT classification_type_check CHECK (VALUE IN (0, 1, 2, 3, 4, 5)); 
+    CONSTRAINT classification_type_check CHECK (VALUE IN (0, 1, 2, 3, 4, 5)); 
 
 COMMENT ON DOMAIN classification_type 
-	IS 'allowed values of classification for registrar certification';
+    IS 'allowed values of classification for registrar certification';
 
 CREATE TABLE registrar_certification
 (
-    id serial PRIMARY KEY, -- certification id
-    registrar_id integer NOT NULL REFERENCES registrar(id), -- registrar id
+    id serial CONSTRAINT registrar_certification_pkey PRIMARY KEY, -- certification id
+    registrar_id integer NOT NULL CONSTRAINT registrar_certification_registrar_id_fkey REFERENCES registrar(id), -- registrar id
     valid_from date NOT NULL, --  registrar certification valid from
     valid_until date NOT NULL, --  registrar certification valid until = valid_from + 1year
     classification classification_type NOT NULL, -- registrar certification result checked 0-5
-    eval_file_id integer NOT NULL REFERENCES files(id) -- link to pdf file
+    eval_file_id integer NOT NULL CONSTRAINT registrar_certification_eval_file_id_fkey REFERENCES files(id) -- link to pdf file
 );
 
 
@@ -51,7 +51,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION registrar_certification_life_check()
-	IS 'check whether registrar_certification life is valid'; 
+    IS 'check whether registrar_certification life is valid'; 
 
 CREATE TRIGGER "trigger_registrar_certification"
   AFTER INSERT OR UPDATE ON registrar_certification
@@ -74,8 +74,8 @@ COMMENT ON COLUMN registrar_certification.eval_file_id IS
 
 CREATE TABLE registrar_group
 (
-    id serial PRIMARY KEY, -- registrar group id
-    short_name varchar(255) NOT NULL UNIQUE, -- short name of the group
+    id serial CONSTRAINT registrar_group_pkey PRIMARY KEY, -- registrar group id
+    short_name varchar(255) NOT NULL CONSTRAINT registrar_group_short_name_key UNIQUE, -- short name of the group
     cancelled timestamp -- when the group was cancelled
 );
 
@@ -107,7 +107,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION cancel_registrar_group_check()
-	IS 'check whether registrar_group is empty and not cancelled'; 
+    IS 'check whether registrar_group is empty and not cancelled'; 
 
 CREATE TRIGGER "trigger_cancel_registrar_group"
   AFTER UPDATE  ON registrar_group
@@ -123,9 +123,9 @@ COMMENT ON COLUMN registrar_group.cancelled IS 'time when the group was cancelle
 
 CREATE TABLE registrar_group_map
 (
-    id serial PRIMARY KEY, -- membership of registrar in group id
-    registrar_id integer NOT NULL REFERENCES registrar(id), -- registrar id
-    registrar_group_id integer NOT NULL REFERENCES registrar_group(id), -- registrar group id
+    id serial CONSTRAINT registrar_group_map_pkey PRIMARY KEY, -- membership of registrar in group id
+    registrar_id integer NOT NULL CONSTRAINT registrar_group_map_registrar_id_fkey REFERENCES registrar(id), -- registrar id
+    registrar_group_id integer NOT NULL CONSTRAINT registrar_group_map_registrar_group_id_fkey REFERENCES registrar_group(id), -- registrar group id
     member_from date NOT NULL, --  registrar membership in the group from this date
     member_until date --  registrar membership in the group until this date or unspecified
 );
@@ -186,7 +186,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION registrar_group_map_check()
-	IS 'check whether registrar membership change is valid'; 
+    IS 'check whether registrar membership change is valid'; 
 
 CREATE TRIGGER "trigger_registrar_group_map"
   AFTER INSERT OR UPDATE ON registrar_group_map
@@ -201,6 +201,6 @@ COMMENT ON COLUMN registrar_group_map.id IS 'registrar group membership id';
 COMMENT ON COLUMN registrar_group_map.registrar_id IS 'registrar id';
 COMMENT ON COLUMN registrar_group_map.registrar_group_id IS 'group id';
 COMMENT ON COLUMN registrar_group_map.member_from 
-	IS 'registrar membership in the group from this date';
+    IS 'registrar membership in the group from this date';
 COMMENT ON COLUMN registrar_group_map.member_until 
-	IS 'registrar membership in the group until this date or unspecified';
+    IS 'registrar membership in the group until this date or unspecified';

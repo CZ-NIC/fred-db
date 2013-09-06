@@ -1,5 +1,5 @@
 CREATE TABLE History (
-        ID SERIAL PRIMARY KEY,
+        ID SERIAL CONSTRAINT history_pkey PRIMARY KEY,
         valid_from TIMESTAMP NOT NULL DEFAULT NOW(),
         valid_to TIMESTAMP,
         next INTEGER,

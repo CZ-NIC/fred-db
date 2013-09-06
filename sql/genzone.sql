@@ -1,6 +1,6 @@
 -- table holding data from SOA record for a zone
 CREATE TABLE zone_soa (
-        Zone INTEGER PRIMARY KEY REFERENCES Zone (ID),  --default period of validity of records in the zone in seconds
+        Zone INTEGER CONSTRAINT zone_soa_pkey PRIMARY KEY CONSTRAINT zone_soa_zone_fkey REFERENCES Zone (ID),  --default period of validity of records in the zone in seconds
         TTL INTEGER NOT NULL,  --default period of validity of records in the zone in seconds
         Hostmaster VARCHAR(255) NOT NULL,  --responsible person email (in format: user@domain.tld )
         Serial INTEGER,  --serial number incremented on change in the form YYYYMMDDnn (year, month, date, revision)

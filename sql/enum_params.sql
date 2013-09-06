@@ -3,15 +3,15 @@
 -- numbering is essential
 
 CREATE TABLE enum_parameters (
-  id INTEGER PRIMARY KEY, -- primary identification 
-  name VARCHAR(100) NOT NULL UNIQUE, -- descriptive name (informational)
+  id INTEGER CONSTRAINT enum_parameters_pkey PRIMARY KEY, -- primary identification 
+  name VARCHAR(100) NOT NULL CONSTRAINT enum_parameters_name_key UNIQUE, -- descriptive name (informational)
   val VARCHAR(100) NOT NULL -- value of parameter
 );
 
 -- parametr 1 is for checking data model version and for applying upgrade
 -- scripts
 INSERT INTO enum_parameters (id, name, val) 
-VALUES (1, 'model_version', '2.14.0');
+VALUES (1, 'model_version', '2.14.2');
 -- parametr 2 is for updating table enum_tlds by data from url
 -- http://data.iana.org/TLD/tlds-alpha-by-domain.txt
 INSERT INTO enum_parameters (id, name, val) 

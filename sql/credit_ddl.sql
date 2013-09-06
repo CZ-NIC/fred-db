@@ -2,8 +2,8 @@
 -- classifier of priced operation ( only 2 for domains so far )
 -- DROP TABLE enum_operation CASCADE;
 CREATE TABLE enum_operation (
-        id SERIAL PRIMARY KEY,         
-        operation varchar(64) UNIQUE NOT NULL
+        id SERIAL CONSTRAINT enum_operation_pkey PRIMARY KEY,
+        operation varchar(64) CONSTRAINT enum_operation_operation_key UNIQUE NOT NULL
         );
 
 INSERT INTO enum_operation  VALUES( 1 , 'CreateDomain'); -- registration fee
@@ -23,7 +23,7 @@ comment on column enum_operation.operation is 'operation';
 
 CREATE TABLE price_vat
 (
-  id serial PRIMARY KEY, -- primary key
+  id serial CONSTRAINT price_vat_pkey PRIMARY KEY, -- primary key
   valid_to timestamp default NULL, -- date when VAT change is realized
   koef numeric, -- coefficient high for VAT recount
   VAT numeric default 19 -- VAT high
@@ -44,9 +44,9 @@ comment on column price_vat.VAT is 'VAT high';
 -- operation price list 
 CREATE TABLE price_list
 (
-  id serial PRIMARY KEY, -- primary key
-  zone_id integer not null  REFERENCES  zone , -- link to zone, for which is price list valid if it is domain (if it isn't domain then it is NULL)
-  operation_id integer NOT NULL REFERENCES  enum_operation, -- for which action is a price connected  
+  id serial CONSTRAINT price_list_pkey PRIMARY KEY, -- primary key
+  zone_id integer not null CONSTRAINT price_list_zone_id_fkey REFERENCES  zone , -- link to zone, for which is price list valid if it is domain (if it isn't domain then it is NULL)
+  operation_id integer NOT NULL CONSTRAINT price_list_operation_id_fkey REFERENCES  enum_operation, -- for which action is a price connected  
   valid_from timestamp NOT NULL, -- from when is record valid 
   valid_to timestamp default NULL, -- till when is record valid, if it is NULL, it isn't limited
   price numeric(10,2) NOT NULL default 0, -- cost of operation ( for year 12 months )
@@ -66,10 +66,10 @@ comment on column price_list.enable_postpaid_operation is 'true if operation of 
 
 CREATE TABLE registrar_credit
 (
-    id BIGSERIAL PRIMARY KEY
+    id BIGSERIAL CONSTRAINT registrar_credit_pkey PRIMARY KEY
     , credit numeric(30,2) NOT NULL DEFAULT 0
-    , registrar_id bigint NOT NULL REFERENCES registrar(id)
-    , zone_id bigint NOT NULL REFERENCES zone(id),
+    , registrar_id bigint NOT NULL CONSTRAINT registrar_credit_registrar_id_fkey REFERENCES registrar(id)
+    , zone_id bigint NOT NULL CONSTRAINT registrar_credit_zone_id_fkey REFERENCES zone(id),
     CONSTRAINT registrar_credit_unique_key UNIQUE (registrar_id, zone_id)
 );
 
@@ -78,9 +78,9 @@ COMMENT ON TABLE registrar_credit
 
 CREATE TABLE registrar_credit_transaction
 (
-    id bigserial PRIMARY KEY
+    id bigserial CONSTRAINT registrar_credit_transaction_pkey PRIMARY KEY
     , balance_change numeric(10,2) NOT NULL
-    , registrar_credit_id bigint NOT NULL REFERENCES registrar_credit(id)
+    , registrar_credit_id bigint NOT NULL CONSTRAINT registrar_credit_transaction_registrar_credit_id_fkey REFERENCES registrar_credit(id)
 );
 
 COMMENT ON TABLE registrar_credit_transaction 

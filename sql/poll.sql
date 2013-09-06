@@ -1,5 +1,5 @@
 CREATE TABLE MessageType (
-        ID INTEGER PRIMARY KEY,
+        ID INTEGER CONSTRAINT messagetype_pkey PRIMARY KEY,
 	name VARCHAR(30) NOT NULL
 );
 -- do not change the number codes - current code depends on it!
@@ -42,12 +42,12 @@ id - name
 13 - outzone';
 
 CREATE TABLE Message (
-        ID SERIAL PRIMARY KEY,
-        ClID INTEGER NOT NULL REFERENCES Registrar ON UPDATE CASCADE,
+        ID SERIAL CONSTRAINT message_pkey PRIMARY KEY,
+        ClID INTEGER NOT NULL CONSTRAINT message_clid_fkey REFERENCES Registrar ON UPDATE CASCADE,
         CrDate timestamp NOT NULL DEFAULT now(),
         ExDate TIMESTAMP,
         Seen BOOLEAN NOT NULL DEFAULT false,
-	MsgType INTEGER REFERENCES messagetype (id)
+	MsgType INTEGER CONSTRAINT message_msgtype_fkey REFERENCES messagetype (id)
 );
 CREATE INDEX message_clid_idx ON message (clid);
 CREATE INDEX message_seen_idx ON message (clid,seen,crdate,exdate);
@@ -55,30 +55,35 @@ CREATE INDEX message_seen_idx ON message (clid,seen,crdate,exdate);
 comment on table Message is 'Evidence of messages for registrars, which can be picked up by epp poll funcion';
 
 CREATE TABLE poll_credit (
-  msgid INTEGER PRIMARY KEY REFERENCES message (id),
-  zone INTEGER REFERENCES zone (id),
+  msgid INTEGER CONSTRAINT poll_credit_pkey PRIMARY KEY
+  CONSTRAINT poll_credit_msgid_fkey REFERENCES message (id),
+  zone INTEGER CONSTRAINT poll_credit_zone_fkey REFERENCES zone (id),
   credlimit numeric(10,2) NOT NULL,
   credit numeric(10,2) NOT NULL
 );
 
 CREATE TABLE poll_credit_zone_limit (
-  zone INTEGER PRIMARY KEY REFERENCES zone(id),
+  zone INTEGER CONSTRAINT poll_credit_zone_limit_pkey PRIMARY KEY
+  CONSTRAINT poll_credit_zone_limit_zone_fkey REFERENCES zone(id),
   credlimit numeric(10,2) NOT NULL
 );
 
 CREATE TABLE poll_eppaction (
-  msgid INTEGER PRIMARY KEY REFERENCES message (id),
-  objid INTEGER REFERENCES object_history (historyid)
+  msgid INTEGER CONSTRAINT poll_eppaction_pkey PRIMARY KEY
+  CONSTRAINT poll_eppaction_msgid_fkey REFERENCES message (id),
+  objid INTEGER CONSTRAINT poll_eppaction_objid_fkey REFERENCES object_history (historyid)
 );
 
 CREATE TABLE poll_techcheck (
-  msgid INTEGER PRIMARY KEY REFERENCES message (id),
-  cnid INTEGER REFERENCES check_nsset (id)
+  msgid INTEGER CONSTRAINT poll_techcheck_pkey PRIMARY KEY
+  CONSTRAINT poll_techcheck_msgid_fkey REFERENCES message (id),
+  cnid INTEGER CONSTRAINT poll_techcheck_cnid_fkey REFERENCES check_nsset (id)
 );
 
 CREATE TABLE poll_stateChange (
-  msgid INTEGER PRIMARY KEY REFERENCES message (id),
-  stateid INTEGER REFERENCES object_state (id)
+  msgid INTEGER CONSTRAINT poll_statechange_pkey PRIMARY KEY
+  CONSTRAINT poll_statechange_msgid_fkey REFERENCES message (id),
+  stateid INTEGER CONSTRAINT poll_statechange_stateid_fkey REFERENCES object_state (id)
 );
 
 CREATE INDEX poll_statechange_stateid_idx ON poll_statechange (stateid);

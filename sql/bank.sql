@@ -4,19 +4,19 @@
 
 -- bank classifier 
 -- CREATE TABLE enum_bank_code (
--- code char(4) PRIMARY KEY,
--- name_short varchar(4) UNIQUE NOT NULL , -- shortcut
--- name_full varchar(64) UNIQUE  NOT NULL -- full name
+-- code char(4) CONSTRAINT enum_bank_code_pkey PRIMARY KEY,
+-- name_short CONSTRAINT enum_bank_code_name_short_key varchar(4) UNIQUE NOT NULL , -- shortcut
+-- name_full CONSTRAINT enum_bank_code_name_full_key varchar(64) UNIQUE  NOT NULL -- full name
 -- );
 
 -- ACCOUNT -- table of our accounts
 CREATE TABLE bank_account 
 (
-id serial NOT NULL PRIMARY KEY, -- unique primary key
-Zone INTEGER REFERENCES Zone (ID), -- for which zone should be account executed
+id serial NOT NULL CONSTRAINT bank_account_pkey PRIMARY KEY, -- unique primary key
+Zone INTEGER CONSTRAINT bank_account_zone_fkey REFERENCES Zone (ID), -- for which zone should be account executed
 account_number char(16) NOT NULL , -- account number
 account_name  char(20) , -- account name
-bank_code char(4)  REFERENCES enum_bank_code,   -- bank code
+bank_code char(4) CONSTRAINT bank_account_bank_code_fkey REFERENCES enum_bank_code,   -- bank code
 balance  numeric(10,2) default 0.0, -- actual balance 
 last_date date, -- date of last statement 
 last_num int  -- number of last statement

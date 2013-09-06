@@ -5,9 +5,9 @@
 -- Valid since 1. 7. 2012
 --DROP TABLE enum_country CASCADE;
 CREATE TABLE enum_country (
-        id char(2) PRIMARY KEY,
-        country varchar(1024) UNIQUE NOT NULL,
-        country_cs  varchar(1024) UNIQUE -- optional czech title
+        id char(2) CONSTRAINT enum_country_pkey PRIMARY KEY,
+        country  varchar(1024) CONSTRAINT enum_country_country_key UNIQUE NOT NULL,
+        country_cs  varchar(1024) CONSTRAINT enum_country_country_cs_key UNIQUE -- optional czech title
         );
 
 comment on table enum_country is 'list of country codes and names';

@@ -1,7 +1,7 @@
 -- login table for saved filters
 -- DROP TABLE Filters CASCADE;
 CREATE TABLE Filters (
-	ID SERIAL PRIMARY KEY, 
+	ID SERIAL CONSTRAINT filters_pkey PRIMARY KEY, 
 	Type SMALLINT NOT NULL, 
 	Name VARCHAR(255) NOT NULL, 
 	UserID INTEGER NOT NULL, 
