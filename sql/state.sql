@@ -1061,12 +1061,14 @@ SELECT array_to_string(ARRAY((
 $$ LANGUAGE SQL;
 
 -- Reason of state change
+DROP TABLE IF EXISTS object_state_request_reason;
 CREATE TABLE object_state_request_reason
 (
     object_state_request_id INTEGER NOT NULL REFERENCES object_state_request (id),
-    -- state present/absent
-    state_on BOOL NOT NULL,
-    reason VARCHAR(300) NOT NULL,
-    PRIMARY KEY (object_state_request_id,state_on)
+    -- state created
+    reason_creation VARCHAR(300) NULL DEFAULT NULL,
+    -- state canceled
+    reason_cancellation VARCHAR(300) NULL DEFAULT NULL,
+    PRIMARY KEY (object_state_request_id)
 );
 
