@@ -19,3 +19,5 @@ insert into enum_contact_test_status (id, name, description) values('2', 'runnin
 insert into enum_contact_test_status (id, name, description) values('3', 'manual', 'Automatic phase of test has finished but result is to be concluded by human.') ;
 insert into enum_contact_test_status (id, name, description) values('4', 'ok', 'Test result is OK.') ;
 insert into enum_contact_test_status (id, name, description) values('5', 'fail', 'Test result is FAIL.') ;
+insert into enum_contact_testsuite (name, description) values('automatic', 'Tests without any contact owner cooperation.') ;
+insert into enum_contact_testsuite (name, description) values('manual', 'Tests where contact owner is actively taking part or is being informed.') ;
