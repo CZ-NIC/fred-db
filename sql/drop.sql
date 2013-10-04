@@ -2,7 +2,6 @@
 DROP TABLE Contact CASCADE;
 DROP TABLE Contact_History CASCADE;
 DROP TABLE Credit CASCADE;
-DROP TABLE DNSSEC CASCADE;
 DROP TABLE Domain CASCADE;
 DROP TABLE domain_contact_map CASCADE;
 DROP TABLE domain_contact_map_history CASCADE;
