@@ -37,7 +37,7 @@ INSERT INTO enum_object_states
 INSERT INTO enum_object_states 
   VALUES (06,'serverInzoneManual','{3}','t','t', 8*2);
 INSERT INTO enum_object_states 
-  VALUES (07,'serverBlocked','{3}','t','t', 16*2);
+  VALUES (07,'serverBlocked','{1,3}','t','t', 16*2);
 INSERT INTO enum_object_states 
   VALUES (08,'expirationWarning','{3}','f','f', NULL);
 INSERT INTO enum_object_states 
@@ -1059,3 +1059,16 @@ SELECT array_to_string(ARRAY((
     ORDER BY eos.importance
 )), E'&')
 $$ LANGUAGE SQL;
+
+-- Reason of state change
+DROP TABLE IF EXISTS object_state_request_reason;
+CREATE TABLE object_state_request_reason
+(
+    object_state_request_id INTEGER NOT NULL REFERENCES object_state_request (id),
+    -- state created
+    reason_creation VARCHAR(300) NULL DEFAULT NULL,
+    -- state canceled
+    reason_cancellation VARCHAR(300) NULL DEFAULT NULL,
+    PRIMARY KEY (object_state_request_id)
+);
+
