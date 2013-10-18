@@ -14,11 +14,12 @@ insert into enum_contact_check_status (id, name, description) values('3', 'to_be
 insert into enum_contact_check_status (id, name, description) values('4', 'ok', 'Contact data were OK.') ;
 insert into enum_contact_check_status (id, name, description) values('5', 'fail', 'Contact data were invalid. ') ;
 insert into enum_contact_check_status (id, name, description) values('6', 'invalidated', 'Check was manually invalidated.') ;
-insert into enum_contact_test_status (id, name, description) values('1', 'enqueued', 'Automatic phase of test is ready to run.') ;
-insert into enum_contact_test_status (id, name, description) values('2', 'running', 'Automatic phase of test is still running.') ;
-insert into enum_contact_test_status (id, name, description) values('3', 'error', 'Error happened during test execution.') ;
-insert into enum_contact_test_status (id, name, description) values('4', 'manual', 'Automatic phase of test has finished but result is to be concluded by human.') ;
-insert into enum_contact_test_status (id, name, description) values('5', 'ok', 'Test result is OK.') ;
-insert into enum_contact_test_status (id, name, description) values('6', 'fail', 'Test result is FAIL.') ;
+insert into enum_contact_test_status (id, name, description) values('1', 'enqueued', 'Test is ready to be runned.') ;
+insert into enum_contact_test_status (id, name, description) values('2', 'running', 'Test is running.') ;
+insert into enum_contact_test_status (id, name, description) values('3', 'skipped', 'Test run was intentionally skipped.') ;
+insert into enum_contact_test_status (id, name, description) values('4', 'error', 'Error happened during test run.') ;
+insert into enum_contact_test_status (id, name, description) values('5', 'manual', 'Result is inconclusive and evaluation by human is needed.') ;
+insert into enum_contact_test_status (id, name, description) values('6', 'ok', 'Test result is OK.') ;
+insert into enum_contact_test_status (id, name, description) values('7', 'fail', 'Test result is FAIL.') ;
 insert into enum_contact_testsuite (name, description) values('automatic', 'Tests without any contact owner cooperation.') ;
 insert into enum_contact_testsuite (name, description) values('manual', 'Tests where contact owner is actively taking part or is being informed.') ;
