@@ -1,3 +1,6 @@
+---
+--- administrative domain blocking/unblocking
+---
 INSERT INTO request_type (service_id, id, name) VALUES
 (4, 1341, 'DomainsBlock'),
 (4, 1342, 'DomainsBlockUpdate'),
