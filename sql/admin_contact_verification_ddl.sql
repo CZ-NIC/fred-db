@@ -1,10 +1,10 @@
 -- Parse::SQL::Dia      version 0.22                              
 -- Documentation        http://search.cpan.org/dist/Parse-Dia-SQL/
--- Environment          Perl 5.014002, /usr/bin/perl              
+-- Environment          Perl 5.018001, /usr/bin/perl              
 -- Architecture         x86_64-linux-gnu-thread-multi             
 -- Target Database      postgres                                  
 -- Input file           db_rev5_source.dia                        
--- Generated at         Wed Sep  4 16:51:33 2013                  
+-- Generated at         Wed Jan  8 13:38:54 2014                  
 -- Typemap for postgres not found in input file                   
 
 -- get_constraints_drop 
