@@ -4,7 +4,7 @@
 -- Architecture         x86_64-linux-gnu-thread-multi             
 -- Target Database      postgres                                  
 -- Input file           db_rev5_source.dia                        
--- Generated at         Wed Jan  8 13:38:54 2014                  
+-- Generated at         Fri Jan 17 09:22:32 2014                  
 -- Typemap for postgres not found in input file                   
 
 -- get_constraints_drop 
@@ -19,19 +19,17 @@
 
 -- get_schema_create
 create table enum_contact_test (
-   id          serial  not null,
-   name        varchar NOT NULL,
-   description varchar NULL    ,
+   id     integer not null,
+   handle varchar NOT NULL,
    constraint pk_enum_contact_test primary key (id)
 )   ;
 create table contact_testsuite_map (
-   enum_contact_test_id      int NOT NULL,
-   enum_contact_testsuite_id int NOT NULL
+   enum_contact_test_id      integer NOT NULL,
+   enum_contact_testsuite_id integer NOT NULL
 )   ;
 create table enum_contact_testsuite (
-   id          serial  not null,
-   name        varchar NOT NULL,
-   description varchar NULL    ,
+   id     integer not null,
+   handle varchar NOT NULL,
    constraint pk_enum_contact_testsuite primary key (id)
 )   ;
 create table contact_check (
@@ -46,9 +44,8 @@ create table contact_check (
    constraint pk_contact_check primary key (id)
 )   ;
 create table enum_contact_check_status (
-   id          integer not null,
-   name        varchar NOT NULL,
-   description varchar NOT NULL,
+   id     integer not null,
+   handle varchar NOT NULL,
    constraint pk_enum_contact_check_status primary key (id)
 )   ;
 create table contact_test_result (
@@ -63,9 +60,8 @@ create table contact_test_result (
    constraint pk_contact_test_result primary key (id)
 )   ;
 create table enum_contact_test_status (
-   id          integer not null,
-   name        varchar NOT NULL,
-   description varchar NOT NULL,
+   id     integer not null,
+   handle varchar NOT NULL,
    constraint pk_enum_contact_test_status primary key (id)
 )   ;
 create table contact_test_result_history (
@@ -103,6 +99,34 @@ create table contact_check_poll_message_map (
    contact_check_id bigint    NOT NULL,
    poll_message_id  bigint    NOT NULL,
    constraint pk_contact_check_poll_message_map primary key (id)
+)   ;
+create table enum_contact_test_status_localization (
+   id          integer not null,
+   lang        varchar NOT NULL,
+   name        varchar NOT NULL,
+   description varchar NOT NULL,
+   constraint pk_enum_contact_test_status_localization primary key (id)
+)   ;
+create table enum_contact_check_status_localization (
+   id          integer not null,
+   lang        varchar NOT NULL,
+   name        varchar NOT NULL,
+   description varchar NOT NULL,
+   constraint pk_enum_contact_check_status_localization primary key (id)
+)   ;
+create table enum_contact_testsuite_localization (
+   id          integer not null,
+   lang        varchar NOT NULL,
+   name        varchar NOT NULL,
+   description varchar NULL    ,
+   constraint pk_enum_contact_testsuite_localization primary key (id)
+)   ;
+create table enum_contact_test_localization (
+   id          integer not null,
+   lang        varchar NOT NULL,
+   name        varchar NOT NULL,
+   description varchar NULL    ,
+   constraint pk_enum_contact_test_localization primary key (id)
 )   ;
 
 -- get_view_create
@@ -198,12 +222,12 @@ COMMENT ON COLUMN contact_check.enum_contact_testsuite_id IS
 appropriate tests. Set of tests in contact_testsuite can be freely changed afterwards. 
 To get tests evaluated during certain contact_check see records in table contact_test_result referring 
 to id of that contact_check via contact_test_result.contact_check_id.';
-CREATE FUNCTION assure_reffered_enum_contact_test_names_dont_change() 
+CREATE FUNCTION assure_reffered_enum_contact_test_handles_dont_change() 
 RETURNS trigger 
 AS 
-$contact_test_name_to_change$
+$contact_test_handle_to_change$
 BEGIN
-	IF OLD.name == NEW.name THEN
+	IF OLD.handle == NEW.handle THEN
 		RETURN NEW;
 	END IF;
 	
@@ -212,35 +236,35 @@ BEGIN
 		RETURN NEW;
 	END IF;
 	
-	RAISE EXCEPTION 'Contact test is already in results and is identified for public interface by it''s name';
+	RAISE EXCEPTION 'Contact test is already in results and is identified for public interface by it''s handle';
 END;
-$contact_test_name_to_change$ 
+$contact_test_handle_to_change$ 
 LANGUAGE plpgsql;
   
-CREATE TRIGGER contact_test_name_to_change
+CREATE TRIGGER contact_test_handle_to_change
    BEFORE UPDATE ON enum_contact_test
-   FOR EACH ROW EXECUTE PROCEDURE assure_reffered_enum_contact_test_names_dont_change();
+   FOR EACH ROW EXECUTE PROCEDURE assure_reffered_enum_contact_test_handles_dont_change();
 
-COMMENT ON TRIGGER contact_test_name_to_change ON enum_contact_test IS 
-'There is at least one history record of this test execution so the name must stay unchanged.';
+COMMENT ON TRIGGER contact_test_handle_to_change ON enum_contact_test IS 
+'There is at least one history record of this test execution so the handle must stay unchanged.';
 -- get_associations_create
-create unique index idx_enum_contact_test_name on enum_contact_test (name) ;
+create unique index idx_enum_contact_test_handle on enum_contact_test (handle) ;
 create index idx_contact_testsuite_map_enum_test_id on contact_testsuite_map (enum_contact_test_id) ;
 create index idx_contact_testsuite_map_enum_testsuite_id on contact_testsuite_map (enum_contact_testsuite_id) ;
 create unique index idx_contact_testsuite_map_unique_pair on contact_testsuite_map (enum_contact_test_id,enum_contact_testsuite_id) ;
-create unique index idx_enum_contact_testsuite_name on enum_contact_testsuite (name) ;
+create unique index idx_enum_contact_testsuite_handle on enum_contact_testsuite (handle) ;
 create index idx_contact_check_contact_history_id on contact_check (contact_history_id) ;
 create index idx_contact_check_log_request_id on contact_check (logd_request_id) ;
 create index idx_contact_check_enum_testsuite_id on contact_check (enum_contact_testsuite_id) ;
 create index idx_contact_check_enum_check_status_id on contact_check (enum_contact_check_status_id) ;
 create unique index idx_contact_check_handle on contact_check (handle) ;
-create unique index idx_enum_contact_check_status_name on enum_contact_check_status (name) ;
+create unique index idx_enum_contact_check_status_handle on enum_contact_check_status (handle) ;
 create index idx_contact_test_result_contact_check_id on contact_test_result (contact_check_id) ;
 create index idx_contact_test_result_enum_test_id on contact_test_result (enum_contact_test_id) ;
 create index idx_contact_test_result_log_request_id on contact_test_result (logd_request_id) ;
 create index idx_contact_test_result_enum_test_status_id on contact_test_result (enum_contact_test_status_id) ;
 create unique index idx_contact_test_result_unique_check_test_pair on contact_test_result (contact_check_id,enum_contact_test_id) ;
-create unique index idx_enum_contact_test_status_name on enum_contact_test_status (name) ;
+create unique index idx_enum_contact_test_status_handle on enum_contact_test_status (handle) ;
 create index idx_contact_test_result_history_contact_test_result_id on contact_test_result_history (contact_test_result_id) ;
 create index idx_contact_test_result_history_log_request_id on contact_test_result_history (logd_request_id) ;
 create index idx_contact_test_result_history_enum_test_status_id on contact_test_result_history (enum_contact_test_status_id) ;
@@ -254,6 +278,10 @@ create index idx_contact_check_object_state_map_contact_check_id on contact_chec
 create index idx_contact_check_object_state_map_object_state_id on contact_check_object_state_map (object_state_id) ;
 create index idx_contact_check_poll_message_map_contact_check_id on contact_check_poll_message_map (contact_check_id) ;
 create index idx_contact_check_poll_message_map_poll_message_id on contact_check_poll_message_map (poll_message_id) ;
+create index idx_enum_contact_test_status_localization_lang on enum_contact_test_status_localization (lang) ;
+create index idx_enum_contact_check_status_localization_lang on enum_contact_check_status_localization (lang) ;
+create index idx_enum_contact_testsuite_localization_lang on enum_contact_testsuite_localization (lang) ;
+create index idx_enum_contact_test_localization_lang on enum_contact_test_localization (lang) ;
 alter table contact_testsuite_map add constraint contact_testsuite_map_fk_Enum_contact_test_id 
     foreign key (enum_contact_test_id)
     references enum_contact_test (id) ;
@@ -296,3 +324,15 @@ alter table contact_check_poll_message_map add constraint contact_check_poll_mes
 alter table contact_test_result_history add constraint contact_test_result_history_fk_Enum_contact_test_status_id 
     foreign key (enum_contact_test_status_id)
     references enum_contact_test_status (id) ;
+alter table enum_contact_test_status_localization add constraint enum_contact_test_status_localization_fk_Id 
+    foreign key (id)
+    references enum_contact_test_status (id) ;
+alter table enum_contact_check_status_localization add constraint enum_contact_check_status_localization_fk_Id 
+    foreign key (id)
+    references enum_contact_check_status (id) ;
+alter table enum_contact_testsuite_localization add constraint enum_contact_testsuite_localization_fk_Id 
+    foreign key (id)
+    references enum_contact_testsuite (id) ;
+alter table enum_contact_test_localization add constraint enum_contact_test_localization_fk_Id 
+    foreign key (id)
+    references enum_contact_test (id) ;
