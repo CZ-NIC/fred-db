@@ -210,21 +210,6 @@ CREATE INDEX domain_contact_map_domainid_idx ON domain_contact_map (DomainID);
 CREATE INDEX domain_contact_map_contactid_idx ON domain_contact_map (ContactID);
 
 
-
--- DROP TABLE DNSSEC CASCADE;
-CREATE TABLE DNSSEC (
-        DomainID INTEGER CONSTRAINT dnssec_pkey PRIMARY KEY CONSTRAINT dnssec_domainid_fkey REFERENCES Domain ON UPDATE CASCADE ON DELETE CASCADE,
-        KeyTag varchar(255) NOT NULL,
-        Alg smallint NOT NULL CONSTRAINT dnssec_alg_check CHECK (Alg >= 0 AND Alg <= 255),
-        DigestType smallint NOT NULL,
-        Digest character varying (255) NOT NULL,
-        MaxSigLive interval NULL,
-        KeyFlags BIT(16) CONSTRAINT dnssec_keyflags_check CHECK (BIT '1000000010000000' & KeyFlags = KeyFlags),
-        KeyProtocol smallint CONSTRAINT dnssec_keyprotocol_check CHECK (KeyProtocol = 3),
-        KeyAlg smallint CONSTRAINT dnssec_keyalg_check CHECK (KeyAlg >= 0 AND KeyAlg <= 255),
-        PubKey character varying(1024)
-        );        
-
 -- DROP TABLE ENUMVal CASCADE;
 CREATE TABLE ENUMVal (
         DomainID INTEGER NOT NULL
