@@ -33,3 +33,5 @@ insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_
 insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_id) values('2', '1') ;
 insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_id) values('3', '1') ;
 insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_id) values('4', '1') ;
+insert into enum_filetype (id, name) values('8', 'admin contact verification_contact_update_call') ;
+insert into message_type (id, type) values('9', 'admin_contact_verification_contact_update_call') ;
