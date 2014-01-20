@@ -29,9 +29,11 @@ insert into enum_contact_test (id, name, description) values('1', 'name_syntax',
 insert into enum_contact_test (id, name, description) values('2', 'phone_syntax', 'Testing syntactical validity of phone') ;
 insert into enum_contact_test (id, name, description) values('3', 'email_syntax', 'Testing syntactical validity of e-mail') ;
 insert into enum_contact_test (id, name, description) values('4', 'cz_address_existence', 'Testing address against official dataset (CZ only)') ;
+insert into enum_contact_test (id, name, description) values('5', 'contactability', 'Testing if contact is reachable by e-mail or letter') ;
 insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_id) values('1', '1') ;
 insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_id) values('2', '1') ;
 insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_id) values('3', '1') ;
 insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_id) values('4', '1') ;
+insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_id) values('5', '2') ;
 insert into enum_filetype (id, name) values('8', 'admin contact verification_contact_update_call') ;
 insert into message_type (id, type) values('9', 'admin_contact_verification_contact_update_call') ;
