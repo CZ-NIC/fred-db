@@ -83,6 +83,8 @@ write_script()
     # admin contact verification
     cat $DIR/admin_contact_verification_ddl.sql
     cat $DIR/admin_contact_verification_dml.sql
+    # manual verification states
+    cat $DIR/registry_dml_contact_manual_verification.sql
 }
 
 usage()
