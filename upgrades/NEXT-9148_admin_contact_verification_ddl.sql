@@ -4,7 +4,7 @@
 -- Architecture         x86_64-linux-gnu-thread-multi             
 -- Target Database      postgres                                  
 -- Input file           db_rev5_source.dia                        
--- Generated at         Fri Jan 17 09:22:32 2014                  
+-- Generated at         Thu Jan 30 11:42:55 2014                  
 -- Typemap for postgres not found in input file                   
 
 -- get_constraints_drop 
@@ -88,11 +88,11 @@ create table contact_check_message_map (
    message_archive_id bigint    NULL    ,
    constraint pk_contact_check_message_map primary key (id)
 )   ;
-create table contact_check_object_state_map (
-   id               bigserial not null,
-   contact_check_id bigint    NOT NULL,
-   object_state_id  bigint    NOT NULL,
-   constraint pk_contact_check_object_state_map primary key (id)
+create table contact_check_object_state_request_map (
+   id                      bigserial not null,
+   contact_check_id        bigint    NOT NULL,
+   object_state_request_id bigint    NOT NULL,
+   constraint pk_contact_check_object_state_request_map primary key (id)
 )   ;
 create table contact_check_poll_message_map (
    id               bigserial not null,
@@ -274,8 +274,8 @@ create index idx_contact_check_history_enum_check_status_id on contact_check_his
 create index idx_contact_check_message_map_contact_check_id on contact_check_message_map (contact_check_id) ;
 create index idx_contact_check_message_map_mail_archive_id on contact_check_message_map (mail_archive_id) 		;
 create index idx_contact_check_message_map_message_archive_id on contact_check_message_map (message_archive_id) 		;
-create index idx_contact_check_object_state_map_contact_check_id on contact_check_object_state_map (contact_check_id) ;
-create index idx_contact_check_object_state_map_object_state_id on contact_check_object_state_map (object_state_id) ;
+create index idx_contact_check_object_state_request_map_contact_check_id on contact_check_object_state_request_map (contact_check_id) ;
+create index idx_contact_check_object_state_request_map_object_state_request_id on contact_check_object_state_request_map (object_state_request_id) ;
 create index idx_contact_check_poll_message_map_contact_check_id on contact_check_poll_message_map (contact_check_id) ;
 create index idx_contact_check_poll_message_map_poll_message_id on contact_check_poll_message_map (poll_message_id) ;
 create index idx_enum_contact_test_status_localization_lang on enum_contact_test_status_localization (lang) ;
@@ -315,7 +315,7 @@ alter table contact_test_result add constraint contact_test_result_fk_Enum_conta
 alter table contact_check_message_map add constraint contact_check_message_map_fk_Contact_check_id 
     foreign key (contact_check_id)
     references contact_check (id) ;
-alter table contact_check_object_state_map add constraint contact_check_object_state_map_fk_Contact_check_id 
+alter table contact_check_object_state_request_map add constraint contact_check_object_state_request_map_fk_Contact_check_id 
     foreign key (contact_check_id)
     references contact_check (id) ;
 alter table contact_check_poll_message_map add constraint contact_check_poll_message_map_fk_Contact_check_id 
