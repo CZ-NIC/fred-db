@@ -1,7 +1,15 @@
 ---
+--- mail headers defaults for mojeid
+---
+INSERT INTO mail_header_defaults (id, h_from,h_replyto, h_errorsto, h_organization, h_contentencoding, h_messageidserver)
+    VALUES (2, 'podpora@mojeid.cz', 'podpora@mojeid.cz', 'podpora@mojeid.cz', 'CZ.NIC, z.s.p.o.', NULL, 'nic.cz');
+
+
+---
 --- messages templates
 ---
 INSERT INTO mail_type (id, name, subject) VALUES (21, 'mojeid_identification', '[mojeID] Založení účtu - PIN1 pro aktivaci mojeID');
+INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'mojeid_identification'), 2);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (21, 'plain', 1,
 '
@@ -34,6 +42,7 @@ Váš tým <?cs var:defaults.company ?>
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (21, 21);
 
 INSERT INTO mail_type (id, name, subject) VALUES (22, 'mojeid_validation', 'Validace účtu mojeID <?cs if:status == #1 ?>provedena<?cs else ?>neprovedena<?cs /if ?>');
+INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'mojeid_validation'), 2);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (22, 'plain', 1,
 '
@@ -54,6 +63,7 @@ Váš tým <?cs var:defaults.company ?>
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (22, 22);
 
 INSERT INTO mail_type (id, name, subject) VALUES (24, 'mojeid_email_change', 'MojeID - změna emailu');
+INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'mojeid_email_change'), 2);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (24, 'plain', 1,
 'Vážený uživateli,
@@ -64,6 +74,7 @@ Váš tým CZ.NIC');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (24, 24);
 
 INSERT INTO mail_type (id, name, subject) VALUES (27, 'mojeid_verified_contact_transfer', 'Založení účtu mojeID');
+INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'mojeid_verified_contact_transfer'), 2);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (27, 'plain', 1,
 '
