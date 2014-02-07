@@ -10,6 +10,7 @@ INSERT INTO message_type (id, type) VALUES (7, 'contact_verification_pin3');
 ---
 
 INSERT INTO mail_type (id, name, subject) VALUES (25, 'conditional_contact_identification', 'Podmíněná identifikace kontaktu');
+INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'conditional_contact_identification'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (25, 'plain', 1,
 '
@@ -60,6 +61,7 @@ INSERT INTO mail_type_template_map (typeid, templateid) VALUES (25, 25);
 
 
 INSERT INTO mail_type (id, name, subject) VALUES (26, 'contact_identification', 'Identifikace kontaktu');
+INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'contact_identification'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (26, 'plain', 1,
 '
