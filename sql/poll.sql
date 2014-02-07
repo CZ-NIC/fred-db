@@ -22,6 +22,7 @@ INSERT INTO MessageType VALUES (17, 'update_domain');
 INSERT INTO MessageType VALUES (18, 'update_nsset');
 INSERT INTO MessageType VALUES (19, 'update_keyset');
 INSERT INTO MessageType VALUES (20, 'delete_contact');
+INSERT INTO MessageType VALUES (21, 'delete_domain');
 
 comment on table MessageType is
 'table with message number codes and its names
