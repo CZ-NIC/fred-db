@@ -1,10 +1,10 @@
--- Parse::SQL::Dia      version 0.22                              
+-- Parse::SQL::Dia      version 0.27                              
 -- Documentation        http://search.cpan.org/dist/Parse-Dia-SQL/
--- Environment          Perl 5.018001, /usr/bin/perl              
+-- Environment          Perl 5.018002, /usr/bin/perl              
 -- Architecture         x86_64-linux-gnu-thread-multi             
 -- Target Database      postgres                                  
 -- Input file           db_rev5_source.dia                        
--- Generated at         Thu Jan 30 11:42:55 2014                  
+-- Generated at         Thu Feb 20 15:52:22 2014                  
 -- Typemap for postgres not found in input file                   
 
 -- get_constraints_drop 
@@ -156,9 +156,7 @@ BEGIN
 			OLD.update_time,
 			OLD.enum_contact_check_status_id
 		);
-		IF NEW.update_time IS NULL THEN
-         		NEW.update_time = NOW() AT TIME ZONE 'utc';
-		END IF;
+       	NEW.update_time = NOW() AT TIME ZONE 'utc';
 	END IF;
 
 	RETURN NEW;
@@ -194,9 +192,7 @@ BEGIN
 			OLD.enum_contact_test_status_id, 
 			OLD.update_time
 		);
-		IF NEW.update_time IS NULL THEN
-			NEW.update_time = NOW() AT TIME ZONE 'utc';
-		END IF;
+		NEW.update_time = NOW() AT TIME ZONE 'utc';
 	END IF;		
 	RETURN NEW;
 END;
