@@ -53,6 +53,7 @@ CREATE TABLE contact_address_history (
         id INTEGER NOT NULL CONSTRAINT contact_address_history_id_fkey REFERENCES contact_address (id),
         contactid INTEGER NOT NULL CONSTRAINT contact_address_history_contactid_fkey REFERENCES object_registry (id),
         type contact_address_type NOT NULL,
+        company_name VARCHAR(1024),
         street1 VARCHAR(1024),
         street2 VARCHAR(1024),
         street3 VARCHAR(1024),

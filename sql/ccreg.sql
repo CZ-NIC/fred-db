@@ -146,6 +146,7 @@ CREATE TABLE contact_address (
     id SERIAL CONSTRAINT contact_address_pkey PRIMARY KEY,
     contactid INTEGER NOT NULL CONSTRAINT contact_address_contactid_fkey REFERENCES contact (id),
     type contact_address_type NOT NULL,
+    company_name VARCHAR(1024),
     street1 VARCHAR(1024),
     street2 VARCHAR(1024),
     street3 VARCHAR(1024),
