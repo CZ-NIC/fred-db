@@ -140,6 +140,21 @@ CREATE INDEX contact_name_coalesce_trim_idx ON contact (trim(both ' ' from COALE
 
 
 
+CREATE TYPE contact_address_type AS ENUM ('MAILING','BILLING','SHIPPING');
+
+CREATE TABLE contact_address (
+    id SERIAL CONSTRAINT contact_address_pkey PRIMARY KEY,
+    contactid INTEGER NOT NULL CONSTRAINT contact_address_contactid_fkey REFERENCES contact (id),
+    type contact_address_type NOT NULL,
+    street1 VARCHAR(1024),
+    street2 VARCHAR(1024),
+    street3 VARCHAR(1024),
+    city VARCHAR(1024),
+    stateorprovince VARCHAR(1024),
+    postalcode VARCHAR(32),
+    country CHAR(2) CONSTRAINT contact_address_country_fkey REFERENCES enum_country (id),
+    CONSTRAINT contact_address_contactid_type_key UNIQUE (contactid,type)
+);
 
 -- DROP TABLE NSSet CASCADE;
 CREATE TABLE NSSet (
