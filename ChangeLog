@@ -1,3 +1,9 @@
+2014-02-13 Jiri Sadek, Michal Strnad (2.16.0)
+
+    * add mail default headers by mail type mapping table
+
+    * logger - new request type
+
 2013-11-06 Michal Strnad, Jan Zima (2.15.0)
 
     * add table for attach reason for object state request (object_state_request_reason)

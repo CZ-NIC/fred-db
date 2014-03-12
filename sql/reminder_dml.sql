@@ -4,6 +4,7 @@
 ---
 
 INSERT INTO mail_type (id, name, subject) VALUES (23, 'annual_contact_reminder', 'Ověření správnosti údajů');
+INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'annual_contact_reminder'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
  (23, 'plain', 1,
 '
