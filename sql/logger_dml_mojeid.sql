@@ -13,6 +13,7 @@ INSERT INTO request_type (service_id, id, name) VALUES
 (6, 1509, 'TrustChange'),
 (6, 1511, 'AccountStateChange'),
 (6, 1512, 'AuthChange');
+(6, 1513, 'PublicProfileChange');
 
 INSERT INTO result_code (service_id, result_code, name) VALUES 
 (6, 1 , 'Success'),
