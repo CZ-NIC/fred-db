@@ -62,13 +62,13 @@ Váš tým <?cs var:defaults.company ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (22, 22);
 
-INSERT INTO mail_type (id, name, subject) VALUES (24, 'mojeid_email_change', 'MojeID - změna emailu');
+INSERT INTO mail_type (id, name, subject) VALUES (24, 'mojeid_email_change', 'MojeID - změna e-mailu');
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'mojeid_email_change'), 2);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (24, 'plain', 1,
 'Vážený uživateli,
 
-k dokončení procedury změny emailu zadejte prosím kód PIN1: <?cs var:pin ?>
+k dokončení procedury změny e-mailu zadejte prosím kód PIN1: <?cs var:pin ?>
 
 Váš tým CZ.NIC');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (24, 24);
