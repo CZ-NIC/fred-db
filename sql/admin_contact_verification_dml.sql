@@ -66,4 +66,6 @@ insert into enum_contact_test_localization (id, lang, name, description) values(
 insert into enum_contact_test_localization (id, lang, name, description) values('6', 'en', 'email_host_existence', 'Testing if e-mail host exists') ;
 insert into enum_contact_test_localization (id, lang, name, description) values('7', 'en', 'send_letter', 'Testing if contact is reachable by letter') ;
 insert into enum_filetype (id, name) values('8', 'admin contact correction notice') ;
+insert into enum_filetype (id, name) values('9', 'admin contact confirm correction') ;
 insert into message_type (id, type) values('9', 'admin_contact_correction_notice') ;
+insert into message_type (id, type) values('10', 'admin_contact_confirm_correction') ;
