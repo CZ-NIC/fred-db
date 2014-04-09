@@ -4,7 +4,7 @@
 -- Architecture         x86_64-linux-gnu-thread-multi             
 -- Target Database      postgres                                  
 -- Input file           db_rev5_source.dia                        
--- Generated at         Thu Feb 20 15:52:22 2014                  
+-- Generated at         Mon Apr  7 15:55:09 2014                  
 -- Typemap for postgres not found in input file                   
 
 -- get_constraints_drop 
@@ -156,7 +156,7 @@ BEGIN
 			OLD.update_time,
 			OLD.enum_contact_check_status_id
 		);
-       	NEW.update_time = NOW() AT TIME ZONE 'utc';
+		NEW.update_time = NOW() AT TIME ZONE 'utc';
 	END IF;
 
 	RETURN NEW;
