@@ -50,7 +50,7 @@ creation - actual data will be copied here from original table in case of any ch
 -- DROP TABLE contact_address_history CASCADE;
 CREATE TABLE contact_address_history (
         historyid INTEGER NOT NULL CONSTRAINT contact_address_history_historyid_fkey REFERENCES history (id),
-        id INTEGER NOT NULL CONSTRAINT contact_address_history_id_fkey REFERENCES contact_address (id),
+        id INTEGER NOT NULL,
         contactid INTEGER NOT NULL CONSTRAINT contact_address_history_contactid_fkey REFERENCES object_registry (id),
         type contact_address_type NOT NULL,
         company_name VARCHAR(1024),
