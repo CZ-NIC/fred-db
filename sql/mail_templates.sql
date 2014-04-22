@@ -207,8 +207,8 @@ Prosíme kontaktujte Vašeho Určeného registrátora <?cs var:registrar ?>
 za účelem prodloužení doménového jména.
 
 V případě, že se domníváte, že platba byla provedena, prověřte nejdříve,
-zda byla provedena pod spravným variabilním symbolem, na správné číslo
-účtu a ve spravné výši a tyto informace svému Určenému registrátorovi
+zda byla provedena pod správným variabilním symbolem, na správné číslo
+účtu a ve správné výši a tyto informace svému Určenému registrátorovi
 sdělte.
 
 Harmonogram plánovaných akcí:
