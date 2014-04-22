@@ -16,7 +16,7 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 Vážený uživateli,
 
 před tím, než Vám aktivujeme účet mojeID, musíme ověřit správnost Vašich
-kontatních údajů, a to prostřednictvím kódů PIN1 a PIN2.
+kontaktních údajů, a to prostřednictvím kódů PIN1 a PIN2.
 
 PIN1: <?cs var:passwd ?>
 PIN2: Vám byl zaslán pomocí SMS.
