@@ -15,8 +15,9 @@ insert into enum_contact_check_status (id, handle) values('4', 'auto_to_be_decid
 insert into enum_contact_check_status (id, handle) values('5', 'auto_ok') ;
 insert into enum_contact_check_status (id, handle) values('6', 'auto_fail') ;
 insert into enum_contact_check_status (id, handle) values('7', 'ok') ;
-insert into enum_contact_check_status (id, handle) values('8', 'fail') ;
-insert into enum_contact_check_status (id, handle) values('9', 'invalidated') ;
+insert into enum_contact_check_status (id, handle) values('8', 'fail_req') ;
+insert into enum_contact_check_status (id, handle) values('9', 'fail') ;
+insert into enum_contact_check_status (id, handle) values('10', 'invalidated') ;
 insert into enum_contact_test_status (id, handle) values('1', 'enqueued') ;
 insert into enum_contact_test_status (id, handle) values('2', 'running') ;
 insert into enum_contact_test_status (id, handle) values('3', 'skipped') ;
@@ -55,8 +56,9 @@ insert into enum_contact_check_status_localization (id, lang, name, description)
 insert into enum_contact_check_status_localization (id, lang, name, description) values('5', 'en', 'auto_ok', 'Automatic tests evaluation proposes status ok.') ;
 insert into enum_contact_check_status_localization (id, lang, name, description) values('6', 'en', 'auto_fail', 'Automatic tests evaluation proposes status fail. ') ;
 insert into enum_contact_check_status_localization (id, lang, name, description) values('7', 'en', 'ok', 'Data were manually evaluated as valid.') ;
-insert into enum_contact_check_status_localization (id, lang, name, description) values('8', 'en', 'fail', 'Data were manually evaluated as invalid.') ;
-insert into enum_contact_check_status_localization (id, lang, name, description) values('9', 'en', 'invalidated', 'Check was manually set to be ignored.') ;
+insert into enum_contact_check_status_localization (id, lang, name, description) values('8', 'en', 'fail_req', 'Data are probably invalid, needs confirmation.') ;
+insert into enum_contact_check_status_localization (id, lang, name, description) values('9', 'en', 'fail', 'Data were manually evaluated as invalid.') ;
+insert into enum_contact_check_status_localization (id, lang, name, description) values('10', 'en', 'invalidated', 'Check was manually set to be ignored.') ;
 insert into enum_contact_testsuite_localization (id, lang, name, description) values('1', 'en', 'automatic', 'Tests without any contact owner cooperation.') ;
 insert into enum_contact_testsuite_localization (id, lang, name, description) values('2', 'en', 'manual', 'Tests where contact owner is actively taking part or is being informed.') ;
 insert into enum_contact_testsuite_localization (id, lang, name, description) values('3', 'en', 'thank_you', '"Thank you" letter used for contactability testing') ;
