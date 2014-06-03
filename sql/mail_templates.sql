@@ -1015,7 +1015,7 @@ In case of any questions do not hesitate to contact us.
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (29, 29);
 
 
-INSERT INTO mail_type (id, name, subject) VALUES (30, 'second_contact_update_call', 'Druhá výzva k opravě či doložení správnosti údajů kontaktu');
+INSERT INTO mail_type (id, name, subject) VALUES (30, 'contact_check_warning', 'Druhá výzva k opravě či doložení správnosti údajů kontaktu');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (30, 'plain', 1,
 'Kontakt id <?cs var:contact_handle ?> - II. výzva k opravě či doložení správnosti údajů
