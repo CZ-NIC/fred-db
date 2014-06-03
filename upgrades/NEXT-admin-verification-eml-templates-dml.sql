@@ -2,7 +2,7 @@
 --- Ticket #9475
 ---
 
-INSERT INTO mail_type (id, name, subject) VALUES (29, 'contact_update_call', 'Výzva k opravě či doložení správnosti údajů kontaktu');
+INSERT INTO mail_type (id, name, subject) VALUES (29, 'contact_check_notice', 'Výzva k opravě či doložení správnosti údajů kontaktu');
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (29, 'plain', 1,
 'Kontakt id <?cs var:contact_handle ?> - výzva k opravě či doložení správnosti údajů
