@@ -34,6 +34,8 @@ CREATE TABLE public_request_objects_map (
   object_id integer CONSTRAINT public_request_objects_map_object_id_fkey REFERENCES object_registry(id)
 );
 
+CREATE INDEX public_request_objects_map_object_id_index ON public_request_objects_map (object_id);
+
 comment on table public_request_objects_map is 'table with objects associated with given request';
 
 CREATE TABLE public_request_auth (
