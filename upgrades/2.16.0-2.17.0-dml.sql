@@ -126,16 +126,16 @@ INSERT INTO mail_type_template_map (typeid, templateid) VALUES (30, 30);
 --- admin contact verification contact states
 --- TODO: migration actual contacts with state_id 25 to 26
 ---
-UPDATE enum_object_states SET name='contactInManualVerification' WHERE id=25;
 INSERT INTO enum_object_states VALUES (26,'contactPassedManualVerification','{1}','t','t', NULL);
+INSERT INTO enum_object_states VALUES (26,'contactInManualVerification','{1}','t','t', NULL);
 INSERT INTO enum_object_states VALUES (27,'contactFailedManualVerification','{1}','t','t', NULL);
 
-UPDATE enum_object_states_desc SET description='Kontakt je ověřován zákaznickou podporou CZ.NIC' WHERE state_id=25 AND lang='CS';
 INSERT INTO enum_object_states_desc VALUES (26, 'CS', 'Kontakt byl ověřen zákaznickou podporou CZ.NIC');
+INSERT INTO enum_object_states_desc VALUES (26, 'CS', 'Kontakt je ověřován zákaznickou podporou CZ.NIC');
 INSERT INTO enum_object_states_desc VALUES (27, 'CS', 'Ověření kontaktu zákaznickou podporou bylo neúspěšné');
 
-UPDATE enum_object_states_desc SET description='Contact is being verified by CZ.NIC customer support' WHERE state_id=25 AND lang='EN';
 INSERT INTO enum_object_states_desc VALUES (26, 'EN', 'Contact has been verified by CZ.NIC customer support');
+INSERT INTO enum_object_states_desc VALUES (26, 'EN', 'Contact is being verified by CZ.NIC customer support');
 INSERT INTO enum_object_states_desc VALUES (27, 'EN', 'Contact has failed the verification by CZ.NIC customer support');
 
 
