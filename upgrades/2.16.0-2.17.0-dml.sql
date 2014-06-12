@@ -124,7 +124,6 @@ INSERT INTO mail_type_template_map (typeid, templateid) VALUES (30, 30);
 
 ---
 --- admin contact verification contact states
---- TODO: migration actual contacts with state_id 25 to 26
 ---
 UPDATE enum_object_states SET name='contactPassedManualVerification' WHERE id=25;
 INSERT INTO enum_object_states VALUES (26,'contactInManualVerification','{1}','t','t', NULL);
