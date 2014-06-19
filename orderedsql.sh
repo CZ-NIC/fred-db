@@ -85,6 +85,8 @@ write_script()
     cat $DIR/admin_contact_verification_dml.sql
     # manual verification states
     cat $DIR/registry_dml_contact_manual_verification.sql
+    # message forwarding service for message type
+    cat $DIR/message_type_forwarding_service_map_dml.sql
 }
 
 usage()
