@@ -97,7 +97,7 @@ INSERT INTO message_type (id,type) VALUES (1,'domain_expiration');
 
 -- #11241
 
-CREATE TYPE message_forwarding_service AS ENUM ('MOBILEM', 'POSTSERVIS', 'OPTYS');
+CREATE TYPE message_forwarding_service AS ENUM ('MOBILEM', 'POSTSERVIS', 'OPTYS', 'MANUAL');
 
 CREATE TABLE message_type_forwarding_service_map
 (
