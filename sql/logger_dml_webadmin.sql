@@ -47,7 +47,14 @@ INSERT INTO request_type (service_id, id, name) VALUES
 (4, 1342, 'DomainsBlockUpdate'),
 (4, 1343, 'DomainsUnblock'),
 (4, 1344, 'DomainsBlacklistAndDelete'),
-(4, 1345, 'PublicRequestResendMessage');
+(4, 1345, 'PublicRequestResendMessage'),
+(4, 1346, 'ContactCheckFilter'),
+(4, 1347, 'ContactCheckDetail'),
+(4, 1348, 'ContactCheckUpdateTestStatuses'),
+(4, 1349, 'ContactCheckResolve'),
+(4, 1350, 'ContactCheckEnqueue'),
+(4, 1351, 'DomainDelete');
+
 
 INSERT INTO result_code (service_id, result_code, name) VALUES 
 (4, 1 , 'Success'),
