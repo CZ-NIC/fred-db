@@ -36,16 +36,6 @@ CREATE TABLE public_request_objects_map (
 
 comment on table public_request_objects_map is 'table with objects associated with given request';
 
-CREATE TABLE public_request_state_request_map (
-  state_request_id integer CONSTRAINT public_request_state_request_map_pkey PRIMARY KEY
-  CONSTRAINT public_request_state_request_map_state_request_id_fkey REFERENCES object_state_request(id),
-  block_request_id integer NOT NULL CONSTRAINT public_request_state_request_map_block_request_id_fkey REFERENCES public_request(id),
-  unblock_request_id integer CONSTRAINT public_request_state_request_map_unblock_request_id_fkey REFERENCES public_request(id)
-);
-
-comment on table public_request_state_request_map is 'table with state request associated with given request';
-
-
 CREATE TABLE public_request_auth (
       id integer CONSTRAINT public_request_auth_pkey PRIMARY KEY NOT NULL
       CONSTRAINT public_request_auth_id_fkey REFERENCES public_request(id),
