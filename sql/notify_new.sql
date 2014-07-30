@@ -95,6 +95,18 @@ comment on table message_type is 'type of message with respect to subject of mes
 
 INSERT INTO message_type (id,type) VALUES (1,'domain_expiration');
 
+-- #11241
+
+CREATE TYPE message_forwarding_service AS ENUM ('MOBILEM', 'POSTSERVIS', 'OPTYS', 'MANUAL');
+
+CREATE TABLE message_type_forwarding_service_map
+(
+  message_type_id BIGINT NOT NULL
+    CONSTRAINT message_type_forwarding_service_map_message_type_id_fkey REFERENCES message_type(id),
+    CONSTRAINT message_type_forwarding_service_map_message_type_id_unique UNIQUE (message_type_id),
+  service_handle message_forwarding_service NOT NULL
+);
+
 CREATE TABLE message_archive
 (
   id  SERIAL CONSTRAINT message_archive_pkey PRIMARY KEY,
@@ -103,7 +115,8 @@ CREATE TABLE message_archive
   attempt smallint NOT NULL DEFAULT 0, -- failed attempts to send data
   status_id INTEGER CONSTRAINT message_archive_status_id_fkey REFERENCES enum_send_status (id), -- message_status
   comm_type_id INTEGER CONSTRAINT message_archive_comm_type_id_fkey REFERENCES comm_type (id), --  communication channel
-  message_type_id INTEGER CONSTRAINT message_archive_message_type_id_fkey REFERENCES message_type (id) --  message type
+  message_type_id INTEGER CONSTRAINT message_archive_message_type_id_fkey REFERENCES message_type (id), --  message type
+  service_handle message_forwarding_service NOT NULL
 );
 
 CREATE INDEX message_archive_crdate_idx ON message_archive (crdate);
