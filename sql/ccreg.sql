@@ -132,6 +132,13 @@ comment on column Contact.DiscloseVAT is 'whether reveal VAT number';
 comment on column Contact.DiscloseIdent is 'whether reveal SSN number';
 comment on column Contact.DiscloseNotifyEmail is 'whether reveal notify email';
 
+---
+---  Ticket #11106 merge contact fn index
+---
+
+CREATE INDEX contact_name_coalesce_trim_idx ON contact (trim(both ' ' from COALESCE(name,'')));
+
+
 
 
 -- DROP TABLE NSSet CASCADE;
