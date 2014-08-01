@@ -8,4 +8,4 @@ INSERT INTO request_type (id, name, service_id) VALUES(3102, 'KeySetLookup', 9);
 
 INSERT INTO result_code (service_id, result_code, name) VALUES(9, 200, 'Ok');
 INSERT INTO result_code (service_id, result_code, name) VALUES(9, 404, 'NotFound');
-INSERT INTO result_code (service_id, result_code, name) VALUES(9, 500, 'internalServerError');
+INSERT INTO result_code (service_id, result_code, name) VALUES(9, 500, 'InternalServerError');
