@@ -1,3 +1,14 @@
+2014-08-01 Jan Korous, Jan Zima, Zdenek Bohm, Jiri Sadek (2.18.0)
+
+    * mapping table between message type and forwarding service which should be used
+
+    * add index contact.name to speed-up contact duplicates search
+
+    * logger - add domain browser merge contacts request type
+             - rdap service, request types and result codes
+
+    * public_request_state_request_map removed
+
 2014-06-13 Jan Korous, Jan Zima, Jiri Sadek (2.17.0)
 
     * data model for admin. contact verification
