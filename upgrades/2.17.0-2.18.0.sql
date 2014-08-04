@@ -51,10 +51,6 @@ UPDATE message_archive AS ma SET service_handle = 'MANUAL'::message_forwarding_s
 
 ALTER TABLE message_archive ALTER COLUMN service_handle SET NOT NULL;
 
-UPDATE message_type_forwarding_service_map SET service_handle = 'OPTYS'::message_forwarding_service
-    WHERE message_type_id = (SELECT id FROM message_type WHERE type = 'mojeid_pin3'::text);
-
-
 ---
 --- #9375 - drop table with state request associated with given request
 ---
