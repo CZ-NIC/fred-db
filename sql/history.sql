@@ -72,7 +72,7 @@ creation - actual data will be copied here from original table in case of any ch
 -- DROP TABLE Domain_History CASCADE;
 CREATE TABLE Domain_History (
         HISTORYID INTEGER CONSTRAINT domain_history_pkey PRIMARY KEY CONSTRAINT domain_history_historyid_fkey REFERENCES History,
-        Zone INTEGER CONSTRAINT domain_history_zone_fkey REFERENCES Zone (ID),
+        Zone INTEGER NOT NULL CONSTRAINT domain_history_zone_fkey REFERENCES Zone (ID),
         ID INTEGER CONSTRAINT domain_history_id_fkey REFERENCES object_registry (id),
         ExDate date NOT NULL,
         Registrant INTEGER , -- canceled references

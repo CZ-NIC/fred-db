@@ -205,7 +205,7 @@ CREATE INDEX host_ipaddr_map_nssetid_idx ON host_ipaddr_map (nssetid);
 -- DROP TABLE Domain CASCADE;
 CREATE TABLE Domain (
         ID INTEGER CONSTRAINT domain_pkey PRIMARY KEY CONSTRAINT domain_id_fkey REFERENCES object (ID),
-        Zone INTEGER CONSTRAINT domain_zone_fkey REFERENCES Zone (ID),
+        Zone INTEGER NOT NULL CONSTRAINT domain_zone_fkey REFERENCES Zone (ID),
         Registrant INTEGER NOT NULL CONSTRAINT domain_registrant_fkey REFERENCES Contact,
         NSSet INTEGER NULL CONSTRAINT domain_nsset_fkey REFERENCES NSSet, -- link to nsset can be also NULL, it can register domain without nsset
         Exdate date NOT NULL
