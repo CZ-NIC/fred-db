@@ -24,45 +24,45 @@ comment on column enum_object_states.external is 'if this status is exported to 
 --
 -- Watch out! Do not use chars "#" and "&" in the text. They are used as delimiters in get_state_descriptions().
 --
-INSERT INTO enum_object_states 
-  VALUES (01,'serverDeleteProhibited','{1,2,3}','t','t', 15*2);
-INSERT INTO enum_object_states 
-  VALUES (02,'serverRenewProhibited','{3}','t','t', 14*2);
-INSERT INTO enum_object_states 
-  VALUES (03,'serverTransferProhibited','{1,2,3}','t','t', 12*2);
-INSERT INTO enum_object_states 
-  VALUES (04,'serverUpdateProhibited','{1,2,3}','t','t', 11*2);
-INSERT INTO enum_object_states 
-  VALUES (05,'serverOutzoneManual','{3}','t','t', 7*2);
-INSERT INTO enum_object_states 
-  VALUES (06,'serverInzoneManual','{3}','t','t', 8*2);
-INSERT INTO enum_object_states 
-  VALUES (07,'serverBlocked','{1,3}','t','t', 16*2);
-INSERT INTO enum_object_states 
+INSERT INTO enum_object_states
+  VALUES (01,'serverDeleteProhibited','{1,2,3}','t','t', 32768);
+INSERT INTO enum_object_states
+  VALUES (02,'serverRenewProhibited','{3}','t','t', 16384);
+INSERT INTO enum_object_states
+  VALUES (03,'serverTransferProhibited','{1,2,3}','t','t', 4096);
+INSERT INTO enum_object_states
+  VALUES (04,'serverUpdateProhibited','{1,2,3}','t','t', 2048);
+INSERT INTO enum_object_states
+  VALUES (05,'serverOutzoneManual','{3}','t','t', 128);
+INSERT INTO enum_object_states
+  VALUES (06,'serverInzoneManual','{3}','t','t', 256);
+INSERT INTO enum_object_states
+  VALUES (07,'serverBlocked','{1,3}','t','t', 65536);
+INSERT INTO enum_object_states
   VALUES (08,'expirationWarning','{3}','f','f', NULL);
-INSERT INTO enum_object_states 
-  VALUES (09,'expired','{3}','f','t', 1*2);
-INSERT INTO enum_object_states 
+INSERT INTO enum_object_states
+  VALUES (09,'expired','{3}','f','t', 2);
+INSERT INTO enum_object_states
   VALUES (10,'unguarded','{3}','f','f', NULL);
-INSERT INTO enum_object_states 
+INSERT INTO enum_object_states
   VALUES (11,'validationWarning1','{3}','f','f', NULL);
-INSERT INTO enum_object_states 
+INSERT INTO enum_object_states
   VALUES (12,'validationWarning2','{3}','f','f', NULL);
-INSERT INTO enum_object_states 
-  VALUES (13,'notValidated','{3}','f','t', 9*2);
-INSERT INTO enum_object_states 
+INSERT INTO enum_object_states
+  VALUES (13,'notValidated','{3}','f','t', 512);
+INSERT INTO enum_object_states
   VALUES (14,'nssetMissing','{3}','f','f', NULL);
-INSERT INTO enum_object_states 
-  VALUES (15,'outzone','{3}','f','t', 3*2);
-INSERT INTO enum_object_states 
-  VALUES (16,'linked','{1,2}','f','t', 10*2);
-INSERT INTO enum_object_states 
+INSERT INTO enum_object_states
+  VALUES (15,'outzone','{3}','f','t', 8);
+INSERT INTO enum_object_states
+  VALUES (16,'linked','{1,2}','f','t', 1024);
+INSERT INTO enum_object_states
   VALUES (17,'deleteCandidate','{1,2,3}','f','t', NULL);
-INSERT INTO enum_object_states 
-  VALUES (18,'serverRegistrantChangeProhibited','{3}','t','t', 13*2);
-INSERT INTO enum_object_states 
+INSERT INTO enum_object_states
+  VALUES (18,'serverRegistrantChangeProhibited','{3}','t','t', 8192);
+INSERT INTO enum_object_states
   VALUES (19,'deleteWarning','{3}','f','f', NULL);
-INSERT INTO enum_object_states 
+INSERT INTO enum_object_states
   VALUES (20,'outzoneUnguarded','{3}','f','f', NULL);
 
 

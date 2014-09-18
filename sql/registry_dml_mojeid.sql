@@ -117,10 +117,10 @@ INSERT INTO enum_filetype (id, name) VALUES (7, 'mojeid contact identification r
 ---
 --- contact states
 ---
-INSERT INTO enum_object_states VALUES (21,'conditionallyIdentifiedContact','{1}','t','t', 5*2);
-INSERT INTO enum_object_states VALUES (22,'identifiedContact','{1}','t','t', 4*2);
-INSERT INTO enum_object_states VALUES (23,'validatedContact','{1}','t','t', 6*2);
-INSERT INTO enum_object_states VALUES (24,'mojeidContact','{1}','t','t', 2*2);
+INSERT INTO enum_object_states VALUES (21,'conditionallyIdentifiedContact','{1}','t','t', 32);
+INSERT INTO enum_object_states VALUES (22,'identifiedContact','{1}','t','t', 16);
+INSERT INTO enum_object_states VALUES (23,'validatedContact','{1}','t','t', 64);
+INSERT INTO enum_object_states VALUES (24,'mojeidContact','{1}','t','t', 4);
 
 INSERT INTO enum_object_states_desc VALUES (21, 'CS', 'Kontakt je částečně identifikován');
 INSERT INTO enum_object_states_desc VALUES (21, 'EN', 'Contact is conditionally identified');
