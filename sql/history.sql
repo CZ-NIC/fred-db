@@ -47,6 +47,27 @@ comment on table Contact_History is
 'Historic data from contact table.
 creation - actual data will be copied here from original table in case of any change in contact table';
 
+-- DROP TABLE contact_address_history CASCADE;
+CREATE TABLE contact_address_history (
+        historyid INTEGER NOT NULL CONSTRAINT contact_address_history_historyid_fkey REFERENCES history (id),
+        id INTEGER NOT NULL,
+        contactid INTEGER NOT NULL CONSTRAINT contact_address_history_contactid_fkey REFERENCES object_registry (id),
+        type contact_address_type NOT NULL,
+        company_name VARCHAR(1024),
+        street1 VARCHAR(1024),
+        street2 VARCHAR(1024),
+        street3 VARCHAR(1024),
+        city VARCHAR(1024),
+        stateorprovince VARCHAR(1024),
+        postalcode VARCHAR(32),
+        country CHAR(2) CONSTRAINT contact_address_history_country_fkey REFERENCES enum_country (id),
+        CONSTRAINT contact_address_history_pkey PRIMARY KEY (id,historyid)
+    );
+
+comment on table contact_address_history is
+'Historic data from contact_address table.
+creation - actual data will be copied here from original table in case of any change in contact_address table';
+
 
 -- DROP TABLE Domain_History CASCADE;
 CREATE TABLE Domain_History (
