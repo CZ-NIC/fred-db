@@ -1,1 +1,0 @@
-CREATE INDEX public_request_objects_map_object_id_index ON public_request_objects_map (object_id);

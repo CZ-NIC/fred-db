@@ -1,4 +1,13 @@
-CREATE TYPE contact_address_type AS ENUM ('MAILING','BILLING','SHIPPING');
+---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.19.0' WHERE id = 1;
+
+
+----
+---- additional contact addresses
+----
+CREATE TYPE contact_address_type AS ENUM ('MAILING', 'BILLING', 'SHIPPING');
 
 CREATE TABLE contact_address (
     id SERIAL CONSTRAINT contact_address_pkey PRIMARY KEY,
@@ -15,7 +24,6 @@ CREATE TABLE contact_address (
     CONSTRAINT contact_address_contactid_type_key UNIQUE (contactid,type)
 );
 
--- DROP TABLE contact_address_history CASCADE;
 CREATE TABLE contact_address_history (
         historyid INTEGER NOT NULL CONSTRAINT contact_address_history_historyid_fkey REFERENCES history (id),
         id INTEGER NOT NULL,
@@ -35,3 +43,18 @@ CREATE TABLE contact_address_history (
 COMMENT ON TABLE contact_address_history IS
 'Historic data from contact_address table.
 creation - actual data will be copied here from original table in case of any change in contact_address table';
+
+
+CREATE INDEX object_state_valid_to_idx ON object_state (valid_to);
+DROP INDEX object_state_object_id_idx;-- uses object_state_now_idx instead
+
+
+---
+--- new public request for mojeid re-identification
+---
+INSERT INTO enum_public_request_type (id, name, description) VALUES
+    (19, 'mojeid_contact_reidentification', 'MojeID full identification repeated');
+
+
+CREATE INDEX public_request_objects_map_object_id_index ON public_request_objects_map (object_id);
+
