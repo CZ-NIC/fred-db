@@ -1,3 +1,12 @@
+2014-10-17 Michal Strnad, Jan Korous, Jiri Sadek (2.19.0)
+
+    * add table to store additional addreses for contact (with history)
+
+    * add public request type for mojeid re-identification
+
+    * fix - add index public_request_objects_map.object_id
+          - add index object_state.valid_to
+
 2014-08-01 Jan Korous, Jan Zima, Zdenek Bohm, Jiri Sadek (2.18.0)
 
     * mapping table between message type and forwarding service which should be used
