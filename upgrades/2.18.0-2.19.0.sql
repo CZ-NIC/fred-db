@@ -58,3 +58,9 @@ INSERT INTO enum_public_request_type (id, name, description) VALUES
 
 CREATE INDEX public_request_objects_map_object_id_index ON public_request_objects_map (object_id);
 
+---
+--- fix constraint
+---
+ALTER TABLE domain ALTER COLUMN zone SET NOT NULL;
+ALTER TABLE domain_history ALTER COLUMN zone SET NOT NULL;
+
