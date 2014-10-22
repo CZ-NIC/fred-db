@@ -35,6 +35,7 @@ insert into enum_contact_test (id, handle) values('4', 'cz_address_existence') ;
 insert into enum_contact_test (id, handle) values('5', 'contactability') ;
 insert into enum_contact_test (id, handle) values('6', 'email_host_existence') ;
 insert into enum_contact_test (id, handle) values('7', 'send_letter') ;
+insert into enum_contact_test (id, handle) values('8', 'email_existence_in_managed_zones') ;
 insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_id) values('1', '1') ;
 insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_id) values('2', '1') ;
 insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_id) values('3', '1') ;
@@ -42,6 +43,7 @@ insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_
 insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_id) values('5', '2') ;
 insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_id) values('6', '1') ;
 insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_id) values('7', '3') ;
+insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_id) values('8', '1') ;
 insert into enum_contact_test_status_localization (id, lang, name, description) values('1', 'en', 'enqueued', 'Test is ready to be run.') ;
 insert into enum_contact_test_status_localization (id, lang, name, description) values('2', 'en', 'running', 'Test is running.') ;
 insert into enum_contact_test_status_localization (id, lang, name, description) values('3', 'en', 'skipped', 'Test run was intentionally skipped.') ;
@@ -69,6 +71,7 @@ insert into enum_contact_test_localization (id, lang, name, description) values(
 insert into enum_contact_test_localization (id, lang, name, description) values('5', 'en', 'contactability', 'Testing if contact is reachable by e-mail or letter') ;
 insert into enum_contact_test_localization (id, lang, name, description) values('6', 'en', 'email_host_existence', 'Testing if e-mail host exists') ;
 insert into enum_contact_test_localization (id, lang, name, description) values('7', 'en', 'send_letter', 'Testing if contact is reachable by letter') ;
+insert into enum_contact_test_localization (id, lang, name, description) values('8', 'en', 'email_existence_in_managed_zones', 'Testing if e-mail hosts from managed zones are valid.') ;
 insert into enum_filetype (id, name) values('8', 'contact check notice') ;
 insert into enum_filetype (id, name) values('9', 'contact check thank you') ;
 insert into message_type (id, type) values('9', 'contact_check_notice') ;
