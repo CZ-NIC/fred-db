@@ -1,3 +1,7 @@
+2014-10-24 Jan Korous (2.18.1)
+
+    * admin. contact verification - new automatic test
+
 2014-08-01 Jan Korous, Jan Zima, Zdenek Bohm, Jiri Sadek (2.18.0)
 
     * mapping table between message type and forwarding service which should be used
