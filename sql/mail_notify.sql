@@ -13,6 +13,7 @@ INSERT INTO enum_send_status (id, status_name, description) VALUES (3, 'no_proce
 INSERT INTO enum_send_status (id, status_name, description) VALUES (4, 'send_failed', 'Delivery failed');
 INSERT INTO enum_send_status (id, status_name, description) VALUES (5, 'sent', 'Successfully sent');
 INSERT INTO enum_send_status (id, status_name, description) VALUES (6, 'being_sent', 'In processing, don''t touch');
+INSERT INTO enum_send_status (id, status_name, description) VALUES (7, 'undelivered', 'Message was sent but not delivered');
 
 -- Defaults used in templates which change rarely
 -- The default names must be prefixed with 'defaults' namespace when used
