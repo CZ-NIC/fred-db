@@ -7,6 +7,7 @@
     * fix - add index public_request_objects_map.object_id
           - add index object_state.valid_to
           - fix domain.zone constraint
+          - add index object_state_request.object_id
 
 2014-08-01 Jan Korous, Jan Zima, Zdenek Bohm, Jiri Sadek (2.18.0)
 

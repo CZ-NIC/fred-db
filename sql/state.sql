@@ -236,6 +236,8 @@ CREATE TABLE object_state_request (
   canceled TIMESTAMP 
 );
 
+CREATE INDEX object_state_request_object_id_idx ON object_state_request (object_id);
+
 comment on table object_state_request is 'request for setting manual state';
 comment on column object_state_request.object_id is 'id of object gaining request state';
 comment on column object_state_request.state_id is 'id of requested state';
