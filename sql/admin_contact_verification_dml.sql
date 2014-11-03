@@ -46,11 +46,11 @@ insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_
 insert into contact_testsuite_map (enum_contact_test_id, enum_contact_testsuite_id) values('8', '1') ;
 insert into enum_contact_test_status_localization (id, lang, name, description) values('1', 'en', 'enqueued', 'Test is ready to be run.') ;
 insert into enum_contact_test_status_localization (id, lang, name, description) values('2', 'en', 'running', 'Test is running.') ;
-insert into enum_contact_test_status_localization (id, lang, name, description) values('3', 'en', 'skipped', 'Test run was intentionally skipped.') ;
-insert into enum_contact_test_status_localization (id, lang, name, description) values('4', 'en', 'error', 'Error happened during test run.') ;
+insert into enum_contact_test_status_localization (id, lang, name, description) values('3', 'en', 'skipped', 'Test does not apply to the data.') ;
+insert into enum_contact_test_status_localization (id, lang, name, description) values('4', 'en', 'error', E'Test couldn\'t be completed due to an error.') ;
 insert into enum_contact_test_status_localization (id, lang, name, description) values('5', 'en', 'manual', 'Result is inconclusive and evaluation by human is needed.') ;
-insert into enum_contact_test_status_localization (id, lang, name, description) values('6', 'en', 'ok', 'Test result is OK.') ;
-insert into enum_contact_test_status_localization (id, lang, name, description) values('7', 'en', 'fail', 'Test result is FAIL.') ;
+insert into enum_contact_test_status_localization (id, lang, name, description) values('6', 'en', 'ok', 'No problem was found.') ;
+insert into enum_contact_test_status_localization (id, lang, name, description) values('7', 'en', 'fail', 'Test found invalid data.') ;
 insert into enum_contact_check_status_localization (id, lang, name, description) values('1', 'en', 'enqueue_req', 'Request to create check.') ;
 insert into enum_contact_check_status_localization (id, lang, name, description) values('2', 'en', 'enqueued', 'Check is created.') ;
 insert into enum_contact_check_status_localization (id, lang, name, description) values('3', 'en', 'running', 'Tests contained in this check haven''t finished yet.') ;
