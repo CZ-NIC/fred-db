@@ -79,7 +79,7 @@ DROP TABLE IF EXISTS object_state_backup;
 CREATE TABLE object_state_backup AS
     SELECT os.*
       FROM object_state os
-        JOIN object_registry obr ON obr.id = os.object_id AND obr.erdate IS NULL
+        JOIN object_registry obr ON obr.id = os.object_id AND obr.type = 1
       WHERE os.state_id IN (21, 22, 23);
 
 CREATE UNIQUE INDEX object_state_backup_pkey ON object_state_backup(id);
@@ -109,8 +109,7 @@ INSERT INTO object_state (object_id, state_id, valid_from, valid_to, ohid_from, 
         osh.object_id, osh.state_id - 1, osh.valid_from, osh.valid_to, osh.ohid_from, osh.ohid_to
       FROM
         object_state osh
-        JOIN contact c ON c.id = osh.object_id
-        JOIN object_registry obr ON (obr.id = c.id AND obr.erdate IS NULL)
+        JOIN object_registry obr ON (obr.id = osh.object_id AND obr.type = 1)
         JOIN enum_object_states eos ON (eos.id = osh.state_id AND eos.name = 'validatedContact')
       WHERE
         (
@@ -131,8 +130,7 @@ INSERT INTO object_state (object_id, state_id, valid_from, valid_to, ohid_from, 
         osh.object_id, osh.state_id - 1, osh.valid_from, osh.valid_to, osh.ohid_from, osh.ohid_to
       FROM
         object_state osh
-        JOIN contact c ON c.id = osh.object_id
-        JOIN object_registry obr ON (obr.id = c.id AND obr.erdate IS NULL)
+        JOIN object_registry obr ON (obr.id=osh.object_id AND obr.type = 1)
         JOIN enum_object_states eos ON (eos.id = osh.state_id AND eos.name = 'identifiedContact')
       WHERE
         (
@@ -176,12 +174,12 @@ BEGIN
                                 os.state_id,
                                 os.valid_to
                               FROM
-                                contact c
-                                JOIN object_registry obr ON (obr.id = c.id AND obr.erdate IS NULL)
-                                JOIN object_state os ON (os.object_id = c.id
+                                object_registry obr
+                                JOIN object_state os ON (os.object_id = obr.id
                                     AND os.state_id IN (SELECT id FROM state_choice))
                               WHERE
-                                os.valid_to IS NOT NULL
+                                obr.type = 1
+                                AND os.valid_to IS NOT NULL
                         )
                       SELECT
                           os.id
@@ -231,19 +229,18 @@ WITH state_choice AS
     SELECT
         os.*
       FROM
-        contact c
-        JOIN object_registry obr ON (obr.id = c.id AND obr.erdate IS NULL)
-        JOIN object_state os ON (os.object_id = c.id)
+        object_registry obr
+        JOIN object_state os ON (os.object_id = obr.id)
         JOIN enum_object_states eos ON eos.id = os.state_id
       WHERE
-        eos.name IN ('identifiedContact', 'validatedContact')
+        obr.type = 1
+        AND eos.name IN ('identifiedContact', 'validatedContact')
   )
   SELECT
-      COUNT(*) AS cnt, obr.name, c.name, obr.crdate, MIN(sc.valid_from) AS valid_from
+      COUNT(*) AS cnt, obr.name, obr.crdate, MIN(sc.valid_from) AS valid_from
     FROM
       state_choice sc
-      JOIN contact c ON c.id = sc.object_id
-      JOIN object_registry obr ON (obr.id = c.id AND obr.erdate IS NULL)
+      JOIN object_registry obr ON (obr.id = sc.object_id AND obr.type = 1)
     WHERE
       (
           SELECT 1
@@ -256,9 +253,9 @@ WITH state_choice AS
               AND (sc.valid_to <= os.valid_to OR os.valid_to IS NULL)
       ) IS NULL
     GROUP BY
-      c.id, obr.id
+      obr.id
     ORDER BY
-      cnt DESC, c.id;
+      cnt DESC, obr.id;
 
 ALTER TABLE object_state_request DISABLE TRIGGER trigger_lock_object_state_request;
 
@@ -271,7 +268,7 @@ DELETE FROM object_state_request osr
                 object_registry obr
               WHERE
                 obr.id = osr.object_id
-                AND obr.erdate IS NULL
+                AND obr.type = 1
               LIMIT 1
          ) IS NOT NULL;
 
@@ -289,7 +286,7 @@ INSERT INTO object_state_request (object_id, state_id, valid_from, valid_to, crd
                   object_registry obr
                 WHERE
                   obr.id = os.object_id
-                  AND obr.erdate IS NULL
+                  AND obr.type = 1
                 LIMIT 1
           ) IS NOT NULL
     ORDER BY
