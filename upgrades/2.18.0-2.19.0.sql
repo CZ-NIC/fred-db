@@ -66,6 +66,25 @@ CREATE INDEX public_request_objects_map_object_id_index ON public_request_object
 ALTER TABLE domain ALTER COLUMN zone SET NOT NULL;
 ALTER TABLE domain_history ALTER COLUMN zone SET NOT NULL;
 
+---
+--- admin. verification status description improvements
+---
+UPDATE enum_contact_test_status_localization
+    SET description = 'Test does not apply to the data.'
+  WHERE
+    lang = 'en' AND name = 'skipped';
+UPDATE enum_contact_test_status_localization
+    SET description = E'Test couldn\'t be completed due to an error.'
+  WHERE
+    lang = 'en' AND name = 'error';
+UPDATE enum_contact_test_status_localization
+    SET description = 'No problem was found.'
+  WHERE
+    lang = 'en' AND name = 'ok';
+UPDATE enum_contact_test_status_localization
+    SET description = 'Test found invalid data.'
+  WHERE
+    lang = 'en' AND name = 'fail';
 
 ---
 --- contact verification state migration
