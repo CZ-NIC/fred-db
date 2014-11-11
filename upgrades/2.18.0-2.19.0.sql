@@ -66,6 +66,13 @@ CREATE INDEX public_request_objects_map_object_id_index ON public_request_object
 ALTER TABLE domain ALTER COLUMN zone SET NOT NULL;
 ALTER TABLE domain_history ALTER COLUMN zone SET NOT NULL;
 
+
+---
+--- new message status (#11668)
+---
+INSERT INTO enum_send_status (id, status_name, description) VALUES
+    (7, 'undelivered', 'Message was sent but not delivered');
+
 ---
 --- admin. verification status description improvements
 ---
