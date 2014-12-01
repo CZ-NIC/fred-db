@@ -146,7 +146,8 @@ CREATE TABLE contact_address (
     id SERIAL CONSTRAINT contact_address_pkey PRIMARY KEY,
     contactid INTEGER NOT NULL CONSTRAINT contact_address_contactid_fkey REFERENCES contact (id),
     type contact_address_type NOT NULL,
-    company_name VARCHAR(1024),
+    company_name VARCHAR(1024) CONSTRAINT company_name_shipping_only CHECK (company_name IS NULL OR
+                                                                            type='SHIPPING'::contact_address_type),
     street1 VARCHAR(1024),
     street2 VARCHAR(1024),
     street3 VARCHAR(1024),
