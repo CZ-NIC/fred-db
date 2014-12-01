@@ -44,6 +44,11 @@ COMMENT ON TABLE contact_address_history IS
 'Historic data from contact_address table.
 creation - actual data will be copied here from original table in case of any change in contact_address table';
 
+ALTER TABLE contact_address ADD CONSTRAINT company_name_shipping_only
+    CHECK (company_name IS NULL OR type = 'SHIPPING'::contact_address_type);
+
+ALTER TABLE contact_address_history ADD CONSTRAINT company_name_shipping_only
+    CHECK (company_name IS NULL OR type = 'SHIPPING'::contact_address_type);
 
 CREATE INDEX object_state_valid_to_idx ON object_state (valid_to);
 DROP INDEX object_state_object_id_idx;-- uses object_state_now_idx instead
