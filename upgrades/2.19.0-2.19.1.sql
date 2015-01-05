@@ -1,4 +1,9 @@
 ---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.19.1' WHERE id = 1;
+
+---
 --- Ticket #12377 - company address change
 ---
 UPDATE mail_defaults SET value='Milešovská 1136/5' WHERE name='street';
