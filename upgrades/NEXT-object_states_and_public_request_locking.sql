@@ -6,7 +6,7 @@ DROP TABLE object_state_request_lock;
 
 CREATE TABLE object_state_request_lock
 (
-    object_id integer PRIMARY KEY --REFERENCES object_registry (id)
+    object_id integer PRIMARY KEY REFERENCES object_registry (id)
 );
 
 DROP FUNCTION lock_object_state_request_lock( f_state_id BIGINT, f_object_id BIGINT);
@@ -52,7 +52,7 @@ DROP TABLE public_request_lock;
 
 CREATE TABLE public_request_lock
 (
-    object_id integer PRIMARY KEY --REFERENCES object_registry (id)
+    object_id integer PRIMARY KEY REFERENCES object_registry (id)
 );
 
 DROP FUNCTION lock_public_request_lock(f_object_id BIGINT);
