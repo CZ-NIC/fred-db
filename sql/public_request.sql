@@ -70,24 +70,19 @@ CREATE TABLE enum_public_request_status
 );
 
 -- #7122 lock public_request insert or update by its type and object to the end of db transaction
+-- #8135 lock public_request insert or update by object to the end of db transaction
 
 CREATE TABLE public_request_lock
 (
-    id bigserial CONSTRAINT public_request_lock_pkey PRIMARY KEY -- lock id
-    , request_type smallint NOT NULL CONSTRAINT public_request_lock_request_type_fkey REFERENCES enum_public_request_type(id)
-    , object_id integer NOT NULL --REFERENCES object_registry (id)
+    object_id integer PRIMARY KEY REFERENCES object_registry (id)
 );
 
-CREATE OR REPLACE FUNCTION lock_public_request_lock( f_request_type_id BIGINT, f_object_id BIGINT)
+CREATE OR REPLACE FUNCTION lock_public_request_lock(f_object_id BIGINT)
 RETURNS void AS $$
 DECLARE
 BEGIN
-    PERFORM * FROM public_request_lock
-    WHERE request_type = f_request_type_id
-    AND object_id = f_object_id ORDER BY id FOR UPDATE; --wait if locked
-    IF NOT FOUND THEN
-        RAISE EXCEPTION 'Failed to lock request_type_id: % object_id: %', f_request_type_id, f_object_id;
-    END IF;
+    INSERT INTO public_request_lock (object_id) VALUES (f_object_id);
+    DELETE FROM public_request_lock WHERE object_id = f_object_id;
 END;
 $$ LANGUAGE plpgsql;
 
@@ -96,7 +91,6 @@ CREATE OR REPLACE FUNCTION lock_public_request()
 RETURNS "trigger" AS $$
 DECLARE
   nobject RECORD;
-  max_id_to_delete BIGINT;
 BEGIN
   RAISE NOTICE 'lock_public_request start NEW.id: % NEW.request_type: %'
   , NEW.id, NEW.request_type;
@@ -108,28 +102,15 @@ BEGIN
   LOOP
     RAISE NOTICE 'lock_public_request nobject.object_id: %'
     , nobject.object_id;
-    PERFORM lock_public_request_lock( NEW.request_type, nobject.object_id);
+    PERFORM lock_public_request_lock(nobject.object_id);
   END LOOP;
-
-  --try cleanup
-  BEGIN
-    SELECT MAX(id) - 100 FROM public_request_lock INTO max_id_to_delete;
-    PERFORM * FROM public_request_lock
-      WHERE id < max_id_to_delete FOR UPDATE NOWAIT;
-    IF FOUND THEN
-      DELETE FROM public_request_lock
-        WHERE id < max_id_to_delete;
-    END IF;
-  EXCEPTION WHEN lock_not_available THEN
-    RAISE NOTICE 'cleanup lock not available';
-  END;
 
   RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION lock_public_request()
-IS 'lock changes of public requests by object and request type';
+IS 'lock changes of public requests by object';
 
 CREATE TRIGGER "trigger_lock_public_request"
   AFTER INSERT OR UPDATE ON public_request
