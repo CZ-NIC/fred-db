@@ -24,9 +24,9 @@ CREATE TABLE mail_defaults (
 	value text NOT NULL                -- value of default
 );
 INSERT INTO mail_defaults (name, value) VALUES ('company', 'CZ.NIC, z.s.p.o');
-INSERT INTO mail_defaults (name, value) VALUES ('street', 'Americka 23');
-INSERT INTO mail_defaults (name, value) VALUES ('postalcode', '120 00');
-INSERT INTO mail_defaults (name, value) VALUES ('city', 'Praha 2');
+INSERT INTO mail_defaults (name, value) VALUES ('street', 'Milešovská 1136/5');
+INSERT INTO mail_defaults (name, value) VALUES ('postalcode', '130 00');
+INSERT INTO mail_defaults (name, value) VALUES ('city', 'Praha 3');
 INSERT INTO mail_defaults (name, value) VALUES ('tel', '+420 222 745 111');
 INSERT INTO mail_defaults (name, value) VALUES ('fax', '+420 222 745 112');
 INSERT INTO mail_defaults (name, value) VALUES ('emailsupport', 'podpora@nic.cz');
@@ -75,10 +75,10 @@ ORG:CZ.NIC, z.s.p.o.
 TITLE:zákaznická podpora
 TEL;WORK;VOICE:+420 222 745 111
 TEL;WORK;FAX:+420 222 745 112
-ADR;WORK:;;Americká 23;Praha 2;;120 00;Česká republika
+ADR;WORK:;;Milešovská 1136/5;Praha 3;;130 00;Česká republika
 URL;WORK:http://www.nic.cz
 EMAIL;PREF;INTERNET:podpora@nic.cz
-REV:20070403T143928Z
+REV:20150109T111928Z
 END:VCARD
 ');
 

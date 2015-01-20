@@ -162,7 +162,7 @@ CREATE TABLE letter_archive
   postal_address_city character varying(1024),
   postal_address_stateorprovince character varying(1024),
   postal_address_postalcode character varying(32),
-  postal_address_country character varying(1024),
+  postal_address_country character varying(1024) CONSTRAINT letter_archive_postal_address_country_fkey REFERENCES enum_country (country),
   postal_address_id integer
 );
 
