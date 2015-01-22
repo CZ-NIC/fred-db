@@ -14,7 +14,9 @@ INSERT INTO request_type (service_id, id, name) VALUES
 (6, 1511, 'AccountStateChange'),
 (6, 1512, 'AuthChange'),
 (6, 1513, 'PublicProfileChange'),
+(6, 1514, 'SamlRequest'),
 (6, 1515, 'ResendPIN3');
+
 
 INSERT INTO result_code (service_id, result_code, name) VALUES 
 (6, 1 , 'Success'),
