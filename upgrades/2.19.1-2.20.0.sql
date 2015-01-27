@@ -1,7 +1,12 @@
 ---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.20.0' WHERE id = 1;
+
+
+---
 --- Ticket #8135
 ---
-
 DROP TABLE object_state_request_lock;
 
 CREATE TABLE object_state_request_lock
