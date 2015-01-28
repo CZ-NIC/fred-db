@@ -25,7 +25,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
+DROP TRIGGER trigger_lock_object_state_request ON object_state_request;
 DROP FUNCTION lock_object_state_request();
 
 -- lock object_state_request for manual states
@@ -50,8 +50,11 @@ $$ LANGUAGE plpgsql;
 COMMENT ON FUNCTION lock_object_state_request()
 IS 'lock changes of object state requests by object';
 
-
-
+CREATE TRIGGER trigger_lock_object_state_request
+  AFTER INSERT OR UPDATE
+  ON object_state_request
+  FOR EACH ROW
+  EXECUTE PROCEDURE lock_object_state_request();
 
 DROP TABLE public_request_lock;
 
@@ -60,7 +63,7 @@ CREATE TABLE public_request_lock
     object_id integer PRIMARY KEY REFERENCES object_registry (id)
 );
 
-DROP FUNCTION lock_public_request_lock(f_object_id BIGINT);
+DROP FUNCTION lock_public_request_lock(bigint, bigint);
 
 CREATE OR REPLACE FUNCTION lock_public_request_lock(f_object_id BIGINT)
 RETURNS void AS $$
@@ -71,7 +74,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-
+DROP TRIGGER trigger_lock_public_request ON public_request;
 DROP FUNCTION lock_public_request();
 
 -- lock public request
@@ -99,4 +102,10 @@ $$ LANGUAGE plpgsql;
 
 COMMENT ON FUNCTION lock_public_request()
 IS 'lock changes of public requests by object';
+
+CREATE TRIGGER trigger_lock_public_request
+  AFTER INSERT OR UPDATE
+  ON public_request
+  FOR EACH ROW
+  EXECUTE PROCEDURE lock_public_request();
 
