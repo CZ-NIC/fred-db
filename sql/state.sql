@@ -13,6 +13,7 @@ CREATE TABLE enum_object_states (
   external BOOLEAN NOT NULL,
   -- status importance (ticket #8289)
   importance INTEGER
+  CONSTRAINT name_delimiter_check CHECK (name::text !~~ '%,%'::text)
 );
 
 comment on table enum_object_states is 'list of all supported status types';
