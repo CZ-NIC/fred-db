@@ -55,8 +55,12 @@ BEGIN
     IF TG_OP = 'INSERT' THEN
         PERFORM contact_discloseaddr_constraint_impl(NEW.object_id);
     ELSEIF TG_OP = 'UPDATE' THEN
-        PERFORM contact_discloseaddr_constraint_impl(NEW.object_id);
-        PERFORM contact_discloseaddr_constraint_impl(OLD.object_id);
+        IF NEW.object_id = OLD.object_id THEN
+            PERFORM contact_discloseaddr_constraint_impl(NEW.object_id);
+        ELSE
+            PERFORM contact_discloseaddr_constraint_impl(NEW.object_id);
+            PERFORM contact_discloseaddr_constraint_impl(OLD.object_id);
+        END IF;
     ELSEIF TG_OP = 'DELETE' THEN
         PERFORM contact_discloseaddr_constraint_impl(OLD.object_id);
         RETURN OLD;
@@ -76,8 +80,12 @@ BEGIN
     IF TG_OP = 'INSERT' THEN
         PERFORM contact_discloseaddr_constraint_impl(NEW.id);
     ELSEIF TG_OP = 'UPDATE' THEN
-        PERFORM contact_discloseaddr_constraint_impl(NEW.id);
-        PERFORM contact_discloseaddr_constraint_impl(OLD.id);
+        IF NEW.id = OLD.id THEN
+            PERFORM contact_discloseaddr_constraint_impl(NEW.id);
+        ELSE
+            PERFORM contact_discloseaddr_constraint_impl(NEW.id);
+            PERFORM contact_discloseaddr_constraint_impl(OLD.id);
+        END IF;
     END IF;
     RETURN NEW;
 END;
@@ -88,3 +96,4 @@ CREATE CONSTRAINT TRIGGER "trigger_contact_discloseaddr_constraint"
   DEFERRABLE INITIALLY DEFERRED
   FOR EACH ROW
 EXECUTE PROCEDURE contact_discloseaddr_constraint();
+
