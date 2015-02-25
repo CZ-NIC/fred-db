@@ -36,11 +36,13 @@ BEGIN
     AND c.id = f_object_id;
 
     IF is_contact_with_hidden_address_and_have_nonempty_organization THEN
-        RAISE EXCEPTION 'contact_discloseaddr_constraint_impl failed f_object_id: % can''t have organization', f_object_id;
+        --TODO: RAISE EXCEPTION
+        RAISE WARNING 'contact_discloseaddr_constraint_impl failed f_object_id: % can''t have organization', f_object_id;
     END IF;
 
     IF is_contact_with_hidden_address_and_not_identified AND is_contact_with_hidden_address_and_not_validated THEN
-        RAISE EXCEPTION 'contact_discloseaddr_constraint_impl failed f_object_id: % have to be identified or validated contact', f_object_id;
+        --TODO: RAISE EXCEPTION
+        RAISE WARNING 'contact_discloseaddr_constraint_impl failed f_object_id: % have to be identified or validated contact', f_object_id;
     END IF;
 
 END;
