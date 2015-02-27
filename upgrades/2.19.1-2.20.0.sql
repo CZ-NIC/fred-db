@@ -109,3 +109,29 @@ CREATE TRIGGER trigger_lock_public_request
   FOR EACH ROW
   EXECUTE PROCEDURE lock_public_request();
 
+
+---
+--- new shipping address types
+---
+ALTER TYPE contact_address_type ADD VALUE 'SHIPPING_2';
+ALTER TYPE contact_address_type ADD VALUE 'SHIPPING_3';
+ALTER TABLE contact_address DROP CONSTRAINT company_name_shipping_only;
+ALTER TABLE contact_address ADD CONSTRAINT company_name_shipping_only
+    CHECK
+    (
+        company_name IS NULL OR
+        type IN ('SHIPPING'::contact_address_type,
+                 'SHIPPING_2'::contact_address_type,
+                 'SHIPPING_3'::contact_address_type)
+    );
+
+ALTER TABLE contact_address_history DROP CONSTRAINT company_name_shipping_only;
+ALTER TABLE contact_address_history ADD CONSTRAINT company_name_shipping_only
+    CHECK
+    (
+        company_name IS NULL OR
+        type IN ('SHIPPING'::contact_address_type,
+                 'SHIPPING_2'::contact_address_type,
+                 'SHIPPING_3'::contact_address_type)
+    );
+
