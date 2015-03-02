@@ -1,6 +1,10 @@
 2015-01-27 Jan Zima (2.20.0)
 
-    * public request and object state request simplified
+    * public request and object state request locking simplified
+
+    * logging constraint for discloseaddress flag rules
+
+    * contact address type extended with additional 2 shipping addresses
 
 2014-12-31 Jan Zima (2.19.1)
 
