@@ -74,7 +74,7 @@ CREATE TABLE enum_public_request_status
 
 CREATE TABLE public_request_lock
 (
-    object_id integer PRIMARY KEY REFERENCES object_registry (id)
+    object_id integer PRIMARY KEY --REFERENCES object_registry (id) --temporarily commented out because of a lack of time to test implicit locking of object_registry row
 );
 
 CREATE OR REPLACE FUNCTION lock_public_request_lock(f_object_id BIGINT)

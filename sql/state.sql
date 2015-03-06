@@ -969,7 +969,7 @@ CREATE TRIGGER trigger_object_history AFTER INSERT
 
 CREATE TABLE object_state_request_lock
 (
-    object_id integer PRIMARY KEY REFERENCES object_registry (id)
+    object_id integer PRIMARY KEY --REFERENCES object_registry (id) --temporarily commented out because of a lack of time to test implicit locking of object_registry row
 );
 
 CREATE OR REPLACE FUNCTION lock_object_state_request_lock(f_object_id BIGINT)
