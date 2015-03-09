@@ -135,6 +135,9 @@ CREATE TABLE message_contact_history_map
   message_archive_id INTEGER CONSTRAINT message_contact_history_map_message_archive_id_fkey REFERENCES message_archive (id) -- message
 );
 
+CREATE INDEX message_contact_history_map_contact_object_registry_id_idx
+ON message_contact_history_map (contact_object_registry_id);
+
 --sms archive
 CREATE TABLE sms_archive
 (
