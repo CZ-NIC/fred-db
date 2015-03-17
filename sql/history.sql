@@ -40,7 +40,8 @@ CREATE TABLE Contact_History (
         SSNtype integer CONSTRAINT contact_history_ssntype_fkey REFERENCES enum_ssntype,
         DiscloseVAT boolean NOT NULL DEFAULT False,
         DiscloseIdent boolean NOT NULL DEFAULT False,
-        DiscloseNotifyEmail boolean NOT NULL DEFAULT False
+        DiscloseNotifyEmail boolean NOT NULL DEFAULT False,
+        warning_letter boolean DEFAULT NULL
 );
 
 comment on table Contact_History is
