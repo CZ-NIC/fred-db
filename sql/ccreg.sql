@@ -101,7 +101,8 @@ CREATE TABLE Contact (
 	    SSNtype INTEGER CONSTRAINT contact_ssntype_fkey REFERENCES enum_ssntype,
         DiscloseVAT boolean NOT NULL DEFAULT False,
         DiscloseIdent boolean NOT NULL DEFAULT False,
-        DiscloseNotifyEmail boolean NOT NULL DEFAULT False
+        DiscloseNotifyEmail boolean NOT NULL DEFAULT False,
+        warning_letter boolean DEFAULT NULL
         );
 
 comment on table Contact is 'List of contacts which act in registry as domain owners and administrative contacts for nameservers group';
@@ -131,6 +132,8 @@ comment on column Contact.SSNtype is 'type of identification number from enum_ss
 comment on column Contact.DiscloseVAT is 'whether reveal VAT number';
 comment on column Contact.DiscloseIdent is 'whether reveal SSN number';
 comment on column Contact.DiscloseNotifyEmail is 'whether reveal notify email';
+COMMENT ON COLUMN contact.warning_letter IS 'whether to send domain expiration letters (NULL - no user preference, use zone.warning_letter flag; TRUE - send domain expiration letters; FALSE - don''t send domain expiration letters';
+
 
 ---
 ---  Ticket #11106 merge contact fn index
