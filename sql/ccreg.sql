@@ -132,7 +132,7 @@ comment on column Contact.SSNtype is 'type of identification number from enum_ss
 comment on column Contact.DiscloseVAT is 'whether reveal VAT number';
 comment on column Contact.DiscloseIdent is 'whether reveal SSN number';
 comment on column Contact.DiscloseNotifyEmail is 'whether reveal notify email';
-COMMENT ON COLUMN contact.warning_letter IS 'whether to send domain expiration letters (NULL - no user preference, use zone.warning_letter flag; TRUE - send domain expiration letters; FALSE - don''t send domain expiration letters';
+COMMENT ON COLUMN contact.warning_letter IS 'user preference whether to send domain expiration letters (NULL - no user preference; TRUE - send domain expiration letters; FALSE - don''t send domain expiration letters';
 
 
 ---
