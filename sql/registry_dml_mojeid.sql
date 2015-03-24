@@ -101,12 +101,13 @@ INSERT INTO mail_type_template_map (typeid, templateid) VALUES (27, 27);
 
 
 ---
---- sms types
+--- message types
 ---
-INSERT INTO message_type (id, type) VALUES (2, 'mojeid_pin2');
-INSERT INTO message_type (id, type) VALUES (3, 'mojeid_pin3');
-INSERT INTO message_type (id, type) VALUES (4, 'mojeid_sms_change');
-INSERT INTO message_type (id, type) VALUES (8, 'mojeid_pin3_reminder');
+INSERT INTO message_type (id, type) VALUES ( 2, 'mojeid_pin2');
+INSERT INTO message_type (id, type) VALUES ( 3, 'mojeid_pin3');
+INSERT INTO message_type (id, type) VALUES ( 4, 'mojeid_sms_change');
+INSERT INTO message_type (id, type) VALUES ( 8, 'mojeid_pin3_reminder');
+INSERT INTO message_type (id, type) VALUES (11, 'mojeid_emergency_card');
 
 ---
 --- file types
