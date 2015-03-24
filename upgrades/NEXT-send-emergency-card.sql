@@ -1,1 +1,1 @@
-INSERT INTO message_type (id,type) VALUES (11,'mojeid_emergency_card');
+INSERT INTO message_type (id,type) VALUES (11,'mojeid_card');
