@@ -112,8 +112,8 @@ INSERT INTO message_type (id, type) VALUES (11, 'mojeid_card');
 ---
 --- file types
 ---
-INSERT INTO enum_filetype (id, name) VALUES (7, 'mojeid contact identification request');
-
+INSERT INTO enum_filetype (id, name) VALUES ( 7, 'mojeid contact identification request');
+INSERT INTO enum_filetype (id, name) VALUES (10, 'mojeid card');
 
 ---
 --- contact states
