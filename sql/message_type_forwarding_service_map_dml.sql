@@ -8,6 +8,8 @@ INSERT INTO message_type_forwarding_service_map (message_type_id, service_handle
 INSERT INTO message_type_forwarding_service_map (message_type_id, service_handle)
   SELECT id, 'OPTYS'::message_forwarding_service FROM message_type WHERE type = 'mojeid_pin3'::text;
 INSERT INTO message_type_forwarding_service_map (message_type_id, service_handle)
+  SELECT id, 'OPTYS'::message_forwarding_service FROM message_type WHERE type = 'mojeid_card'::text;
+INSERT INTO message_type_forwarding_service_map (message_type_id, service_handle)
   SELECT id, 'MOBILEM'::message_forwarding_service FROM message_type WHERE type = 'mojeid_sms_change'::text;
 INSERT INTO message_type_forwarding_service_map (message_type_id, service_handle)
   SELECT id, 'MOBILEM'::message_forwarding_service FROM message_type WHERE type = 'monitoring'::text;
