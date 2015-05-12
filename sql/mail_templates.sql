@@ -203,12 +203,12 @@ registrátora platbu za prodloužení platnosti doménového jména, bude
 doménové jméno definitivně uvolněno pro použití dalším zájemcem, a to
 ke dni <?cs var:exregdate ?>.
 
-Prosíme kontaktujte Vašeho Určeného registrátora <?cs var:registrar ?>
+Prosíme kontaktujte svého určeného registrátora <?cs var:registrar ?>
 za účelem prodloužení doménového jména.
 
 V případě, že se domníváte, že platba byla provedena, prověřte nejdříve,
 zda byla provedena pod správným variabilním symbolem, na správné číslo
-účtu a ve správné výši a tyto informace svému Určenému registrátorovi
+účtu a ve správné výši, a tyto informace svému určenému registrátorovi
 sdělte.
 
 Harmonogram plánovaných akcí:
