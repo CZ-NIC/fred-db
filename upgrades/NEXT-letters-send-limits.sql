@@ -1,2 +1,0 @@
-CREATE INDEX message_contact_history_map_contact_object_registry_id_idx
-ON message_contact_history_map (contact_object_registry_id);
