@@ -1,3 +1,15 @@
+2015-05-19 Jan Korous, Jan Zima, Zdenek Bohm, Michal Strnad, Jiri Sadek (2.21.0)
+
+    * add warning letter flag to contact (and contact_history) tables
+
+    * add next portion of missing constraints and indexes
+
+    * mail template fixes
+
+    * new logger request types
+
+    * new file types
+
 2015-01-27 Jan Zima (2.20.0)
 
     * public request and object state request locking simplified
