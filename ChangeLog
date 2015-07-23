@@ -1,3 +1,7 @@
+2015-07-23 Tomas Pazderka (2.21.1)
+
+    * add OpenID Connect request type
+
 2015-05-19 Jan Korous, Jan Zima, Zdenek Bohm, Michal Strnad, Jiri Sadek (2.21.0)
 
     * add warning letter flag to contact (and contact_history) tables
