@@ -113,6 +113,6 @@ COMMENT ON FUNCTION lock_public_request()
 IS 'lock changes of public requests by object';
 
 CREATE TRIGGER "trigger_lock_public_request"
-  AFTER INSERT OR UPDATE ON public_request
+  AFTER UPDATE ON public_request
   FOR EACH ROW EXECUTE PROCEDURE lock_public_request();
 
