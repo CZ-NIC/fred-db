@@ -23,7 +23,7 @@ CREATE TABLE mail_defaults (
 	name varchar(300) CONSTRAINT mail_defaults_name_key UNIQUE NOT NULL, -- key of default
 	value text NOT NULL                -- value of default
 );
-INSERT INTO mail_defaults (name, value) VALUES ('company', 'CZ.NIC, z.s.p.o');
+INSERT INTO mail_defaults (name, value) VALUES ('company', 'CZ.NIC, z. s. p. o.');
 INSERT INTO mail_defaults (name, value) VALUES ('street', 'Milešovská 1136/5');
 INSERT INTO mail_defaults (name, value) VALUES ('postalcode', '130 00');
 INSERT INTO mail_defaults (name, value) VALUES ('city', 'Praha 3');
@@ -32,6 +32,8 @@ INSERT INTO mail_defaults (name, value) VALUES ('fax', '+420 222 745 112');
 INSERT INTO mail_defaults (name, value) VALUES ('emailsupport', 'podpora@nic.cz');
 INSERT INTO mail_defaults (name, value) VALUES ('authinfopage', 'http://www.nic.cz/whois/publicrequest/');
 INSERT INTO mail_defaults (name, value) VALUES ('whoispage', 'http://whois.nic.cz');
+INSERT INTO mail_defaults (name, value) VALUES ('company_cs', 'CZ.NIC, správce domény CZ');
+INSERT INTO mail_defaults (name, value) VALUES ('company_en', 'CZ.NIC, the CZ domain registry');
 
 comment on table mail_defaults is 
 'Defaults used in templates which change rarely.
@@ -46,7 +48,7 @@ CREATE TABLE mail_footer (
 	footer text NOT NULL
 );
 INSERT INTO mail_footer (id, footer) VALUES (1,
-'-- 
+'--
 <?cs var:defaults.company ?>
 <?cs var:defaults.street ?>
 <?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
@@ -69,9 +71,9 @@ CREATE TABLE mail_vcard (
 INSERT INTO mail_vcard (vcard) VALUES
 ('BEGIN:VCARD
 VERSION:2.1
-N:podpora CZ. NIC, z.s.p.o.
-FN:podpora CZ. NIC, z.s.p.o.
-ORG:CZ.NIC, z.s.p.o.
+N:podpora CZ.NIC, z. s. p. o.
+FN:podpora CZ.NIC, z. s. p. o.
+ORG:CZ.NIC, z. s. p. o.
 TITLE:zákaznická podpora
 TEL;WORK;VOICE:+420 222 745 111
 TEL;WORK;FAX:+420 222 745 112
@@ -84,7 +86,7 @@ END:VCARD
 
 comment on table mail_vcard is 'vcard is attached to every email message';
 
--- some header defaults which are likely not a subject to change are specified 
+-- some header defaults which are likely not a subject to change are specified
 -- in database and used in absence
 CREATE TABLE mail_header_defaults (
 	id SERIAL CONSTRAINT mail_header_defaults_pkey PRIMARY KEY,
@@ -108,7 +110,7 @@ VALUES
 ('podpora@nic.cz',
 'podpora@nic.cz',
 'podpora@nic.cz',
-'CZ.NIC, z.s.p.o.',
+'CZ.NIC, z. s. p. o.',
 'charset=UTF-8',
 'nic.cz');
 
@@ -188,7 +190,7 @@ already been sent (they differ in status value).';
 comment on column mail_archive.mailtype is 'email type';
 comment on column mail_archive.crdate is 'date and time of insertion in table';
 comment on column mail_archive.moddate is 'date and time of sending (event unsuccesfull)';
-comment on column mail_archive.status is 
+comment on column mail_archive.status is
 'status value has following meanings:
  0 - the email was successfully sent
  1 - the email is ready to be sent
@@ -196,7 +198,7 @@ comment on column mail_archive.status is
      when the email is desired to be sent. x represent any value different from
      0 and 1 (convention is number 2)';
 comment on column mail_archive.message is 'text of email which is asssumed to be notificaion about undelivered';
-comment on column mail_archive.attempt is 
+comment on column mail_archive.attempt is
 'failed attempt to send email message to be sent including headers
 (except date and msgid header), without non-templated attachments';
 

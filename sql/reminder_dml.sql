@@ -7,14 +7,17 @@ INSERT INTO mail_type (id, name, subject) VALUES (23, 'annual_contact_reminder',
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'annual_contact_reminder'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
  (23, 'plain', 1,
-'
-This is a bilingual message. Please see below for the English version
+'English version of the email follows the Czech version
 
-Vážená paní, vážený pane,
+Vážený zákazníku,
 
 dovolujeme si Vás zdvořile požádat o kontrolu správnosti údajů,
 které nyní evidujeme u Vašeho kontaktu v centrálním registru
 doménových jmen.
+
+Kontaktní osoba je potřebná pro registraci domény či domén, jejichž seznam uvádíme níže.
+
+V případě nesrovnalostí v údajích se prosím spojte přímo s určeným registrátorem kontaktu, kterého naleznete v následujícím výpisu, neboť my změny údajů neprovádíme.
 
 ID kontaktu v registru: <?cs var:handle ?>
 Organizace: <?cs var:organization ?>
@@ -37,8 +40,7 @@ Určený registrátor: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
 <?cs if:registrar_memo_cz ?>Další informace poskytnuté registrátorem:
 <?cs var:registrar_memo_cz ?><?cs /if ?>
 
-Se žádostí o opravu údajů se neváhejte obrátit na svého vybraného registrátora.
-V případě, že zde uvedené údaje odpovídají skutečnosti, není nutné na tuto zprávu reagovat.
+V případě, že jsou údaje správné, nereagujte prosím na tento e-mail.
 
 Aktuální, úplné a správné informace v registru znamenají Vaši jistotu,
 že Vás důležité informace o Vaší doméně zastihnou vždy a včas na správné adrese.
@@ -46,16 +48,18 @@ Nedočkáte se tak nepříjemného překvapení v podobě nefunkční či zruše
 
 Dovolujeme si Vás rovněž upozornit, že nesprávné, nepravdivé, neúplné
 či zavádějící údaje mohou být v souladu s Pravidly registrace doménových jmen
-v ccTLD .cz důvodem ke zrušení registrace doménového jména!
+v ccTLD .cz důvodem ke zrušení registrace doménového jména.
 
 Úplný výpis z registru obsahující všechny domény a další objekty přiřazené
 k shora uvedenému kontaktu naleznete v příloze.
 
-Váš tým CZ.NIC.
+S pozdravem
+podpora <?cs var:defaults.company_cs ?>
+
 
 Příloha:
 
-<?cs if:domains.0 ?>Seznam domén kde je kontakt v roli držitele nebo administrativního
+<?cs if:domains.0 ?>Seznam domén, kde je kontakt v roli držitele nebo administrativního
 kontaktu:<?cs each:item = domains ?>
 <?cs var:item ?><?cs /each ?><?cs else ?>Kontakt není uveden u žádného doménového jména.<?cs /if ?><?cs if:nssets.0 ?>
 
@@ -67,10 +71,14 @@ Seznam sad klíčů, kde je kontakt v roli technického kontaktu:<?cs each:item 
 
 
 
-Dear Sir or Madam,
+Dear customer,
 
 Please check the correctness of the information we currently have on file
-for your contact in the central registry of domain names.
+for your contact in the Central Registry of Domain Names.
+
+The contact is required for registration of the domain(s) listed below.
+
+Do not hesitate to contact your designated registrar in the case of incorrectness of the data, since we do not perform changes of the data.
 
 Contact ID in the registry: <?cs var:handle ?>
 Organization: <?cs var:organization ?>
@@ -87,13 +95,13 @@ elif:ident_type == "BIRTHDAY"?>Birth day: <?cs
 VAT No.: <?cs var:dic ?>
 Phone: <?cs var:telephone ?>
 Fax: <?cs var:fax ?>
-E-mail: <?cs var:email ?>
-Notification e-mail: <?cs var:notify_email ?>
-Designated registrator: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
-<?cs if:registrar_memo_en ?>Other information provided by registrar:
+Email: <?cs var:email ?>
+Notification email: <?cs var:notify_email ?>
+Designated registrar: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
+<?cs if:registrar_memo_en ?>Other information provided by your registrar:
 <?cs var:registrar_memo_en ?><?cs /if ?>
 
-Do not hesitate to contact your designated registrar with a correction request.
+Please, do not take any measures if your data are correct.
 
 Having up-to-date, complete and correct information in the registry is crucial
 to reach you with all the important information about your domain name in a timely manner
@@ -104,23 +112,22 @@ We would also like to inform you that in accordance with the Rules of Domain Nam
 Registration for the .cz ccTLD, incorrect, false, incomplete or misleading
 information can be grounds for the cancellation of a domain name registration.
 
-Please do not hesitate to contact us for additional information.
-
-You can find a complete summary of your domain names, and other objects
+You can find a complete summary of your domain names and other objects
 associated with your contact attached below.
 
+Yours sincerely
+Support of <?cs var:defaults.company_en ?>
 
-Your CZ.NIC team.
 
 Attachment:
 
-<?cs if:domains.0 ?>Domains where the contact is a holder or an administrative contact:<?cs each:item = domains ?>
-<?cs var:item ?><?cs /each ?><?cs else ?>Contact is not linked to any domain name.<?cs /if ?><?cs if:nssets.0 ?>
+<?cs if:domains.0 ?>Domains where the contact is their holder or administrative contact:<?cs each:item = domains ?>
+<?cs var:item ?><?cs /each ?><?cs else ?>The contact is not linked to any domain name.<?cs /if ?><?cs if:nssets.0 ?>
 
-Sets of name servers where the contact is a technical contact:<?cs each:item = nssets ?>
+Sets of name servers where the contact is their technical contact:<?cs each:item = nssets ?>
 <?cs var:item ?><?cs /each ?><?cs /if ?><?cs if:keysets.0 ?>
 
-Keysets where the contact is a technical contact:<?cs each:item = keysets ?>
+Keysets where the contact is their technical contact:<?cs each:item = keysets ?>
 <?cs var:item ?><?cs /each ?><?cs /if ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (23, 23);

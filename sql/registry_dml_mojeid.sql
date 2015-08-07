@@ -2,13 +2,13 @@
 --- mail headers defaults for mojeid
 ---
 INSERT INTO mail_header_defaults (id, h_from,h_replyto, h_errorsto, h_organization, h_contentencoding, h_messageidserver)
-    VALUES (2, 'podpora@mojeid.cz', 'podpora@mojeid.cz', 'podpora@mojeid.cz', 'CZ.NIC, z.s.p.o.', NULL, 'nic.cz');
+    VALUES (2, 'podpora@mojeid.cz', 'podpora@mojeid.cz', 'podpora@mojeid.cz', 'CZ.NIC, z. s. p. o.', NULL, 'nic.cz');
 
 
 ---
 --- messages templates
 ---
-INSERT INTO mail_type (id, name, subject) VALUES (21, 'mojeid_identification', '[mojeID] Založení účtu - PIN1 pro aktivaci mojeID');
+INSERT INTO mail_type (id, name, subject) VALUES (21, 'mojeid_identification', 'Založení účtu mojeID - PIN1 pro aktivaci mojeID');
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'mojeid_identification'), 2);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (21, 'plain', 1,
@@ -26,7 +26,7 @@ následující odkaz:
 
 https://<?cs var:hostname ?>/identify/email-sms/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
 
-Po úspěšném odeslání formuláře budete moci začít Váš účet mojeID používat.
+Po úspěšném odeslání formuláře budete moci začít svůj účet mojeID používat.
 Zároveň Vám pošleme poštou dopis s kódem PIN3, po jehož zadání bude Váš
 účet plně aktivní.
 
@@ -37,7 +37,8 @@ jméno:       <?cs var:firstname ?>
 příjmení:    <?cs var:lastname ?>
 e-mail:      <?cs var:email ?>
 
-Váš tým <?cs var:defaults.company ?>
+S pozdravem
+tým mojeID
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (21, 21);
 
@@ -45,20 +46,21 @@ INSERT INTO mail_type (id, name, subject) VALUES (22, 'mojeid_validation', 'Vali
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'mojeid_validation'), 2);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (22, 'plain', 1,
-'
+'Vážený uživateli,
 <?cs if:status == #1 ?>
-Na základě žádosti číslo <?cs var:reqid ?> ze dne <?cs var:reqdate ?> byla provedena validace účtu mojeID.<?cs else ?>
+na základě žádosti číslo <?cs var:reqid ?> ze dne <?cs var:reqdate ?> byla provedena validace účtu mojeID.<?cs else ?>
 Váš účet mojeID:<?cs /if ?>
 
-Jméno : <?cs var:name ?><?cs if:org ?>
-Organizace : <?cs var:org ?><?cs /if ?><?cs if:ic ?>
-IČ : <?cs var:ic ?><?cs /if ?><?cs if:birthdate ?>
-Datum narození : <?cs var:birthdate ?><?cs /if ?>
-Adresa : <?cs var:address ?>
+Jméno: <?cs var:name ?><?cs if:org ?>
+Organizace: <?cs var:org ?><?cs /if ?><?cs if:ic ?>
+IČ: <?cs var:ic ?><?cs /if ?><?cs if:birthdate ?>
+Datum narození: <?cs var:birthdate ?><?cs /if ?>
+Adresa: <?cs var:address ?>
 <?cs if:status != #1 ?>
-u kterého bylo požádáno o validaci žádostí číslo <?cs var:reqid ?> ze dne <?cs var:reqdate ?> nebyl validován.
+u kterého bylo požádáno o validaci žádostí číslo <?cs var:reqid ?> ze dne <?cs var:reqdate ?>, nebyl validován.
 <?cs /if ?>
-Váš tým <?cs var:defaults.company ?>
+S pozdravem
+tým mojeID
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (22, 22);
 
@@ -70,7 +72,8 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 
 k dokončení procedury změny e-mailu zadejte prosím kód PIN1: <?cs var:pin ?>
 
-Váš tým CZ.NIC');
+S pozdravem
+tým mojeID');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (24, 24);
 
 INSERT INTO mail_type (id, name, subject) VALUES (27, 'mojeid_verified_contact_transfer', 'Založení účtu mojeID');
@@ -95,7 +98,8 @@ Aktivaci účtu proveďte kliknutím na následující odkaz:
 
 https://<?cs var:hostname ?>/identify/email/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
 
-Váš tým <?cs var:defaults.company ?>
+S pozdravem
+tým mojeID
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (27, 27);
 
