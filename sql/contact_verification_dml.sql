@@ -47,7 +47,7 @@ email:      <?cs var:email ?>
 To complete the first of the two verification steps, authorisation with your PIN1 and PIN2 codes is required.
 
 PIN1: <?cs var:passwd ?>
-PIN2: was sent to you by means of a text message (SMS).
+PIN2: was sent to you in a text message (SMS).
 
 You will be able to enter your PIN1 and PIN2 by following this link:
 https://<?cs var:hostname ?>/verification/identify/email-sms/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
@@ -92,19 +92,19 @@ podpora <?cs var:defaults.company_cs ?>
 Dear user,
 
 You have successfully completed the first step of verification
-of your contact in Central registry using the following data.
+of your contact in the Central registry using the following data.
 
 contact ID: <?cs var:handle ?>
 first name: <?cs var:firstname ?>
 last name:  <?cs var:lastname ?>
 e-mail:     <?cs var:email ?>
 
-We have sent you a letter containing your PIN3 as well and you will receive it
+Also we have sent you a letter containing your PIN3 and you will receive it
 in a few days. To complete your contact verification, submit your PIN3 on the page
 https://<?cs var:hostname ?>/verification/identify/letter/?handle=<?cs var:handle ?>
 
 Please, be aware that you should not change contact name, organization, email,
-phone or address of the contact before submitting the PIN3. Any modification
+phone or address of the contact before you submit the PIN3. Any modification
 of these entries would interrupt the verification process.
 
 Thank you for your understanding.

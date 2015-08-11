@@ -29,13 +29,13 @@ podpora <?cs var:defaults.company_cs ?>
 Dear customer,
 
 Based on your request submitted via the web form on our pages on
-<?cs var:reqdate ?>, which received
+<?cs var:reqdate ?>, which was assigned
 the identification number <?cs var:reqid ?>, we are sending you the requested
-password belonging to the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact having identifier<?cs elif:type == #2 ?>NS set having identifier<?cs elif:type == #4 ?>keyset having identifier<?cs /if ?> <?cs var:handle ?>.
+password belonging to the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact identified with<?cs elif:type == #2 ?>NS set identified with<?cs elif:type == #4 ?>keyset identified with<?cs /if ?> <?cs var:handle ?>.
 
 The password is: <?cs var:authinfo ?>
 
-If you did not submit the aforementioned request, please notify us about
+If you did not submit the aforementioned request, please notify us of
 this fact at the address <?cs var:defaults.emailsupport ?>.
 
 Yours sincerely
@@ -71,26 +71,24 @@ Dear customer,
 
 Based on your request submitted via the registrar <?cs var:registrar ?>,
 we are sending you the requested password belonging to
-the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact having identifier<?cs elif:type == #2 ?>NS set having identifier<?cs elif:type == #4 ?>keyset having identifier<?cs /if ?> <?cs var:handle ?>.
+the <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact identified with<?cs elif:type == #2 ?>NS set identified with<?cs elif:type == #4 ?>keyset identified with<?cs /if ?> <?cs var:handle ?>.
 
 The password is: <?cs var:authinfo ?>
 
-This message is being sent only to the e-mail address that we have on file
-for the relevant person in the Central Registry of Domain Names.
+This message is being sent only to the e-mail address of the relevant person that we have on file in the Central Registry of Domain Names.
 
-If you did not submit the aforementioned request, please notify us about
-this fact at the address <?cs var:defaults.emailsupport ?>.
+If you did not submit the aforementioned request, please notify us of this fact at the address <?cs var:defaults.emailsupport ?>.
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (2, 2);
 
-INSERT INTO mail_type (id, name, subject) VALUES (3, 'expiration_notify', 'Upozornění na nutnost úhrady domény <?cs var:domain ?> / Reminder of the need to settle fees for the domain <?cs var:domain ?>');
+INSERT INTO mail_type (id, name, subject) VALUES (3, 'expiration_notify', 'Upozornění na nutnost úhrady domény <?cs var:domain ?> / Reminder to settle fees for the <?cs var:domain ?> domain');
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'expiration_notify'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (3, 'plain', 1,
-'English version of the email follows the Czech version
+'The English version of the email follows the Czech version
 
 Vážený zákazníku,
 
@@ -128,19 +126,18 @@ S pozdravem
 podpora <?cs var:defaults.company_cs ?>
 
 
-
 Dear customer,
 
 We would like to inform you that as of <?cs var:checkdate ?>, your registrar
 did not extend the registration of the domain name <?cs var:domain ?>. Concerning
 the fact that the fee for the domain name in question has been paid only
-for a period ended on <?cs var:exdate ?>, your domain name has now entered
-the so-called protective period. Unless a registrar of your choice extends
+for a period ending on <?cs var:exdate ?>, your domain name has now entered
+the so-called protection period. Unless a registrar of your choice extends
 your registration, the following steps will be adopted in accordance with
 the Domain Name Registration Rules:
 
 <?cs var:dnsdate ?> - The domain name will become inaccessible (exclusion from DNS).
-<?cs var:exregdate ?> - Final cancellation of the domain name registration.
+<?cs var:exregdate ?> - The final cancellation of the domain name registration.
 
 At present, we keep the following details concerning your domain:
 
@@ -158,7 +155,7 @@ To remedy the existing situation, you can choose one of the following:
 2. Or choose another registrar from those listed on our pages (https://www.nic.cz/whois/registrars/list/)
    in order to extend the registration of your domain name;
 
-3. Or do not pay for the extension of validity period of the domain, the domain
+3. Or do not pay for the extension of the domain registration, the domain
    will be cancelled on the specified date.
 
 Yours sincerely
@@ -167,11 +164,11 @@ Support of <?cs var:defaults.company_en ?>
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (3, 3);
 
 
-INSERT INTO mail_type (id, name, subject) VALUES (4, 'expiration_dns_owner', 'Oznámení o vyřazení domény <?cs var:domain ?> z DNS / Notification about withdrawal of the domain <?cs var:domain ?> from DNS');
+INSERT INTO mail_type (id, name, subject) VALUES (4, 'expiration_dns_owner', 'Oznámení o vyřazení domény <?cs var:domain ?> z DNS / Notification of the <?cs var:domain ?> domain exclusion from DNS');
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'expiration_dns_owner'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (4, 'plain', 1,
-'English version of the email follows the Czech version
+'The English version of the email follows the Czech version
 
 Vážený zákazníku,
 
@@ -213,18 +210,18 @@ podpora <?cs var:defaults.company_cs ?>
 
 Dear customer,
 
-We would like to notify you that your registrar did not extend the validity
+We would like to notify you that your registrar did not extend the registration
 of the domain name <?cs var:domain ?>. With regard to that fact
-and in accordance with Rules for domain names registrations, we are
-suspending the domain name registration and withdrawing it from the
+and in accordance with the Domain Name Registration Rules, we are
+suspending the domain name registration and excluding it from the
 <?cs var:zone ?> zone.
 
 In case that by <?cs var:exregdate ?> we will not receive the payment
 for extension of the domain name from your registrar, your domain name will
 be definitely released for a use by another applicant on <?cs var:exregdate ?>.
 
-In case you are interested about the domain, contact your designated registrar
-<?cs var:registrar ?> and extend the validity of the domain name together.
+In case you are interested in the domain, contact your designated registrar
+<?cs var:registrar ?> and extend the domain name registration together.
 
 If you believe that the payment was made, please, check first if the payment
 was made using the correct variable symbol, to the correct account number, and
@@ -233,7 +230,7 @@ registrar.
 
 Schedule of planned events:
 
-<?cs var:exregdate ?> - Definitive cancellation of the domain name registration.
+<?cs var:exregdate ?> - The final cancellation of the domain name registration.
 
 At present, we keep the following details concerning your domain:
 
@@ -249,7 +246,7 @@ Support of <?cs var:defaults.company_en ?>
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (4, 4);
 
 
-INSERT INTO mail_type (id, name, subject) VALUES (5, 'expiration_register_owner', 'Oznámení o zrušení domény <?cs var:domain ?> / Notification about cancellation of the domain <?cs var:domain ?>');
+INSERT INTO mail_type (id, name, subject) VALUES (5, 'expiration_register_owner', 'Oznámení o zrušení domény <?cs var:domain ?> / Notification of the <?cs var:domain ?> domain cancellation');
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'expiration_register_owner'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (5, 'plain', 1,
@@ -269,12 +266,10 @@ podpora <?cs var:defaults.company_cs ?>
 
 Dear customer,
 
-we would like to inform you that the registration extension has not yet been
-implemented for the domain name <?cs var:domain ?>. Due to this fact and
-based on the Domain Name Registration Rules, we are cancelling the registration
-of this domain name.
+we would like to inform you that your registrar has not extended the registration
+of the domain name <?cs var:domain ?>. Due to this fact and based on the Domain Name Registration Rules, we are cancelling the registration of this domain name.
 
-If you are interested in registration of the domain again, please contact any registrar listed
+If you are interested in the registration of the domain again, please contact any registrar listed
 on our pages (https://www.nic.cz/whois/registrars/list/).
 
 Yours sincerely
@@ -282,7 +277,7 @@ Support of <?cs var:defaults.company_en ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (5, 5);
 
-INSERT INTO mail_type (id, name, subject) VALUES (6, 'expiration_dns_tech', 'Oznámení o vyřazení domény <?cs var:domain ?> z DNS / Notification about withdrawal of the domain <?cs var:domain ?> from DNS');
+INSERT INTO mail_type (id, name, subject) VALUES (6, 'expiration_dns_tech', 'Oznámení o vyřazení domény <?cs var:domain ?> z DNS / Notification of the <?cs var:domain ?> domain exclusion from DNS');
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'expiration_dns_tech'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (6, 'plain', 1,
@@ -303,14 +298,15 @@ Dear customer,
 With regard to the fact that you are stated as the technical contact for the set
 <?cs var:nsset ?> of nameservers assigned to the <?cs var:domain ?>
 domain name, we would like to notify you that the aforementioned domain name
-was withdrawn from DNS as of <?cs var:statechangedate ?>.
+was excluded from DNS as of <?cs var:statechangedate ?>.
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
+<?cs var:defaults.company_en ?> Support
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (6, 6);
 
-INSERT INTO mail_type (id, name, subject) VALUES (7, 'expiration_register_tech', 'Oznámení o zrušení domény <?cs var:domain ?> / Notification about cancellation of the domain <?cs var:domain ?>');
+INSERT INTO mail_type (id, name, subject) VALUES (7, 'expiration_register_tech', 'Oznámení o zrušení domény <?cs var:domain ?> / Notification of the <?cs var:domain ?> domain cancellation');
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'expiration_register_tech'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (7, 'plain', 1,
@@ -328,17 +324,18 @@ podpora <?cs var:defaults.company_cs ?>
 
 Dear customer,
 
-With regard to the fact that you are stated as technical contact for the set
+With regard to the fact that you are stated as the technical contact for the set
 <?cs var:nsset ?> of nameservers assigned to the <?cs var:domain ?>
 domain name, we would like to notify you that the aforementioned domain name
 was cancelled as of <?cs var:exregdate ?>.
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
+<?cs var:defaults.company_en ?> Support
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (7, 7);
 
-INSERT INTO mail_type (id, name, subject) VALUES (8, 'expiration_validation_before', 'Oznámení vypršení validace enum domény ENUM <?cs var:domain ?> / Notification about expiration of the ENUM domain <?cs var:domain ?> validation');
+INSERT INTO mail_type (id, name, subject) VALUES (8, 'expiration_validation_before', 'Oznámení vypršení validace enum domény ENUM <?cs var:domain ?> / Notification of expiration of the ENUM domain <?cs var:domain ?> validation');
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'expiration_validation_before'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (8, 'plain', 1,
@@ -365,11 +362,11 @@ podpora <?cs var:defaults.company_cs ?>
 
 Dear customer,
 
-We would like to notify you that as of <?cs var:checkdate ?>, extension of
-the <?cs var:domain ?> domain name validation has not been made.
-Validation will expire on <?cs var:valdate ?>. If you plan to renew validation
+We would like to notify you that as of <?cs var:checkdate ?>,
+the <?cs var:domain ?> domain name validation has not been extended.
+The validation will expire on <?cs var:valdate ?>. If you plan to renew validation
 of the aforementioned domain name, please, contact your registrar, and
-execute the extension of validation of your domain name togther before
+perform the extension of validation of your domain name together before
 this date.
 
 At present, we keep the following details concerning your domain:
@@ -382,10 +379,11 @@ Registrar: <?cs var:registrar ?>
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
+<?cs var:defaults.company_en ?> Support
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (8, 8);
 
-INSERT INTO mail_type (id, name, subject) VALUES (9, 'expiration_validation', 'Oznámení o vypršení validace domény ENUM <?cs var:domain ?> / Notification about expiration of the ENUM domain <?cs var:domain ?> validation');
+INSERT INTO mail_type (id, name, subject) VALUES (9, 'expiration_validation', 'Oznámení o vypršení validace domény ENUM <?cs var:domain ?> / Notification of expiration of the ENUM domain <?cs var:domain ?> validation');
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'expiration_validation'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (9, 'plain', 1,
@@ -414,13 +412,13 @@ podpora <?cs var:defaults.company_cs ?>
 
 Dear customer,
 
-We would like to notify you that as of <?cs var:checkdate ?>, extension of
-the <?cs var:domain ?> domain name validation has not been made.
-With regard to this fact and in accordance with Rules for domain names
-registrations, we are withdrawing it from the zone. The domain
-name continues to be registered. If you plan to renew validation of the
-aforementioned domain name, please, contact your registrar, and together
-execute the extension of validation of your domain name.
+We would like to notify you that as of <?cs var:checkdate ?>,
+the <?cs var:domain ?> domain name validation has not been extended.
+With regard to this fact and in accordance with the Domain Name Registration Rules,
+we are excluding it from the zone. The domain
+name remains registered. If you plan to renew validation of the
+aforementioned domain name, please, contact your registrar, and
+perform the extension of validation of your domain name together.
 
 At present, we keep the following details concerning your domain:
 
@@ -432,6 +430,7 @@ Registrar: <?cs var:registrar ?>
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
+<?cs var:defaults.company_en ?> Support
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (9, 9);
 
@@ -442,7 +441,7 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (10, 'plain', 1,
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs elif:lang == "ensmall" ?><?cs if:type == #3 ?>domain<?cs elif:type == #1 ?>contact<?cs elif:type == #2 ?>nsset<?cs elif:type == #4 ?>keyset<?cs /if ?><?cs /if ?><?cs /def ?>
 ======================================================================
-Oznámení o registraci / Registration notification
+Oznámení o registraci / Notification of registration
 ======================================================================
 Registrace <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> creation
 Identifikátor <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> handle : <?cs var:handle ?>
@@ -550,7 +549,7 @@ Other data has not been modified.
 
 
 Úplné detaily <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
-Full details of <?cs call:typesubst("ensmall") ?> can be seen at <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
+The full details of <?cs call:typesubst("ensmall") ?> can be seen at <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
 
 V případě dotazů se prosím obracejte na svého určeného registrátora,
 u kterého byly změny provedeny.
@@ -569,14 +568,14 @@ podpora <?cs var:defaults.company_cs ?> / Support of <?cs var:defaults.company_e
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (11, 11);
 
-INSERT INTO mail_type (id, name, subject) VALUES (12, 'notification_transfer', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o transferu <?cs call:typesubst("cs") ?> <?cs var:handle ?> / <?cs call:typesubst("en") ?> <?cs var:handle ?> transfer notification');
+INSERT INTO mail_type (id, name, subject) VALUES (12, 'notification_transfer', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o transferu <?cs call:typesubst("cs") ?> <?cs var:handle ?> / Notification of <?cs call:typesubst("en") ?> <?cs var:handle ?> transfer');
 INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'notification_transfer'), 3);
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'notification_transfer'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (12, 'plain', 1,
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs elif:lang == "ensmall" ?><?cs if:type == #3 ?>domain<?cs elif:type == #1 ?>contact<?cs elif:type == #2 ?>nsset<?cs elif:type == #4 ?>keyset<?cs /if ?><?cs /if ?><?cs /def ?>
 =====================================================================
-Oznámení o transferu / Transfer notification
+Oznámení o transferu / Notification of transfer
 =====================================================================
 Transfer <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> transfer
 Identifikátor <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> handle : <?cs var:handle ?>
@@ -603,14 +602,14 @@ podpora <?cs var:defaults.company_cs ?> / Support of <?cs var:defaults.company_e
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (12, 12);
 
-INSERT INTO mail_type (id, name, subject) VALUES (13, 'notification_renew', 'Oznámení o prodloužení platnosti domény <?cs var:handle ?> / Domain name <?cs var:handle ?> renewal notification');
+INSERT INTO mail_type (id, name, subject) VALUES (13, 'notification_renew', 'Oznámení o prodloužení platnosti domény <?cs var:handle ?> / Notification of <?cs var:handle ?> domain name renewal');
 INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'notification_renew'), 3);
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'notification_renew'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (13, 'plain', 1,
 '
 =====================================================================
-Oznámení o prodloužení platnosti / Notification about renewal
+Oznámení o prodloužení platnosti / Notification of renewal
 ===================================================================== 
 Obnovení domény / Domain renewal
 Domény / Domain : <?cs var:handle ?>
@@ -634,8 +633,8 @@ done by persons who are not authorized anymore.
 Dovolujeme si Vás rovněž upozornit, že nesprávné, nepravdivé, neúplné
 či zavádějící údaje mohou být v souladu s Pravidly registrace doménových jmen
 v ccTLD .cz důvodem ke zrušení registrace doménového jména.
-We would also like to inform you that in accordance with the Rules of Domain Name
-Registration for the .cz ccTLD, incorrect, false, incomplete or misleading
+We would also like to inform you that in accordance with the
+Domain Name Registration Rules for the .cz ccTLD, incorrect, false, incomplete or misleading
 information can be grounds for the cancellation of a domain name registration.
 
 Detail domény najdete na <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
@@ -646,7 +645,7 @@ podpora <?cs var:defaults.company_cs ?> / Support of <?cs var:defaults.company_e
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (13, 13);
 
-INSERT INTO mail_type (id, name, subject) VALUES (14, 'notification_unused', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o zrušení <?cs call:typesubst("cs") ?> <?cs var:handle ?> / <?cs call:typesubst("en") ?> <?cs var:handle ?> deletion notification');
+INSERT INTO mail_type (id, name, subject) VALUES (14, 'notification_unused', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o zrušení <?cs call:typesubst("cs") ?> <?cs var:handle ?> / Notification of <?cs call:typesubst("en") ?> <?cs var:handle ?> deletion');
 INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'notification_unused'), 3);
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'notification_unused'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
@@ -678,14 +677,14 @@ Support of <?cs var:defaults.company_en ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (14, 14);
 
-INSERT INTO mail_type (id, name, subject) VALUES (15, 'notification_delete', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o zrušení <?cs call:typesubst("cs") ?> <?cs var:handle ?> / <?cs call:typesubst("en") ?> <?cs var:handle ?> deletion notification');
+INSERT INTO mail_type (id, name, subject) VALUES (15, 'notification_delete', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o zrušení <?cs call:typesubst("cs") ?> <?cs var:handle ?> / Notification of <?cs call:typesubst("en") ?> <?cs var:handle ?> deletion');
 INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'notification_delete'), 3);
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'notification_delete'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (15, 'plain', 1,
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>
 =====================================================================
-Oznámení o zrušení / Deletion notification 
+Oznámení o zrušení / Notification of deletion
 =====================================================================
 Zrušení <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> deletion
 Identifikátor <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> handle : <?cs var:handle ?>
@@ -704,7 +703,7 @@ podpora <?cs var:defaults.company_cs ?> / Support of <?cs var:defaults.company_e
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (15, 15);
 
-INSERT INTO mail_type (id, name, subject) VALUES (16, 'techcheck', 'Výsledek technické kontroly sady nameserverů <?cs var:handle ?> / Result of technical check on NS set <?cs var:handle ?');
+INSERT INTO mail_type (id, name, subject) VALUES (16, 'techcheck', 'Výsledek technické kontroly sady nameserverů <?cs var:handle ?> / Results of technical check on the NS set <?cs var:handle ?>');
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'techcheck'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (16, 'plain', 1,
@@ -726,7 +725,7 @@ autonomních systémech.
 The NS set does not contain at least two nameservers in different autonomous systems.
 
 <?cs /if ?><?cs if:par_test.name == "presence" ?><?cs each:ns = par_test.ns ?>Nameserver <?cs var:ns ?> neobsahuje záznam pro domény:
-Nameserver <?cs var:ns ?> does not contain record for domains:
+Nameserver <?cs var:ns ?> does not contain a record for any of the domains:
 <?cs each:fqdn = ns.fqdn ?>    <?cs var:fqdn ?>
 <?cs /each ?><?cs if:ns.overfull ?>    ...
 <?cs /if ?><?cs /each ?><?cs /if ?><?cs if:par_test.name == "authoritative" ?><?cs each:ns = par_test.ns ?>Nameserver <?cs var:ns ?> není autoritativní pro domény:
@@ -745,7 +744,7 @@ Following nameservers in the NS set answered a query recursively:
 <?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
 <?cs /each ?><?cs /if ?><?cs if:par_test.name == "dnsseckeychase" ?>Pro následující domény přislušející sadě nameserverů nebylo možno
 ověřit validitu podpisu DNSSEC:
-For following domains belonging to the NS set, the DNSSEC signature
+For the following domains belonging to the NS set, the DNSSEC signature
 could not be validated:
 <?cs each:domain = par_test.ns ?>    <?cs var:domain ?>
 <?cs /each ?><?cs /if ?><?cs /def ?>
@@ -766,14 +765,14 @@ podpora <?cs var:defaults.company_cs ?> / Support of <?cs var:defaults.company_e
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (16, 16);
 
-INSERT INTO mail_type (id, name, subject) VALUES (17, 'invoice_deposit', 'Potvrzení o přijaté záloze / Accepted advance payment confirmation');
+INSERT INTO mail_type (id, name, subject) VALUES (17, 'invoice_deposit', 'Potvrzení o přijaté záloze / Confirmation of received advance payment');
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'invoice_deposit'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (17, 'plain', 1,
 'Vážení obchodní přátelé,
 
-v příloze zasíláme daňový doklad na přijatou zálohu pro zónu <?cs var:zone ?>. Tento daňový doklad
-slouží k uplatnění nároku na odpočet DPH přijaté zálohy
+v příloze zasíláme daňový doklad na přijatou zálohu pro zónu <?cs var:zone ?>.
+Tento daňový doklad slouží k uplatnění nároku na odpočet DPH přijaté zálohy
 
 S pozdravem
 podpora <?cs var:defaults.company_cs ?>
@@ -783,8 +782,8 @@ podpora <?cs var:defaults.company_cs ?>
 Dear business partners,
 
 Enclosed with this letter, we are sending you a tax document for the advance
-payment accepted for the zone <?cs var:zone ?>. This tax document can be used to claim VAT deduction for
-the advance payment.
+payment received for the <?cs var:zone ?> zone. This tax document can be used 
+to claim VAT deduction for the advance payment.
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
@@ -809,8 +808,8 @@ podpora <?cs var:defaults.company_cs ?>
 Dear business partners,
 
 Enclosed with this letter, we are sending a tax document for domain name
-registration services and the maintenance of domain name records for the period
-from <?cs var:fromdate ?> to <?cs var:todate ?> for the zone <?cs var:zone ?>.
+registration services and the maintenance of domain name records in the period
+from <?cs var:fromdate ?> to <?cs var:todate ?> for the <?cs var:zone ?> zone.
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
@@ -836,11 +835,12 @@ podpora <?cs var:defaults.company_cs ?>
 Dear business partners,
 
 Since your company has not performed any domain name registration or domain
-name validity extension in the period from <?cs var:fromdate ?> to <?cs var:todate ?> for the zone <?cs var:zone ?>,
+name validity extension in the period from <?cs var:fromdate ?> to <?cs var:todate ?> for the <?cs var:zone ?> zone,
 hence not drawing any paid services, no tax document will be issued for this
 period.
 
 Yours sincerely
+<?cs var:defaults.company_en ?> Support
 Support of <?cs var:defaults.company_en ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (19, 19);
@@ -872,14 +872,15 @@ Dear customer,
 based on your request submitted via the web form on our
 pages on <?cs var:reqdate ?>, which received the identification number
 <?cs var:reqid ?>, we are announcing that your request for <?cs if:otype == #1 ?>blocking<?cs elif:otype == #2 ?>unblocking<?cs /if ?>
-<?cs if:rtype == #1 ?>data changes<?cs elif:rtype == #2 ?>transfer to other registrar<?cs /if ?> for <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact having identifier<?cs elif:type == #2 ?>NS set having identifier<?cs elif:type == #4 ?>keyset having identifier<?cs /if ?> <?cs var:handle ?>
+<?cs if:rtype == #1 ?>data changes<?cs elif:rtype == #2 ?>transfer to other registrar<?cs /if ?> for <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact identified with<?cs elif:type == #2 ?>NS set identified with<?cs elif:type == #4 ?>keyset identified with<?cs /if ?> <?cs var:handle ?>
 has been dealt with.
 <?cs if:otype == #1 ?>
-No <?cs if:rtype == #1 ?>data changes<?cs elif:rtype == #2 ?>transfer to other registrar<?cs /if ?> of <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact having identifier<?cs elif:type == #2 ?>NS set having identifier<?cs elif:type == #4 ?>Keyset having identifier<?cs /if ?> <?cs var:handle ?>
+No <?cs if:rtype == #1 ?>data changes<?cs elif:rtype == #2 ?>transfer to other registrar<?cs /if ?> of <?cs if:type == #3 ?>domain name<?cs elif:type == #1 ?>contact identified with<?cs elif:type == #2 ?>NS set identified with<?cs elif:type == #4 ?>Keyset identified with<?cs /if ?> <?cs var:handle ?>
 will be possible until you cancel the blocking option using the
 applicable form on our pages.
 <?cs /if?>
 Yours sincerely
+<?cs var:defaults.company_en ?> Support
 Support of <?cs var:defaults.company_en ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (20, 20);
@@ -888,7 +889,7 @@ INSERT INTO mail_type (id, name, subject) VALUES (28, 'merge_contacts_auto', 'Oz
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'merge_contacts_auto'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (28, 'plain', 1,
-'English version of the email follows the Czech version
+'The English version of the email follows the Czech version
 
 Vážený zákazníku,
 
@@ -918,7 +919,7 @@ podpora <?cs var:defaults.company_cs ?>
 
 Dear Customer,
 
-To simplify the administration and management of contact data in the register, the following changes have been implemented in accordance with the Domain Name Registration Rules, Section 11.10:
+To simplify the administration and management of contact data in the registry, the following changes have been implemented in accordance with the Domain Name Registration Rules, Section 11.10:
 
 Duplicate contact entries having different identifiers but identical contents have been unified. All duplicate contact details were merged into a single entry carrying the identifier <?cs var:dst_contact_handle ?>.
 
@@ -963,7 +964,7 @@ podpora <?cs var:defaults.company_cs ?>
 
 Dear customer,
 
-You can find a notice in the attachment to correct or provide evidence of correctness of data set to the contact having identifier <?cs var:contact_handle ?> (The original of the letter has been sent with international confirmation of delivery.)
+In the attachment, you can find a notice to correct or provide evidence of accuracy of data assigned to the contact identified with <?cs var:contact_handle ?> (The original letter has been sent with international confirmation of delivery.)
 
 In case of any questions do not hesitate to contact us.
 
@@ -989,9 +990,9 @@ podpora <?cs var:defaults.company_cs ?>
 
 Dear customer,
 
-Let us inform you that the data set to the contact having identifier <?cs var:contact_handle ?> has not been corrected up to this day. The letter sent to the address set in the contact in central registry has returned.
+Let us inform you that the data assigned to the contact identified with <?cs var:contact_handle ?> has not been corrected up to this day. The letter sent to the address assigned to the contact in the Central registry has returned.
 
-In case the data set in the contact <?cs var:contact_handle ?> are not corrected (nor the evidence of its correctness is provided) till <?cs var:contact_update_till ?>, we can, in accordance with Rules of Domain Name Registration under ccTLD .cz, cancel registration of domain names where this contact is the owner.
+In case the data assigned to the contact <?cs var:contact_handle ?> are not corrected (nor the evidence of their accuracy is provided) till <?cs var:contact_update_till ?>, we can, in accordance with the Domain Name Registration Rules under ccTLD .cz, cancel registration of domain names where this contact is the owner.
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
