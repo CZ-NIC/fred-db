@@ -742,7 +742,10 @@ Datum kontroly / Date of the check: <?cs var:checkdate ?>
 Typ kontroly / Control type : periodická / periodic 
 Číslo kontroly / Ticket: <?cs var:ticket ?>
 
-<?cs def:printtest(par_test) ?><?cs if:par_test.name == "existence" ?>Následující nameservery v sadě nameserverů nejsou dosažitelné:
+<?cs def:printtest(par_test) ?><?cs if:par_test.name == "glue_ok" ?>U následujících nameserverů chybí povinný glue záznam:
+The required glue record is missing for the following nameservers:
+<?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
+<?cs /each ?><?cs /if ?><?cs if:par_test.name == "existence" ?>Následující nameservery v sadě nameserverů nejsou dosažitelné:
 Following nameservers in NS set are not reachable:
 <?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
 <?cs /each ?><?cs /if ?><?cs if:par_test.name == "autonomous" ?>Sada nameserverů neobsahuje minimálně dva nameservery v různých
