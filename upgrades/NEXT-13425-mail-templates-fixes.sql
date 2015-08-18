@@ -113,7 +113,6 @@ UPDATE mail_defaults SET value = 'CZ.NIC, z. s. p. o.' WHERE name = 'company';
 INSERT INTO mail_defaults (name, value) VALUES ('company_cs', 'CZ.NIC, správce domény CZ');
 INSERT INTO mail_defaults (name, value) VALUES ('company_en', 'CZ.NIC, the CZ domain registry');
 
--- !!!
 UPDATE mail_vcard SET vcard =
 'BEGIN:VCARD
 VERSION:2.1
@@ -126,12 +125,11 @@ TEL;WORK;FAX:+420 222 745 112
 ADR;WORK:;;Milešovská 1136/5;Praha 3;;130 00;Česká republika
 URL;WORK:http://www.nic.cz
 EMAIL;PREF;INTERNET:podpora@nic.cz
-REV:20150109T111928Z
+REV:20150818T150541Z
 END:VCARD
-';
+' WHERE id = 1;
 
--- !!!
-UPDATE mail_header_defaults SET h_organization = 'CZ.NIC, z. s. p. o.';
+UPDATE mail_header_defaults SET h_organization = 'CZ.NIC, z. s. p. o.' WHERE h_organization = 'CZ.NIC, z.s.p.o.';
 
 
 ---

@@ -80,7 +80,7 @@ TEL;WORK;FAX:+420 222 745 112
 ADR;WORK:;;Milešovská 1136/5;Praha 3;;130 00;Česká republika
 URL;WORK:http://www.nic.cz
 EMAIL;PREF;INTERNET:podpora@nic.cz
-REV:20150109T111928Z
+REV:20150818T150541Z
 END:VCARD
 ');
 
