@@ -1,14 +1,144 @@
+---
+--- Ticket #13425
+---
 
---
--- This script may be called only on just created mail tables, because
--- we assume that sequence numbers are reset to 1 in this script.
---
+---
+--- From contact_verification_dml.sql
+---
 
-INSERT INTO mail_type (id, name, subject) VALUES (1, 'sendauthinfo_pif', 'Zaslání autorizační informace / Sending authorization information');
-INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'sendauthinfo_pif'), 2);
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'sendauthinfo_pif'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(1, 'plain', 1,
+UPDATE mail_type SET subject = 'Podmíněná identifikace kontaktu / Conditional contact identification') WHERE id = 25;
+UPDATE mail_templates SET template =
+'Vážený uživateli,
+
+tento e-mail potvrzuje úspěšné zahájení procesu ověření kontaktu v Centrálním registru:
+
+ID kontaktu: <?cs var:handle ?>
+jméno:       <?cs var:firstname ?>
+příjmení:    <?cs var:lastname ?>
+e-mail:      <?cs var:email ?>
+
+Pro dokončení prvního ze dvou kroků ověření je nutné zadat kódy PIN1 a PIN2.
+
+PIN1: <?cs var:passwd ?>
+PIN2: Vám byl zaslán pomocí SMS.
+
+Zadání PIN1 a PIN2 bude možné po kliknutí na následující odkaz:
+https://<?cs var:hostname ?>/verification/identify/email-sms/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
+
+S pozdravem
+podpora <?cs var:defaults.company_cs ?>
+
+
+
+Dear user,
+
+This email confirms that the process of verifying your contact data in the Central Registry has been successfully initiated:
+
+contact ID: <?cs var:handle ?>
+first name: <?cs var:firstname ?>
+last name:  <?cs var:lastname ?>
+email:      <?cs var:email ?>
+
+To complete the first of the two verification steps, authorisation with your PIN1 and PIN2 codes is required.
+
+PIN1: <?cs var:passwd ?>
+PIN2: was sent to you in a text message (SMS).
+
+You will be able to enter your PIN1 and PIN2 by following this link:
+https://<?cs var:hostname ?>/verification/identify/email-sms/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
+
+Yours sincerely
+Support of <?cs var:defaults.company_en ?>
+' WHERE id = 25;
+
+
+UPDATE mail_type SET subject = 'Identifikace kontaktu / Contact identification') WHERE id = 26;
+UPDATE mail_templates SET template =
+'Vážený uživateli,
+
+úspěšně jste dokončil(a) první část ověření svého kontaktu
+v Centrálním registru s následujícími údaji.
+
+identifikátor: <?cs var:handle ?>
+jméno:         <?cs var:firstname ?>
+příjmení:      <?cs var:lastname ?>
+e-mail:        <?cs var:email ?>
+
+Zároveň Vám byl vygenerován a odeslán poštou kód PIN3, který obdržíte
+v nejbližších dnech. Ověření kontaktu dokončíte zadáním kódu PIN3 na stránce
+https://<?cs var:hostname ?>/verification/identify/letter/?handle=<?cs var:handle ?>
+
+Rádi bychom Vám také připomněli, že až do okamžiku zadání kódu PIN3
+nelze v kontaktu měnit jméno, organizaci, e-mail, telefon ani adresu.
+Případná editace těchto údajů v této fázi ověřovacího procesu by měla
+za následek jeho přerušení.
+
+Děkujeme za pochopení.
+
+S pozdravem
+podpora <?cs var:defaults.company_cs ?>
+
+
+
+Dear user,
+
+You have successfully completed the first step of verification
+of your contact in the Central registry using the following data.
+
+contact ID: <?cs var:handle ?>
+first name: <?cs var:firstname ?>
+last name:  <?cs var:lastname ?>
+e-mail:     <?cs var:email ?>
+
+Also we have sent you a letter containing your PIN3 and you will receive it
+in a few days. To complete your contact verification, submit your PIN3 on the page
+https://<?cs var:hostname ?>/verification/identify/letter/?handle=<?cs var:handle ?>
+
+Please, be aware that you should not change contact name, organization, email,
+phone or address of the contact before you submit the PIN3. Any modification
+of these entries would interrupt the verification process.
+
+Thank you for your understanding.
+
+Yours sincerely
+Support of <?cs var:defaults.company_en ?>
+' WHERE id = 26;
+
+
+---
+--- From mail_notify.sql
+---
+
+UPDATE mail_defaults SET value = 'CZ.NIC, z. s. p. o.' WHERE name = 'company';
+INSERT INTO mail_defaults (name, value) VALUES ('company_cs', 'CZ.NIC, správce domény CZ');
+INSERT INTO mail_defaults (name, value) VALUES ('company_en', 'CZ.NIC, the CZ domain registry');
+
+-- !!!
+UPDATE mail_vcard SET vcard =
+'BEGIN:VCARD
+VERSION:2.1
+N:podpora CZ.NIC, z. s. p. o.
+FN:podpora CZ.NIC, z. s. p. o.
+ORG:CZ.NIC, z. s. p. o.
+TITLE:zákaznická podpora
+TEL;WORK;VOICE:+420 222 745 111
+TEL;WORK;FAX:+420 222 745 112
+ADR;WORK:;;Milešovská 1136/5;Praha 3;;130 00;Česká republika
+URL;WORK:http://www.nic.cz
+EMAIL;PREF;INTERNET:podpora@nic.cz
+REV:20150109T111928Z
+END:VCARD
+';
+
+-- !!!
+UPDATE mail_header_defaults SET h_organization = 'CZ.NIC, z. s. p. o.';
+
+
+---
+--- From mail_templates.sql
+---
+
+UPDATE mail_templates SET template =
 'Vážený zákazníku,
 
 na základě Vaší žádosti podané prostřednictvím webového formuláře
@@ -40,14 +170,9 @@ this fact at the address <?cs var:defaults.emailsupport ?>.
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (1, 1);
+' WHERE id = 1;
 
-INSERT INTO mail_type (id, name, subject) VALUES (2, 'sendauthinfo_epp', 'Zaslání autorizační informace / Sending authorization information');
-INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'sendauthinfo_epp'), 2);
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'sendauthinfo_epp'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(2, 'plain', 1,
+UPDATE mail_templates SET template =
 'Vážený zákazníku,
 
 na základě Vaší žádosti, podané prostřednictvím registrátora
@@ -81,13 +206,10 @@ If you did not submit the aforementioned request, please notify us of this fact 
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (2, 2);
+' WHERE id = 2;
 
-INSERT INTO mail_type (id, name, subject) VALUES (3, 'expiration_notify', 'Upozornění na nutnost úhrady domény <?cs var:domain ?> / Reminder to settle fees for the <?cs var:domain ?> domain');
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'expiration_notify'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(3, 'plain', 1,
+UPDATE mail_type SET subject = 'Upozornění na nutnost úhrady domény <?cs var:domain ?> / Reminder to settle fees for the <?cs var:domain ?> domain' WHERE id = 3;
+UPDATE mail_templates SET template =
 'The English version of the email follows the Czech version
 
 Vážený zákazníku,
@@ -161,14 +283,11 @@ To remedy the existing situation, you can choose one of the following:
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (3, 3);
+' WHERE id = 3;
 
 
-INSERT INTO mail_type (id, name, subject) VALUES (4, 'expiration_dns_owner', 'Oznámení o vyřazení domény <?cs var:domain ?> z DNS / Notification of the <?cs var:domain ?> domain exclusion from DNS');
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'expiration_dns_owner'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(4, 'plain', 1,
+UPDATE mail_type SET subject = 'Oznámení o vyřazení domény <?cs var:domain ?> z DNS / Notification of the <?cs var:domain ?> domain exclusion from DNS' WHERE id = 4;
+UPDATE mail_templates SET template =
 'The English version of the email follows the Czech version
 
 Vážený zákazníku,
@@ -243,14 +362,11 @@ Registrar: <?cs var:registrar ?>
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (4, 4);
+' WHERE id = 4;
 
 
-INSERT INTO mail_type (id, name, subject) VALUES (5, 'expiration_register_owner', 'Oznámení o zrušení domény <?cs var:domain ?> / Notification of the <?cs var:domain ?> domain cancellation');
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'expiration_register_owner'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(5, 'plain', 1,
+UPDATE mail_type SET subject = 'Oznámení o zrušení domény <?cs var:domain ?> / Notification of the <?cs var:domain ?> domain cancellation' WHERE id = 5;
+UPDATE mail_templates SET template =
 'Vážený zákazníku,
 
 dovolujeme si Vás upozornit, že Váš registrátor neprodloužil platnost registrace
@@ -275,13 +391,10 @@ on our pages (https://www.nic.cz/whois/registrars/list/).
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (5, 5);
+' WHERE id = 5;
 
-INSERT INTO mail_type (id, name, subject) VALUES (6, 'expiration_dns_tech', 'Oznámení o vyřazení domény <?cs var:domain ?> z DNS / Notification of the <?cs var:domain ?> domain exclusion from DNS');
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'expiration_dns_tech'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(6, 'plain', 1,
+UPDATE mail_type SET subject = 'Oznámení o vyřazení domény <?cs var:domain ?> z DNS / Notification of the <?cs var:domain ?> domain exclusion from DNS' WHERE id = 6;
+UPDATE mail_templates SET template =
 'Vážený zákazníku,
 
 vzhledem k tomu, že jste veden jako technický kontakt u sady nameserverů
@@ -303,13 +416,10 @@ was excluded from DNS as of <?cs var:statechangedate ?>.
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (6, 6);
+' WHERE id = 6;
 
-INSERT INTO mail_type (id, name, subject) VALUES (7, 'expiration_register_tech', 'Oznámení o zrušení domény <?cs var:domain ?> / Notification of the <?cs var:domain ?> domain cancellation');
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'expiration_register_tech'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(7, 'plain', 1,
+UPDATE mail_type SET subject = 'Oznámení o zrušení domény <?cs var:domain ?> / Notification of the <?cs var:domain ?> domain cancellation' WHERE id = 7;
+UPDATE mail_templates SET template =
 'Vážený zákazníku,
 
 vzhledem k tomu, že jste vedený jako technický kontakt u sady nameserverů
@@ -331,13 +441,10 @@ was cancelled as of <?cs var:exregdate ?>.
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (7, 7);
+' WHERE id = 7;
 
-INSERT INTO mail_type (id, name, subject) VALUES (8, 'expiration_validation_before', 'Oznámení vypršení validace domény ENUM <?cs var:domain ?> / Notification of expiration of the ENUM domain <?cs var:domain ?> validation');
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'expiration_validation_before'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(8, 'plain', 1,
+UPDATE mail_type SET subject = 'Oznámení vypršení validace domény ENUM <?cs var:domain ?> / Notification of expiration of the ENUM domain <?cs var:domain ?> validation' WHERE id = 8;
+UPDATE mail_templates SET template =
 'Vážený zákazníku,
 
 dovolujeme si Vás upozornit, že k <?cs var:checkdate ?> dosud nedošlo k prodloužení
@@ -378,13 +485,10 @@ Registrar: <?cs var:registrar ?>
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (8, 8);
+' WHERE id = 8;
 
-INSERT INTO mail_type (id, name, subject) VALUES (9, 'expiration_validation', 'Oznámení o vypršení validace domény ENUM <?cs var:domain ?> / Notification of expiration of the ENUM domain <?cs var:domain ?> validation');
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'expiration_validation'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(9, 'plain', 1,
+UPDATE mail_type SET subject = 'Oznámení o vypršení validace domény ENUM <?cs var:domain ?> / Notification of expiration of the ENUM domain <?cs var:domain ?> validation' WHERE id = 9;
+UPDATE mail_templates SET template =
 'Vážený zákazníku,
 
 dovolujeme si Vás upozornit, že k <?cs var:checkdate ?> dosud nedošlo k prodloužení
@@ -428,14 +532,9 @@ Registrar: <?cs var:registrar ?>
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (9, 9);
+' WHERE id = 9;
 
-INSERT INTO mail_type (id, name, subject) VALUES (10, 'notification_create', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o registraci <?cs call:typesubst("cs") ?> <?cs var:handle ?> / <?cs call:typesubst("en") ?> <?cs var:handle ?> registration notification');
-INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'notification_create'), 3);
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'notification_create'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(10, 'plain', 1,
+UPDATE mail_templates SET template =
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs elif:lang == "ensmall" ?><?cs if:type == #3 ?>domain<?cs elif:type == #1 ?>contact<?cs elif:type == #2 ?>nsset<?cs elif:type == #4 ?>keyset<?cs /if ?><?cs /if ?><?cs /def ?>
 ======================================================================
 Oznámení o registraci / Notification of registration
@@ -465,14 +564,9 @@ Details of <?cs call:typesubst("ensmall") ?> can be seen at <?cs var:defaults.wh
 
 S pozdravem / Yours sincerely
 podpora <?cs var:defaults.company_cs ?> / Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (10, 10);
+' WHERE id = 10;
 
-INSERT INTO mail_type (id, name, subject) VALUES (11, 'notification_update', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>domain<?cs elif:type == #1 ?>contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení změn <?cs call:typesubst("cs") ?> <?cs var:handle ?>/ Notification of <?cs call:typesubst("en") ?> <?cs var:handle ?> changes');
-INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'notification_update'), 3);
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'notification_update'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(11, 'plain', 1,
+UPDATE mail_templates SET template =
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs elif:lang == "ensmall" ?><?cs if:type == #3 ?>domain<?cs elif:type == #1 ?>contact<?cs elif:type == #2 ?>nsset<?cs elif:type == #4 ?>keyset<?cs /if ?><?cs /if ?><?cs /def ?>
 
 <?cs def:print_value(which, varname) ?><?cs if:which == "old" ?><?cs set:lvarname = varname.old ?><?cs elif:which == "new" ?><?cs set:lvarname = varname.new ?><?cs /if ?><?cs alt:lvarname ?><?cs if:which == "old" ?>hodnota nenastavena / value not set<?cs elif:which == "new" ?>hodnota smazána / value deleted<?cs /if ?><?cs /alt ?><?cs /def ?>
@@ -562,14 +656,10 @@ oblíbeným webovým službám jediným jménem a heslem.
 
 S pozdravem / Yours sincerely
 podpora <?cs var:defaults.company_cs ?> / Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (11, 11);
+' WHERE id = 11;
 
-INSERT INTO mail_type (id, name, subject) VALUES (12, 'notification_transfer', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o transferu <?cs call:typesubst("cs") ?> <?cs var:handle ?> / Notification of <?cs call:typesubst("en") ?> <?cs var:handle ?> transfer');
-INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'notification_transfer'), 3);
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'notification_transfer'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(12, 'plain', 1,
+UPDATE mail_type SET subject = '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o transferu <?cs call:typesubst("cs") ?> <?cs var:handle ?> / Notification of <?cs call:typesubst("en") ?> <?cs var:handle ?> transfer' WHERE id = 12;
+UPDATE mail_templates SET template =
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs elif:lang == "ensmall" ?><?cs if:type == #3 ?>domain<?cs elif:type == #1 ?>contact<?cs elif:type == #2 ?>nsset<?cs elif:type == #4 ?>keyset<?cs /if ?><?cs /if ?><?cs /def ?>
 =====================================================================
 Oznámení o transferu / Notification of transfer
@@ -596,16 +686,11 @@ which performed the change.
 
 S pozdravem / Yours sincerely
 podpora <?cs var:defaults.company_cs ?> / Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (12, 12);
+' WHERE id = 12;
 
-INSERT INTO mail_type (id, name, subject) VALUES (13, 'notification_renew', 'Oznámení o prodloužení platnosti domény <?cs var:handle ?> / Notification of <?cs var:handle ?> domain name renewal');
-INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'notification_renew'), 3);
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'notification_renew'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(13, 'plain', 1,
-'
-=====================================================================
+UPDATE mail_type SET subject = 'Oznámení o prodloužení platnosti domény <?cs var:handle ?> / Notification of <?cs var:handle ?> domain name renewal' WHERE id = 13;
+UPDATE mail_templates SET template =
+'=====================================================================
 Oznámení o prodloužení platnosti / Notification of renewal
 ===================================================================== 
 Obnovení domény / Domain renewal
@@ -639,14 +724,10 @@ Details of the domain can be seen at <?cs var:defaults.whoispage ?>?q=<?cs var:h
 
 S pozdravem / Yours sincerely
 podpora <?cs var:defaults.company_cs ?> / Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (13, 13);
+' WHERE id = 13;
 
-INSERT INTO mail_type (id, name, subject) VALUES (14, 'notification_unused', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o zrušení <?cs call:typesubst("cs") ?> <?cs var:handle ?> / Notification of <?cs call:typesubst("en") ?> <?cs var:handle ?> deletion');
-INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'notification_unused'), 3);
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'notification_unused'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(14, 'plain', 1,
+UPDATE mail_type SET subject = '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o zrušení <?cs call:typesubst("cs") ?> <?cs var:handle ?> / Notification of <?cs call:typesubst("en") ?> <?cs var:handle ?> deletion' WHERE id = 14;
+UPDATE mail_templates SET template =
 'Vážený zákazníku,
 
 vzhledem ke skutečnosti, že <?cs if:type == #1 ?>kontaktní osoba<?cs elif:type == #2 ?>sada nameserverů<?cs elif:type == #4 ?>sada klíčů<?cs /if ?> s identifikátorem <?cs var:handle ?>
@@ -671,14 +752,10 @@ registred domains, since it is impossible to cancel a <?cs if:type == #1 ?>conta
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (14, 14);
+' WHERE id = 14;
 
-INSERT INTO mail_type (id, name, subject) VALUES (15, 'notification_delete', '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o zrušení <?cs call:typesubst("cs") ?> <?cs var:handle ?> / Notification of <?cs call:typesubst("en") ?> <?cs var:handle ?> deletion');
-INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'notification_delete'), 3);
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'notification_delete'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(15, 'plain', 1,
+UPDATE mail_type SET subject = '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení o zrušení <?cs call:typesubst("cs") ?> <?cs var:handle ?> / Notification of <?cs call:typesubst("en") ?> <?cs var:handle ?> deletion' WHERE id = 15;
+UPDATE mail_templates SET template =
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs /if ?><?cs /def ?>
 =====================================================================
 Oznámení o zrušení / Notification of deletion
@@ -697,23 +774,18 @@ has been performed. 
 
 S pozdravem / Your sincerely
 podpora <?cs var:defaults.company_cs ?> / Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (15, 15);
+' WHERE id = 15;
 
-INSERT INTO mail_type (id, name, subject) VALUES (16, 'techcheck', 'Výsledek technické kontroly sady nameserverů <?cs var:handle ?> / Results of technical check on the NS set <?cs var:handle ?>');
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'techcheck'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(16, 'plain', 1,
-'Sada nameserverů / NS set: <?cs var:handle ?>
+UPDATE mail_type SET subject = 'Výsledek technické kontroly sady nameserverů <?cs var:handle ?> / Results of technical check on the NS set <?cs var:handle ?>' WHERE id = 16;
+UPDATE mail_templates SET template =
+'
+Sada nameserverů / NS set: <?cs var:handle ?>
 
 Datum kontroly / Date of the check: <?cs var:checkdate ?>
 Typ kontroly / Check type: periodická / periodic
 Číslo kontroly / Ticket: <?cs var:ticket ?>
 
-<?cs def:printtest(par_test) ?><?cs if:par_test.name == "glue_ok" ?>U následujících nameserverů chybí povinný glue záznam:
-The required glue record is missing for the following nameservers:
-<?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
-<?cs /each ?><?cs /if ?><?cs if:par_test.name == "existence" ?>Následující nameservery v sadě nameserverů nejsou dosažitelné:
+<?cs def:printtest(par_test) ?><?cs if:par_test.name == "existence" ?>Následující nameservery v sadě nameserverů nejsou dosažitelné:
 Following nameservers in the NS set are unreachable:
 <?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
 <?cs /each ?><?cs /if ?><?cs if:par_test.name == "autonomous" ?>Sada nameserverů neobsahuje minimálně dva nameservery v různých
@@ -758,13 +830,10 @@ could not be validated:
 
 S pozdravem / Your sincerely
 podpora <?cs var:defaults.company_cs ?> / Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (16, 16);
+' WHERE id = 16;
 
-INSERT INTO mail_type (id, name, subject) VALUES (17, 'invoice_deposit', 'Potvrzení o přijaté záloze / Confirmation of received advance payment');
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'invoice_deposit'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(17, 'plain', 1,
+UPDATE mail_type SET subject = 'Potvrzení o přijaté záloze / Confirmation of received advance payment' WHERE id = 17;
+UPDATE mail_templates SET template =
 'Vážení obchodní přátelé,
 
 v příloze zasíláme daňový doklad na přijatou zálohu pro zónu <?cs var:zone ?>.
@@ -778,18 +847,15 @@ podpora <?cs var:defaults.company_cs ?>
 Dear business partners,
 
 Enclosed with this letter, we are sending you a tax document for the advance
-payment received for the <?cs var:zone ?> zone. This tax document can be used 
+payment received for the <?cs var:zone ?> zone. This tax document can be used
 to claim VAT deduction for the advance payment.
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (17, 17);
+' WHERE id = 17;
 
-INSERT INTO mail_type (id, name, subject) VALUES (18, 'invoice_audit', 'Zaslání měsíčního vyúčtování / Monthly bill dispatching');
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'invoice_audit'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(18, 'plain', 1,
+UPDATE mail_type SET subject = 'Zaslání měsíčního vyúčtování / Monthly bill dispatching' WHERE id = 18;
+UPDATE mail_templates SET template =
 'Vážení obchodní přátelé,
 
 v příloze zasíláme daňový doklad za služby registrací doménových jmen
@@ -809,13 +875,10 @@ from <?cs var:fromdate ?> to <?cs var:todate ?> for the <?cs var:zone ?> zone.
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (18, 18);
+' WHERE id = 18;
 
-INSERT INTO mail_type (id, name, subject) VALUES (19, 'invoice_noaudit', 'Zaslání měsíčního vyúčtování / Monthly bill dispatching');
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'invoice_noaudit'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(19, 'plain', 1,
+UPDATE mail_type SET subject = 'Zaslání měsíčního vyúčtování / Monthly bill dispatching' WHERE id = 19;
+UPDATE mail_templates SET template =
 'Vážení obchodní přátelé,
 
 jelikož Vaše společnost neprovedla v období od <?cs var:fromdate ?> do <?cs var:todate ?> v zóně <?cs var:zone ?>
@@ -837,14 +900,10 @@ period.
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (19, 19);
+' WHERE id = 19;
 
-INSERT INTO mail_type (id, name, subject) VALUES (20, 'request_block', 'Informace o vyřízení žádosti / Information about request handling ');
-INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'request_block'), 3);
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'request_block'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(20, 'plain', 1,
+UPDATE mail_type SET subject = 'Informace o vyřízení žádosti / Information about request handling ' WHERE id = 20;
+UPDATE mail_templates SET template =
 'Vážený zákazníku,
 
 na základě Vaší žádosti podané prostřednictvím webového formuláře
@@ -876,13 +935,10 @@ applicable form on our pages.
 <?cs /if?>
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (20, 20);
+' WHERE id = 20;
 
-INSERT INTO mail_type (id, name, subject) VALUES (28, 'merge_contacts_auto', 'Oznámení o sloučení duplicitních záznamů / Information on the merging of duplicate entries');
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'merge_contacts_auto'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(28, 'plain', 1,
+UPDATE mail_type SET subject = 'Oznámení o sloučení duplicitních záznamů / Information on the merging of duplicate entries' WHERE id = 28;
+UPDATE mail_templates SET template =
 'The English version of the email follows the Czech version
 
 Vážený zákazníku,
@@ -934,17 +990,11 @@ The following duplicate contact entries were removed:<?cs each:item = removed_li
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (28, 28);
+' WHERE id = 28;
 
 
----
---- Ticket #9475
----
-
-INSERT INTO mail_type (id, name, subject) VALUES (29, 'contact_check_notice', 'Výzva k opravě či doložení správnosti údajů kontaktu <?cs var:contact_handle ?> / Notice to correct data of contact <?cs var:contact_handle ?>');
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(29, 'plain', 1,
+UPDATE mail_type SET subject = 'Výzva k opravě či doložení správnosti údajů kontaktu <?cs var:contact_handle ?> / Notice to correct data of contact <?cs var:contact_handle ?>' WHERE id = 29;
+UPDATE mail_templates SET template =
 'Vážený zákazníku,
 
 v příloze Vám zasíláme výzvu k opravě či doložení správnosti údajů, které jsou uvedeny u kontaktu s identifikátorem <?cs var:contact_handle ?> (Originál dopisu odchází s mezinárodní dodejkou prostřednictvím pošty.)
@@ -964,13 +1014,11 @@ In case of any questions do not hesitate to contact us.
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (29, 29);
+' WHERE id = 29;
 
 
-INSERT INTO mail_type (id, name, subject) VALUES (30, 'contact_check_warning', 'Druhá výzva k opravě či doložení správnosti údajů kontaktu <?cs var:contact_handle ?> / Second notice to correct data of contact <?cs var:contact_handle ?>');
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
-(30, 'plain', 1,
+UPDATE mail_type SET subject = 'Druhá výzva k opravě či doložení správnosti údajů kontaktu <?cs var:contact_handle ?> / Second notice to correct data of contact <?cs var:contact_handle ?>' WHERE id = 30;
+UPDATE mail_templates SET template =
 'Vážený zákazníku,
 
 do dnešního dne nedošlo k opravě údajů, které jsou uvedeny u kontaktu s identifikátorem <?cs var:contact_handle ?>. Zásilka odeslaná na adresu uvedenou v centrálním registru u tohoto kontaktu se vrátila.
@@ -990,6 +1038,227 @@ In case the data assigned to the contact <?cs var:contact_handle ?> are not corr
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (30, 30);
+' WHERE id = 30;
+
+
+---
+--- From registry_dml_mojeid.sql
+---
+
+UPDATE mail_header_defaults SET h_organization = 'CZ.NIC, z. s. p. o.' WHERE id = 2;
+
+
+---
+--- messages templates
+---
+UPDATE mail_type SET subject = 'Založení účtu mojeID - PIN1 pro aktivaci mojeID' WHERE id = 21;
+UPDATE mail_templates SET template =
+'
+Vážený uživateli,
+
+před tím, než Vám aktivujeme účet mojeID, musíme ověřit správnost Vašich
+kontaktních údajů, a to prostřednictvím kódů PIN1 a PIN2.
+
+PIN1: <?cs var:passwd ?>
+PIN2: Vám byl zaslán pomocí SMS.
+
+Do formuláře pro zadání těchto kódů budete přesměrováni po kliknutí na
+následující odkaz:
+
+https://<?cs var:hostname ?>/identify/email-sms/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
+
+Po úspěšném odeslání formuláře budete moci začít svůj účet mojeID používat.
+Zároveň Vám pošleme poštou dopis s kódem PIN3, po jehož zadání bude Váš
+účet plně aktivní.
+
+Základní údaje o Vašem účtu:
+
+účet mojeID: <?cs var:handle ?>
+jméno:       <?cs var:firstname ?>
+příjmení:    <?cs var:lastname ?>
+e-mail:      <?cs var:email ?>
+
+S pozdravem
+tým mojeID
+' WHERE id = 21;
+
+UPDATE mail_type SET subject = 'Validace účtu mojeID <?cs if:status == #1 ?>provedena<?cs else ?>neprovedena<?cs /if ?>' WHERE id = 22;
+UPDATE mail_templates SET template =
+'Vážený uživateli,
+<?cs if:status == #1 ?>
+na základě žádosti číslo <?cs var:reqid ?> ze dne <?cs var:reqdate ?> byla provedena validace účtu mojeID.<?cs else ?>
+Váš účet mojeID:<?cs /if ?>
+
+Jméno: <?cs var:name ?><?cs if:org ?>
+Organizace: <?cs var:org ?><?cs /if ?><?cs if:ic ?>
+IČ: <?cs var:ic ?><?cs /if ?><?cs if:birthdate ?>
+Datum narození: <?cs var:birthdate ?><?cs /if ?>
+Adresa: <?cs var:address ?>
+<?cs if:status != #1 ?>
+u kterého bylo požádáno o validaci žádostí číslo <?cs var:reqid ?> ze dne <?cs var:reqdate ?>, nebyl validován.
+<?cs /if ?>
+S pozdravem
+tým mojeID
+' WHERE id = 22;
+
+UPDATE mail_templates SET template =
+'Vážený uživateli,
+
+k dokončení procedury změny e-mailu zadejte prosím kód PIN1: <?cs var:pin ?>
+
+S pozdravem
+tým mojeID
+' WHERE id = 24;
+
+UPDATE mail_templates SET template =
+'Vážený uživateli,
+
+tento e-mail potvrzuje úspěšné založení účtu mojeID s těmito údaji:
+
+účet mojeID: <?cs var:handle ?>
+jméno:       <?cs var:firstname ?>
+příjmení:    <?cs var:lastname ?>
+e-mail:      <?cs var:email ?>
+
+Pro aktivaci Vašeho účtu je nutné vložit kód PIN1.
+
+PIN1: <?cs var:passwd ?>
+
+Aktivaci účtu proveďte kliknutím na následující odkaz:
+
+https://<?cs var:hostname ?>/identify/email/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
+
+S pozdravem
+tým mojeID
+' WHERE id = 27;
+
+
+---
+--- From reminder_dml.sql
+---
+
+UPDATE mail_templates SET template =
+'The English version of the email follows the Czech version
+
+Vážený zákazníku,
+
+dovolujeme si Vás zdvořile požádat o kontrolu správnosti údajů,
+které nyní evidujeme u Vašeho kontaktu v Centrálním registru
+doménových jmen.
+
+Kontaktní osoba je potřebná pro registraci domény či domén, jejichž seznam uvádíme níže.
+
+V případě nesrovnalostí v údajích se prosím spojte přímo s určeným registrátorem kontaktu, kterého naleznete v následujícím výpisu, neboť my změny údajů neprovádíme.
+
+ID kontaktu v registru: <?cs var:handle ?>
+Organizace: <?cs var:organization ?>
+Jméno: <?cs var:name ?>
+Adresa: <?cs var:address ?><?cs if:ident_type != "" ?>
+<?cs if:ident_type == "RC"?>Datum narození: <?cs 
+elif:ident_type == "OP"?>Číslo OP: <?cs 
+elif:ident_type == "PASS"?>Číslo pasu: <?cs 
+elif:ident_type == "ICO"?>IČO: <?cs 
+elif:ident_type == "MPSV"?>Identifikátor MPSV: <?cs 
+elif:ident_type == "BIRTHDAY"?>Datum narození: <?cs 
+/if ?> <?cs var:ident_value ?><?cs 
+/if ?>
+DIČ: <?cs var:dic ?>
+Telefon: <?cs var:telephone ?>
+Fax: <?cs var:fax ?>
+E-mail: <?cs var:email ?>
+Notifikační e-mail: <?cs var:notify_email ?>
+Určený registrátor: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
+<?cs if:registrar_memo_cz ?>Další informace poskytnuté registrátorem:
+<?cs var:registrar_memo_cz ?><?cs /if ?>
+
+V případě, že jsou údaje správné, nereagujte prosím na tento e-mail.
+
+Aktuální, úplné a správné informace v registru znamenají Vaši jistotu,
+že Vás důležité informace o Vaší doméně zastihnou vždy a včas na správné adrese.
+Nedočkáte se tak nepříjemného překvapení v podobě nefunkční či zrušené domény.
+
+Dovolujeme si Vás rovněž upozornit, že nesprávné, nepravdivé, neúplné
+či zavádějící údaje mohou být v souladu s Pravidly registrace doménových jmen
+v ccTLD .cz důvodem ke zrušení registrace doménového jména.
+
+Úplný výpis z registru obsahující všechny domény a další objekty přiřazené
+k shora uvedenému kontaktu naleznete v příloze.
+
+S pozdravem
+podpora <?cs var:defaults.company_cs ?>
+
+
+Příloha:
+
+<?cs if:domains.0 ?>Seznam domén, kde je kontakt v roli držitele nebo administrativního
+kontaktu:<?cs each:item = domains ?>
+<?cs var:item ?><?cs /each ?><?cs else ?>Kontakt není uveden u žádného doménového jména.<?cs /if ?><?cs if:nssets.0 ?>
+
+Seznam sad jmenných serverů, kde je kontakt v roli technického kontaktu:<?cs each:item = nssets ?>
+<?cs var:item ?><?cs /each ?><?cs /if ?><?cs if:keysets.0 ?>
+
+Seznam sad klíčů, kde je kontakt v roli technického kontaktu:<?cs each:item = keysets ?>
+<?cs var:item ?><?cs /each ?><?cs /if ?>
+
+
+
+Dear customer,
+
+Please check that your contact information we currently have on file
+in the Central Registry of Domain Names, is correct.
+
+The contact is required for the registration of the domain(s) listed below.
+
+Do not hesitate to contact your designated registrar in the case the data are incorrect, since we do not perform changes of the data.
+
+Contact ID in the registry: <?cs var:handle ?>
+Organization: <?cs var:organization ?>
+Name: <?cs var:name ?>
+Address: <?cs var:address ?><?cs if:ident_type != "" ?>
+<?cs if:ident_type == "RC"?>Birth date: <?cs 
+elif:ident_type == "OP"?>Personal ID: <?cs 
+elif:ident_type == "PASS"?>Passport number: <?cs 
+elif:ident_type == "ICO"?>ID number: <?cs 
+elif:ident_type == "MPSV"?>MSPV ID: <?cs 
+elif:ident_type == "BIRTHDAY"?>Birth day: <?cs 
+/if ?> <?cs var:ident_value ?><?cs 
+/if ?>
+VAT No.: <?cs var:dic ?>
+Phone: <?cs var:telephone ?>
+Fax: <?cs var:fax ?>
+Email: <?cs var:email ?>
+Notification email: <?cs var:notify_email ?>
+Designated registrar: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
+<?cs if:registrar_memo_en ?>Other information provided by your registrar:
+<?cs var:registrar_memo_en ?><?cs /if ?>
+
+Please, do not take any measures if your data are correct.
+
+Having up-to-date, complete and correct information in the registry is crucial
+to reach you with all the important information about your domain name in time
+and at the correct contact address. Check your contact details now and avoid unpleasant
+surprises such as a non-functional or expired domain.
+
+We would also like to inform you that in accordance with the Rules of Domain Name
+Registration for the .cz ccTLD, incorrect, false, incomplete or misleading
+information can be grounds for the cancellation of a domain name registration.
+
+You can find a complete listing of your domain names and other objects
+associated with your contact attached below.
+
+Yours sincerely
+Support of <?cs var:defaults.company_en ?>
+
+
+Attachment:
+
+<?cs if:domains.0 ?>Domains where the contact is their holder or administrative contact:<?cs each:item = domains ?>
+<?cs var:item ?><?cs /each ?><?cs else ?>The contact is not linked to any domain name.<?cs /if ?><?cs if:nssets.0 ?>
+
+Sets of name servers where the contact is their technical contact:<?cs each:item = nssets ?>
+<?cs var:item ?><?cs /each ?><?cs /if ?><?cs if:keysets.0 ?>
+
+Keysets where the contact is their technical contact:<?cs each:item = keysets ?>
+<?cs var:item ?><?cs /each ?><?cs /if ?>
+' WHERE id = 23;
 

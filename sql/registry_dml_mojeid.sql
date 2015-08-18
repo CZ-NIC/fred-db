@@ -12,8 +12,7 @@ INSERT INTO mail_type (id, name, subject) VALUES (21, 'mojeid_identification', '
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'mojeid_identification'), 2);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (21, 'plain', 1,
-'
-Vážený uživateli,
+'Vážený uživateli,
 
 před tím, než Vám aktivujeme účet mojeID, musíme ověřit správnost Vašich
 kontaktních údajů, a to prostřednictvím kódů PIN1 a PIN2.
@@ -73,7 +72,8 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 k dokončení procedury změny e-mailu zadejte prosím kód PIN1: <?cs var:pin ?>
 
 S pozdravem
-tým mojeID');
+tým mojeID
+');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (24, 24);
 
 INSERT INTO mail_type (id, name, subject) VALUES (27, 'mojeid_verified_contact_transfer', 'Založení účtu mojeID');
