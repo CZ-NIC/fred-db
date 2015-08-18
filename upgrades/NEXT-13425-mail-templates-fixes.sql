@@ -6,7 +6,7 @@
 --- From contact_verification_dml.sql
 ---
 
-UPDATE mail_type SET subject = 'Podmíněná identifikace kontaktu / Conditional contact identification') WHERE id = 25;
+UPDATE mail_type SET subject = 'Podmíněná identifikace kontaktu / Conditional contact identification' WHERE id = 25;
 UPDATE mail_templates SET template =
 'Vážený uživateli,
 
@@ -52,7 +52,7 @@ Support of <?cs var:defaults.company_en ?>
 ' WHERE id = 25;
 
 
-UPDATE mail_type SET subject = 'Identifikace kontaktu / Contact identification') WHERE id = 26;
+UPDATE mail_type SET subject = 'Identifikace kontaktu / Contact identification' WHERE id = 26;
 UPDATE mail_templates SET template =
 'Vážený uživateli,
 
