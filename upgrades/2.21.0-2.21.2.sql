@@ -1,10 +1,16 @@
+---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.21.2' WHERE id = 1;
+
+
 UPDATE mail_templates SET template =
 '
 Výsledek technické kontroly sady nameserverů <?cs var:handle ?>
 Result of technical check on NS set <?cs var:handle ?>
 
 Datum kontroly / Date of the check: <?cs var:checkdate ?>
-Typ kontroly / Control type : periodická / periodic 
+Typ kontroly / Control type : periodická / periodic
 Číslo kontroly / Ticket: <?cs var:ticket ?>
 
 <?cs def:printtest(par_test) ?><?cs if:par_test.name == "glue_ok" ?>U následujících nameserverů chybí povinný glue záznam:
