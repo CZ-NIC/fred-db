@@ -13,3 +13,6 @@ VALUES (16, 'async_letter_generation', 'enabled');
 -- other value or missing parameter leads to enable this option
 INSERT INTO enum_parameters (id, name, val) 
 VALUES (17, 'async_email_generation', 'enabled');
+
+-- used for mojeid asynchronous generation of messages
+CREATE INDEX public_request_status_create_time_idx ON public_request(status,create_time);

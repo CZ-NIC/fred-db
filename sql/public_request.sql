@@ -28,6 +28,9 @@ comment on column public_request.email_to_answer is 'manual entered email by use
 comment on column public_request.answer_email_id is 'reference to mail which was send after request was processed';
 comment on column public_request.registrar_id is 'reference to registrar when request is submitted via EPP protocol (otherwise NULL)';
 
+-- used for mojeid asynchronous generation of messages
+CREATE INDEX public_request_status_create_time_idx ON public_request(status,create_time);
+
 CREATE TABLE public_request_objects_map (
   request_id integer CONSTRAINT public_request_objects_map_request_id_fkey REFERENCES public_request(id)
   CONSTRAINT public_request_objects_map_pkey PRIMARY KEY,
