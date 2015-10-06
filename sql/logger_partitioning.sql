@@ -49,8 +49,18 @@ $tr_request$ LANGUAGE plpgsql;
 
 
 -- reuqest_object_ref trigger
-CREATE OR REPLACE FUNCTION tr_request_object_ref(id BIGINT, request_time_begin TIMESTAMP WITHOUT TIME ZONE, request_service_id INTEGER, request_monitoring BOOLEAN, request_id BIGINT, object_type_id INTEGER, object_id INTEGER, object_ident TEXT) RETURNS VOID AS $tr_request_object_ref$
-DECLARE 
+CREATE OR REPLACE FUNCTION tr_request_object_ref(
+        id BIGINT,
+        request_time_begin TIMESTAMP WITHOUT TIME ZONE,
+        request_service_id INTEGER,
+        request_monitoring BOOLEAN,
+        request_id BIGINT,
+        object_type_id INTEGER,
+        object_id BIGINT,
+        object_ident TEXT)
+RETURNS VOID AS
+$tr_request_object_ref$
+DECLARE
         table_name VARCHAR(50);
         stmt TEXT;
 BEGIN
@@ -77,6 +87,7 @@ EXCEPTION
         END;
 END;
 $tr_request_object_ref$ LANGUAGE plpgsql;
+
 
 -- session is partitioned according to date only
 CREATE OR REPLACE FUNCTION tr_session(id BIGINT, user_name VARCHAR(255), user_id INTEGER, login_date timestamp, logout_date timestamp) RETURNS VOID AS $tr_session$
@@ -490,7 +501,15 @@ CREATE OR REPLACE RULE session_insert_function AS ON INSERT TO session
 DO INSTEAD SELECT tr_session ( NEW.id, NEW.user_name, NEW.user_id, NEW.login_date, NEW.logout_date); 
 
 CREATE OR REPLACE RULE request_object_ref_insert_function AS ON INSERT TO request_object_ref 
-DO INSTEAD SELECT tr_request_object_ref (NEW.id, NEW.request_time_begin, NEW.request_service_id, NEW.request_monitoring, NEW.request_id, NEW.object_type_id, NEW.object_id, NEW.object_ident);
+    DO INSTEAD SELECT tr_request_object_ref (
+        NEW.id,
+        NEW.request_time_begin,
+        NEW.request_service_id,
+        NEW.request_monitoring,
+        NEW.request_id,
+        NEW.object_type_id,
+        NEW.object_id,
+        NEW.object_ident);
 
 --- this was originally contained in the file create_parts.sql
 

@@ -100,7 +100,7 @@ CREATE TABLE request_object_ref (
     request_id BIGINT NOT NULL CONSTRAINT request_object_ref_request_id_fkey REFERENCES request(id),
 
     object_type_id INTEGER  NOT NULL CONSTRAINT request_object_ref_object_type_id_fkey REFERENCES request_object_type(id),
-    object_id INTEGER NOT NULL,
+    object_id BIGINT NOT NULL,
     object_ident TEXT
 );
 
