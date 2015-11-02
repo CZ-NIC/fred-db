@@ -1,4 +1,4 @@
-AC_INIT([fred-db], 2.21.3)
+AC_INIT([fred-db], 2.21.4)
 AC_CONFIG_FILES([Makefile
 		 fred-db.spec fred-dbmanager])
 AM_INIT_AUTOMAKE([-Wall -Werror])
