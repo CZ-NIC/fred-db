@@ -90,7 +90,7 @@ first name: <?cs var:firstname ?>
 last name:  <?cs var:lastname ?>
 e-mail:     <?cs var:email ?>
 
-Also we have sent you a letter containing your PIN3 and you will receive it
+We have also sent you a letter containing your PIN3 and you will receive it
 in a few days. To complete your contact verification, submit your PIN3 on the page
 https://<?cs var:hostname ?>/verification/identify/letter/?handle=<?cs var:handle ?>
 
