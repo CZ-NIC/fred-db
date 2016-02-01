@@ -776,8 +776,7 @@ podpora <?cs var:defaults.company_cs ?> / Support of <?cs var:defaults.company_e
 
 UPDATE mail_type SET subject = 'Výsledek technické kontroly sady nameserverů <?cs var:handle ?> / Results of technical check on the NS set <?cs var:handle ?>' WHERE id = 16;
 UPDATE mail_templates SET template =
-'
-Sada nameserverů / NS set: <?cs var:handle ?>
+'Sada nameserverů / NS set: <?cs var:handle ?>
 
 Datum kontroly / Date of the check: <?cs var:checkdate ?>
 Typ kontroly / Check type: periodická / periodic
@@ -1054,8 +1053,7 @@ UPDATE mail_header_defaults SET h_organization = 'CZ.NIC, z. s. p. o.' WHERE id 
 ---
 UPDATE mail_type SET subject = 'Založení účtu mojeID - PIN1 pro aktivaci mojeID' WHERE id = 21;
 UPDATE mail_templates SET template =
-'
-Vážený uživateli,
+'Vážený uživateli,
 
 před tím, než Vám aktivujeme účet mojeID, musíme ověřit správnost Vašich
 kontaktních údajů, a to prostřednictvím kódů PIN1 a PIN2.

@@ -604,8 +604,7 @@ INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'n
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'notification_renew'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (13, 'plain', 1,
-'
-=====================================================================
+'=====================================================================
 Oznámení o prodloužení platnosti / Notification of renewal
 ===================================================================== 
 Obnovení domény / Domain renewal

@@ -80,8 +80,7 @@ INSERT INTO mail_type (id, name, subject) VALUES (27, 'mojeid_verified_contact_t
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'mojeid_verified_contact_transfer'), 2);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (27, 'plain', 1,
-'
-Vážený uživateli,
+'Vážený uživateli,
 
 tento e-mail potvrzuje úspěšné založení účtu mojeID s těmito údaji:
 
