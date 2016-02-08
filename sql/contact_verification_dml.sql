@@ -9,14 +9,11 @@ INSERT INTO message_type (id, type) VALUES (7, 'contact_verification_pin3');
 --- email types
 ---
 
-INSERT INTO mail_type (id, name, subject) VALUES (25, 'conditional_contact_identification', 'Podmíněná identifikace kontaktu');
+INSERT INTO mail_type (id, name, subject) VALUES (25, 'conditional_contact_identification', 'Podmíněná identifikace kontaktu / Conditional contact identification');
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'conditional_contact_identification'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (25, 'plain', 1,
-'
-English version of the e-mail is entered below the Czech version
-
-Vážený uživateli,
+'Vážený uživateli,
 
 tento e-mail potvrzuje úspěšné zahájení procesu ověření kontaktu v Centrálním registru:
 
@@ -33,82 +30,87 @@ PIN2: Vám byl zaslán pomocí SMS.
 Zadání PIN1 a PIN2 bude možné po kliknutí na následující odkaz:
 https://<?cs var:hostname ?>/verification/identify/email-sms/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
 
-Váš tým <?cs var:defaults.company ?>
+S pozdravem
+podpora <?cs var:defaults.company_cs ?>
 
 
 
-Dear User,
+Dear user,
 
-This e-mail confirms that the process of verifying your contact data in the central registry has been successfully initiated:
+This email confirms that the process of verifying your contact data in the Central Registry has been successfully initiated:
 
 contact ID: <?cs var:handle ?>
 first name: <?cs var:firstname ?>
 last name:  <?cs var:lastname ?>
-e-mail:     <?cs var:email ?>
+email:      <?cs var:email ?>
 
 To complete the first of the two verification steps, authorisation with your PIN1 and PIN2 codes is required.
 
 PIN1: <?cs var:passwd ?>
-PIN2: was sent to you by a text message (SMS).
+PIN2: was sent to you in a text message (SMS).
 
 You will be able to enter your PIN1 and PIN2 by following this link:
 https://<?cs var:hostname ?>/verification/identify/email-sms/<?cs var:identification ?>/?password1=<?cs var:passwd ?>
 
-Your <?cs var:defaults.company ?> team
+Yours sincerely
+Support of <?cs var:defaults.company_en ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (25, 25);
 
 
 
-INSERT INTO mail_type (id, name, subject) VALUES (26, 'contact_identification', 'Identifikace kontaktu');
+INSERT INTO mail_type (id, name, subject) VALUES (26, 'contact_identification', 'Identifikace kontaktu / Contact identification');
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'contact_identification'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (26, 'plain', 1,
-'
-English version of the e-mail is entered below the Czech version
+'Vážený uživateli,
 
-Vážený uživateli,
-
-první část ověření kontaktu v Centrálním registru je úspěšně za Vámi.
+úspěšně jste dokončil(a) první část ověření svého kontaktu
+v Centrálním registru s následujícími údaji.
 
 identifikátor: <?cs var:handle ?>
 jméno:         <?cs var:firstname ?>
 příjmení:      <?cs var:lastname ?>
 e-mail:        <?cs var:email ?>
 
-V nejbližších dnech ještě očekávejte zásilku s kódem PIN3, jehož pomocí
-ověříme Vaši poštovní adresu. Zadáním kódu PIN3 do formuláře na stránce
+Zároveň Vám byl vygenerován a odeslán poštou kód PIN3, který obdržíte
+v nejbližších dnech. Ověření kontaktu dokončíte zadáním kódu PIN3 na stránce
 https://<?cs var:hostname ?>/verification/identify/letter/?handle=<?cs var:handle ?>
-dokončíte proces ověření kontaktu.
 
-Rádi bychom Vás také upozornili, že až do okamžiku zadání kódu PIN3
-nelze údaje v kontaktu měnit. Případná editace údajů v této fázi
-ověřovacího procesu by měla za následek jeho přerušení.
+Rádi bychom Vám také připomněli, že až do okamžiku zadání kódu PIN3
+nelze v kontaktu měnit jméno, organizaci, e-mail, telefon ani adresu.
+Případná editace těchto údajů v této fázi ověřovacího procesu by měla
+za následek jeho přerušení.
 
 Děkujeme za pochopení.
 
-Váš tým <?cs var:defaults.company ?>
+S pozdravem
+podpora <?cs var:defaults.company_cs ?>
 
 
 
-Dear User,
+Dear user,
 
-The first step of the verification of the central registry contact details provided below
-has been successfully completed.
+You have successfully completed the first step of verification
+of your contact in the Central registry using the following data.
 
 contact ID: <?cs var:handle ?>
 first name: <?cs var:firstname ?>
 last name:  <?cs var:lastname ?>
 e-mail:     <?cs var:email ?>
 
-Your PIN3 has now also been generated; you will receive it by mail within a few days
-at the address listed in the contact.
-
-Verification of this contact will be complete once you enter your PIN3
-into the corresponding field at this address:
+We have also sent you a letter containing your PIN3 and you will receive it
+in a few days. To complete your contact verification, submit your PIN3 on the page
 https://<?cs var:hostname ?>/verification/identify/letter/?handle=<?cs var:handle ?>
 
-Your <?cs var:defaults.company ?> team
+Please, be aware that you should not change contact name, organization, email,
+phone or address of the contact before you submit the PIN3. Any modification
+of these entries would interrupt the verification process.
+
+Thank you for your understanding.
+
+Yours sincerely
+Support of <?cs var:defaults.company_en ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (26, 26);
 
