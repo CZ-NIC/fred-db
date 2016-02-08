@@ -1,3 +1,7 @@
+2015-02-08 Vlastimil Zima (2.21.5)
+
+    * add MojeidDeactivateAutor request type
+
 2015-11-02 Tomas Pazderka (2.21.4)
 
     * add OpenIDConnectRefreshRequest request type
