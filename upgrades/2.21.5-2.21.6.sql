@@ -1271,7 +1271,7 @@ Keysets where the contact is their technical contact:<?cs each:item = keysets ?>
 --- domain name validator - checkers
 ---
 INSERT INTO enum_domain_name_validation_checker (id, name, description)
-    VALUES (1, 'dncheck_letters_digits_hyphen_chars_only', 'allow only letters digits hyphen characters');
+    VALUES (1, 'dncheck_letters_digits_hyphen_chars_only', 'enforces letter, digit or hyphen characters');
 INSERT INTO enum_domain_name_validation_checker (id, name, description)
     VALUES (2, 'dncheck_no_consecutive_hyphens', 'forbid consecutive hyphens');
 INSERT INTO enum_domain_name_validation_checker (id, name, description)
@@ -1281,9 +1281,9 @@ INSERT INTO enum_domain_name_validation_checker (id, name, description)
 INSERT INTO enum_domain_name_validation_checker (id, name, description)
     VALUES (5, 'dncheck_not_empty_domain_name', 'forbid empty domain name');
 INSERT INTO enum_domain_name_validation_checker (id, name, description)
-    VALUES (6, 'dncheck_rfc1035_preferred_syntax', 'allow rfc1035 preferred syntax');
+    VALUES (6, 'dncheck_rfc1035_preferred_syntax', 'enforces rfc1035 preferred syntax');
 INSERT INTO enum_domain_name_validation_checker (id, name, description)
-    VAlUES (7, 'dncheck_single_digit_labels_only', 'allow labels with single digits only (for enum domains)');
+    VAlUES (7, 'dncheck_single_digit_labels_only', 'enforces single digit labels (for enum domains)');
 
 
 INSERT INTO zone_domain_name_validation_checker_map
