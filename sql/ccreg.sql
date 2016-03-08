@@ -268,6 +268,12 @@ INSERT INTO enum_object_type (id,name) VALUES ( 2 , 'nsset' );
 INSERT INTO enum_object_type (id,name) VALUES ( 3 , 'domain' );
 INSERT INTO enum_object_type (id,name) VALUES ( 4 , 'keyset' );
 
+--Helps to write query using conditional index like type=1
+CREATE FUNCTION get_object_type_id(TEXT)
+RETURNS integer AS
+'SELECT id FROM enum_object_type WHERE name=$1'
+LANGUAGE SQL IMMUTABLE RETURNS NULL ON NULL INPUT;
+
 ALTER TABLE object_registry ADD CONSTRAINT object_registry_type_fkey FOREIGN KEY (type)
       REFERENCES enum_object_type (id);
 
