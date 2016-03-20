@@ -483,7 +483,12 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 <?cs def:value_list(which) ?><?cs if:changes.object.authinfo ?>Heslo / Authinfo: <?cs if:which == "old" ?>důvěrný údaj / private value<?cs elif:which == "new" ?>hodnota byla změněna / value was changed<?cs /if ?>
 <?cs /if ?><?cs if:type == #1 ?><?cs if:changes.contact.name ?>Jméno / Name: <?cs call:print_value(which, changes.contact.name) ?>
 <?cs /if ?><?cs if:changes.contact.org ?>Organizace / Organization: <?cs call:print_value(which, changes.contact.org) ?>
-<?cs /if ?><?cs if:changes.contact.address ?>Adresa / Address: <?cs call:print_value(which, changes.contact.address) ?>
+<?cs /if ?><?cs if:changes.contact.address.permanent ?>Trvalá Adresa / Permanent Address: <?cs call:print_value(which, changes.contact.address.permanent) ?>
+<?cs /if ?><?cs if:changes.contact.address.mailing ?>Korespondenční adresa / Mailing address: <?cs call:print_value(which, changes.contact.address.mailing) ?>
+<?cs /if ?><?cs if:changes.contact.address.billing ?>Fakturační adresa / Billing address: <?cs call:print_value(which, changes.contact.address.billing) ?>
+<?cs /if ?><?cs if:changes.contact.address.shipping ?>Dodací adresa / Shipping address: <?cs call:print_value(which, changes.contact.address.shipping) ?>
+<?cs /if ?><?cs if:changes.contact.address.shipping_2 ?>Dodací adresa / Shipping address: <?cs call:print_value(which, changes.contact.address.shipping_2) ?>
+<?cs /if ?><?cs if:changes.contact.address.shipping_3 ?>Dodací adresa / Shipping address: <?cs call:print_value(which, changes.contact.address.shipping_3) ?>
 <?cs /if ?><?cs if:changes.contact.telephone ?>Telefon / Telephone: <?cs call:print_value(which, changes.contact.telephone) ?>
 <?cs /if ?><?cs if:changes.contact.fax ?>Fax / Fax: <?cs call:print_value(which, changes.contact.fax) ?>
 <?cs /if ?><?cs if:changes.contact.email ?>E-mail / Email: <?cs call:print_value(which, changes.contact.email) ?>
