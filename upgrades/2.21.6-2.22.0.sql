@@ -1,8 +1,71 @@
 ---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.22.0' WHERE id = 1;
+
+
+--- Ticket #13341
+--- remove trigger AFTER INSERT, preserve trigger AFTER UPDATE
+DROP TRIGGER "trigger_lock_public_request"
+  ON public_request;
+
+CREATE TRIGGER "trigger_lock_public_request"
+  AFTER UPDATE ON public_request
+  FOR EACH ROW EXECUTE PROCEDURE lock_public_request();
+
+
+--- Ticket #13440
+--- Helps to write query using conditional index like type = 1
+CREATE FUNCTION get_object_type_id(TEXT)
+RETURNS integer AS
+'SELECT id FROM enum_object_type WHERE name = $1'
+LANGUAGE SQL IMMUTABLE RETURNS NULL ON NULL INPUT;
+
+--- Add public requests used in MojeID function update_transfer_contact_prepare
+INSERT INTO
+    enum_public_request_type (id, name, description)
+  VALUES
+    (20, 'mojeid_prevalidated_unidentified_contact_transfer', 'MojeID pre-validated contact without identification transfer'),
+    (21, 'mojeid_prevalidated_contact_transfer', 'MojeID pre-validated contact transfer');
+
+--- parameter 15 can disable asynchronous generation of SMS messages.
+--- possible values for disabling are 'disabled', 'disable', 'false', 'f' or '0'
+--- other value or missing parameter leads to enable this option
+INSERT INTO enum_parameters (id, name, val)
+VALUES (15, 'mojeid_async_sms_generation', 'enabled');
+--- parameter 16 can disable asynchronous generation of letters.
+--- possible values for disabling are 'disabled', 'disable', 'false', 'f' or '0'
+--- other value or missing parameter leads to enable this option
+INSERT INTO enum_parameters (id, name, val)
+VALUES (16, 'mojeid_async_letter_generation', 'enabled');
+--- parameter 17 can disable asynchronous generation of e-mails.
+--- possible values for disabling are 'disabled', 'disable', 'false', 'f' or '0'
+--- other value or missing parameter leads to enable this option
+INSERT INTO enum_parameters (id, name, val) 
+VALUES (17, 'mojeid_async_email_generation', 'enabled');
+
+--- used for mojeid asynchronous generation of messages
+CREATE INDEX public_request_status_create_time_idx ON public_request(status, create_time);
+
+
+---
+--- Async object notification
+---
+CREATE TYPE notified_event AS ENUM (
+    'created', 'updated', 'transferred', 'deleted', 'renewed'
+);
+
+CREATE TABLE notification_queue (
+    change                  notified_event NOT NULL,
+    done_by_registrar       integer NOT NULL references registrar(id),
+    historyid_post_change   integer NOT NULL references history(id),
+    svtrid                  text NOT NULL
+);
+
+
+---
 --- Ticket #14340 - change to the template of notification_update email
 ---
-
-
 UPDATE mail_templates SET template =
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs elif:lang == "ensmall" ?><?cs if:type == #3 ?>domain<?cs elif:type == #1 ?>contact<?cs elif:type == #2 ?>nsset<?cs elif:type == #4 ?>keyset<?cs /if ?><?cs /if ?><?cs /def ?>
 
