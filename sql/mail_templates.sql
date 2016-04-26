@@ -518,7 +518,6 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 <?cs /if ?><?cs if:changes.domain.val_ex_date ?>Validováno do / Validation expiration date: <?cs call:print_value(which, changes.domain.val_ex_date) ?>
 <?cs /if ?><?cs if:changes.domain.publish ?>Přidat do ENUM tel.sezn. / Include in ENUM dict: <?cs call:print_value_bool(which, changes.domain.publish, "ano / yes", "ne / no") ?>
 <?cs /if ?><?cs elif:type == #4 ?><?cs if:changes.keyset.tech_c ?>Technické kontakty / Technical contacts: <?cs call:print_value(which, changes.keyset.tech_c) ?>
-<?cs /if ?><?cs if:changes.keyset.ds ?><?cs call:print_value_list(which, changes.keyset.ds, "záznam DS / DS record") ?>
 <?cs /if ?><?cs if:changes.keyset.dnskey ?><?cs call:print_value_list(which, changes.keyset.dnskey, "klíče DNS / DNS keys") ?>
 <?cs /if ?><?cs /if ?><?cs /def ?>
 =====================================================================
