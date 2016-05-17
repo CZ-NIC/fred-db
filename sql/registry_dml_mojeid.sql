@@ -38,6 +38,8 @@ e-mail:      <?cs var:email ?>
 
 S pozdravem
 tým mojeID
+
+Pokud jste o aktivaci tohoto účtu mojeID nežádali, prosíme, tento e-mail ignorujte.
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (21, 21);
 
