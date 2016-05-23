@@ -438,36 +438,15 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (10, 'plain', 1,
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs elif:lang == "ensmall" ?><?cs if:type == #3 ?>domain<?cs elif:type == #1 ?>contact<?cs elif:type == #2 ?>nsset<?cs elif:type == #4 ?>keyset<?cs /if ?><?cs /if ?><?cs /def ?>
 
+<?cs def:print_value(varname) ?><?cs set:lvarname = varname ?><?cs alt:lvarname ?>hodnota nenastavena / value not set<?cs /alt ?>  <?cs /def ?>
 
-<?cs def:print_value(varname) ?>
-    <?cs set:lvarname = varname.new ?>
-    <?cs alt:lvarname ?>hodnota nenastavena / value not set<?cs /alt ?>
-<?cs /def ?>
+<?cs def:print_value_bool(varname, if_true, if_false) ?><?cs set:lvarname = varname ?><?cs if:lvarname == "1" ?><?cs var:if_true ?><?cs elif:lvarname == "0" ?><?cs var:if_false ?><?cs /if ?><?cs /def ?>
 
-<?cs def:print_value_bool(varname, if_true, if_false) ?>
-    <?cs set:lvarname = varname.new ?>
-    <?cs if:lvarname == "1" ?>
-        <?cs var:if_true ?>
-    <?cs elif:lvarname == "0" ?>
-        <?cs var:if_false ?>
-    <?cs /if ?>
-<?cs /def ?>
-
-<?cs def:print_value_list(varname, itemname) ?>
-    <?cs set:count = #1 ?>
-    <?cs each:item = varname ?>
-    <?cs var:itemname ?>
-     <?cs var:count ?>
-    : <?cs call:print_value(item) ?>
-    <?cs set:count = count + #1 ?>
-    <?cs /each ?>
-<?cs /def ?>
-
+<?cs def:print_value_list(varname, itemname) ?><?cs set:count = #1 ?><?cs each:item = varname ?><?cs var:itemname ?><?cs var:count ?>:<?cs call:print_value(item) ?><?cs set:count = count + #1 ?> <?cs /each ?> <?cs /def ?> 
 
 <?cs def:value_list() ?>
-           <?cs if:fresh.object.authinfo ?>Heslo / Authinfo: důvěrný údaj / private value
-<?cs /if ?><?cs if:type == #1 ?>
-           <?cs if:fresh.contact.name ?>Jméno / Name: <?cs call:print_value(fresh.contact.name) ?>
+<?cs if:fresh.object.authinfo ?>Heslo / Authinfo: důvěrný údaj / private value
+<?cs /if ?><?cs if:type == #1 ?><?cs if:fresh.contact.name ?>Jméno / Name: <?cs call:print_value(fresh.contact.name) ?>
 <?cs /if ?><?cs if:fresh.contact.org ?>Organizace / Organization: <?cs call:print_value(fresh.contact.org) ?>
 <?cs /if ?><?cs if:fresh.contact.address.permanent ?>Trvalá Adresa / Permanent Address: <?cs call:print_value(fresh.contact.address.permanent) ?>
 <?cs /if ?><?cs if:fresh.contact.address.mailing ?>Korespondenční adresa / Mailing address: <?cs call:print_value(fresh.contact.address.mailing) ?>
@@ -535,8 +514,7 @@ done by persons who are not authorized anymore.<?cs /if ?>
 Detaily <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
 Details of <?cs call:typesubst("ensmall") ?> can be seen at <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
 <?cs else ?>
-Detaily <?cs call:typesubst("cs") ?> jsou:
-Details of the <?cs call:typesubst("ensmall") ?> are:
+Detaily <?cs call:typesubst("cs") ?> jsou: / Details of the <?cs call:typesubst("ensmall") ?> are:
 <?cs call:value_list() ?>
 <?cs /if ?>
 
