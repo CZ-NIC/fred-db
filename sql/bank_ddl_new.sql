@@ -28,7 +28,7 @@ CREATE TABLE bank_payment
     statement_id int CONSTRAINT bank_payment_statement_id_fkey REFERENCES bank_statement default null, -- link into table heads of bank statements
     account_id int CONSTRAINT bank_payment_account_id_fkey REFERENCES bank_account default null, -- link into table of accounts
     account_number text NOT NULL , -- contra-account number from which came or was sent a payment
-    bank_code varchar(4) NOT NULL,   -- bank code
+    bank_code varchar(35) NOT NULL,   -- bank code
     code int, -- account code 1 debet item 2 credit item 4  cancel debet 5 cancel credit 
     type int NOT NULL default 1, -- transfer type
     status int, -- payment status
