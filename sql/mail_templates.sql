@@ -444,9 +444,9 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 
 <?cs def:print_value_list(varname, itemname) ?><?cs set:count = #1 ?><?cs each:item = varname ?><?cs var:itemname ?><?cs var:count ?>:<?cs call:print_value(item) ?><?cs set:count = count + #1 ?> <?cs /each ?> <?cs /def ?> 
 
-<?cs def:value_list() ?>
+<?cs def:contact_value_list() ?>
 <?cs if:fresh.object.authinfo ?>Heslo / Authinfo: důvěrný údaj / private value
-<?cs /if ?><?cs if:type == #1 ?><?cs if:fresh.contact.name ?>Jméno / Name: <?cs call:print_value(fresh.contact.name) ?>
+<?cs /if ?><?cs if:fresh.contact.name ?>Jméno / Name: <?cs call:print_value(fresh.contact.name) ?>
 <?cs /if ?><?cs if:fresh.contact.org ?>Organizace / Organization: <?cs call:print_value(fresh.contact.org) ?>
 <?cs /if ?><?cs if:fresh.contact.address.permanent ?>Trvalá Adresa / Permanent Address: <?cs call:print_value(fresh.contact.address.permanent) ?>
 <?cs /if ?><?cs if:fresh.contact.address.mailing ?>Korespondenční adresa / Mailing address: <?cs call:print_value(fresh.contact.address.mailing) ?>
@@ -471,20 +471,7 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 <?cs /if ?><?cs if:fresh.contact.disclose.vat ?>  DIČ / VAT number: <?cs call:print_value_bool(fresh.contact.disclose.vat, "veřejné / public", "skryté / hidden") ?>
 <?cs /if ?><?cs if:fresh.contact.disclose.telephone ?>  Telefon / Telephone: <?cs call:print_value_bool(fresh.contact.disclose.telephone, "veřejný / public", "skrytý / hidden") ?>
 <?cs /if ?><?cs if:fresh.contact.disclose.fax ?>  Fax / Fax: <?cs call:print_value_bool(fresh.contact.disclose.fax, "veřejný / public", "skrytý / hidden") ?>
-<?cs /if ?><?cs /if ?><?cs elif:type == #2 ?><?cs if:fresh.nsset.check_level ?>Úroveň tech. kontrol / Check level: <?cs call:print_value(fresh.nsset.check_level) ?>
-<?cs /if ?><?cs if:fresh.nsset.admin_c ?>Technické kontakty / Technical contacts: <?cs call:print_value(fresh.nsset.admin_c) ?>
-<?cs /if ?><?cs if:subcount(fresh.nsset.dns) > #0 ?><?cs call:print_value_list(fresh.nsset.dns, "Jmenný server / Name server") ?>
-<?cs /if ?><?cs elif:type == #3 ?><?cs if:fresh.domain.registrant ?>Držitel / Holder: <?cs call:print_value(fresh.domain.registrant) ?>
-<?cs /if ?><?cs if:fresh.domain.nsset ?>Sada jmenných serverů / Name server set: <?cs call:print_value(fresh.domain.nsset) ?>
-<?cs /if ?><?cs if:fresh.domain.keyset ?>Sada klíčů / Key set: <?cs call:print_value(fresh.domain.keyset) ?>
-<?cs /if ?><?cs if:fresh.domain.admin_c ?>Administrativní kontakty / Administrative contacts: <?cs call:print_value(fresh.domain.admin_c) ?>
-<?cs /if ?><?cs if:fresh.domain.temp_c ?>Dočasné kontakty / Temporary contacts: <?cs call:print_value(fresh.domain.temp_c) ?>
-<?cs /if ?><?cs if:fresh.domain.val_ex_date ?>Validováno do / Validation expiration date: <?cs call:print_value(fresh.domain.val_ex_date) ?>
-<?cs /if ?><?cs if:fresh.domain.publish ?>Přidat do ENUM tel.sezn. / Include in ENUM dict: <?cs call:print_value_bool(fresh.domain.publish, "ano / yes", "ne / no") ?>
-<?cs /if ?><?cs elif:type == #4 ?><?cs if:fresh.keyset.admin_c ?>Technické kontakty / Technical contacts: <?cs call:print_value(fresh.keyset.admin_c) ?>
-<?cs /if ?><?cs if:subcount(fresh.keyset.ds) > #0 ?><?cs call:print_value_list(fresh.keyset.ds, "záznam DS / DS record") ?>
-<?cs /if ?><?cs if:subcount(fresh.keyset.dnskey) > #0 ?><?cs call:print_value_list(fresh.keyset.dnskey, "klíče DNS / DNS keys") ?>
-<?cs /if ?><?cs /if ?><?cs /def ?>
+<?cs /if ?><?cs /def ?>
 
 
 ======================================================================
@@ -515,7 +502,7 @@ Detaily <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>?q
 Details of <?cs call:typesubst("ensmall") ?> can be seen at <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
 <?cs else ?>
 Detaily <?cs call:typesubst("cs") ?> jsou: / Details of the <?cs call:typesubst("ensmall") ?> are:
-<?cs call:value_list() ?>
+<?cs call:contact_value_list() ?>
 <?cs /if ?>
 
 S pozdravem / Yours sincerely
