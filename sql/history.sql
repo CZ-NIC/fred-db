@@ -28,20 +28,20 @@ CREATE TABLE Contact_History (
         Telephone varchar(64),
         Fax varchar(64),
         Email varchar(1024),
-        DiscloseName boolean NOT NULL DEFAULT True,
-        DiscloseOrganization boolean NOT NULL DEFAULT True,
-        DiscloseAddress boolean NOT NULL DEFAULT True,
-        DiscloseTelephone boolean NOT NULL DEFAULT False,
-        DiscloseFax boolean NOT NULL DEFAULT False,
-        DiscloseEmail boolean NOT NULL DEFAULT False,
+        DiscloseName boolean NOT NULL,
+        DiscloseOrganization boolean NOT NULL,
+        DiscloseAddress boolean NOT NULL,
+        DiscloseTelephone boolean NOT NULL,
+        DiscloseFax boolean NOT NULL,
+        DiscloseEmail boolean NOT NULL,
         NotifyEmail varchar(1024),
         VAT varchar(32),
         SSN varchar(64),
         SSNtype integer CONSTRAINT contact_history_ssntype_fkey REFERENCES enum_ssntype,
-        DiscloseVAT boolean NOT NULL DEFAULT False,
-        DiscloseIdent boolean NOT NULL DEFAULT False,
-        DiscloseNotifyEmail boolean NOT NULL DEFAULT False,
-        warning_letter boolean DEFAULT NULL
+        DiscloseVAT boolean NOT NULL,
+        DiscloseIdent boolean NOT NULL,
+        DiscloseNotifyEmail boolean NOT NULL,
+        warning_letter boolean
 );
 
 comment on table Contact_History is
@@ -93,7 +93,7 @@ CREATE TABLE domain_contact_map_history  (
         historyID INTEGER CONSTRAINT domain_contact_map_history_historyid_fkey REFERENCES History,
         DomainID INTEGER CONSTRAINT domain_contact_map_history_domainid_fkey REFERENCES object_registry (id),
         ContactID INTEGER CONSTRAINT domain_contact_map_history_contactid_fkey REFERENCES object_registry (id),
-        Role INTEGER NOT NULL DEFAULT 1,
+        Role INTEGER NOT NULL,
 -- TODO         ContactHistoryID INTEGER REFERENCES  History(id) --  Contact in state in which was by the change  
        CONSTRAINT domain_contact_map_history_pkey PRIMARY KEY(historyID,DomainID,ContactID)
         );
@@ -107,7 +107,7 @@ creation - all contacts links which are linked to changed domain are copied here
 CREATE TABLE NSSet_history  (
         historyID INTEGER CONSTRAINT nsset_history_pkey PRIMARY KEY CONSTRAINT nsset_history_historyid_fkey REFERENCES History, -- only one nsset 
         ID INTEGER CONSTRAINT nsset_history_id_fkey REFERENCES object_registry (id),
-        checklevel smallint default 0 --write up check level
+        checklevel smallint --write up check level
         );
 CREATE INDEX nsset_history_historyid_idx ON NSSet_History (historyID);
 
@@ -161,6 +161,6 @@ CREATE TABLE ENUMVal_history (
         historyID INTEGER CONSTRAINT enumval_history_pkey PRIMARY KEY CONSTRAINT enumval_history_historyid_fkey REFERENCES History, -- only one nsset
         DomainID INTEGER CONSTRAINT enumval_history_domainid_fkey REFERENCES object_registry (id),
         ExDate date NOT NULL,
-        publish BOOLEAN NOT NULL DEFAULT false
+        publish BOOLEAN NOT NULL
         );
 
