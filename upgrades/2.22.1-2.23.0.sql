@@ -109,3 +109,35 @@ ALTER TABLE contact
     ALTER disclosename SET DEFAULT true,
     ALTER discloseorganization SET DEFAULT true,
     ALTER discloseaddress SET DEFAULT true;
+
+---
+--- Ticket #15982 - data fix
+---
+SELECT c.id
+INTO TEMPORARY contacts_to_repair
+FROM object_registry obr
+JOIN contact_history c ON c.historyid=obr.crhistoryid
+WHERE EXISTS(SELECT * FROM object_state
+             WHERE object_id=c.id AND
+                   state_id=(SELECT id FROM enum_object_states
+                             WHERE name='mojeidContact') AND
+                   ohid_from=c.historyid) AND
+      NOT c.disclosename AND
+      NOT c.discloseorganization AND
+      c.discloseaddress AND
+      NOT c.disclosetelephone AND
+      NOT c.disclosefax AND
+      NOT c.discloseemail AND
+      NOT c.disclosevat AND
+      NOT c.discloseident AND
+      NOT c.disclosenotifyemail;
+
+UPDATE contact_history
+SET disclosename=true,discloseorganization=true
+WHERE id IN (SELECT id FROM contacts_to_repair);
+
+UPDATE contact
+SET disclosename=true,discloseorganization=true
+WHERE id IN (SELECT id FROM contacts_to_repair);
+
+DROP TABLE contacts_to_repair;
