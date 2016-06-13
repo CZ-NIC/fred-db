@@ -1,4 +1,10 @@
 ---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.23.0' WHERE id = 1;
+
+
+---
 --- Ticket #15834 - change link of created contact to full description
 ---
 UPDATE mail_templates SET template =
@@ -9,7 +15,7 @@ UPDATE mail_templates SET template =
 
 <?cs def:print_value_bool(varname, if_true, if_false) ?><?cs set:lvarname = varname ?><?cs if:lvarname == "1" ?><?cs var:if_true ?><?cs elif:lvarname == "0" ?><?cs var:if_false ?><?cs /if ?><?cs /def ?>
 
-<?cs def:print_value_list(varname, itemname) ?><?cs set:count = #1 ?><?cs each:item = varname ?><?cs var:itemname ?><?cs var:count ?>:<?cs call:print_value(item) ?><?cs set:count = count + #1 ?> <?cs /each ?> <?cs /def ?> 
+<?cs def:print_value_list(varname, itemname) ?><?cs set:count = #1 ?><?cs each:item = varname ?><?cs var:itemname ?><?cs var:count ?>:<?cs call:print_value(item) ?><?cs set:count = count + #1 ?> <?cs /each ?> <?cs /def ?>
 
 <?cs def:contact_value_list() ?>
 <?cs if:fresh.object.authinfo ?>Heslo / Authinfo: důvěrný údaj / private value
@@ -76,3 +82,30 @@ S pozdravem / Yours sincerely
 podpora <?cs var:defaults.company_cs ?> / Support of <?cs var:defaults.company_en ?>
 '
 WHERE id = 10;
+
+
+---
+--- Ticket #16031
+---
+ALTER TABLE contact_history ALTER COLUMN disclosename DROP DEFAULT;
+ALTER TABLE contact_history ALTER COLUMN discloseorganization DROP DEFAULT;
+ALTER TABLE contact_history ALTER COLUMN discloseaddress DROP DEFAULT;
+ALTER TABLE contact_history ALTER COLUMN disclosetelephone DROP DEFAULT;
+ALTER TABLE contact_history ALTER COLUMN disclosefax DROP DEFAULT;
+ALTER TABLE contact_history ALTER COLUMN discloseemail DROP DEFAULT;
+ALTER TABLE contact_history ALTER COLUMN disclosevat DROP DEFAULT;
+ALTER TABLE contact_history ALTER COLUMN discloseident DROP DEFAULT;
+ALTER TABLE contact_history ALTER COLUMN disclosenotifyemail DROP DEFAULT;
+ALTER TABLE contact_history ALTER COLUMN warning_letter DROP DEFAULT;
+ALTER TABLE domain_contact_map_history ALTER COLUMN role DROP DEFAULT;
+ALTER TABLE nsset_history ALTER COLUMN checklevel DROP DEFAULT;
+ALTER TABLE enumval_history ALTER COLUMN publish DROP DEFAULT;
+
+
+---
+--- Ticket #15982 - change contacts default disclose flags
+---
+ALTER TABLE contact
+    ALTER disclosename SET DEFAULT true,
+    ALTER discloseorganization SET DEFAULT true,
+    ALTER discloseaddress SET DEFAULT true;
