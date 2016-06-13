@@ -1,3 +1,11 @@
+2016-06-13 (2.23.0)
+
+    * fix - remove defaults from history tables
+
+    * fix - correct defaults for contact disclose[name|organization|address]
+
+    * contact create notification e-mail template (with full contact data)
+
 2016-05-30 (2.22.1)
 
     * fix length of bank_payment.bank_code column
