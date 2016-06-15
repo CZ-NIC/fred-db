@@ -116,12 +116,8 @@ ALTER TABLE contact
 SELECT c.id
 INTO TEMPORARY contacts_to_repair
 FROM object_registry obr
-JOIN contact_history c ON c.historyid=obr.crhistoryid
-WHERE EXISTS(SELECT * FROM object_state
-             WHERE object_id=c.id AND
-                   state_id=(SELECT id FROM enum_object_states
-                             WHERE name='mojeidContact') AND
-                   ohid_from=c.historyid) AND
+JOIN contact_history c ON c.historyid=obr.crhistoryid AND c.id=obr.id
+WHERE obr.crid=(SELECT id FROM registrar WHERE handle='REG-MOJEID') AND
       NOT c.disclosename AND
       NOT c.discloseorganization AND
       c.discloseaddress AND
