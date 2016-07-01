@@ -65,6 +65,8 @@ INSERT INTO enum_object_states
   VALUES (19,'deleteWarning','{3}','f','f', NULL);
 INSERT INTO enum_object_states
   VALUES (20,'outzoneUnguarded','{3}','f','f', NULL);
+INSERT INTO enum_object_states
+  VALUES (28,'outzoneUnguardedWarning','{3}','f','f', NULL);
 
 
 -- update for keyset
@@ -289,7 +291,7 @@ $$ IMMUTABLE LANGUAGE SQL;
 
 -- view for actual domain states
 -- ================= DOMAIN ========================
--- DROP VIEW domain_states
+-- DROP VIEW domain_states;
 CREATE VIEW domain_states AS
 SELECT
   d.id AS object_id,
@@ -330,28 +332,33 @@ SELECT
   CASE WHEN date_time_test(d.exdate::date,ep_ex_dns.val,ep_tm2.val,ep_tz.val)
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
             AND NOT (6 = ANY(COALESCE(osr.states,'{}'))) -- !inzoneManual
-       THEN ARRAY[20] ELSE '{}' END    -- outzoneUnguarded
+       THEN ARRAY[20] ELSE '{}' END || -- outzoneUnguarded
+  CASE WHEN date_time_test(d.exdate::date,ep_ozu_warn.val,'0',ep_tz.val)
+            AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
+            AND NOT (6 = ANY(COALESCE(osr.states,'{}'))) -- !inzoneManual
+       THEN ARRAY[28] ELSE '{}' END    -- outzoneUnguardedWarning
   AS states
 FROM
   object_registry o,
   domain d
   LEFT JOIN enumval e ON (d.id=e.domainid)
   LEFT JOIN object_state_request_now osr ON (d.id=osr.object_id)
-  JOIN enum_parameters ep_ex_not ON (ep_ex_not.id=3)
-  JOIN enum_parameters ep_ex_dns ON (ep_ex_dns.id=4)
-  JOIN enum_parameters ep_ex_let ON (ep_ex_let.id=5)
-  JOIN enum_parameters ep_ex_reg ON (ep_ex_reg.id=6)
-  JOIN enum_parameters ep_val_not1 ON (ep_val_not1.id=7)
-  JOIN enum_parameters ep_val_not2 ON (ep_val_not2.id=8)
-  JOIN enum_parameters ep_tm ON (ep_tm.id=9)
-  JOIN enum_parameters ep_tz ON (ep_tz.id=10)
-  JOIN enum_parameters ep_tm2 ON (ep_tm2.id=14)
+  JOIN enum_parameters ep_ex_not ON (ep_ex_not.id=3) -- expiration_notify_period
+  JOIN enum_parameters ep_ex_dns ON (ep_ex_dns.id=4) -- expiration_dns_protection_period
+  JOIN enum_parameters ep_ex_let ON (ep_ex_let.id=5) -- expiration_letter_warning_period
+  JOIN enum_parameters ep_ex_reg ON (ep_ex_reg.id=6) -- expiration_registration_protection_period
+  JOIN enum_parameters ep_val_not1 ON (ep_val_not1.id=7) -- validation_notify1_period
+  JOIN enum_parameters ep_val_not2 ON (ep_val_not2.id=8) -- validation_notify2_period
+  JOIN enum_parameters ep_tm ON (ep_tm.id=9)  -- regular_day_procedure_period
+  JOIN enum_parameters ep_tz ON (ep_tz.id=10) -- regular_day_procedure_zone
+  JOIN enum_parameters ep_tm2 ON (ep_tm2.id=14) -- regular_day_outzone_procedure_period
+  JOIN enum_parameters ep_ozu_warn ON (ep_ozu_warn.id=18) -- outzone_unguarded_email_warning_period
 WHERE d.id=o.id;
 
 -- view for actual nsset states
 -- for NOW they are not deleted
 -- ================= NSSET ========================
--- DROP VIEW nsset_states
+-- DROP VIEW nsset_states;
 CREATE VIEW nsset_states AS
 SELECT
   o.id AS object_id,
@@ -386,7 +393,7 @@ FROM
   LEFT JOIN object_state_request_now osr ON (o.id=osr.object_id);
 
 -- ================= KEYSET ========================
--- DROP VIEW keyset_states
+-- DROP VIEW keyset_states;
 CREATE VIEW keyset_states AS
 SELECT
   o.id AS object_id,
@@ -422,7 +429,7 @@ FROM
 
 -- view for actual contact states
 -- ================= CONTACT ========================
--- DROP VIEW contact_states
+-- DROP VIEW contact_states;
 CREATE VIEW contact_states AS
 SELECT
   o.id AS object_id,
