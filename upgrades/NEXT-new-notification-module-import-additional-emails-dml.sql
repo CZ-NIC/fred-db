@@ -11,3 +11,8 @@ VALUES (18, 'outzone_unguarded_email_warning_period', '25');
 
 INSERT INTO enum_object_states
   VALUES (28,'outzoneUnguardedWarning','{3}','f','f', NULL);
+
+INSERT INTO enum_object_states_desc
+  VALUES (28,'CS','Doména bude brzy vyřazena ze zóny.');
+INSERT INTO enum_object_states_desc
+  VALUES (28,'EN','The domain is to be out of zone soon.');
