@@ -17,7 +17,7 @@ comment on column notify_statechange_map.obj_type is 'type of object to be notif
 comment on column notify_statechange_map.mail_type_id is 'type of mail to be send';
 comment on column notify_statechange_map.emails is 'type of contact group to be notified by email (1..admins, 2..techs)';
 
--- state: expiration, obj: domain, 
+-- state: expired, obj: domain, 
 -- template: expiration_notify, emails: admins
 INSERT INTO notify_statechange_map VALUES ( 1,  9, 3,  3, 1);
 -- state: outzoneUnguarded, obj: domain, 
@@ -53,6 +53,9 @@ INSERT INTO notify_statechange_map VALUES (11, 17, 4, 14, 1);
 -- state: outzoneUnguarded, obj: domain, 
 -- template: expiration_dns_owner, emails: generic emails (like kontakt@... postmaster@... info@...)
 INSERT INTO notify_statechange_map VALUES (12, 20, 3, 4, 3);
+-- state: outzoneUnguardedWarning, obj: domain, 
+-- template: expiration_dns_owner FIXME, emails: additional domain notification emails
+INSERT INTO notify_statechange_map VALUES (13, 28, 3, 4, 4);
 
 -- store information about successfull notification
 CREATE TABLE notify_statechange (
@@ -69,6 +72,25 @@ comment on table notify_statechange is 'store information about successfull noti
 comment on column notify_statechange.state_id is 'which statechnage triggered notification';
 comment on column notify_statechange.type is 'what notification was done';
 comment on column notify_statechange.mail_id is 'email with result of notification (null if contact have no email)';
+
+-- additional domain notification emails
+CREATE TABLE notify_outzone_unguarded_domain_additional_email (
+  crdate TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
+  state_id BIGINT REFERENCES object_state (id),
+  domain_id INTEGER NOT NULL REFERENCES object_registry (id),
+  email varchar(1024) NOT NULL,
+  CONSTRAINT notify_outzone_unguarded_domain_additional_email_unique_key UNIQUE (state_id, domain_id, email)
+);
+
+CREATE UNIQUE INDEX ON notify_outzone_unguarded_domain_additional_email (domain_id, email) WHERE state_id IS NULL;
+
+comment on table notify_outzone_unguarded_domain_additional_email is
+'Additional contact emails used for notification of outzoneUnguardedWarning state';
+
+comment on column notify_outzone_unguarded_domain_additional_email.crdate is 'date and time of insertion in table';
+comment on column notify_outzone_unguarded_domain_additional_email.state_id is 'id of the state notified by email, not available in time of record insertion';
+comment on column notify_outzone_unguarded_domain_additional_email.domain_id is 'id of the domain';
+comment on column notify_outzone_unguarded_domain_additional_email.email is 'email address';
 
 --message_archive 
 
@@ -199,4 +221,3 @@ CREATE TABLE notify_request
     CONSTRAINT notify_request_message_id_fkey REFERENCES mail_archive(id),
     CONSTRAINT notify_request_pkey PRIMARY KEY (request_id, message_id)
 );
-

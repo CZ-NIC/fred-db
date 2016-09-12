@@ -86,8 +86,10 @@ VALUES (16, 'mojeid_async_letter_generation', 'enabled');
 -- other value or missing parameter leads to enable this option
 INSERT INTO enum_parameters (id, name, val) 
 VALUES (17, 'mojeid_async_email_generation', 'enabled');
-
-
+-- parameter 18 is used to generate email with warning
+-- value is number of days relative to domain.exdate
+INSERT INTO enum_parameters (id, name, val) 
+VALUES (18, 'outzone_unguarded_email_warning_period', '25');
 
 comment on table enum_parameters is
 'Table of system operational parameters.
@@ -99,7 +101,7 @@ Meanings of parameters:
     value is number of days relative to date domain.exdate
 4 - expiration dns protection period - same as parameter 3
 5 - expiration letter warning period - used to change state of domain to deleteWarning and generate letter
-    witch warning
+    with warning
 6 - expiration registration protection period - used to change state of domain to deleteCandidate and
     unregister domain from system
 7 - validation notify 1 period - used to change state of domain to validationWarning1 and send poll
