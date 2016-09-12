@@ -727,6 +727,7 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
     _proc_tm VARCHAR;
     _proc_tz VARCHAR;
     _proc_tm2 VARCHAR;
+    _ou_warn VARCHAR;
   BEGIN
     _nsset_old := NULL;
     _registrant_old := NULL;
@@ -741,6 +742,7 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
     SELECT val INTO _proc_tm FROM enum_parameters WHERE id=9;
     SELECT val INTO _proc_tz FROM enum_parameters WHERE id=10;
     SELECT val INTO _proc_tm2 FROM enum_parameters WHERE id=14;
+    SELECT val INTO _ou_warn FROM enum_parameters WHERE id=18;
     -- is it INSERT operation
     IF TG_OP = 'INSERT' THEN
       _registrant_new := NEW.registrant;
@@ -798,6 +800,11 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
 --          date_time_test(NEW.exdate::date,_ex_reg,_proc_tm,_proc_tz), 
 --          17, NEW.id
 --        );
+        -- state: outzoneUnguardedWarning
+        EXECUTE status_update_state(
+          date_test(NEW.exdate::date,_ou_warn),
+          28, NEW.id
+        );
       END IF; -- change in exdate
       IF COALESCE(NEW.nsset,0) <> COALESCE(OLD.nsset,0) THEN
         -- state: nsset missing
