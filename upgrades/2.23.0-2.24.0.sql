@@ -1,25 +1,28 @@
--- Ticket #16107 - new-notification-module-import-additional-emails
-
--- additional domain notification emails
+---
+--- Ticket #16107 - custom e-mail table for outzone warning e-mail
+---
 CREATE TABLE notify_outzone_unguarded_domain_additional_email (
   id SERIAL CONSTRAINT notify_outzone_unguarded_domain_additional_email_pkey PRIMARY KEY,
   crdate TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-  state_id BIGINT REFERENCES object_state (id),
-  domain_id INTEGER NOT NULL REFERENCES object_registry (id),
-  email varchar(1024) NOT NULL,
+  state_id BIGINT REFERENCES object_state(id),
+  domain_id INTEGER NOT NULL REFERENCES object_registry(id),
+  email VARCHAR(1024) NOT NULL,
   CONSTRAINT notify_outzone_unguarded_domain_additional_email_unique_key UNIQUE (state_id, domain_id, email)
 );
 
-comment on table notify_outzone_unguarded_domain_additional_email is
-'Additional contact emails used for notification of outzoneUnguardedWarning state';
+COMMENT ON TABLE notify_outzone_unguarded_domain_additional_email
+    IS 'Additional contact emails used for notification of outzoneUnguardedWarning state';
 
-comment on column notify_outzone_unguarded_domain_additional_email.crdate is 'date and time of insertion in table';
-comment on column notify_outzone_unguarded_domain_additional_email.state_id is 'id of the state notified by email, not available in time of record insertion';
-comment on column notify_outzone_unguarded_domain_additional_email.domain_id is 'id of the domain';
-comment on column notify_outzone_unguarded_domain_additional_email.email is 'email address';
+COMMENT ON COLUMN notify_outzone_unguarded_domain_additional_email.crdate
+    IS 'date and time of insertion in table';
+COMMENT ON COLUMN notify_outzone_unguarded_domain_additional_email.state_id
+    IS 'id of the state notified by email, not available in time of record insertion';
+COMMENT ON COLUMN notify_outzone_unguarded_domain_additional_email.domain_id
+    IS 'id of the domain';
+COMMENT ON COLUMN notify_outzone_unguarded_domain_additional_email.email
+    IS 'email address';
 
--- view for actual domain states
--- ================= DOMAIN ========================
+
 DROP VIEW domain_states;
 CREATE VIEW domain_states AS
 SELECT
@@ -84,8 +87,7 @@ FROM
   JOIN enum_parameters ep_ozu_warn ON (ep_ozu_warn.id=18) -- outzone_unguarded_email_warning_period
 WHERE d.id=o.id;
 
--- trigger to update state of domain, fired with every change on
--- on domain table
+
 CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
   DECLARE
     _num INTEGER;
@@ -247,3 +249,25 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
     RETURN NULL;
   END;
 $$ LANGUAGE plpgsql;
+
+
+-- parameter 18 is used to generate email with warning
+-- value is number of days relative to domain.exdate
+INSERT INTO enum_parameters (id, name, val)
+  VALUES (18, 'outzone_unguarded_email_warning_period', '25');
+
+INSERT INTO enum_object_states
+  VALUES (28,'outzoneUnguardedWarning','{3}','f','f', NULL);
+
+INSERT INTO enum_object_states_desc
+  VALUES (28,'CS','Doména bude brzy vyřazena ze zóny.');
+INSERT INTO enum_object_states_desc
+  VALUES (28,'EN','The domain is to be out of zone soon.');
+
+-- state: outzoneUnguardedWarning
+-- object: domain,
+-- template: expiration_dns_owner
+-- emails: additional domain notification emails
+INSERT INTO notify_statechange_map VALUES (13, 28, 3, 4, 4);
+
+
