@@ -1,3 +1,7 @@
+2016-09-13 (2.24.0)
+
+    * new status outzoneUnguardedWarning - custom e-mail notification
+
 2016-06-13 (2.23.0)
 
     * fix - remove defaults from history tables
