@@ -75,6 +75,7 @@ comment on column notify_statechange.mail_id is 'email with result of notificati
 
 -- additional domain notification emails
 CREATE TABLE notify_outzone_unguarded_domain_additional_email (
+  id SERIAL CONSTRAINT notify_outzone_unguarded_domain_additional_email_pkey PRIMARY KEY,
   crdate TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
   state_id BIGINT REFERENCES object_state (id),
   domain_id BIGINT NOT NULL REFERENCES object_registry (id),
