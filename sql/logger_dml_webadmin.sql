@@ -53,7 +53,8 @@ INSERT INTO request_type (service_id, id, name) VALUES
 (4, 1348, 'ContactCheckUpdateTestStatuses'),
 (4, 1349, 'ContactCheckResolve'),
 (4, 1350, 'ContactCheckEnqueue'),
-(4, 1351, 'DomainDelete');
+(4, 1351, 'DomainDelete'),
+(4, 1352, 'ImportOutzoneWarningNotificationEmails');
 
 
 INSERT INTO result_code (service_id, result_code, name) VALUES 
