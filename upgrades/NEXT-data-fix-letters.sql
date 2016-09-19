@@ -10,7 +10,7 @@ WITH warning_letters AS (
           name~'^letter\-[0-9]{4}\-[0-9]{2}\-[0-9]{2}\-[0-9]{8}\.pdf$')
 SELECT la.id AS letter_archive_id,
        TRIM(CASE WHEN cah.id IS NULL THEN COALESCE(ch.country,'') ELSE COALESCE(cah.country,'') END) AS country,
-       TRIM(CASE WHEN cah.id IS NULL THEN COALESCE(ch.organization,'') ELSE COALESCE(cah.company_name,'') END) AS organization,
+       TRIM(COALESCE(ch.organization,'')) AS organization,
        TRIM(COALESCE(ch.name,'')) AS name,
        TRIM(CASE WHEN cah.id IS NULL THEN COALESCE(ch.postalcode,'') ELSE COALESCE(cah.postalcode,'') END) AS postalcode,
        TRIM(CASE WHEN cah.id IS NULL THEN COALESCE(ch.street1,'') ELSE COALESCE(cah.street1,'') END) AS street1,
@@ -19,7 +19,7 @@ SELECT la.id AS letter_archive_id,
        TRIM(CASE WHEN cah.id IS NULL THEN COALESCE(ch.city,'') ELSE COALESCE(cah.city,'') END) AS city,
        TRIM(CASE WHEN cah.id IS NULL THEN COALESCE(ch.stateorprovince,'') ELSE COALESCE(cah.stateorprovince,'') END) AS stateorprovince,
        TRIM(CASE WHEN cah.id IS NULL THEN COALESCE(ch.country,'') ELSE COALESCE(cah.country,'') END || ' ' ||
-            CASE WHEN cah.id IS NULL THEN COALESCE(ch.organization,'') ELSE COALESCE(cah.company_name,'') END || ' ' ||
+            COALESCE(ch.organization,'') || ' ' ||
             COALESCE(ch.name,'') || ' ' ||
             CASE WHEN cah.id IS NULL THEN COALESCE(ch.postalcode,'') ELSE COALESCE(cah.postalcode,'') END || ' ' ||
             CASE WHEN cah.id IS NULL THEN COALESCE(ch.street1,'') ELSE COALESCE(cah.street1,'') END || ' ' ||
@@ -85,7 +85,7 @@ WITH to_delete AS (
     WHERE '2010-09-14'::DATE<=f.crdate::DATE AND
           os.state_id=(SELECT id FROM enum_object_states WHERE name='deleteWarning') AND
           TRIM(CASE WHEN cah.id IS NULL THEN COALESCE(ch.country,'') ELSE COALESCE(cah.country,'') END || ' ' ||
-               CASE WHEN cah.id IS NULL THEN COALESCE(ch.organization,'') ELSE COALESCE(cah.company_name,'') END || ' ' ||
+               COALESCE(ch.organization,'') || ' ' ||
                COALESCE(ch.name,'') || ' ' ||
                CASE WHEN cah.id IS NULL THEN COALESCE(ch.postalcode,'') ELSE COALESCE(cah.postalcode,'') END || ' ' ||
                CASE WHEN cah.id IS NULL THEN COALESCE(ch.street1,'') ELSE COALESCE(cah.street1,'') END || ' ' ||
@@ -111,7 +111,7 @@ WITH file_contact AS (
            ch.id AS contact_id,
            ch.historyid AS contact_hid,
            TRIM(CASE WHEN cah.id IS NULL THEN COALESCE(ch.country,'') ELSE COALESCE(cah.country,'') END || ' ' ||
-                CASE WHEN cah.id IS NULL THEN COALESCE(ch.organization,'') ELSE COALESCE(cah.company_name,'') END || ' ' ||
+                COALESCE(ch.organization,'') || ' ' ||
                 COALESCE(ch.name,'') || ' ' ||
                 CASE WHEN cah.id IS NULL THEN COALESCE(ch.postalcode,'') ELSE COALESCE(cah.postalcode,'') END || ' ' ||
                 CASE WHEN cah.id IS NULL THEN COALESCE(ch.street1,'') ELSE COALESCE(cah.street1,'') END || ' ' ||
@@ -147,7 +147,7 @@ WITH file_contact AS (
                                                                                           valid_to IS NULL))
     WHERE ma.message_type_id=(SELECT id FROM message_type WHERE type='domain_expiration') AND
           TRIM(CASE WHEN cah.id IS NULL THEN COALESCE(ch.country,'') ELSE COALESCE(cah.country,'') END || ' ' ||
-               CASE WHEN cah.id IS NULL THEN COALESCE(ch.organization,'') ELSE COALESCE(cah.company_name,'') END || ' ' ||
+               COALESCE(ch.organization,'') || ' ' ||
                COALESCE(ch.name,'') || ' ' ||
                CASE WHEN cah.id IS NULL THEN COALESCE(ch.postalcode,'') ELSE COALESCE(cah.postalcode,'') END || ' ' ||
                CASE WHEN cah.id IS NULL THEN COALESCE(ch.street1,'') ELSE COALESCE(cah.street1,'') END || ' ' ||
@@ -164,7 +164,7 @@ WHERE message_contact_history_map.id=correct_mchm.id;
 WITH letter_distinction AS
     (SELECT nl.letter_id,
             TRIM(CASE WHEN cah.id IS NULL THEN COALESCE(ch.country,'') ELSE COALESCE(cah.country,'') END || ' ' ||
-                 CASE WHEN cah.id IS NULL THEN COALESCE(ch.organization,'') ELSE COALESCE(cah.company_name,'') END || ' ' ||
+                 COALESCE(ch.organization,'') || ' ' ||
                  COALESCE(ch.name,'') || ' ' ||
                  CASE WHEN cah.id IS NULL THEN COALESCE(ch.postalcode,'') ELSE COALESCE(cah.postalcode,'') END || ' ' ||
                  CASE WHEN cah.id IS NULL THEN COALESCE(ch.street1,'') ELSE COALESCE(cah.street1,'') END || ' ' ||
