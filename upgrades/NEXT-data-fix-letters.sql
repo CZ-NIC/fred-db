@@ -108,34 +108,45 @@ FROM correct_mchm
 WHERE message_contact_history_map.id=correct_mchm.id;
 
 -- ====== select letters after 2010-09-14 with multiple recipients addresses (should be zero) ======
-WITH letter_distinction AS
-    (SELECT nl.letter_id,
-            TRIM(COALESCE(ch.country,'')||' '||
-                 COALESCE(ch.organization,'')||' '||
-                 COALESCE(ch.name,'')||' '||
-                 COALESCE(ch.postalcode,'')||' '||
-                 COALESCE(ch.street1,'')||' '||
-                 COALESCE(ch.street2,'')||' '||
-                 COALESCE(ch.street3,'')) AS distinction,
-            COUNT(*) AS cnt
-     FROM notify_letters nl
-     JOIN letter_archive la ON la.id=nl.letter_id
-     JOIN files f ON f.id=la.file_id
-     JOIN object_state os ON os.id=nl.state_id
-     JOIN domain_history dh ON dh.historyid=os.ohid_from
-     JOIN history h ON h.valid_from<=f.crdate AND (f.crdate<h.valid_to OR h.valid_to IS NULL)
-     JOIN contact_history ch ON ch.id=dh.registrant AND ch.historyid=h.id
-     LEFT JOIN enum_country ec ON UPPER(ec.country)=UPPER(la.postal_address_country)
-     WHERE '2010-09-14'::DATE<=f.crdate::DATE AND f.crdate::DATE<'2014-12-10'::DATE
-     GROUP BY 1,2
-     ORDER BY 1)
-SELECT ld.letter_id,SUM(ld.cnt) AS sum_cnt,COUNT(*) AS cnt
-FROM letter_distinction ld
-GROUP BY 1
-HAVING 1<COUNT(*)
-ORDER BY cnt DESC,1;
+CREATE OR REPLACE FUNCTION check_warning_letters() 
+RETURNS VOID AS $$
+DECLARE
+    my_result RECORD;
+BEGIN
+	WITH letter_distinction AS
+	    (SELECT nl.letter_id,
+	            TRIM(COALESCE(ch.country,'')||' '||
+	                 COALESCE(ch.organization,'')||' '||
+	                 COALESCE(ch.name,'')||' '||
+	                 COALESCE(ch.postalcode,'')||' '||
+	                 COALESCE(ch.street1,'')||' '||
+	                 COALESCE(ch.street2,'')||' '||
+	                 COALESCE(ch.street3,'')) AS distinction,
+	            COUNT(*) AS cnt
+	     FROM notify_letters nl
+	     JOIN letter_archive la ON la.id=nl.letter_id
+	     JOIN files f ON f.id=la.file_id
+	     JOIN object_state os ON os.id=nl.state_id
+	     JOIN domain_history dh ON dh.historyid=os.ohid_from
+	     JOIN history h ON h.valid_from<=f.crdate AND (f.crdate<h.valid_to OR h.valid_to IS NULL)
+	     JOIN contact_history ch ON ch.id=dh.registrant AND ch.historyid=h.id
+	     LEFT JOIN enum_country ec ON UPPER(ec.country)=UPPER(la.postal_address_country)
+	     WHERE '2010-09-14'::DATE<=f.crdate::DATE AND f.crdate::DATE<'2014-12-10'::DATE
+	     GROUP BY 1,2
+	     ORDER BY 1)
+	SELECT ld.letter_id,SUM(ld.cnt) AS sum_cnt,COUNT(*) AS cnt INTO my_result
+	FROM letter_distinction ld
+	GROUP BY 1
+	HAVING 1<COUNT(*);
+	IF FOUND THEN
+	    RAISE EXCEPTION 'No duplicity expected!';
+	END IF;
+END;
+$$ LANGUAGE plpgsql;
+
+SELECT check_warning_letters();
+DROP FUNCTION check_warning_letters(); 
 
 -- ====== transaction done ======
 --ROLLBACK; --failure
 --COMMIT;   --success
-
