@@ -1,5 +1,5 @@
 -- ====== start transaction ======
---BEGIN;
+BEGIN;
 
 -- ====== repair letter_archive table ======
 WITH warning_letter_contact AS (
@@ -149,4 +149,4 @@ DROP FUNCTION check_warning_letters();
 
 -- ====== transaction done ======
 --ROLLBACK; --failure
---COMMIT;   --success
+COMMIT;   --success
