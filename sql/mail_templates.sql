@@ -115,7 +115,7 @@ V této situaci máte následující možnosti:
 1. Kontaktujte prosím svého registrátora a ve spolupráci s ním zajistěte
    prodloužení registrace doménového jména,
 
-2. nebo si v seznamu na našich stránkách (https://www.nic.cz/whois/registrars/list/)
+2. nebo si v seznamu na našich stránkách (<?cs var:defaults.registrarlistpage ?>)
    vyberte jiného určeného registrátora a jeho prostřednictvím zajistěte
    prodloužení registrace doménového jména.
 
@@ -153,7 +153,7 @@ To remedy the existing situation, you can choose one of the following:
 1. Please contact your registrar and make sure that the registration
    of your domain name is duly extended;
 
-2. Or choose another registrar from those listed on our pages (https://www.nic.cz/whois/registrars/list/)
+2. Or choose another registrar from those listed on our pages (<?cs var:defaults.registrarlistpage ?>)
    in order to extend the registration of your domain name;
 
 3. Or do not pay for the extension of the domain registration, the domain
@@ -258,7 +258,7 @@ doménového jména <?cs var:domain ?>. Vzhledem k této skutečnosti
 a na základě Pravidel registrace doménových jmen rušíme registraci
 tohoto doménového jména.
 
-V případě zájmu o opětovnou registraci domény prosím kontaktujte jakéhokoli registrátora ze seznamu na našich stránkách (https://www.nic.cz/whois/registrars/list/).
+V případě zájmu o opětovnou registraci domény prosím kontaktujte jakéhokoli registrátora ze seznamu na našich stránkách (<?cs var:defaults.registrarlistpage ?>).
 
 S pozdravem
 podpora <?cs var:defaults.company_cs ?>
@@ -271,7 +271,7 @@ we would like to inform you that your registrar has not extended the registratio
 of the domain name <?cs var:domain ?>. Due to this fact and based on the Domain Name Registration Rules, we are cancelling the registration of this domain name.
 
 If you are interested in the registration of the domain again, please contact any registrar listed
-on our pages (https://www.nic.cz/whois/registrars/list/).
+on our pages (<?cs var:defaults.registrarlistpage ?>).
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
