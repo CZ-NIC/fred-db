@@ -679,7 +679,7 @@ CREATE OR REPLACE FUNCTION status_update_object_state() RETURNS TRIGGER AS $$
       EXECUTE status_update_state(
         NOT (6 = ANY (_states)) AND -- not serverInzoneManual
             (10 = ANY (_states)), -- unguarded
-        20, NEW.object_id -- => set ouzoneUnguarded
+        20, NEW.object_id -- => set outzoneUnguarded
       );
     END IF;
     RETURN NEW;
