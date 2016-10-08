@@ -679,7 +679,7 @@ CREATE OR REPLACE FUNCTION status_update_object_state() RETURNS TRIGGER AS $$
       EXECUTE status_update_state(
         NOT (6 = ANY (_states)) AND -- not serverInzoneManual
             (10 = ANY (_states)), -- unguarded
-        20, NEW.object_id -- => set ouzoneUnguarded
+        20, NEW.object_id -- => set outzoneUnguarded
       );
     END IF;
     RETURN NEW;
@@ -728,6 +728,7 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
     _proc_tz VARCHAR;
     _proc_tm2 VARCHAR;
     _ou_warn VARCHAR;
+    _states INTEGER[];
   BEGIN
     _nsset_old := NULL;
     _registrant_old := NULL;
@@ -743,6 +744,8 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
     SELECT val INTO _proc_tz FROM enum_parameters WHERE id=10;
     SELECT val INTO _proc_tm2 FROM enum_parameters WHERE id=14;
     SELECT val INTO _ou_warn FROM enum_parameters WHERE id=18;
+    SELECT array_accum(state_id) INTO _states FROM object_state
+      WHERE valid_to IS NULL AND object_id = NEW.id;
     -- is it INSERT operation
     IF TG_OP = 'INSERT' THEN
       _registrant_new := NEW.registrant;
@@ -802,8 +805,9 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
 --        );
         -- state: outzoneUnguardedWarning
         EXECUTE status_update_state(
-          date_test(NEW.exdate::date,_ou_warn),
-          28, NEW.id
+          date_test(NEW.exdate::date,_ou_warn)
+          AND NOT (6 = ANY (_states)), -- not serverInzoneManual
+          28, NEW.id -- => set outzoneUnguardedWarning
         );
       END IF; -- change in exdate
       IF COALESCE(NEW.nsset,0) <> COALESCE(OLD.nsset,0) THEN
