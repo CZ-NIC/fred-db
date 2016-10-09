@@ -1,3 +1,7 @@
+2016-10-09 (2.25.0)
+
+    * configuration for prohibited nsset ip networks
+
 2016-09-13 (2.24.0)
 
     * new status outzoneUnguardedWarning - custom e-mail notification
