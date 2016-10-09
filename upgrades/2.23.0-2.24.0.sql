@@ -1,4 +1,9 @@
 ---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.24.0' WHERE id = 1;
+
+---
 --- Ticket #16107 - custom e-mail table for outzone warning e-mail
 ---
 CREATE TABLE notify_outzone_unguarded_domain_additional_email (
