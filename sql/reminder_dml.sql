@@ -33,7 +33,6 @@ elif:ident_type == "BIRTHDAY"?>Datum narození: <?cs
 /if ?>
 DIČ: <?cs var:dic ?>
 Telefon: <?cs var:telephone ?>
-Fax: <?cs var:fax ?>
 E-mail: <?cs var:email ?>
 Notifikační e-mail: <?cs var:notify_email ?>
 Určený registrátor: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
@@ -94,7 +93,6 @@ elif:ident_type == "BIRTHDAY"?>Birth day: <?cs
 /if ?>
 VAT No.: <?cs var:dic ?>
 Phone: <?cs var:telephone ?>
-Fax: <?cs var:fax ?>
 Email: <?cs var:email ?>
 Notification email: <?cs var:notify_email ?>
 Designated registrar: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
