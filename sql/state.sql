@@ -171,9 +171,9 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (20,'EN','The domain is out of zone after 30 days in expiration state');
 INSERT INTO enum_object_states_desc
-  VALUES (28,'CS','Doména bude brzy vyřazena ze zóny.');
+  VALUES (28,'CS','Doména bude brzy vyřazena ze zóny');
 INSERT INTO enum_object_states_desc
-  VALUES (28,'EN','The domain is to be out of zone soon.');
+  VALUES (28,'EN','The domain is to be out of zone soon');
 
 
 -- main table of object states and their changes
