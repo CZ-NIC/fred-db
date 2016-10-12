@@ -90,6 +90,12 @@ VALUES (17, 'mojeid_async_email_generation', 'enabled');
 -- value is number of days relative to domain.exdate
 INSERT INTO enum_parameters (id, name, val) 
 VALUES (18, 'outzone_unguarded_email_warning_period', '25');
+--opportunity window in days before current ENUM domain validation expiration
+-- for new ENUM domain validation to be appended after current ENUM domain validation
+INSERT INTO enum_parameters (id, name, val)
+VALUES (19, 'enum_validation_continuation_window', '14');
+
+
 
 comment on table enum_parameters is
 'Table of system operational parameters.
