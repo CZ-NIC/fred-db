@@ -88,7 +88,7 @@ doménového jména <?cs var:domain ?>. Vzhledem k této skutečnosti
 a na základě Pravidel registrace doménových jmen rušíme registraci
 tohoto doménového jména.
 
-V případě zájmu o opětovnou registraci domény prosím kontaktujte jakéhokoli registrátora ze seznamu na našich stránkách (<?cs var:defaults.registrarlistpage ?>).
+V případě zájmu o opětovnou registraci domény prosím kontaktujte kteréhokoli registrátora ze seznamu na našich stránkách (<?cs var:defaults.registrarlistpage ?>).
 
 S pozdravem
 podpora <?cs var:defaults.company_cs ?>
