@@ -1,4 +1,9 @@
 ---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.24.1' WHERE id = 1;
+
+---
 --- Ticket #16791 - make registrar list a template
 ---
 INSERT INTO mail_defaults (name, value) VALUES ('registrarlistpage', 'https://www.nic.cz/whois/registrars');
