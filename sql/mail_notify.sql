@@ -34,6 +34,7 @@ INSERT INTO mail_defaults (name, value) VALUES ('authinfopage', 'http://www.nic.
 INSERT INTO mail_defaults (name, value) VALUES ('whoispage', 'http://whois.nic.cz');
 INSERT INTO mail_defaults (name, value) VALUES ('company_cs', 'CZ.NIC, správce domény CZ');
 INSERT INTO mail_defaults (name, value) VALUES ('company_en', 'CZ.NIC, the CZ domain registry');
+INSERT INTO mail_defaults (name, value) VALUES ('registrarlistpage', 'https://www.nic.cz/whois/registrars');
 
 comment on table mail_defaults is 
 'Defaults used in templates which change rarely.
