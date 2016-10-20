@@ -113,6 +113,8 @@ INSERT INTO enum_reason VALUES (60, 'DNSKey does not exist for this keyset', 'DN
 INSERT INTO enum_reason VALUES (61, 'Duplicity DNSKey', 'Duplicitní DNSKey');
 INSERT INTO enum_reason VALUES (62, 'Keyset must have DNSKey or DSRecord', 'Keyset musí mít DNSKey nebo DSRecord');
 INSERT INTO enum_reason VALUES (63, 'Duplicated nameserver hostname', 'Duplicitní jméno jmenného serveru DNS');
+INSERT INTO enum_reason VALUES (64, 'Administrative contact not assigned to this object', 'Administrátorský kontakt není přiřazen k tomuto objektu');
+INSERT INTO enum_reason VALUES (65, 'Temporary contacts are obsolete', 'Dočasné kontakty již nejsou podporovány');
 
 SELECT setval('enum_reason_id_seq', 63);
 
