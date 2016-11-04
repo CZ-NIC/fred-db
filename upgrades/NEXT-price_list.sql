@@ -2,6 +2,7 @@
 --- Ticket #15031 - price_list changes
 ---
 
+ALTER TABLE price_list ALTER COLUMN quantity SET NOT NULL;
 ALTER TABLE price_list ALTER COLUMN enable_postpaid_operation SET NOT NULL;
 
 CREATE OR REPLACE FUNCTION check_price_list()

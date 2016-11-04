@@ -50,7 +50,7 @@ CREATE TABLE price_list
   valid_from timestamp NOT NULL, -- from when is record valid 
   valid_to timestamp default NULL, -- till when is record valid, if it is NULL, it isn't limited
   price numeric(10,2) NOT NULL default 0, -- cost of operation ( for year 12 months )
-  quantity integer default 12, -- if it isn't periodic operation NULL 
+  quantity integer default 12 NOT NULL,
   enable_postpaid_operation boolean DEFAULT 'false' NOT NULL
 );
 
@@ -61,7 +61,7 @@ comment on column price_list.operation_id is 'for which action is price connecte
 comment on column price_list.valid_from is 'from when is record valid';
 comment on column price_list.valid_to is 'till when is record valid, if it is NULL then valid is unlimited';
 comment on column price_list.price is 'cost of operation (for one year-12 months)';
-comment on column price_list.quantity is 'quantity of operation or period (in months) of payment, null if it is not periodic';
+comment on column price_list.quantity is 'quantity of operation or period (in months) of payment';
 comment on column price_list.enable_postpaid_operation is 'true if operation of this specific type can be executed when credit is not sufficient and create debt';
 
 CREATE OR REPLACE FUNCTION check_price_list()
