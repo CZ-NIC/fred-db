@@ -28,12 +28,12 @@ INSERT INTO mail_defaults (name, value) VALUES ('street', 'Milešovská 1136/5')
 INSERT INTO mail_defaults (name, value) VALUES ('postalcode', '130 00');
 INSERT INTO mail_defaults (name, value) VALUES ('city', 'Praha 3');
 INSERT INTO mail_defaults (name, value) VALUES ('tel', '+420 222 745 111');
-INSERT INTO mail_defaults (name, value) VALUES ('fax', '+420 222 745 112');
 INSERT INTO mail_defaults (name, value) VALUES ('emailsupport', 'podpora@nic.cz');
 INSERT INTO mail_defaults (name, value) VALUES ('authinfopage', 'http://www.nic.cz/whois/publicrequest/');
 INSERT INTO mail_defaults (name, value) VALUES ('whoispage', 'http://whois.nic.cz');
 INSERT INTO mail_defaults (name, value) VALUES ('company_cs', 'CZ.NIC, správce domény CZ');
 INSERT INTO mail_defaults (name, value) VALUES ('company_en', 'CZ.NIC, the CZ domain registry');
+INSERT INTO mail_defaults (name, value) VALUES ('registrarlistpage', 'https://www.nic.cz/whois/registrars');
 
 comment on table mail_defaults is 
 'Defaults used in templates which change rarely.
@@ -54,7 +54,6 @@ INSERT INTO mail_footer (id, footer) VALUES (1,
 <?cs var:defaults.postalcode ?> <?cs var:defaults.city ?>
 ---------------------------------
 tel.: <?cs var:defaults.tel ?>
-fax : <?cs var:defaults.fax ?>
 e-mail : <?cs var:defaults.emailsupport ?>
 ---------------------------------
 ');
@@ -76,7 +75,6 @@ FN:podpora CZ.NIC, z. s. p. o.
 ORG:CZ.NIC, z. s. p. o.
 TITLE:zákaznická podpora
 TEL;WORK;VOICE:+420 222 745 111
-TEL;WORK;FAX:+420 222 745 112
 ADR;WORK:;;Milešovská 1136/5;Praha 3;;130 00;Česká republika
 URL;WORK:http://www.nic.cz
 EMAIL;PREF;INTERNET:podpora@nic.cz
