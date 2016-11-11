@@ -80,6 +80,28 @@ CREATE TABLE dnskey (
     key text NOT NULL
 );
 
+CREATE OR REPLACE FUNCTION dnskey_alg_blacklisted_check()
+RETURNS "trigger" AS $$
+BEGIN
+    IF TG_OP='INSERT' THEN
+        IF EXISTS(SELECT 1 FROM dnssec_algorithm_blacklist WHERE alg_number=NEW.alg) THEN
+            RAISE EXCEPTION 'Blacklisted alg';
+        END IF;
+    ELSIF (TG_OP='UPDATE') AND (OLD.alg<>NEW.alg) THEN
+        IF EXISTS(SELECT 1 FROM dnssec_algorithm_blacklist WHERE alg_number=NEW.alg) THEN
+            RAISE EXCEPTION 'Blacklisted alg';
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+COMMENT ON FUNCTION dnskey_alg_blacklisted_check() IS 'check dnskey.alg is blacklisted'; 
+
+CREATE TRIGGER "trigger_dnskey"
+    AFTER INSERT OR UPDATE ON dnskey
+    FOR EACH ROW EXECUTE PROCEDURE dnskey_alg_blacklisted_check();
+
 ---
 --- Ticket #7875
 ---
