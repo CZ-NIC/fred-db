@@ -60,3 +60,7 @@ COMMENT ON FUNCTION dnskey_alg_change_check() IS 'check dnskey.alg is blackliste
 CREATE TRIGGER "trigger_dnskey"
     AFTER INSERT OR UPDATE ON dnskey
     FOR EACH ROW EXECUTE PROCEDURE dnskey_alg_change_check();
+
+UPDATE enum_reason VALUES SET reason='Unsupported value of field "alg", see http://www.iana.org/assignments/dns-sec-alg-numbers',
+                              reason_cs='Nepodporovaná hodnota pole "alg", viz http://www.iana.org/assignments/dns-sec-alg-numbers'
+WHERE id=56;
