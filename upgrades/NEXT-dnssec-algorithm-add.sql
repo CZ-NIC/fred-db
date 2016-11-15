@@ -8,9 +8,9 @@ CREATE TABLE dnssec_algorithm (
     description TEXT
 );
 
-COMMENT ON TABLE dnssec_algorithm IS 'list of DNSSEC algorithms; see http://www.iana.org/assignments/dns-sec-alg-numbers/dns-sec-alg-numbers.xhtml'; 
-COMMENT ON COLUMN dnssec_algorithm.id IS 'algorithm number'; 
-COMMENT ON COLUMN dnssec_algorithm.handle IS 'mnemonic'; 
+COMMENT ON TABLE dnssec_algorithm IS 'list of DNSSEC algorithms; see http://www.iana.org/assignments/dns-sec-alg-numbers/dns-sec-alg-numbers.xhtml';
+COMMENT ON COLUMN dnssec_algorithm.id IS 'algorithm number';
+COMMENT ON COLUMN dnssec_algorithm.handle IS 'mnemonic';
 
 INSERT INTO dnssec_algorithm (id,handle,description)
 VALUES (  1,'RSAMD5',            'RSA/MD5 (deprecated, see 5)'),
@@ -32,7 +32,7 @@ CREATE TABLE dnssec_algorithm_blacklist (
     alg_number INTEGER CONSTRAINT dnssec_algorithm_usability_pkey PRIMARY KEY REFERENCES dnssec_algorithm(id)
 );
 
-COMMENT ON TABLE dnssec_algorithm_blacklist IS 'list of deprecated DNSSEC algorithms'; 
+COMMENT ON TABLE dnssec_algorithm_blacklist IS 'list of deprecated DNSSEC algorithms';
 
 INSERT INTO dnssec_algorithm_blacklist (alg_number) VALUES (1),(2),(252);
 
@@ -55,7 +55,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-COMMENT ON FUNCTION dnskey_alg_change_check() IS 'check dnskey.alg is blacklisted'; 
+COMMENT ON FUNCTION dnskey_alg_change_check() IS 'check dnskey.alg is blacklisted';
 
 CREATE TRIGGER "trigger_dnskey"
     AFTER INSERT OR UPDATE ON dnskey
