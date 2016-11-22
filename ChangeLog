@@ -2,6 +2,8 @@
 
     * configuration for prohibited nsset ip networks
 
+    * add ImportOutzoneWarningNotificationEmails request type
+
 2016-10-14 (2.24.1)
 
     * mail templates fixes
