@@ -1,7 +1,7 @@
 ---
 --- don't forget to update database schema version
 ---
-UPDATE enum_parameters SET val = '2.24.1' WHERE id = 1;
+UPDATE enum_parameters SET val = '2.25.0' WHERE id = 1;
 
 ---
 --- Ticket #16022 - nsset dnshost prohibited IP address config
