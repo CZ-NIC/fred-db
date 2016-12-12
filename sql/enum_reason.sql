@@ -116,7 +116,7 @@ INSERT INTO enum_reason VALUES (63, 'Duplicated nameserver hostname', 'Duplicitn
 INSERT INTO enum_reason VALUES (64, 'Administrative contact not assigned to this object', 'Administrátorský kontakt není přiřazen k tomuto objektu');
 INSERT INTO enum_reason VALUES (65, 'Temporary contacts are obsolete', 'Dočasné kontakty již nejsou podporovány');
 
-SELECT setval('enum_reason_id_seq', 63);
+SELECT setval('enum_reason_id_seq', 65);
 
 comment on table enum_reason is 'Table of error messages reason';
 comment on column enum_reason.reason is 'reason in english language';
