@@ -9,7 +9,7 @@ INSERT INTO request_type (service_id, id, name)
         (8, 3, 'MojeidDeactivateOTP'),
         (8, 4, 'DataMigration'),
         (8, 5, 'MojeidValidateISIC'),
-        (8, 6, 'MojeidDeactivateAutor');
+        (8, 6, 'MojeidDeactivateAutor'),
         (8, 7, 'MojeidResetPassword');
 
 INSERT INTO result_code (service_id, result_code, name)
