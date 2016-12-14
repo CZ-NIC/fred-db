@@ -50,8 +50,8 @@ CREATE TABLE price_list
   valid_from timestamp NOT NULL, -- from when is record valid 
   valid_to timestamp default NULL, -- till when is record valid, if it is NULL, it isn't limited
   price numeric(10,2) NOT NULL default 0, -- cost of operation ( for year 12 months )
-  quantity integer default 12, -- if it isn't periodic operation NULL 
-  enable_postpaid_operation boolean DEFAULT 'false'
+  quantity integer default 12 NOT NULL,
+  enable_postpaid_operation boolean DEFAULT 'false' NOT NULL
 );
 
 comment on table price_list is 'list of operation prices';
@@ -61,8 +61,35 @@ comment on column price_list.operation_id is 'for which action is price connecte
 comment on column price_list.valid_from is 'from when is record valid';
 comment on column price_list.valid_to is 'till when is record valid, if it is NULL then valid is unlimited';
 comment on column price_list.price is 'cost of operation (for one year-12 months)';
-comment on column price_list.quantity is 'quantity of operation or period (in months) of payment, null if it is not periodic';
+comment on column price_list.quantity is 'quantity of operation or period (in months) of payment';
 comment on column price_list.enable_postpaid_operation is 'true if operation of this specific type can be executed when credit is not sufficient and create debt';
+
+CREATE OR REPLACE FUNCTION check_price_list()
+    RETURNS trigger AS
+$BODY$
+BEGIN
+    IF NEW.valid_from > COALESCE(NEW.valid_to, 'infinity'::timestamp) THEN
+        RAISE EXCEPTION 'invalid price_list item: valid_from > valid_to';
+    END IF;
+    IF EXISTS (
+        SELECT 1 FROM price_list
+          WHERE id <> NEW.id
+          AND zone_id = NEW.zone_id
+          AND operation_id=NEW.operation_id
+          AND (valid_from , COALESCE(valid_to, 'infinity'::timestamp))
+            OVERLAPS (NEW.valid_from , COALESCE(NEW.valid_to, 'infinity'::timestamp))
+    ) THEN
+        RAISE EXCEPTION 'price_list item overlaps';
+    END IF;
+    RETURN NEW;
+END;
+$BODY$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_check_price_list
+  AFTER INSERT OR UPDATE ON price_list
+  FOR EACH ROW EXECUTE PROCEDURE check_price_list();
+
+
 
 CREATE TABLE registrar_credit
 (
