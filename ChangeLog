@@ -1,3 +1,9 @@
+2016-12-19 (2.25.1)
+
+    * new style whois links in e-mail templates
+
+    * add MojeidResetPassword request type
+
 2016-10-09 (2.25.0)
 
     * configuration for prohibited nsset ip networks

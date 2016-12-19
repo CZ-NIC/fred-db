@@ -11,7 +11,7 @@ CREATE TABLE enum_parameters (
 -- parameter 1 is for checking data model version and for applying upgrade
 -- scripts
 INSERT INTO enum_parameters (id, name, val) 
-VALUES (1, 'model_version', '2.25.0');
+VALUES (1, 'model_version', '2.25.1');
 -- parameter 2 is for updating table enum_tlds by data from url
 -- http://data.iana.org/TLD/tlds-alpha-by-domain.txt
 INSERT INTO enum_parameters (id, name, val) 
