@@ -444,6 +444,9 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 
 <?cs def:print_value_list(varname, itemname) ?><?cs set:count = #1 ?><?cs each:item = varname ?><?cs var:itemname ?><?cs var:count ?>:<?cs call:print_value(item) ?><?cs set:count = count + #1 ?> <?cs /each ?> <?cs /def ?> 
 
+<?cs def:objtype(ot) ?><?cs if:ot == #3 ?>domain<?cs elif:ot == #1 ?>contact<?cs elif:ot == #2 ?>nsset<?cs elif:ot == #4 ?>keyset<?cs /if ?><?cs /def ?>
+<?cs def:whoislink(type,handle) ?><?cs var:defaults.whoispage ?>/<?cs call:objtype(type) ?>/<?cs var:handle ?>/<?cs /def ?>
+
 <?cs def:contact_value_list() ?>
 <?cs if:fresh.object.authinfo ?>Heslo / Authinfo: důvěrný údaj / private value
 <?cs /if ?><?cs if:fresh.contact.name ?>Jméno / Name: <?cs call:print_value(fresh.contact.name) ?>
@@ -498,8 +501,8 @@ to avoid possible problems with domain renewal or with domain manipulation
 done by persons who are not authorized anymore.<?cs /if ?>
 
 <?cs if:type != #1 ?>
-Detaily <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
-Details of <?cs call:typesubst("ensmall") ?> can be seen at <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
+Detaily <?cs call:typesubst("cs") ?> najdete na <?cs call:whoislink(type, handle) ?>
+Details of <?cs call:typesubst("ensmall") ?> can be seen at <?cs call:whoislink(type, handle) ?>
 <?cs else ?>
 Detaily <?cs call:typesubst("cs") ?> jsou: / Details of the <?cs call:typesubst("ensmall") ?> are:
 <?cs call:contact_value_list() ?>
@@ -522,6 +525,9 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 <?cs def:print_value_list(which, varname, itemname) ?><?cs if:which == "old" ?><?cs each:item = varname.old ?><?cs var:itemname ?>: <?cs var:item ?>
 <?cs /each ?><?cs elif:which == "new" ?><?cs each:item = varname.new ?><?cs var:itemname ?>: <?cs var:item ?>
 <?cs /each ?><?cs /if ?><?cs /def ?>
+
+<?cs def:objtype(ot) ?><?cs if:ot == #3 ?>domain<?cs elif:ot == #1 ?>contact<?cs elif:ot == #2 ?>nsset<?cs elif:ot == #4 ?>keyset<?cs /if ?><?cs /def ?>
+<?cs def:whoislink(type,handle) ?><?cs var:defaults.whoispage ?>/<?cs call:objtype(type) ?>/<?cs var:handle ?>/<?cs /def ?>
 
 <?cs def:value_list(which) ?><?cs if:changes.object.authinfo ?>Heslo / Authinfo: <?cs if:which == "old" ?>důvěrný údaj / private value<?cs elif:which == "new" ?>hodnota byla změněna / value was changed<?cs /if ?>
 <?cs /if ?><?cs if:type == #1 ?><?cs if:changes.contact.name ?>Jméno / Name: <?cs call:print_value(which, changes.contact.name) ?>
@@ -592,8 +598,8 @@ Other data has not been modified.
 <?cs /if ?>
 
 
-Úplné detaily <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
-The full details of <?cs call:typesubst("ensmall") ?> can be seen at <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
+Úplné detaily <?cs call:typesubst("cs") ?> najdete na <?cs call:whoislink(type, handle) ?>
+The full details of <?cs call:typesubst("ensmall") ?> can be seen at <?cs call:whoislink(type, handle) ?>
 
 V případě dotazů se prosím obracejte na svého určeného registrátora,
 u kterého byly změny provedeny.
@@ -618,6 +624,8 @@ INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_default
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (12, 'plain', 1,
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs elif:lang == "ensmall" ?><?cs if:type == #3 ?>domain<?cs elif:type == #1 ?>contact<?cs elif:type == #2 ?>nsset<?cs elif:type == #4 ?>keyset<?cs /if ?><?cs /if ?><?cs /def ?>
+<?cs def:objtype(ot) ?><?cs if:ot == #3 ?>domain<?cs elif:ot == #1 ?>contact<?cs elif:ot == #2 ?>nsset<?cs elif:ot == #4 ?>keyset<?cs /if ?><?cs /def ?>
+<?cs def:whoislink(type,handle) ?><?cs var:defaults.whoispage ?>/<?cs call:objtype(type) ?>/<?cs var:handle ?>/<?cs /def ?>
 =====================================================================
 Oznámení o transferu / Notification of transfer
 =====================================================================
@@ -633,8 +641,8 @@ Dear customer,
 žádost byla úspěšně zpracována, transfer byl proveden. 
 The request was processed successfully, the transfer has been completed. 
 
-Detaily <?cs call:typesubst("cs") ?> najdete na <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
-Details of <?cs call:typesubst("ensmall") ?> can be seen at <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
+Detaily <?cs call:typesubst("cs") ?> najdete na <?cs call:whoislink(type, handle) ?>
+Details of <?cs call:typesubst("ensmall") ?> can be seen at <?cs call:whoislink(type, handle) ?>
 
 V případě dotazů se prosím obracejte na svého určeného registrátora,
 u kterého byla změna provedena.
@@ -651,7 +659,9 @@ INSERT INTO mail_type_priority VALUES ((SELECT id FROM mail_type WHERE name = 'n
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'notification_renew'), 1);
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (13, 'plain', 1,
-'=====================================================================
+'<?cs def:objtype(ot) ?><?cs if:ot == #3 ?>domain<?cs elif:ot == #1 ?>contact<?cs elif:ot == #2 ?>nsset<?cs elif:ot == #4 ?>keyset<?cs /if ?><?cs /def ?>
+<?cs def:whoislink(type,handle) ?><?cs var:defaults.whoispage ?>/<?cs call:objtype(type) ?>/<?cs var:handle ?>/<?cs /def ?>
+=====================================================================
 Oznámení o prodloužení platnosti / Notification of renewal
 ===================================================================== 
 Obnovení domény / Domain renewal
@@ -680,8 +690,8 @@ We would also like to inform you that in accordance with the
 Domain Name Registration Rules for the .cz ccTLD, incorrect, false, incomplete or misleading
 information can be grounds for the cancellation of a domain name registration.
 
-Detail domény najdete na <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
-Details of the domain can be seen at <?cs var:defaults.whoispage ?>?q=<?cs var:handle ?>
+Detail domény najdete na <?cs call:whoislink(3, handle) ?>
+Details of the domain can be seen at <?cs call:whoislink(3, handle) ?>
 
 S pozdravem / Yours sincerely
 podpora <?cs var:defaults.company_cs ?> / Support of <?cs var:defaults.company_en ?>
