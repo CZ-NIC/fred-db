@@ -1,4 +1,9 @@
 ---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.25.1' WHERE id = 1;
+
+---
 --- Ticket #17517 - whois link changes
 ---
 UPDATE mail_templates SET template =
