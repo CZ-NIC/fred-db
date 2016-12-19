@@ -1,3 +1,13 @@
+2016-12-19 (2.26.0)
+
+    * configuration for keyset dnskeys algorithm blacklist
+
+    * enum domain validation continuation window configuration
+
+    * add price list constraints
+
+    * add new epp error reasons
+
 2016-10-09 (2.25.0)
 
     * configuration for prohibited nsset ip networks
