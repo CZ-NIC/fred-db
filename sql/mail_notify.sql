@@ -30,7 +30,7 @@ INSERT INTO mail_defaults (name, value) VALUES ('city', 'Praha 3');
 INSERT INTO mail_defaults (name, value) VALUES ('tel', '+420 222 745 111');
 INSERT INTO mail_defaults (name, value) VALUES ('emailsupport', 'podpora@nic.cz');
 INSERT INTO mail_defaults (name, value) VALUES ('authinfopage', 'http://www.nic.cz/whois/publicrequest/');
-INSERT INTO mail_defaults (name, value) VALUES ('whoispage', 'http://whois.nic.cz');
+INSERT INTO mail_defaults (name, value) VALUES ('whoispage', 'https://www.nic.cz/whois');
 INSERT INTO mail_defaults (name, value) VALUES ('company_cs', 'CZ.NIC, správce domény CZ');
 INSERT INTO mail_defaults (name, value) VALUES ('company_en', 'CZ.NIC, the CZ domain registry');
 INSERT INTO mail_defaults (name, value) VALUES ('registrarlistpage', 'https://www.nic.cz/whois/registrars');
