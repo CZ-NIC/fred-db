@@ -132,3 +132,10 @@ UPDATE enum_reason VALUES
    SET reason = 'Unsupported value of field "alg", see http://www.iana.org/assignments/dns-sec-alg-numbers',
        reason_cs = 'Nepodporovaná hodnota pole "alg", viz http://www.iana.org/assignments/dns-sec-alg-numbers'
  WHERE id = 56;
+
+
+---
+--- Ticket #17824
+---
+INSERT INTO enum_domain_name_validation_checker (id, name, description)
+    VALUES (8, 'dncheck_no_idn_punycode', 'forbid idn punycode encoding');
