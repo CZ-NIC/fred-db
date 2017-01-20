@@ -1,0 +1,2 @@
+DELETE FROM zone_domain_name_validation_checker_map WHERE checker_id IN enum_domain_name_validation_checker (SELECT id FROM enum_domain_name_validation_checker WHERE name IN ('enum_domain_name_validation_checker', 'dncheck_no_label_beginning_hyphen', 'dncheck_no_label_ending_hyphen');
+DELETE FROM enum_domain_name_validation_checker WHERE name IN ('enum_domain_name_validation_checker', 'dncheck_no_label_beginning_hyphen', 'dncheck_no_label_ending_hyphen');
