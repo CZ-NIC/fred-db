@@ -207,25 +207,23 @@ podpora <?cs var:defaults.company_cs ?>
 
 Dear customer,
 
-We would like to notify you that your registrar did not extend the registration
+We would like to notify you that you still have not extended the registration
 of the domain name <?cs var:domain ?>. With regard to that fact
 and in accordance with the Domain Name Registration Rules, we are
 suspending the domain name registration and excluding it from the
 <?cs var:zone ?> zone.
 
-In case that by <?cs var:exregdate ?> we will not receive the payment
-for extension of the domain name from your registrar, your domain name will
-be definitely released for a use by another applicant on <?cs var:exregdate ?>.
+Unless you extend the registration of your domain name through your
+designated registrar by <?cs var:day_before_exregdate ?>, 
+the registration will be cancelled definitely
+and your domain name will be released for use by another applicant.
 
-In case you are interested in the domain, contact your designated registrar
-<?cs var:registrar ?> and extend the domain name registration together.
+If you believe that you have already asked your designated registrar
+to extend the registration, do not hesitate to contact them again
+and find out why the extension has not occurred. Let us remind you
+that you can switch to another registrar any time.
 
-If you believe that the payment was made, please, check first if the payment
-was made using the correct variable symbol, to the correct account number, and
-with the correct amount, and convey this information to your designated
-registrar.
-
-Schedule of planned events:
+What is going to happen unless the domain is extended:
 
 <?cs var:exregdate ?> - The final cancellation of the domain name registration.
 
@@ -233,7 +231,7 @@ At present, we keep the following details concerning your domain:
 
 Domain name: <?cs var:domain ?>
 Owner: <?cs var:owner ?>
-Registrar: <?cs var:registrar ?>
+Designated registrar: <?cs var:registrar ?>
 <?cs each:item = administrators ?>Admin contact: <?cs var:item ?>
 <?cs /each ?>
 
