@@ -173,34 +173,30 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 
 Vážený zákazníku,
 
-dovolujeme si Vás tímto upozornit, že Váš registrátor dosud neprodloužil
-platnost doménového jména <?cs var:domain ?>. Vzhledem k této
-skutečnosti a na základě Pravidel registrace doménových jmen
-pozastavujeme registraci doménového jména a vyřazujeme
-doménu ze zóny <?cs var:zone ?>.
+dovolujeme si Vás tímto upozornit, že jste dosud neprodloužil registraci
+doménového jména <?cs var:domain ?>. Vzhledem k této skutečnosti tak na
+základě Pravidel registrace doménových jmen rušíme delegaci doménového
+jména a vyřazujeme Vaši doménu ze zóny <?cs var:zone ?>.
 
-V případě, že do dne <?cs var:exregdate ?> neobdržíme od Vašeho
-registrátora platbu za prodloužení platnosti doménového jména, bude
-doménové jméno definitivně uvolněno pro použití dalším zájemcem, a to
-ke dni <?cs var:exregdate ?>.
+Pokud nejpozději do <?cs var:day_before_exregdate ?> neprodloužíte prostřednictvím
+určeného registrátora registraci doménového jména, dojde následujícího dne
+definitivně k zániku jeho registrace a toto doménové jméno bude k dispozici
+pro registraci i ostatním zájemcům.
 
-V případě zájmu o doménu kontaktujte svého určeného registrátora <?cs var:registrar ?>
-a platnost domény s ním prodlužte.
+Jestliže se domníváte, že jste o prodloužení registrace domény u určeného
+registrátora již žádal, neváhejte ho neprodleně kontaktovat a zjistit
+příčinu, proč dosud k prodloužení registrace nedošlo. Připomínáme, že
+určeného registrátora můžete kdykoliv změnit.
 
-Pokud se domníváte, že platba byla provedena, prověřte nejdříve,
-zda byla provedena pod správným variabilním symbolem, na správné číslo
-účtu a ve správné výši, a tyto informace svému určenému registrátorovi
-sdělte.
-
-Harmonogram plánovaných akcí:
+Co se bude dít, pokud k prodloužení nedojde:
 
 <?cs var:exregdate ?> - Definitivní zrušení registrace doménového jména.
 
-V této chvíli evidujeme o doméně následující údaje:
+V této chvíli evidujeme o Vaší doméně následující údaje:
 
 Doménové jméno: <?cs var:domain ?>
 Držitel: <?cs var:owner ?>
-Registrátor: <?cs var:registrar ?>
+Určený registrátor: <?cs var:registrar ?>
 <?cs each:item = administrators ?>Administrativní kontakt: <?cs var:item ?>
 <?cs /each ?>
 
