@@ -232,7 +232,7 @@ At present, we keep the following details concerning your domain:
 Domain name: <?cs var:domain ?>
 Owner: <?cs var:owner ?>
 Designated registrar: <?cs var:registrar ?>
-<?cs each:item = administrators ?>Admin contact: <?cs var:item ?>
+<?cs each:item = administrators ?>Administrative contact: <?cs var:item ?>
 <?cs /each ?>
 
 Yours sincerely
