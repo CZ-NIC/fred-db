@@ -50,10 +50,9 @@ CREATE TABLE Message (
         Seen BOOLEAN NOT NULL DEFAULT false,
 	MsgType INTEGER CONSTRAINT message_msgtype_fkey REFERENCES messagetype (id)
 );
-CREATE INDEX message_clid_idx ON message (clid);
-CREATE INDEX message_seen_idx ON message (clid,seen,crdate,exdate);
+CREATE INDEX message_clid_id_unseen_idx ON message (clid,id) WHERE NOT seen;
 
-comment on table Message is 'Evidence of messages for registrars, which can be picked up by epp poll funcion';
+comment on table Message is 'Message queue for registrars which can be fetched from by epp poll functions';
 
 CREATE TABLE poll_credit (
   msgid INTEGER CONSTRAINT poll_credit_pkey PRIMARY KEY
