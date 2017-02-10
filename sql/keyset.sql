@@ -125,7 +125,7 @@ CREATE TABLE dnssec_algorithm_blacklist (
 
 COMMENT ON TABLE dnssec_algorithm_blacklist IS 'list of deprecated DNSSEC algorithms';
 
-INSERT INTO dnssec_algorithm_blacklist (alg_number) VALUES (1),(2),(252);
+INSERT INTO dnssec_algorithm_blacklist (alg_number) VALUES (0),(1),(2),(252);
 
 CREATE TABLE dnskey (
     id serial CONSTRAINT dnskey_pkey PRIMARY KEY,
