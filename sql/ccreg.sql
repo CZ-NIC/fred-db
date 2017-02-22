@@ -1,5 +1,25 @@
 -- DROP TABLE  OBJECT  CASCADE;
 
+CREATE TABLE enum_object_type
+(
+  id integer NOT NULL,
+  name TEXT NOT NULL,
+  CONSTRAINT enum_object_type_pkey PRIMARY KEY (id),
+  CONSTRAINT enum_object_type_name_key UNIQUE (name)
+);
+
+
+INSERT INTO enum_object_type (id,name) VALUES ( 1 , 'contact' );
+INSERT INTO enum_object_type (id,name) VALUES ( 2 , 'nsset' );
+INSERT INTO enum_object_type (id,name) VALUES ( 3 , 'domain' );
+INSERT INTO enum_object_type (id,name) VALUES ( 4 , 'keyset' );
+
+--Helps to write query using conditional index like type=1
+CREATE FUNCTION get_object_type_id(TEXT)
+RETURNS integer AS
+'SELECT id FROM enum_object_type WHERE name=$1'
+LANGUAGE SQL IMMUTABLE RETURNS NULL ON NULL INPUT;
+
 
 CREATE TABLE OBJECT_registry (
        ID SERIAL CONSTRAINT object_registry_pkey PRIMARY KEY,
@@ -12,7 +32,9 @@ CREATE TABLE OBJECT_registry (
        CrhistoryID INTEGER CONSTRAINT object_registry_crhistoryid_fkey REFERENCES History, -- link into create history
        historyID integer CONSTRAINT object_registry_historyid_fkey REFERENCES history, -- link to last change in history
        CONSTRAINT name_case_check CHECK ((type <> get_object_type_id('domain') AND name = UPPER(name)) -- #18356
-           OR (type = get_object_type_id('domain') AND name = LOWER(name)))
+           OR (type = get_object_type_id('domain') AND name = LOWER(name))),
+       CONSTRAINT object_registry_type_fkey FOREIGN KEY (type)
+           REFERENCES enum_object_type (id)
        );
 
 
@@ -256,29 +278,6 @@ CREATE TABLE ENUMVal (
 
 -- enumval domainid unique constraint
 ALTER TABLE enumval ADD CONSTRAINT enumval_domainid_key UNIQUE (domainid);
-
-CREATE TABLE enum_object_type
-(
-  id integer NOT NULL,
-  name TEXT NOT NULL,
-  CONSTRAINT enum_object_type_pkey PRIMARY KEY (id),
-  CONSTRAINT enum_object_type_name_key UNIQUE (name)
-);
-
-
-INSERT INTO enum_object_type (id,name) VALUES ( 1 , 'contact' );
-INSERT INTO enum_object_type (id,name) VALUES ( 2 , 'nsset' );
-INSERT INTO enum_object_type (id,name) VALUES ( 3 , 'domain' );
-INSERT INTO enum_object_type (id,name) VALUES ( 4 , 'keyset' );
-
---Helps to write query using conditional index like type=1
-CREATE FUNCTION get_object_type_id(TEXT)
-RETURNS integer AS
-'SELECT id FROM enum_object_type WHERE name=$1'
-LANGUAGE SQL IMMUTABLE RETURNS NULL ON NULL INPUT;
-
-ALTER TABLE object_registry ADD CONSTRAINT object_registry_type_fkey FOREIGN KEY (type)
-      REFERENCES enum_object_type (id);
 
 ---
 --- Ticket #16022 - nsset dnshost prohibited IP address config
