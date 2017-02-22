@@ -10,8 +10,11 @@ CREATE TABLE OBJECT_registry (
        CrDate timestamp NOT NULL DEFAULT now(),
        ErDate timestamp DEFAULT NULL, -- erase date 
        CrhistoryID INTEGER CONSTRAINT object_registry_crhistoryid_fkey REFERENCES History, -- link into create history
-       historyID integer CONSTRAINT object_registry_historyid_fkey REFERENCES history -- link to last change in history                 
+       historyID integer CONSTRAINT object_registry_historyid_fkey REFERENCES history, -- link to last change in history
+       CONSTRAINT name_case_check CHECK ((type <> get_object_type_id('domain') AND name = UPPER(name)) -- #18356
+           OR (type = get_object_type_id('domain') AND name = LOWER(name)))
        );
+
 
 -- index
 CREATE INDEX object_registry_upper_name_1_idx 
