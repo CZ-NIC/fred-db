@@ -106,3 +106,4 @@ CREATE TABLE check_result (
 	data TEXT  -- test-specific text data (stdout)
 );
 
+CREATE INDEX check_result_checkid_idx ON check_result (checkid);
