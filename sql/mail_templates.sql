@@ -173,34 +173,30 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 
 Vážený zákazníku,
 
-dovolujeme si Vás tímto upozornit, že Váš registrátor dosud neprodloužil
-platnost doménového jména <?cs var:domain ?>. Vzhledem k této
-skutečnosti a na základě Pravidel registrace doménových jmen
-pozastavujeme registraci doménového jména a vyřazujeme
-doménu ze zóny <?cs var:zone ?>.
+dovolujeme si Vás tímto upozornit, že jste dosud neprodloužil registraci
+doménového jména <?cs var:domain ?>. Vzhledem k této skutečnosti tak na
+základě Pravidel registrace doménových jmen rušíme delegaci doménového
+jména a vyřazujeme Vaši doménu ze zóny <?cs var:zone ?>.
 
-V případě, že do dne <?cs var:exregdate ?> neobdržíme od Vašeho
-registrátora platbu za prodloužení platnosti doménového jména, bude
-doménové jméno definitivně uvolněno pro použití dalším zájemcem, a to
-ke dni <?cs var:exregdate ?>.
+Pokud nejpozději do <?cs var:day_before_exregdate ?> neprodloužíte prostřednictvím
+určeného registrátora registraci doménového jména, dojde následujícího dne
+definitivně k zániku jeho registrace a toto doménové jméno bude k dispozici
+pro registraci i ostatním zájemcům.
 
-V případě zájmu o doménu kontaktujte svého určeného registrátora <?cs var:registrar ?>
-a platnost domény s ním prodlužte.
+Jestliže se domníváte, že jste o prodloužení registrace domény u určeného
+registrátora již žádal, neváhejte ho neprodleně kontaktovat a zjistit
+příčinu, proč dosud k prodloužení registrace nedošlo. Připomínáme, že
+určeného registrátora můžete kdykoliv změnit.
 
-Pokud se domníváte, že platba byla provedena, prověřte nejdříve,
-zda byla provedena pod správným variabilním symbolem, na správné číslo
-účtu a ve správné výši, a tyto informace svému určenému registrátorovi
-sdělte.
-
-Harmonogram plánovaných akcí:
+Co se bude dít, pokud k prodloužení nedojde:
 
 <?cs var:exregdate ?> - Definitivní zrušení registrace doménového jména.
 
-V této chvíli evidujeme o doméně následující údaje:
+V této chvíli evidujeme o Vaší doméně následující údaje:
 
 Doménové jméno: <?cs var:domain ?>
 Držitel: <?cs var:owner ?>
-Registrátor: <?cs var:registrar ?>
+Určený registrátor: <?cs var:registrar ?>
 <?cs each:item = administrators ?>Administrativní kontakt: <?cs var:item ?>
 <?cs /each ?>
 
@@ -211,25 +207,23 @@ podpora <?cs var:defaults.company_cs ?>
 
 Dear customer,
 
-We would like to notify you that your registrar did not extend the registration
+We would like to notify you that you still have not extended the registration
 of the domain name <?cs var:domain ?>. With regard to that fact
 and in accordance with the Domain Name Registration Rules, we are
 suspending the domain name registration and excluding it from the
 <?cs var:zone ?> zone.
 
-In case that by <?cs var:exregdate ?> we will not receive the payment
-for extension of the domain name from your registrar, your domain name will
-be definitely released for a use by another applicant on <?cs var:exregdate ?>.
+Unless you extend the registration of your domain name through your
+designated registrar by <?cs var:day_before_exregdate ?>, 
+the registration will be cancelled definitely
+and your domain name will be released for use by another applicant.
 
-In case you are interested in the domain, contact your designated registrar
-<?cs var:registrar ?> and extend the domain name registration together.
+If you believe that you have already asked your designated registrar
+to extend the registration, do not hesitate to contact them again
+and find out why the extension has not occurred. Let us remind you
+that you can switch to another registrar any time.
 
-If you believe that the payment was made, please, check first if the payment
-was made using the correct variable symbol, to the correct account number, and
-with the correct amount, and convey this information to your designated
-registrar.
-
-Schedule of planned events:
+What is going to happen unless the domain is extended:
 
 <?cs var:exregdate ?> - The final cancellation of the domain name registration.
 
@@ -237,8 +231,8 @@ At present, we keep the following details concerning your domain:
 
 Domain name: <?cs var:domain ?>
 Owner: <?cs var:owner ?>
-Registrar: <?cs var:registrar ?>
-<?cs each:item = administrators ?>Admin contact: <?cs var:item ?>
+Designated registrar: <?cs var:registrar ?>
+<?cs each:item = administrators ?>Administrative contact: <?cs var:item ?>
 <?cs /each ?>
 
 Yours sincerely
