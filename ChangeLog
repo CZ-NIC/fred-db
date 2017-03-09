@@ -1,3 +1,7 @@
+2016-03-09 (2.26.1)
+
+    * fix invoice domain renew operation bill item date_from values
+
 2016-12-19 (2.26.0)
 
     * configuration for keyset dnskeys algorithm blacklist
