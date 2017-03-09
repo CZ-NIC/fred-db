@@ -1,4 +1,10 @@
 ---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.26.1' WHERE id = 1;
+
+
+---
 --- Ticket #18474 domain renew bill item,  invoice_operation.date_from fix
 ---
 
