@@ -43,7 +43,8 @@ CREATE TABLE OBJECT_registry (
        CONSTRAINT name_case_check CHECK ((type <> get_object_type_id('domain') AND name = UPPER(name)) -- #18356
            OR (type = get_object_type_id('domain') AND name = LOWER(name))),
        CONSTRAINT object_registry_type_fkey FOREIGN KEY (type)
-           REFERENCES enum_object_type (id)
+           REFERENCES enum_object_type (id),
+       CONSTRAINT domain_name_check CHECK (type <> get_object_type_id('domain') OR domain_name_syntax_check(name))
        );
 
 
