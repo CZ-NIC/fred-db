@@ -9,4 +9,5 @@ INSERT INTO request_type (service_id, id, name) VALUES
 (2, 1604, 'UnblockChanges'),
 (2, 1605, 'Verification'),
 (2, 1606, 'ConditionalIdentification'),
-(2, 1607, 'Identification');
+(2, 1607, 'Identification'),
+(2, 1608, 'NotarizedLetterPdf');
