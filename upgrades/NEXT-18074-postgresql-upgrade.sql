@@ -20,7 +20,7 @@ CREATE OR REPLACE FUNCTION status_update_object_state() RETURNS TRIGGER AS $$
     IF NEW.state_id = ANY (ARRAY[5,6,10,13,14]) THEN
       -- activation is only done on states that are relevant for
       -- dependant states to stop RECURSION
-      SELECT array_agg(state_id) INTO _states FROM object_state
+      SELECT COALESCE(array_agg(state_id), '{}'::INT[]) INTO _states FROM object_state
           WHERE valid_to IS NULL AND object_id = NEW.object_id;
       -- set or clear status 15 (outzone)
       EXECUTE status_update_state(
@@ -134,7 +134,7 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
 --          17, NEW.id
 --        );
         -- state: outzoneUnguardedWarning
-        SELECT array_agg(state_id) INTO _states FROM object_state
+        SELECT COALESCE(array_agg(state_id), '{}'::INT[]) INTO _states FROM object_state
           WHERE valid_to IS NULL AND object_id = NEW.id;
         EXECUTE status_update_state(
           date_test(NEW.exdate::date,_ou_warn)
