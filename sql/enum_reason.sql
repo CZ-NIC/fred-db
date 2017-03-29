@@ -31,8 +31,8 @@ INSERT INTO enum_reason VALUES (16, 'An unknown country code', 'Neznámý kód z
 INSERT INTO enum_reason VALUES (17, 'An unknown message ID', 'Neznámý identifikátor zprávy');
 
 -- ENUM validation expiration
-INSERT INTO enum_reason VALUES (18, 'A validation expiration date not applicable', 'Datum vypršení platnosti zde nelze použít');
-INSERT INTO enum_reason VALUES (19, 'The validation expiration date is not valid', 'Datum vypršení platnosti je neplatné');
+INSERT INTO enum_reason VALUES (18, 'A validation expiration date not applicable', 'Datum vypršení platnosti ověření zde nelze použít');
+INSERT INTO enum_reason VALUES (19, 'The validation expiration date is not valid', 'Datum vypršení platnosti ověření je neplatné');
 
 INSERT INTO enum_reason VALUES (23, 'The technical contact cannot be removed', 'Nelze odstranit technický kontakt');
 
@@ -59,7 +59,7 @@ INSERT INTO enum_reason VALUES (34, 'The "ident" element is missing a "type" att
 INSERT INTO enum_reason VALUES (35, 'The "poll" element is missing an "msgID" attribute', 'U elementu "poll" chybí atribut "msgID"');
 
 -- XML validation process failed
-INSERT INTO enum_reason VALUES (37, 'XML validation error: ', 'Chyba validace schémat XML: ');
+INSERT INTO enum_reason VALUES (37, 'XML validation error: ', 'Chyba validace XML schémat: ');
 
 -- domain blacklist
 INSERT INTO enum_reason VALUES (36, 'Registration is prohibited', 'Registrace je zakázána');
@@ -73,9 +73,9 @@ INSERT INTO enum_reason VALUES (40, 'The keyset does not exist', 'Keyset neexist
 
 INSERT INTO enum_reason VALUES (48, 'Unauthorized access to the object', 'Neautorizovaný přístup k objektu');
 INSERT INTO enum_reason VALUES (49, 'Too many administrative contacts', 'Příliš mnoho administrativních kontaktů');
-INSERT INTO enum_reason VALUES (50, 'Too many DS records', 'Příliš mnoho záznamů DS');
-INSERT INTO enum_reason VALUES (51, 'Too many DNSKEY records', 'Příliš mnoho záznamů DNSKEY');
-INSERT INTO enum_reason VALUES (53, 'No DNSKEY record', 'Žádný záznam DNSKEY');
+INSERT INTO enum_reason VALUES (50, 'Too many DS records', 'Příliš mnoho DS záznamů');
+INSERT INTO enum_reason VALUES (51, 'Too many DNSKEY records', 'Příliš mnoho DNSKEY záznamů');
+INSERT INTO enum_reason VALUES (53, 'No DNSKEY record', 'Žádný DNSKEY záznam');
 INSERT INTO enum_reason VALUES (54, 'The "flags" field must be 0, 256 or 257', 'Položka "flags" musí být 0, 256 nebo 257');
 INSERT INTO enum_reason VALUES (55, 'The "protocol" field must be 3', 'Položka "protocol" musí být 3');
 INSERT INTO enum_reason VALUES (56, 'An unsupported value of the "alg" field, see http://www.ianaorg/assignments/dns-sec-alg-numbers', 'Nepodporovaná hodnota položky "alg", viz http://www.iana.org/assignments/dns-sec-alg-numbers');
@@ -84,7 +84,7 @@ INSERT INTO enum_reason VALUES (58, 'The "key" field contains an invalid charact
 INSERT INTO enum_reason VALUES (59, 'The DNSKEY exists for the keyset already', 'DNSKEY již pro tento keyset existuje');
 INSERT INTO enum_reason VALUES (60, 'The DNSKEY does not exist for the keyset', 'DNSKEY pro tento keyset neexistuje');
 INSERT INTO enum_reason VALUES (61, 'A duplicate DNSKEY', 'Duplicitní záznam DNSKEY');
-INSERT INTO enum_reason VALUES (62, 'The keyset must have a DNSKEY record or a DS record', 'Keyset musí mít záznam DNSKEY nebo DS');
+INSERT INTO enum_reason VALUES (62, 'The keyset must have a DNSKEY record or a DS record', 'Keyset musí mít DNSKEY záznam nebo DS záznam');
 INSERT INTO enum_reason VALUES (63, 'A duplicate nameserver hostname', 'Duplicitní název jmenného serveru');
 INSERT INTO enum_reason VALUES (64, 'The administrative contact is not assigned to the object', 'Tomuto objektu uvedený administrativní kontakt není přiřazen');
 INSERT INTO enum_reason VALUES (65, 'Temporary contacts are discontinued', 'Dočasné kontakty již nejsou podporovány');
