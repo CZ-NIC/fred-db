@@ -1,3 +1,9 @@
+---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.26.2' WHERE id = 1;
+
+
 CREATE OR REPLACE VIEW object_state_now AS
 SELECT object_id, array_agg(state_id) AS states
 FROM object_state
