@@ -78,7 +78,7 @@ INSERT INTO enum_reason VALUES (51, 'Too many DNSKEY records', 'Příliš mnoho 
 INSERT INTO enum_reason VALUES (53, 'No DNSKEY record', 'Žádný DNSKEY záznam');
 INSERT INTO enum_reason VALUES (54, 'The "flags" field must be 0, 256 or 257', 'Položka "flags" musí být 0, 256 nebo 257');
 INSERT INTO enum_reason VALUES (55, 'The "protocol" field must be 3', 'Položka "protocol" musí být 3');
-INSERT INTO enum_reason VALUES (56, 'An unsupported value of the "alg" field, see http://www.ianaorg/assignments/dns-sec-alg-numbers', 'Nepodporovaná hodnota položky "alg", viz http://www.iana.org/assignments/dns-sec-alg-numbers');
+INSERT INTO enum_reason VALUES (56, 'An unsupported value of the "alg" field, see IANA DNS Security Algorithm Numbers', 'Nepodporovaná hodnota položky "alg", viz IANA DNS Security Algorithm Numbers');
 INSERT INTO enum_reason VALUES (57, 'The "key" field has an invalid length', 'Položka "key" má nevyhovující délku');
 INSERT INTO enum_reason VALUES (58, 'The "key" field contains an invalid character', 'Položka "key" obsahuje neplatný znak');
 INSERT INTO enum_reason VALUES (59, 'The DNSKEY exists for the keyset already', 'DNSKEY již pro tento keyset existuje');

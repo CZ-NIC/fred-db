@@ -40,7 +40,7 @@ UPDATE enum_reason SET (reason, reason_cs) = ('Too many DNSKEY records', 'Příl
 UPDATE enum_reason SET (reason, reason_cs) = ('No DNSKEY record', 'Žádný DNSKEY záznam') WHERE id = 53;
 UPDATE enum_reason SET (reason, reason_cs) = ('The "flags" field must be 0, 256 or 257', 'Položka "flags" musí být 0, 256 nebo 257') WHERE id = 54;
 UPDATE enum_reason SET (reason, reason_cs) = ('The "protocol" field must be 3', 'Položka "protocol" musí být 3') WHERE id = 55;
-UPDATE enum_reason SET (reason, reason_cs) = ('An unsupported value of the "alg" field, see http://www.ianaorg/assignments/dns-sec-alg-numbers', 'Nepodporovaná hodnota položky "alg", viz http://www.iana.org/assignments/dns-sec-alg-numbers') WHERE id = 56;
+UPDATE enum_reason SET (reason, reason_cs) = ('An unsupported value of the "alg" field, see IANA DNS Security Algorithm Numbers', 'Nepodporovaná hodnota položky "alg", viz IANA DNS Security Algorithm Numbers') WHERE id = 56;
 UPDATE enum_reason SET (reason, reason_cs) = ('The "key" field has an invalid length', 'Položka "key" má nevyhovující délku') WHERE id = 57;
 UPDATE enum_reason SET (reason, reason_cs) = ('The "key" field contains an invalid character', 'Položka "key" obsahuje neplatný znak') WHERE id = 58;
 UPDATE enum_reason SET (reason, reason_cs) = ('The DNSKEY exists for the keyset already', 'DNSKEY již pro tento keyset existuje') WHERE id = 59;
