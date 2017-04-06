@@ -24,12 +24,12 @@ UPDATE enum_reason SET (reason, reason_cs) = ('The nsset does not exist', 'Sada 
 UPDATE enum_reason SET (reason, reason_cs) = ('The registrant contact does not exist', 'Kontakt držitele neexistuje') WHERE id = 29;
 UPDATE enum_reason SET (reason, reason_cs) = ('The nameserver is included in the nsset already', 'Uvedený jmenný server je již obsažen v této sadě jmenných serverů') WHERE id = 30;
 UPDATE enum_reason SET (reason, reason_cs) = ('The nameserver is not included in the nsset', 'Uvedený jmenný server není obsažen v této sadě jmenných serverů') WHERE id = 31;
-UPDATE enum_reason SET (reason, reason_cs) = ('The expiration date does not match the recorded data', 'Datum vypršení platnosti nesouhlasí se zaznamenanými údaji') WHERE id = 32;
+UPDATE enum_reason SET (reason, reason_cs) = ('The domain expiration date does not match recorded data', 'Datum expirace domény nesouhlasí se zaznamenanými údaji') WHERE id = 32;
 UPDATE enum_reason SET (reason, reason_cs) = ('The "transfer" element is missing an "op" attribute', 'U elementu "transfer" chybí atribut "op"') WHERE id = 33;
 UPDATE enum_reason SET (reason, reason_cs) = ('The "ident" element is missing a "type" attribute', 'U elementu "ident" chybí atribut "type"') WHERE id = 34;
 UPDATE enum_reason SET (reason, reason_cs) = ('The "poll" element is missing an "msgID" attribute', 'U elementu "poll" chybí atribut "msgID"') WHERE id = 35;
 UPDATE enum_reason SET (reason, reason_cs) = ('Registration is prohibited', 'Registrace je zakázána') WHERE id = 36;
-UPDATE enum_reason SET (reason, reason_cs) = ('XML validation error: ', 'Chyba validace XML schémat: ') WHERE id = 37;
+UPDATE enum_reason SET (reason, reason_cs) = ('XML validation error: ', 'Chyba validace XML: ') WHERE id = 37;
 UPDATE enum_reason SET (reason, reason_cs) = ('A duplicate contact', 'Duplicitní kontakt') WHERE id = 38;
 UPDATE enum_reason SET (reason, reason_cs) = ('An invalid format of the keyset handle', 'Neplatný formát identifikátoru keysetu') WHERE id = 39;
 UPDATE enum_reason SET (reason, reason_cs) = ('The keyset does not exist', 'Keyset neexistuje') WHERE id = 40;

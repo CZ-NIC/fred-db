@@ -51,7 +51,7 @@ INSERT INTO enum_reason VALUES (30, 'The nameserver is included in the nsset alr
 INSERT INTO enum_reason VALUES (31, 'The nameserver is not included in the nsset', 'Uvedený jmenný server není obsažen v této sadě jmenných serverů');
 
 -- domain renew error
-INSERT INTO enum_reason VALUES (32, 'The expiration date does not match the recorded data', 'Datum vypršení platnosti nesouhlasí se zaznamenanými údaji');
+INSERT INTO enum_reason VALUES (32, 'The domain expiration date does not match recorded data', 'Datum expirace domény nesouhlasí se zaznamenanými údaji');
 
 -- mod_eppd errors
 INSERT INTO enum_reason VALUES (33, 'The "transfer" element is missing an "op" attribute', 'U elementu "transfer" chybí atribut "op"');
@@ -59,7 +59,7 @@ INSERT INTO enum_reason VALUES (34, 'The "ident" element is missing a "type" att
 INSERT INTO enum_reason VALUES (35, 'The "poll" element is missing an "msgID" attribute', 'U elementu "poll" chybí atribut "msgID"');
 
 -- XML validation process failed
-INSERT INTO enum_reason VALUES (37, 'XML validation error: ', 'Chyba validace XML schémat: ');
+INSERT INTO enum_reason VALUES (37, 'XML validation error: ', 'Chyba validace XML: ');
 
 -- domain blacklist
 INSERT INTO enum_reason VALUES (36, 'Registration is prohibited', 'Registrace je zakázána');
