@@ -51,11 +51,11 @@ INSERT INTO notify_statechange_map VALUES (10, 13, 3,  6, 2);
 -- template: notification_unused, emails: admin
 INSERT INTO notify_statechange_map VALUES (11, 17, 4, 14, 1);
 -- state: outzoneUnguarded, obj: domain, 
--- template: expiration_dns_owner, emails: generic emails (like kontakt@... postmaster@... info@...)
-INSERT INTO notify_statechange_map VALUES (12, 20, 3, 4, 3);
+-- template: expiration_dns_warning_owner, emails: generic emails (like kontakt@... postmaster@... info@...)
+INSERT INTO notify_statechange_map VALUES (12, 28, 3, 31, 3);
 -- state: outzoneUnguardedWarning, obj: domain, 
--- template: expiration_dns_owner FIXME, emails: additional domain notification emails
-INSERT INTO notify_statechange_map VALUES (13, 28, 3, 4, 4);
+-- template: expiration_dns_warning_owner FIXME, emails: additional domain notification emails
+INSERT INTO notify_statechange_map VALUES (13, 28, 3, 31, 4);
 
 -- store information about successfull notification
 CREATE TABLE notify_statechange (
