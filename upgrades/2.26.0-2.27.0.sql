@@ -185,3 +185,16 @@ INSERT INTO mail_type_template_map (typeid, templateid) VALUES (31, 31);
 
 UPDATE notify_statechange_map SET state_id=28,mail_type_id=31 WHERE id=12;
 UPDATE notify_statechange_map SET mail_type_id=31 WHERE id=13;
+
+---
+--- Add fake records
+---
+INSERT INTO notify_statechange (state_id,type,mail_id)
+SELECT nsc.state_id,12,nsc.mail_id
+FROM notify_statechange nsc
+JOIN object_state os ON os.id=nsc.state_id
+WHERE os.valid_to IS NULL AND
+      os.state_id=28 AND
+      nsc.type=13 AND
+      NOT EXISTS(SELECT * FROM notify_statechange
+                 WHERE state_id=nsc.state_id AND type=12);
