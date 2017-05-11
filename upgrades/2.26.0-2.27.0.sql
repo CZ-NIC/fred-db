@@ -190,7 +190,7 @@ UPDATE notify_statechange_map SET mail_type_id=31 WHERE id=13;
 --- Add fake records
 ---
 INSERT INTO notify_statechange (state_id,type,mail_id)
-SELECT nsc.state_id,12,nsc.mail_id
+SELECT nsc.state_id,12,NULL
 FROM notify_statechange nsc
 JOIN object_state os ON os.id=nsc.state_id
 WHERE os.valid_to IS NULL AND
