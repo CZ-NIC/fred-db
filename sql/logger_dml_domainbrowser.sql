@@ -10,7 +10,8 @@ INSERT INTO request_type (service_id, id, name) VALUES
 (7, 1705, 'Detail'),
 (7, 1706, 'AuthInfoChange'),
 (7, 1707, 'MergeContacts'),
-(7, 1708, 'WarningLetterChange')
+(7, 1708, 'WarningLetterChange'),
+(7, 1709, 'RecordStatement')
 ;
 
 INSERT INTO result_code (service_id, result_code, name) VALUES 

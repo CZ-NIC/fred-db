@@ -1,0 +1,5 @@
+---
+--- Logger requests for new "Web whois" and "Domainbrowser".
+---
+INSERT INTO request_type (id, name, service_id) VALUES (1107, 'RecordStatement', 1);  -- Web whois
+INSERT INTO request_type (id, name, service_id) VALUES (1709, 'RecordStatement', 7);  -- Domainbrowser
