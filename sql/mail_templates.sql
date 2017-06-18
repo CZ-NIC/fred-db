@@ -1125,3 +1125,79 @@ Support of <?cs var:defaults.company_en ?>
 ');
 INSERT INTO mail_type_template_map (typeid, templateid) VALUES (31, 31);
 
+
+---
+--- Ticket #19293
+---
+
+INSERT INTO mail_type (id, name, subject) VALUES (32, 'akm_candidate_state_ok', 'Oznámení o nalezení CDNSKEY záznamu u domény <?cs var:domain ?>');
+INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) SELECT id,1 FROM mail_type WHERE name='akm_candidate_state_ok';
+INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
+(32, 'plain', 1,
+'The English version of the email follows the Czech version
+
+Vážený zákazníku,
+
+náš systém pro automatizovanou správu DNSSEC klíčů nalezl platný CDNSKEY záznam/záznamy na všech jmenných serverech Vaší domény <?cs var:domain ?>. Záznam/záznamy obsahoval/obsahovaly následující klíč/klíče:
+
+<?cs each:item = keys ?><?cs var:item ?>
+<?cs /each ?>
+
+Ve shodě s RFC 7344 a RFC 8078 považujeme přítomnost těchto záznamů za žádost o zveřejnění těchto klíčů v nadřazené zóně. S ohledem na to, že v nadřazené zóně ještě klíče pro Vaši doménu zveřejněny nejsou, vstoupila Vaše doména nyní do režimu přechodu na automatizovanou správu DNSSEC klíčů. Od této chvíle probíhá pravidelná kontrola přítomnosti uvedeného CDNSKEY záznamu na jmenných serverech Vaší domény. Pokud po dobu následujících 7 dnů nezaregistrujeme žádnou změnu CDNSKEY záznamů na žádném z těchto jmenných serverů, budou uvedené klíče uloženy do nově vygenerovaného záznamu KEYSET v centrálním registru a následně zveřejněny prostřednictvím DS záznamů v zóně .cz. Vaše doména tak bude chráněna systémem DNSSEC. Správa DNSSEC klíčů pak bude probíhat automaticky na základě Vámi zveřejňovaných CDNSKEY záznamů. 
+
+Výše uvedené klíče považujeme za aktuální a tedy požadovaný stav. Pokud došlo k nalezení nového CDNSKEY záznamu u stejné domény v nedokončené lhůtě 7 dnů, předchozí lhůta u této domény se  ruší a začíná běžet nová.
+
+Proces zařazení Vaší domény do režimu s automatizovanou správou DNSSEC klíčů lze zastavit odebráním CDNSKEY záznamů v uvedené lhůtě 7 dnů.
+
+Pokud uvedené zprávě nerozumíte, předejte ji prosím svému správci DNS.
+
+S pozdravem
+podpora <?cs var:defaults.company_cs ?>
+');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (32, 32);
+
+INSERT INTO mail_type (id, name, subject) VALUES (33, 'akm_candidate_state_ko', 'Oznámení o vyřazení domény <?cs var:domain ?> ze systému automatizované správy DNSSEC klíč');
+INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) SELECT id,1 FROM mail_type WHERE name='akm_candidate_state_ko';
+INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
+(33, 'plain', 1,
+'The English version of the email follows the Czech version
+
+Vážený zákazníku,
+
+náš systém pro automatizovanou správu DNSSEC klíčů zjistil konfiguraci jmenných serverů a CDNSKEY záznamů, která nevyhovuje podmínkám pro přechod do režimu automatizované správy DNSSEC klíčů. Dokud neprovedete změnu uvedené konfigurace, Vaše doména $domena.cz nebude zařazena do automatizované správy DNSSEC klíčů.
+
+Datum a čas nálezu: <?cs var:datetime ?>
+
+Ve shodě s RFC 7344 a RFC 8078 však stále probíhá pravidelná kontrola Vašich jmenných serverů. Jakmile na nich nalezneme vyhovující konfiguraci CDNSKEY záznamů, zahájíme přechod Vaší domény do režimu automatizované správy DNSSEC klíčů.
+
+Pokud uvedené zprávě nerozumíte, předejte ji prosím svému správci DNS.
+
+S pozdravem
+podpora <?cs var:defaults.company_cs ?>
+');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (33, 33);
+
+INSERT INTO mail_type (id, name, subject) VALUES (34, 'akm_keyset_update', 'Oznámení o nalezení nového platného CDNSKEY záznamu u domény <?cs var:domain ?>');
+INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) SELECT id,1 FROM mail_type WHERE name='akm_keyset_update';
+INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
+(34, 'plain', 1,
+'The English version of the email follows the Czech version
+
+Vážený zákazníku,
+
+náš systém pro automatizovanou správu DNSSEC klíčů nalezl na jmenných serverech Vaší domény <?cs var:domain ?> nový platný CDNSKEY záznam/záznamy s následujícím klíčem/klíči:
+
+Datum a čas nálezu: <?cs var:datetime ?>
+
+<?cs each:item = keys ?><?cs var:item ?>
+<?cs /each ?>
+
+Ve shodě s RFC 7344 a RFC 8078 považujeme přítomnost těchto záznamů za žádost o zveřejnění těchto klíčů v nadřazené zóně. S ohledem na to, že tento klíč/klíče se liší od aktuálně zveřejňovaných klíčů v nadřazené zóně, provedeme během X dní aktualizaci automaticky spravovaného KEYSETu v registru a poté budou v zóně .cz pro vaši doménu $domen.cz zveřejněny pouze výše uvedené nové klíče.
+
+Pokud uvedené zprávě nerozumíte, předejte ji prosím svému správci DNS.
+
+S pozdravem
+podpora <?cs var:defaults.company_cs ?>
+');
+INSERT INTO mail_type_template_map (typeid, templateid) VALUES (34, 34);
+
