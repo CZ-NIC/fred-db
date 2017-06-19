@@ -1164,7 +1164,7 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 
 Vážený zákazníku,
 
-náš systém pro automatizovanou správu DNSSEC klíčů zjistil konfiguraci jmenných serverů a CDNSKEY záznamů, která nevyhovuje podmínkám pro přechod do režimu automatizované správy DNSSEC klíčů. Dokud neprovedete změnu uvedené konfigurace, Vaše doména $domena.cz nebude zařazena do automatizované správy DNSSEC klíčů.
+náš systém pro automatizovanou správu DNSSEC klíčů zjistil konfiguraci jmenných serverů a CDNSKEY záznamů, která nevyhovuje podmínkám pro přechod do režimu automatizované správy DNSSEC klíčů. Dokud neprovedete změnu uvedené konfigurace, Vaše doména <?cs var:domain ?> nebude zařazena do automatizované správy DNSSEC klíčů.
 
 Datum a čas nálezu: <?cs var:datetime ?>
 
@@ -1192,7 +1192,7 @@ Datum a čas nálezu: <?cs var:datetime ?>
 <?cs each:item = keys ?><?cs var:item ?>
 <?cs /each ?>
 
-Ve shodě s RFC 7344 a RFC 8078 považujeme přítomnost těchto záznamů za žádost o zveřejnění těchto klíčů v nadřazené zóně. S ohledem na to, že tento klíč/klíče se liší od aktuálně zveřejňovaných klíčů v nadřazené zóně, provedeme během X dní aktualizaci automaticky spravovaného KEYSETu v registru a poté budou v zóně .cz pro vaši doménu $domen.cz zveřejněny pouze výše uvedené nové klíče.
+Ve shodě s RFC 7344 a RFC 8078 považujeme přítomnost těchto záznamů za žádost o zveřejnění těchto klíčů v nadřazené zóně. S ohledem na to, že tento klíč/klíče se liší od aktuálně zveřejňovaných klíčů v nadřazené zóně, provedeme během X dní aktualizaci automaticky spravovaného KEYSETu v registru a poté budou v zóně .cz pro vaši doménu <?cs var:domain ?> zveřejněny pouze výše uvedené nové klíče.
 
 Pokud uvedené zprávě nerozumíte, předejte ji prosím svému správci DNS.
 
