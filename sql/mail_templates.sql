@@ -1168,7 +1168,7 @@ Discovered at: <?cs var:datetime ?>
 
 In compliance with RFC 7344 and RFC 8078, we are considering the presence of these records as a request to publish these keys in the <?cs var:zone ?> zone and therefore your domain is now in the mode of transition to the automated DNSSEC-key management.
 
-From now on, the presence of the stated CDNSKEY records on the domain servers of your domain will be checked on a daily basis. Unless we notice any change of CDNSKEY records on any of these DNS servers in the next <?cs var:days_to_left ?> days, these keys will be stored in a new keyset in the central registry and subsequently published as DS records in the <?cs var:zone ?> zone. Unless you react to this email, your domain will keep working as until now and besides, it will be newly protected by DNSSEC and the administration of DNSSEC keys will then run automatically based on your published CDNSKEY records.
+ From now on, the presence of the stated CDNSKEY records on the domain servers of your domain will be checked on a daily basis. Unless we notice any change of CDNSKEY records on any of these DNS servers in the next <?cs var:days_to_left ?> days, these keys will be stored in a new keyset in the central registry and subsequently published as DS records in the <?cs var:zone ?> zone. Unless you react to this email, your domain will keep working as until now and besides, it will be newly protected by DNSSEC and the administration of DNSSEC keys will then run automatically based on your published CDNSKEY records.
 
 The process of transition of your domain to the automated DNSSEC-key management can be stopped by removing CDNSKEY records within the <?cs var:days_to_left ?>-day period.
 
