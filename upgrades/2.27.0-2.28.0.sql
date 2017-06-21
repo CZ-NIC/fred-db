@@ -1,4 +1,10 @@
 ---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.28.0' WHERE id = 1;
+
+
+---
 --- Ticket #19293
 ---
 
