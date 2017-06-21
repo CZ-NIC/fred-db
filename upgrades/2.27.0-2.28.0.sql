@@ -8,7 +8,7 @@ UPDATE enum_parameters SET val = '2.28.0' WHERE id = 1;
 --- Ticket #19293
 ---
 
-INSERT INTO mail_type (id, name, subject) VALUES (32, 'akm_candidate_state_ok', 'Subject: Oznámení o úspěšném nalezení záznamu CDNSKEY u domény <?cs var:domain ?> / Notification of CDNSKEY record discovery for the <?cs var:domain ?> domain');
+INSERT INTO mail_type (id, name, subject) VALUES (32, 'akm_candidate_state_ok', 'Oznámení o úspěšném nalezení záznamu CDNSKEY u domény <?cs var:domain ?> / Notification of CDNSKEY record discovery for the <?cs var:domain ?> domain');
 INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) SELECT id,1 FROM mail_type WHERE name='akm_candidate_state_ok';
 INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 (32, 'plain', 1,
