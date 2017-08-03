@@ -10,7 +10,10 @@ INSERT INTO request_type (service_id, id, name)
         (8, 4, 'DataMigration'),
         (8, 5, 'MojeidValidateISIC'),
         (8, 6, 'MojeidDeactivateAutor'),
-        (8, 7, 'MojeidResetPassword');
+        (8, 7, 'MojeidResetPassword'),
+        (8, 4000, 'AkmTurnOn'),
+        (8, 4001, 'AkmRollover'),
+        (8, 4002, 'AkmTurnOff');
 
 INSERT INTO result_code (service_id, result_code, name)
     VALUES
