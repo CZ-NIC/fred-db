@@ -198,9 +198,3 @@ WHERE os.valid_to IS NULL AND
       nsc.type=13 AND
       NOT EXISTS(SELECT * FROM notify_statechange
                  WHERE state_id=nsc.state_id AND type=12);
-
-INSERT INTO request_type (service_id, id, name)
-    VALUES
-        (8, 4000, 'AkmTurnOn'),
-        (8, 4001, 'AkmRollover'),
-        (8, 4002, 'AkmTurnOff');
