@@ -21,6 +21,9 @@ write_script()
 	cat $DIR/history_base.sql
 	cat $DIR/ccreg.sql
 	cat $DIR/history.sql
+    # regex handle validation
+	cat $DIR/regex_handle_validation_ddl.sql
+	cat $DIR/regex_handle_validation_dml.sql
 	#zone generator
 	cat $DIR/genzone.sql
 	#adif
