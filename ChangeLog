@@ -1,3 +1,9 @@
+2017-09-11 (2.30.0)
+
+    * fix epp poll message table indexes
+
+    * fix epp reason messages
+
 2017-09-11 (2.29.0)
 
     * contact, nsset, keyset handle format rules (regex) moved to database
