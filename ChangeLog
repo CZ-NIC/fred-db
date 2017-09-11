@@ -1,3 +1,7 @@
+2017-09-11 (2.29.0)
+
+    * contact, nsset, keyset handle format rules (regex) moved to database
+
 2017-06-21 (2.28.0)
 
     * automatic keyset management (e-mail templates)
