@@ -9,6 +9,8 @@ INSERT INTO enum_filetype (id, name) VALUES (3, 'accounting xml');
 INSERT INTO enum_filetype (id, name) VALUES (4, 'banking statement');
 INSERT INTO enum_filetype (id, name) VALUES (5, 'expiration warning letter');
 
+INSERT INTO enum_filetype (id, name) VALUES (11, 'record statement');
+
 comment on table enum_filetype is 'list of file types
 
 id - name
