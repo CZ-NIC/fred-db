@@ -937,7 +937,7 @@ INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
 
 Vážený zákazníku,
 
-z důvodu zjednodušení administrace a správy kontaktů v registru byly v souladu s Pravidly registrace doménových jmen, odstavec 11.10, provedeny následující změny:
+z důvodu zjednodušení administrace a správy kontaktů v registru byly v souladu s Pravidly registrace doménových jmen, čl. 13.1, provedeny následující změny:
 
 Došlo ke sjednocení duplicitních kontaktů, které mají různé identifikátory, a přitom obsahují shodné údaje. Všechny duplicitní kontakty byly převedeny pod jediný s identifikátorem <?cs var:dst_contact_handle ?>.
 
@@ -963,7 +963,7 @@ podpora <?cs var:defaults.company_cs ?>
 
 Dear Customer,
 
-To simplify the administration and management of contact data in the registry, the following changes have been implemented in accordance with the Domain Name Registration Rules, Section 11.10:
+To simplify the administration and management of contact data in the registry, the following changes have been implemented in accordance with the Domain Name Registration Rules, Article 13.1:
 
 Duplicate contact entries having different identifiers but identical contents have been unified. All duplicate contact details were merged into a single entry carrying the identifier <?cs var:dst_contact_handle ?>.
 
