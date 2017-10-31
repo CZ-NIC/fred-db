@@ -188,11 +188,8 @@ UPDATE enum_reason SET
 UPDATE enum_reason SET
     (reason, reason_cs) = ('Temporary contacts are discontinued', 'Dočasné kontakty již nejsou podporovány')
  WHERE id = 65;
-UPDATE enum_reason SET
-    (reason, reason_cs) = (
-        'The validity period is shorter than the allowed minimum',
-        'Doba platnosti je kratší než povolené minimum')
- WHERE id = 66;
+INSERT INTO enum_reason (id, reason, reason_cs)
+     VALUES (66, 'The validity period is shorter than the allowed minimum', 'Doba platnosti je kratší než povolené minimum');
 
 DELETE FROM enum_reason WHERE id = 12;
 DELETE FROM enum_reason WHERE id = 13;
