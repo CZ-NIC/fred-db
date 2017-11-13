@@ -18,7 +18,8 @@ INSERT INTO request_type (service_id, id, name) VALUES
 (6, 1515, 'ResendPIN3'),
 (6, 1516, 'SendMojeIDCard'),
 (6, 1517, 'OpenIDConnectRequest'),
-(6, 1518, 'OpenIDConnectRefreshRequest');
+(6, 1518, 'OpenIDConnectRefreshRequest'),
+(6, 1519, 'OIDCConsumerRegistration');
 
 
 INSERT INTO result_code (service_id, result_code, name) VALUES 
