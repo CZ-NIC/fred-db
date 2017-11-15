@@ -1,3 +1,9 @@
+2017-11-15 (2.31.0)
+
+    * add functions to automate logger partitioning dropping
+
+    * new logger request types
+
 2017-09-11 (2.30.0)
 
     * fix epp poll message table indexes
