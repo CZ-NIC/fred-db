@@ -1,3 +1,29 @@
+---
+--- #18995 - logger requests - record statement service
+---
+INSERT INTO request_type (id, name, service_id)
+    VALUES (1107, 'RecordStatement', 1);  -- Web whois
+
+INSERT INTO request_type (id, name, service_id)
+    VALUES (1709, 'RecordStatement', 7);  -- Domainbrowser
+
+
+---
+--- #20007 - logger requests - consumer registration
+---
+INSERT INTO request_type (service_id, id, name)
+  VALUES (6, 1519, 'OIDCConsumerRegistration');
+
+INSERT INTO request_type (service_id, id, name)
+  VALUES (8, 11, 'SAMLConsumerRegistration');
+
+INSERT INTO request_type (service_id, id, name)
+  VALUES (8, 12, 'ConsumerRegistration');
+
+
+---
+--- TODO: #20205 - logger-maintenance - drop partitions
+---
 CREATE OR REPLACE FUNCTION drop_parts_for_month(time_begin TIMESTAMP WITHOUT TIME ZONE, service TEXT, dry_run BOOLEAN) RETURNS SETOF TEXT AS $drop_parts_for_month$
 DECLARE
     alter_table TEXT;
