@@ -1,4 +1,10 @@
 ---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.31.1' WHERE id = 1;
+
+
+---
 --- Ticket #19686 - fix serverBlocked flag description
 ---
 UPDATE enum_object_states_desc
