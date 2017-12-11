@@ -115,9 +115,9 @@ INSERT INTO enum_object_states_desc
 INSERT INTO enum_object_states_desc 
   VALUES (06,'EN','The domain is administratively kept in zone');
 INSERT INTO enum_object_states_desc 
-  VALUES (07,'CS','Doména je blokována');
+  VALUES (07,'CS','Administrativně blokováno');
 INSERT INTO enum_object_states_desc 
-  VALUES (07,'EN','Domain blocked');
+  VALUES (07,'EN','Administratively blocked');
 INSERT INTO enum_object_states_desc 
   VALUES (08,'CS','Doména expiruje do 30 dní');
 INSERT INTO enum_object_states_desc 
