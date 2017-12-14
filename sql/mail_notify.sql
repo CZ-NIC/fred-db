@@ -176,7 +176,9 @@ CREATE TABLE mail_archive (
         attempt smallint NOT NULL DEFAULT 0, -- failed attempts to send email
         -- message to be sent including headers (except date and msgid header),
         -- without non-templated attachments.
-	response text
+    response text,
+    message_params jsonb,
+    response_header jsonb
 	);
 
 CREATE INDEX mail_archive_status_idx ON mail_archive (status);
