@@ -1285,39 +1285,23 @@ INSERT INTO enum_domain_name_validation_checker (id, name, description)
 INSERT INTO enum_domain_name_validation_checker (id, name, description)
     VAlUES (7, 'dncheck_single_digit_labels_only', 'enforces single digit labels (for enum domains)');
 
+INSERT INTO zone_domain_name_validation_checker_map (checker_id, zone_id)
+SELECT ec.id, z.id
+  FROM enum_domain_name_validation_checker ec,
+       zone z
+ WHERE z.enum_zone IS FALSE
+       AND ec.name IN (
+           'dncheck_letters_digits_hyphen_chars_only',
+           'dncheck_no_label_beginning_hyphen',
+           'dncheck_no_label_ending_hyphen',
+           'dncheck_no_consecutive_hyphens'
+       );
 
-INSERT INTO zone_domain_name_validation_checker_map
-    VALUES
-        (
-            default,
-            (SELECT id FROM enum_domain_name_validation_checker WHERE name = 'dncheck_letters_digits_hyphen_chars_only'),
-            (SELECT id FROM zone WHERE fqdn = 'cz')
-        );
-INSERT INTO zone_domain_name_validation_checker_map
-    VALUES
-        (
-            DEFAULT,
-            (SELECT id FROM enum_domain_name_validation_checker WHERE name = 'dncheck_no_label_beginning_hyphen'),
-            (SELECT id FROM zone WHERE fqdn = 'cz')
-        );
-INSERT INTO zone_domain_name_validation_checker_map
-    VALUES
-        (
-            DEFAULT,
-            (SELECT id FROM enum_domain_name_validation_checker WHERE name = 'dncheck_no_label_ending_hyphen'),
-            (SELECT id FROM zone WHERE fqdn = 'cz')
-        );
-INSERT INTO zone_domain_name_validation_checker_map
-    VALUES
-        (
-            DEFAULT,
-            (SELECT id FROM enum_domain_name_validation_checker WHERE name = 'dncheck_no_consecutive_hyphens'),
-            (SELECT id FROM zone WHERE fqdn = 'cz')
-        );
-INSERT INTO zone_domain_name_validation_checker_map
-    VALUES
-        (
-            DEFAULT,
-            (SELECT id FROM enum_domain_name_validation_checker WHERE name = 'dncheck_single_digit_labels_only'),
-            (SELECT id FROM zone WHERE fqdn = '0.2.4.e164.arpa')
-        );
+INSERT INTO zone_domain_name_validation_checker_map (checker_id, zone_id)
+SELECT ec.id, z.id
+  FROM enum_domain_name_validation_checker ec,
+       zone z
+ WHERE z.enum_zone IS TRUE
+       AND ec.name IN (
+           'dncheck_single_digit_labels_only'
+       );
