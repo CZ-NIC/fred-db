@@ -1,3 +1,7 @@
+2017-12-19 (2.32.0)
+
+    * registrar passwords in registraracl table can be in hashed form
+
 2017-12-11 (2.31.1)
 
     * fix `serverBlocked` status description
