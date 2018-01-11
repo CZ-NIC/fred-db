@@ -49,7 +49,8 @@ CREATE TABLE registraracl (
   id SERIAL CONSTRAINT registraracl_pkey PRIMARY KEY,
   registrarid INTEGER NOT NULL CONSTRAINT registraracl_registrarid_fkey REFERENCES registrar,
   cert VARCHAR(1024) NOT NULL, -- certificate fingerprint
-  password VARCHAR(1024) NOT NULL -- password data
+  password VARCHAR(1024) NOT NULL, -- password data
+  CONSTRAINT registraracl_registrarid_cert_fkey UNIQUE (registrarid,cert)
 );
 
 COMMENT ON TABLE registraracl IS 'Registrars login information';
