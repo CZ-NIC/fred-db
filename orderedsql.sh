@@ -32,9 +32,60 @@ write_script()
 	cat $DIR/filemanager.sql
 	#filemanager's file for certification evaluation pdf
 	cat $DIR/certification_file_dml.sql
-	#mailer
-	cat $DIR/mail_notify.sql
-	cat $DIR/mail_templates.sql
+	# mailer
+	cat $DIR/mail_archive/mail_archive_schema.sql
+    cat $DIR/mail_archive/mail_type_admin_contact_verification.sql
+    cat $DIR/mail_archive/mail_type_akm.sql
+    cat $DIR/mail_archive/mail_type_authinfo.sql
+    cat $DIR/mail_archive/mail_type_contact_merge.sql
+    cat $DIR/mail_archive/mail_type_contact_reminder.sql
+    cat $DIR/mail_archive/mail_type_contact_verification.sql
+    cat $DIR/mail_archive/mail_type_expiration.sql
+    cat $DIR/mail_archive/mail_type_invoice.sql
+    cat $DIR/mail_archive/mail_type_mojeid.sql
+    cat $DIR/mail_archive/mail_type_notification.sql
+    cat $DIR/mail_archive/mail_type_public_request.sql
+    cat $DIR/mail_archive/mail_type_record_statement.sql
+    cat $DIR/mail_archive/mail_type_techcheck.sql
+    # mailer setting (TEMP - cz.nic specific)
+    cat $DIR/_defaults/mail_archive/mail_template_default.sql
+    cat $DIR/_defaults/mail_archive/mail_header_default.sql
+    cat $DIR/_defaults/mail_archive/mail_template_footer.sql
+    cat $DIR/_defaults/mail_archive/mail_vcard.sql
+    cat $DIR/_defaults/mail_archive/mail_type_priority.sql
+    cat $DIR/_defaults/mail_archive/mail_template_akm_candidate_state_ko.sql
+    cat $DIR/_defaults/mail_archive/mail_template_akm_candidate_state_ok.sql
+    cat $DIR/_defaults/mail_archive/mail_template_akm_keyset_update.sql
+    cat $DIR/_defaults/mail_archive/mail_template_annual_contact_reminder.sql
+    cat $DIR/_defaults/mail_archive/mail_template_conditional_contact_identification.sql
+    cat $DIR/_defaults/mail_archive/mail_template_contact_identification.sql
+    cat $DIR/_defaults/mail_archive/mail_template_expiration_dns_owner.sql
+    cat $DIR/_defaults/mail_archive/mail_template_expiration_dns_tech.sql
+    cat $DIR/_defaults/mail_archive/mail_template_expiration_dns_warning_owner.sql
+    cat $DIR/_defaults/mail_archive/mail_template_expiration_notify.sql
+    cat $DIR/_defaults/mail_archive/mail_template_expiration_register_owner.sql
+    cat $DIR/_defaults/mail_archive/mail_template_expiration_register_tech.sql
+    cat $DIR/_defaults/mail_archive/mail_template_expiration_validation_before.sql
+    cat $DIR/_defaults/mail_archive/mail_template_expiration_validation.sql
+    cat $DIR/_defaults/mail_archive/mail_template_invoice_audit.sql
+    cat $DIR/_defaults/mail_archive/mail_template_invoice_deposit.sql
+    cat $DIR/_defaults/mail_archive/mail_template_invoice_noaudit.sql
+    cat $DIR/_defaults/mail_archive/mail_template_merge_contacts_auto.sql
+    cat $DIR/_defaults/mail_archive/mail_template_mojeid_email_change.sql
+    cat $DIR/_defaults/mail_archive/mail_template_mojeid_identification.sql
+    cat $DIR/_defaults/mail_archive/mail_template_mojeid_validation.sql
+    cat $DIR/_defaults/mail_archive/mail_template_mojeid_verified_contact_transfer.sql
+    cat $DIR/_defaults/mail_archive/mail_template_notification_create.sql
+    cat $DIR/_defaults/mail_archive/mail_template_notification_delete.sql
+    cat $DIR/_defaults/mail_archive/mail_template_notification_renew.sql
+    cat $DIR/_defaults/mail_archive/mail_template_notification_transfer.sql
+    cat $DIR/_defaults/mail_archive/mail_template_notification_unused.sql
+    cat $DIR/_defaults/mail_archive/mail_template_notification_update.sql
+    cat $DIR/_defaults/mail_archive/mail_template_record_statement.sql
+    cat $DIR/_defaults/mail_archive/mail_template_request_block.sql
+    cat $DIR/_defaults/mail_archive/mail_template_sendauthinfo_epp.sql
+    cat $DIR/_defaults/mail_archive/mail_template_sendauthinfo_pif.sql
+    cat $DIR/_defaults/mail_archive/mail_template_techcheck.sql
 	# banking
 	cat $DIR/enum_bank_code.sql
 	cat $DIR/credit_ddl.sql
@@ -76,7 +127,6 @@ write_script()
     cat $DIR/registry_dml_mojeid.sql
     # contact reminder
     cat $DIR/reminder_ddl.sql
-    cat $DIR/reminder_dml.sql
     # monitoring
     cat $DIR/monitoring_dml.sql
     # epp login IDs
