@@ -40,17 +40,17 @@ CREATE TABLE mail_header_default (
 
 COMMENT ON TABLE mail_header_default
      IS 'E-mail headers default parameters, used if not set by client';
-COMMENT ON COLUMN mail_header_defaults.h_from
+COMMENT ON COLUMN mail_header_default.h_from
      IS '''From:'' header';
-COMMENT ON COLUMN mail_header_defaults.h_replyto
+COMMENT ON COLUMN mail_header_default.h_replyto
      IS '''Reply-to:'' header';
-COMMENT ON COLUMN mail_header_defaults.h_errorsto
+COMMENT ON COLUMN mail_header_default.h_errorsto
      IS '''Errors-to:'' header';
-COMMENT ON COLUMN mail_header_defaults.h_organization
+COMMENT ON COLUMN mail_header_default.h_organization
      IS '''Organization:'' header';
-COMMENT ON COLUMN mail_header_defaults.h_contentencoding
+COMMENT ON COLUMN mail_header_default.h_contentencoding
      IS '''Content-encoding:'' header';
-COMMENT ON COLUMN mail_header_defaults.h_messageidserver
+COMMENT ON COLUMN mail_header_default.h_messageidserver
      IS 'Used to generate ''Message-ID'' (<email-id>.<timestamp>@<messageidserver>) ';
 
 INSERT INTO mail_header_default
