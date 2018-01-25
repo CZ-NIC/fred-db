@@ -7,14 +7,14 @@ Oznámení o zrušení / Notification of deletion
 =====================================================================
 Zrušení <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> deletion
 Identifikátor <?cs call:typesubst("cs") ?> / <?cs call:typesubst("en") ?> handle : <?cs var:handle ?>
-Číslo žádosti / Ticket :  <?cs var:ticket ?>
+Číslo žádosti / Ticket : <?cs var:ticket ?>
 Registrátor / Registrar : <?cs var:registrar ?>
 =====================================================================
- 
-Žádost byla úspěšně zpracována, požadované zrušení bylo provedeno. 
+
+Žádost byla úspěšně zpracována, požadované zrušení bylo provedeno.
 The request was processed successfully, the required deletion
-has been performed. 
- 
+has been performed.
+
 =====================================================================
 
 S pozdravem / Your sincerely
