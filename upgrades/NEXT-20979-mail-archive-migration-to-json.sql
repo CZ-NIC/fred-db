@@ -1490,6 +1490,9 @@ $$
 DECLARE
     message_params JSONB;
 BEGIN
+    IF COALESCE(message, '') != '' AND SUBSTRING(message FROM '^Content-Type') IS NULL THEN
+        RETURN json_build_object('header', json_build_object('To', message))::JSONB;
+    END IF;
     EXECUTE 'SELECT migrate_mail_archive_type_' || mail_type_id || '($1, $2)' INTO message_params USING message, mail_type_id;
     RETURN message_params;
 END;
