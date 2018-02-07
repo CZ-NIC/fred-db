@@ -1485,7 +1485,7 @@ LANGUAGE SQL;
 -- record_statement
 
 
-CREATE OR REPLACE FUNCTION migrate_mail_archive_to_json(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
+CREATE OR REPLACE FUNCTION migrate_mail_archive_message_to_json(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
 DECLARE
     message_params JSONB;
