@@ -1498,3 +1498,38 @@ BEGIN
 END;
 $$
 LANGUAGE PLPGSQL;
+
+
+CREATE OR REPLACE FUNCTION migrate_mail_archive_response_to_json(response_encoded TEXT) RETURNS JSONB AS
+$$
+    WITH decoded AS
+    (
+        SELECT CONVERT_FROM(DECODE(response_encoded, 'BASE64'), 'UTF-8') AS response
+    )
+    SELECT CASE
+           WHEN COALESCE(BTRIM(response_encoded), '') != '' THEN
+               json_build_object(
+                   'To',
+                       REGEXP_REPLACE(SUBSTRING(decoded.response FROM '\nTo: (.*?)\n'), E'[\\n\\r]+', '', 'g'),
+                   'Date',
+                       REGEXP_REPLACE(SUBSTRING(decoded.response FROM '\nDate: (.*?)\n'), E'[\\n\\r]+', '', 'g'),
+                   'Action',
+                       REGEXP_REPLACE(SUBSTRING(decoded.response FROM '\nAction: (.*?)\n'), E'[\\n\\r]+', '', 'g'),
+                   'Status',
+                       REGEXP_REPLACE(SUBSTRING(decoded.response FROM '\nStatus: (.*?)\n'), E'[\\n\\r]+', '', 'g'),
+                   'Subject',
+                       REGEXP_REPLACE(SUBSTRING(decoded.response FROM '\nSubject: (.*?)\n'), E'[\\n\\r]+', '', 'g'),
+                   'Remote-MTA',
+                       REGEXP_REPLACE(SUBSTRING(decoded.response FROM '\nRemote-MTA: (.*?)\n'), E'[\\n\\r]+', '', 'g'),
+                   'Reporting-MTA',
+                       REGEXP_REPLACE(SUBSTRING(decoded.response FROM '\nReporting-MTA: (.*?)\n'), E'[\\n\\r]+', '', 'g'),
+                   'Diagnostic-Code',
+                       REGEXP_REPLACE(SUBSTRING(decoded.response FROM '\nDiagnostic-Code: (.*?)\n'), E'[\\n\\r]+', '', 'g'),
+                   'Final-Recipient',
+                       REGEXP_REPLACE(SUBSTRING(decoded.response FROM '\nFinal-Recipient: (.*?)\n'), E'[\\n\\r]+', '', 'g')
+               )::JSONB
+           ELSE NULL
+           END
+      FROM decoded;
+$$
+LANGUAGE SQL;
