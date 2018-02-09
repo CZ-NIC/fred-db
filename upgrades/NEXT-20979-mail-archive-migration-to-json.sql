@@ -1583,8 +1583,11 @@ $$
 LANGUAGE PLPGSQL;
 
 
-CREATE OR REPLACE FUNCTION migrate_mail_archive_response_to_json(response_encoded TEXT) RETURNS JSONB AS
+CREATE OR REPLACE FUNCTION migrate_mail_archive_response_to_json(response_encoded TEXT, mail_id INTEGER) RETURNS JSONB AS
 $$
+DECLARE
+    response_header JSONB;
+BEGIN
     WITH decoded AS
     (
         SELECT CONVERT_FROM(DECODE(response_encoded, 'BASE64'), 'UTF-8') AS response
@@ -1613,6 +1616,13 @@ $$
                )::JSONB
            ELSE NULL
            END
+           INTO response_header
       FROM decoded;
+    RETURN response_header;
+    EXCEPTION
+        WHEN data_exception THEN
+            RAISE NOTICE 'Could not decode or convert response (id=%)', mail_id;
+            RETURN NULL;
+END;
 $$
-LANGUAGE SQL;
+LANGUAGE PLPGSQL;
