@@ -612,11 +612,11 @@ $$
                                          FROM '(.*)\nNové hodnoty / New values:'), '\nJmenný server / Name server: (.*?)\n', 'g'), '') AS a) AS foo
                            ),
                            'changes.object.authinfo.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nHeslo / Authinfo: (.*?)\n')),
+                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nHeslo / Authinfo: (.*?)\n.*Ostatn')),
                            'changes.nsset.check_level.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nÚroveň tech. kontrol / Check level: (.*?)\n')),
+                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nÚroveň tech. kontrol / Check level: (.*?)\n.*Ostatn')),
                            'changes.nsset.tech_c.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTechnické kontakty / Technical contacts: (.*?)\n')),
+                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTechnické kontakty / Technical contacts: (.*?)\n.*Ostatn')),
                            'changes.nsset.dns.new', (
                                SELECT ARRAY_AGG(foo.a) AS dns
                                  FROM (SELECT ARRAY_TO_STRING(REGEXP_MATCHES(SUBSTRING(message
@@ -652,17 +652,17 @@ $$
                                    THEN 1 ELSE 0
                                END,
                            'changes.object.authinfo.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nHeslo / Authinfo: (.*?)\n')),
+                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nHeslo / Authinfo: (.*?)\n.*Ostatn')),
                            'changes.domain.registrant.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDržitel / Holder: (.*?)\n')),
+                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDržitel / Holder: (.*?)\n.*Ostatn')),
                            'changes.domain.nsset.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nSada jmenných serverů / Name server set: (.*?)\n')),
+                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nSada jmenných serverů / Name server set: (.*?)\n.*Ostatn')),
                            'changes.domain.admin_c.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nAdministrativní kontakty / Administrative contacts: (.*?)\n')),
+                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nAdministrativní kontakty / Administrative contacts: (.*?)\n.*Ostatn')),
                            'changes.domain.temp_c.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDočasné kontakty / Temporary contacts: (.*?)\n')),
+                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDočasné kontakty / Temporary contacts: (.*?)\n.*Ostatn')),
                            'changes.domain.val_ex_date.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nValidováno do / Validation expiration date: (.*?)\n')),
+                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nValidováno do / Validation expiration date: (.*?)\n.*Ostatn')),
                            'changes.domain.publish.new',
                                CASE
                                WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nPřidat do ENUM tel.sezn. / Include in ENUM dict: (.*?)\n')) ~ 'yes'
@@ -688,9 +688,9 @@ $$
                                          FROM '(.*)\nNové hodnoty / New values:'), '\nklíče DNS / DNS keys: (.*?)\n', 'g'), '') AS a) AS foo
                            ),
                            'changes.object.authinfo.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nHeslo / Authinfo: (.*?)\n')),
+                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nHeslo / Authinfo: (.*?)\n.*Ostatn')),
                            'changes.keyset.tech_c.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTechnické kontakty / Technical contacts: (.*?)\n')),
+                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTechnické kontakty / Technical contacts: (.*?)\n.*Ostatn')),
                            'changes.nsset.dnskey.new', (
                                SELECT ARRAY_AGG(foo.a) AS dnskey
                                  FROM (SELECT ARRAY_TO_STRING(REGEXP_MATCHES(SUBSTRING(message
