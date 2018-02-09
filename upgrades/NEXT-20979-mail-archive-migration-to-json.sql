@@ -722,7 +722,11 @@ $$
                            'changes.domain.publish.old',
                                CASE
                                WHEN BTRIM(SUBSTRING(message FROM 'Přidat do ENUM tel.sezn. / Include in ENUM dict: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'yes'
-                                   THEN 1 ELSE 0
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Přidat do ENUM tel.sezn. / Include in ENUM dict: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'no'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END,
                            'changes.object.authinfo.new',
                                BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nHeslo / Authinfo: (.*?)\n.*Ostatn')),
@@ -739,7 +743,11 @@ $$
                            'changes.domain.publish.new',
                                CASE
                                WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nPřidat do ENUM tel.sezn. / Include in ENUM dict: (.*?)\n')) ~ 'yes'
-                                   THEN 1 ELSE 0
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nPřidat do ENUM tel.sezn. / Include in ENUM dict: (.*?)\n')) ~ 'no'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END
                        )
                    )::JSONB
