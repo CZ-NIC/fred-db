@@ -734,6 +734,8 @@ $$
                                BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDržitel / Holder: (.*?)\n.*Ostatn')),
                            'changes.domain.nsset.new',
                                BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nSada jmenných serverů / Name server set: (.*?)\n.*Ostatn')),
+                           'changes.domain.keyset.new',
+                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nSada klíčů / Key set: (.*?)\n.*Ostatn')),
                            'changes.domain.admin_c.new',
                                BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nAdministrativní kontakty / Administrative contacts: (.*?)\n.*Ostatn')),
                            'changes.domain.temp_c.new',
