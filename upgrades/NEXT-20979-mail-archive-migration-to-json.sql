@@ -472,46 +472,83 @@ $$
                            'changes.contact.disclose.name.old',
                                CASE
                                WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Jméno / Name: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1 ELSE 0
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Jméno / Name: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END,
                            'changes.contact.disclose.org.old',
                                CASE
                                WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Organizace / Organization: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1 ELSE 0
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Organizace / Organization: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END,
                            'changes.contact.disclose.email.old',
                                CASE
                                WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  E-mail / Email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1 ELSE 0
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  E-mail / Email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END,
                            'changes.contact.disclose.address.old',
                                CASE
                                WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Adresa / Address: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1 ELSE 0
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Adresa / Address: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END,
                            'changes.contact.disclose.notify_email.old',
                                CASE
                                WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Notifikační e-mail / Notification email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1 ELSE 0
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Notifikační e-mail / Notification email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END,
                            'changes.contact.disclose.ident.old',
                                CASE
                                WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Identifikační údaj / Identification data: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1 ELSE 0
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Identifikační údaj / Identification data: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END,
                            'changes.contact.disclose.vat.old',
                                CASE
                                WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  DIČ / VAT number: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1 ELSE 0
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  DIČ / VAT number: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END,
                            'changes.contact.disclose.telephone.old',
                                CASE
                                WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Telefon / Telephone: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1 ELSE 0
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Telefon / Telephone: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END,
                            'changes.contact.disclose.fax.old',
-                               CASE WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1 ELSE 0
+                               CASE
+                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END,
                            'changes.object.authinfo.new',
                                BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nHeslo / Authinfo: (.*?)\n')),
@@ -547,48 +584,84 @@ $$
                                BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDIČ / VAT number: (.*?)\n')),
                            'changes.contact.disclose.name.new',
                                CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Jméno / Name: (.*?)\n.*?')) ~ 'public'
-                                   THEN 1 ELSE 0
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Jméno / Name: (.*?)\n.*Ostatn')) ~ 'public'
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Jméno / Name: (.*?)\n.*Ostatn')) ~ 'hidden'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END,
                            'changes.contact.disclose.org.new',
                                CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Organizace / Organization: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1 ELSE 0
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Organizace / Organization: (.*?)\n.*Ostatn')) ~ 'public'
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Organizace / Organization: (.*?)\n.*Ostatn')) ~ 'hidden'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END,
                            'changes.contact.disclose.email.new',
                                CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  E-mail / Email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1 ELSE 0
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  E-mail / Email: (.*?)\n.*Ostatn')) ~ 'public'
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  E-mail / Email: (.*?)\n.*Ostatn')) ~ 'hidden'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END,
                            'changes.contact.disclose.address.new',
                                CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Adresa / Address: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1 ELSE 0
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Adresa / Address: (.*?)\n.*Ostatn')) ~ 'public'
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Adresa / Address: (.*?)\n.*Ostatn')) ~ 'hidden'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END,
                            'changes.contact.disclose.notify_email.new',
                                CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Notifikační e-mail / Notification email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1 ELSE 0
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Notifikační e-mail / Notification email: (.*?)\n.*Ostatn')) ~ 'public'
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Notifikační e-mail / Notification email: (.*?)\n.*Ostatn')) ~ 'hidden'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END,
                            'changes.contact.disclose.ident.new',
                                CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Identifikační údaj / Identification data: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1 ELSE 0
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Identifikační údaj / Identification data: (.*?)\n.*Ostatn')) ~ 'public'
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Identifikační údaj / Identification data: (.*?)\n.*Ostatn')) ~ 'hidden'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END,
                            'changes.contact.disclose.vat.new',
                                CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  DIČ / VAT number: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1 ELSE 0
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  DIČ / VAT number: (.*?)\n.*Ostatn')) ~ 'public'
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  DIČ / VAT number: (.*?)\n.*Ostatn')) ~ 'hidden'
+                                   THEN 0
                                END
                        )::JSONB
                             || json_build_object(
                            'changes.contact.disclose.telephone.new',
-                               CASE WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Telefon / Telephone: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1 ELSE 0
+                               CASE
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Telefon / Telephone: (.*?)\n.*Ostatn')) ~ 'public'
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Telefon / Telephone: (.*?)\n.*Ostatn')) ~ 'hidden'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END,
                            'changes.contact.disclose.fax.new',
-                               CASE WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1 ELSE 0
+                               CASE
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*Ostatn')) ~ 'public'
+                                   THEN 1
+                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*Ostatn')) ~ 'hidden'
+                                   THEN 0
+                               ELSE
+                                   NULL
                                END
                        )::JSONB
                    )::JSONB
