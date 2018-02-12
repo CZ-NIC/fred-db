@@ -1,0 +1,11 @@
+ALTER TABLE mail_type DROP COLUMN subject;
+ALTER TABLE mail_archive ALTER COLUMN message_params SET NOT NULL;
+ALTER TABLE mail_archive DROP COLUMN mailtype;
+ALTER TABLE mail_archive DROP COLUMN message;
+ALTER TABLE mail_archive DROP COLUMN response;
+DROP TABLE mail_type_template_map;
+DROP TABLE mail_type_mail_header_defaults_map;
+DROP TABLE mail_header_defaults;
+DROP TABLE mail_defaults;
+DROP TABLE mail_templates;
+DROP TABLE mail_footer;
