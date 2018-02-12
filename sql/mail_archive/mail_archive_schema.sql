@@ -6,7 +6,7 @@ CREATE TABLE mail_archive (
     attempt smallint DEFAULT 0 NOT NULL,
     mail_type_id integer NOT NULL,
     mail_template_version integer NOT NULL,
-    message_params jsonb,
+    message_params jsonb NOT NULL,
     response_header jsonb
 );
 
@@ -263,7 +263,7 @@ ALTER TABLE ONLY mail_archive
     ADD CONSTRAINT mail_archive_mail_type_id_fkey FOREIGN KEY (mail_type_id)
         REFERENCES mail_type(id);
 ALTER TABLE ONLY mail_archive
-    ADD CONSTRAINT mail_archive_mail_type_id_fkey1 FOREIGN KEY (mail_type_id, mail_template_version)
+    ADD CONSTRAINT mail_archive_mail_type_template_version_fkey FOREIGN KEY (mail_type_id, mail_template_version)
         REFERENCES mail_template(mail_type_id, version);
 
 ALTER TABLE ONLY mail_attachments
