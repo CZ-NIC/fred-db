@@ -1,0 +1,15 @@
+INSERT INTO mail_type_priority VALUES (1, 2);
+INSERT INTO mail_type_priority VALUES (2, 2);
+INSERT INTO mail_type_priority VALUES (10, 3);
+INSERT INTO mail_type_priority VALUES (11, 3);
+INSERT INTO mail_type_priority VALUES (12, 3);
+INSERT INTO mail_type_priority VALUES (13, 3);
+INSERT INTO mail_type_priority VALUES (14, 3);
+INSERT INTO mail_type_priority VALUES (15, 3);
+INSERT INTO mail_type_priority VALUES (20, 3);
+INSERT INTO mail_type_priority VALUES (21, 1);
+INSERT INTO mail_type_priority VALUES (22, 1);
+INSERT INTO mail_type_priority VALUES (24, 1);
+INSERT INTO mail_type_priority VALUES (27, 1);
+INSERT INTO mail_type_priority VALUES (25, 2);
+INSERT INTO mail_type_priority VALUES (26, 2);

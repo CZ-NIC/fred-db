@@ -1,12 +1,6 @@
----
---- Ticket #5102 - reminder - mail template
---- Ticket #5739 - fixed missing translations of identification type
----
-
-INSERT INTO mail_type (id, name, subject) VALUES (23, 'annual_contact_reminder', 'Ověření správnosti údajů');
-INSERT INTO mail_type_mail_header_defaults_map (mail_type_id,mail_header_defaults_id) VALUES ((SELECT id FROM mail_type WHERE name = 'annual_contact_reminder'), 1);
-INSERT INTO mail_templates (id, contenttype, footer, template) VALUES
- (23, 'plain', 1,
+INSERT INTO mail_template VALUES
+(23, 1,
+'Ověření správnosti údajů',
 'The English version of the email follows the Czech version
 
 Vážený zákazníku,
@@ -23,13 +17,13 @@ ID kontaktu v registru: <?cs var:handle ?>
 Organizace: <?cs var:organization ?>
 Jméno: <?cs var:name ?>
 Adresa: <?cs var:address ?><?cs if:ident_type != "" ?>
-<?cs if:ident_type == "RC"?>Datum narození: <?cs 
-elif:ident_type == "OP"?>Číslo OP: <?cs 
-elif:ident_type == "PASS"?>Číslo pasu: <?cs 
-elif:ident_type == "ICO"?>IČO: <?cs 
-elif:ident_type == "MPSV"?>Identifikátor MPSV: <?cs 
-elif:ident_type == "BIRTHDAY"?>Datum narození: <?cs 
-/if ?> <?cs var:ident_value ?><?cs 
+<?cs if:ident_type == "RC"?>Datum narození: <?cs
+elif:ident_type == "OP"?>Číslo OP: <?cs
+elif:ident_type == "PASS"?>Číslo pasu: <?cs
+elif:ident_type == "ICO"?>IČO: <?cs
+elif:ident_type == "MPSV"?>Identifikátor MPSV: <?cs
+elif:ident_type == "BIRTHDAY"?>Datum narození: <?cs
+/if ?> <?cs var:ident_value ?><?cs
 /if ?>
 DIČ: <?cs var:dic ?>
 Telefon: <?cs var:telephone ?>
@@ -84,13 +78,13 @@ Contact ID in the registry: <?cs var:handle ?>
 Organization: <?cs var:organization ?>
 Name: <?cs var:name ?>
 Address: <?cs var:address ?><?cs if:ident_type != "" ?>
-<?cs if:ident_type == "RC"?>Birth date: <?cs 
-elif:ident_type == "OP"?>Personal ID: <?cs 
-elif:ident_type == "PASS"?>Passport number: <?cs 
-elif:ident_type == "ICO"?>ID number: <?cs 
-elif:ident_type == "MPSV"?>MSPV ID: <?cs 
-elif:ident_type == "BIRTHDAY"?>Birth day: <?cs 
-/if ?> <?cs var:ident_value ?><?cs 
+<?cs if:ident_type == "RC"?>Birth date: <?cs
+elif:ident_type == "OP"?>Personal ID: <?cs
+elif:ident_type == "PASS"?>Passport number: <?cs
+elif:ident_type == "ICO"?>ID number: <?cs
+elif:ident_type == "MPSV"?>MSPV ID: <?cs
+elif:ident_type == "BIRTHDAY"?>Birth day: <?cs
+/if ?> <?cs var:ident_value ?><?cs
 /if ?>
 VAT No.: <?cs var:dic ?>
 Phone: <?cs var:telephone ?>
@@ -129,6 +123,4 @@ Sets of name servers where the contact is their technical contact:<?cs each:item
 
 Keysets where the contact is their technical contact:<?cs each:item = keysets ?>
 <?cs var:item ?><?cs /each ?><?cs /if ?>
-');
-INSERT INTO mail_type_template_map (typeid, templateid) VALUES (23, 23);
-
+', 'plain', 1, 1, 1, DEFAULT);
