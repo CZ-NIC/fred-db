@@ -1,5 +1,7 @@
+---
+--- Fix template first to not create new version of it
+---
 UPDATE mail_templates SET template =
-'<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>domain<?cs elif:type == #1 ?>contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>keyset<?cs /if ?><?cs /if ?><?cs /def ?>Oznámení změn <?cs call:typesubst("cs") ?> <?cs var:handle ?>/ Notification of <?cs call:typesubst("en") ?> <?cs var:handle ?> changes',
 '<?cs def:typesubst(lang) ?><?cs if:lang == "cs" ?><?cs if:type == #3 ?>domény<?cs elif:type == #1 ?>kontaktu<?cs elif:type == #2 ?>sady nameserverů<?cs elif:type == #4 ?>sady klíčů<?cs /if ?><?cs elif:lang == "en" ?><?cs if:type == #3 ?>Domain<?cs elif:type == #1 ?>Contact<?cs elif:type == #2 ?>NS set<?cs elif:type == #4 ?>Keyset<?cs /if ?><?cs elif:lang == "ensmall" ?><?cs if:type == #3 ?>domain<?cs elif:type == #1 ?>contact<?cs elif:type == #2 ?>nsset<?cs elif:type == #4 ?>keyset<?cs /if ?><?cs /if ?><?cs /def ?>
 
 <?cs def:print_value(which, varname) ?><?cs if:which == "old" ?><?cs set:lvarname = varname.old ?><?cs elif:which == "new" ?><?cs set:lvarname = varname.new ?><?cs /if ?><?cs alt:lvarname ?><?cs if:which == "old" ?>hodnota nenastavena / value not set<?cs elif:which == "new" ?>hodnota smazána / value deleted<?cs /if ?><?cs /alt ?><?cs /def ?>
@@ -99,3 +101,39 @@ S pozdravem / Yours sincerely
 podpora <?cs var:defaults.company_cs ?> / Support of <?cs var:defaults.company_en ?>
 '
 WHERE id = 11;
+
+
+---
+--- mail_defaults => mail_template_default
+---
+INSERT INTO mail_template_default
+     VALUES (1, (SELECT json_object(array_agg('defaults.' || name), array_agg(value)) FROM mail_defaults));
+
+
+---
+--- mail_footer => mail_template_footer
+---
+INSERT INTO mail_template_footer (id, footer) SELECT id, footer FROM mail_footer;
+
+
+---
+--- mail_header_defaults => mail_header_default
+---
+INSERT INTO mail_header_default
+       (id, h_from, h_replyto, h_errorsto, h_organization, h_contentencoding, h_messageidserver)
+SELECT id, h_from, h_replyto, h_errorsto, h_organization, h_contentencoding, h_messageidserver
+  FROM mail_header_defaults;
+
+
+---
+--- mail_templates, mail_type => mail_template
+---
+INSERT INTO mail_template
+       (mail_type_id, subject, body_template, body_template_content_type,
+        mail_template_footer_id, mail_template_default_id, mail_header_default_id)
+SELECT mt.id, mt.subject, mts.template, mts.contenttype,
+       mts.footer, 1, mtmhdm.mail_header_defaults_id
+  FROM mail_type mt
+  JOIN mail_type_template_map mttm ON mttm.typeid = mt.id
+  JOIN mail_templates mts ON mts.id = mttm.templateid
+  JOIN mail_type_mail_header_defaults_map mtmhdm ON mtmhdm.mail_type_id = mt.id;

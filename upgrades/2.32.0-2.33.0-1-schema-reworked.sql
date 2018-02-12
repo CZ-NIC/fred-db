@@ -1,4 +1,10 @@
 ---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.33.0' WHERE id = 1;
+
+
+---
 --- mail_defaults => mail_template_default
 ---
 CREATE TABLE mail_template_default (
@@ -9,8 +15,6 @@ CREATE TABLE mail_template_default (
 COMMENT ON TABLE mail_template_default
      IS 'default parameters for all e-mail templates';
 
-INSERT INTO mail_template_default
-     VALUES (1, (SELECT json_object(array_agg('defaults.' || name), array_agg(value)) FROM mail_defaults));
 
 ---
 --- mail_footer => mail_template_footer
@@ -23,7 +27,6 @@ CREATE TABLE mail_template_footer (
 COMMENT ON TABLE mail_template_footer
      IS 'E-mail footer templates';
 
-INSERT INTO mail_template_footer (id, footer) SELECT id, footer FROM mail_footer;
 
 ---
 --- mail_header_defaults => mail_header_default
@@ -52,11 +55,6 @@ COMMENT ON COLUMN mail_header_default.h_contentencoding
      IS '''Content-encoding:'' header';
 COMMENT ON COLUMN mail_header_default.h_messageidserver
      IS 'Used to generate ''Message-ID'' (<email-id>.<timestamp>@<messageidserver>) ';
-
-INSERT INTO mail_header_default
-       (id, h_from, h_replyto, h_errorsto, h_organization, h_contentencoding, h_messageidserver)
-SELECT id, h_from, h_replyto, h_errorsto, h_organization, h_contentencoding, h_messageidserver
-  FROM mail_header_defaults;
 
 
 ---
@@ -102,32 +100,29 @@ CREATE TRIGGER set_next_mail_template_version_trigger
        BEFORE INSERT ON mail_template
        FOR EACH ROW EXECUTE PROCEDURE get_next_mail_template_version();
 
-INSERT INTO mail_template
-       (mail_type_id, subject, body_template, body_template_content_type,
-        mail_template_footer_id, mail_template_default_id, mail_header_default_id)
-SELECT mt.id, mt.subject, mts.template, mts.contenttype,
-       mts.footer, 1, mtmhdm.mail_header_defaults_id
-  FROM mail_type mt
-  JOIN mail_type_template_map mttm ON mttm.typeid = mt.id
-  JOIN mail_templates mts ON mts.id = mttm.templateid
-  JOIN mail_type_mail_header_defaults_map mtmhdm ON mtmhdm.mail_type_id = mt.id;
-
-ALTER TABLE mail_type DROP COLUMN subject;
 
 ---
 --- mail_archive
 ---
-ALTER TABLE mail_archive ADD COLUMN IF NOT EXISTS mail_type_id INTEGER NOT NULL CONSTRAINT mail_archive_mail_type_id_fkey REFERENCES mail_type(id);
+ALTER TABLE mail_archive ADD COLUMN IF NOT EXISTS mail_type_id INTEGER NOT NULL;
 ALTER TABLE mail_archive ADD COLUMN IF NOT EXISTS mail_template_version INTEGER NOT NULL;
 ALTER TABLE mail_archive ADD COLUMN IF NOT EXISTS message_params JSONB;
 ALTER TABLE mail_archive ADD COLUMN IF NOT EXISTS response_header JSONB;
 
-UPDATE mail_archive
-   SET mail_type_id = mailtype,
-       mail_template_version = (SELECT max(version) FROM mail_template WHERE mail_type_id = mailtype);
+DO
+$$
+BEGIN
+    BEGIN
+        ALTER TABLE mail_archive ADD CONSTRAINT mail_archive_mail_type_id_fkey FOREIGN KEY (mail_type_id) REFERENCES mail_type(id);
+    EXCEPTION
+        WHEN duplicate_object THEN
+            RAISE NOTICE 'Constraint `mail_archive_mail_type_id_fkey` already exists';
+    END;
+END
+$$;
 
-ALTER TABLE mail_archive DROP COLUMN mailtype;
-ALTER TABLE mail_archive ADD FOREIGN KEY (mail_type_id, mail_template_version) REFERENCES mail_template(mail_type_id, version);
+ALTER TABLE mail_archive ADD CONSTRAINT mail_archive_mail_type_template_version_fkey FOREIGN KEY (mail_type_id, mail_template_version)
+      REFERENCES mail_template(mail_type_id, version);
 
 CREATE FUNCTION set_current_mail_template_version() RETURNS TRIGGER AS
 $$
@@ -144,11 +139,3 @@ CREATE TRIGGER set_current_mail_template_version_trigger
 
 CREATE INDEX mail_archive_mail_type_id_idx ON mail_archive(mail_type_id);
 CREATE INDEX mail_archive_mail_type_id_mail_template_version_idx ON mail_archive(mail_type_id, mail_template_version);
-
-
-DROP TABLE mail_type_template_map;
-DROP TABLE mail_type_mail_header_defaults_map;
-DROP TABLE mail_header_defaults;
-DROP TABLE mail_defaults;
-DROP TABLE mail_templates;
-DROP TABLE mail_footer;
