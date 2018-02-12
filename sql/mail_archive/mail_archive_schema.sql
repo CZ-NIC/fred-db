@@ -3,9 +3,7 @@ CREATE TABLE mail_archive (
     crdate timestamp without time zone DEFAULT now() NOT NULL,
     moddate timestamp without time zone,
     status integer,
-    message text,
     attempt smallint DEFAULT 0 NOT NULL,
-    response text,
     mail_type_id integer NOT NULL,
     mail_template_version integer NOT NULL,
     message_params jsonb,
@@ -24,7 +22,6 @@ COMMENT ON COLUMN mail_archive.status IS 'status value has following meanings:
  x - the email wait for manual confirmation which should change status value to 0
      when the email is desired to be sent. x represent any value different from
      0 and 1 (convention is number 2)';
-COMMENT ON COLUMN mail_archive.message IS 'text of email which is asssumed to be notificaion about undelivered';
 COMMENT ON COLUMN mail_archive.attempt IS 'failed attempt to send email message to be sent including headers
 (except date and msgid header), without non-templated attachments';
 
