@@ -117,10 +117,10 @@ ALTER TABLE mail_type DROP COLUMN subject;
 ---
 --- mail_archive
 ---
-ALTER TABLE mail_archive ADD COLUMN mail_type_id INTEGER NOT NULL CONSTRAINT mail_archive_mail_type_id_fkey REFERENCES mail_type(id);
-ALTER TABLE mail_archive ADD COLUMN mail_template_version INTEGER NOT NULL;
-ALTER TABLE mail_archive ADD COLUMN message_params JSONB;
-ALTER TABLE mail_archive ADD COLUMN response_header JSONB;
+ALTER TABLE mail_archive ADD COLUMN IF NOT EXISTS mail_type_id INTEGER NOT NULL CONSTRAINT mail_archive_mail_type_id_fkey REFERENCES mail_type(id);
+ALTER TABLE mail_archive ADD COLUMN IF NOT EXISTS mail_template_version INTEGER NOT NULL;
+ALTER TABLE mail_archive ADD COLUMN IF NOT EXISTS message_params JSONB;
+ALTER TABLE mail_archive ADD COLUMN IF NOT EXISTS response_header JSONB;
 
 UPDATE mail_archive
    SET mail_type_id = mailtype,
