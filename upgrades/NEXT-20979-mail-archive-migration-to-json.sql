@@ -1583,14 +1583,11 @@ $$
 LANGUAGE PLPGSQL;
 
 
-CREATE OR REPLACE FUNCTION migrate_mail_archive_response_to_json(response_encoded TEXT, mail_id INTEGER) RETURNS JSONB AS
+CREATE OR REPLACE FUNCTION migrate_mail_archive_response_to_json_impl(response_encoded TEXT, mail_id INTEGER, encoding TEXT) RETURNS JSONB AS
 $$
-DECLARE
-    response_header JSONB;
-BEGIN
     WITH decoded AS
     (
-        SELECT CONVERT_FROM(DECODE(response_encoded, 'BASE64'), 'UTF-8') AS response
+        SELECT CONVERT_FROM(DECODE(response_encoded, 'BASE64'), encoding) AS response
     )
     SELECT CASE
            WHEN COALESCE(BTRIM(response_encoded), '') != '' THEN
@@ -1616,13 +1613,29 @@ BEGIN
                )::JSONB
            ELSE NULL
            END
-           INTO response_header
       FROM decoded;
+$$
+LANGUAGE SQL;
+
+
+CREATE OR REPLACE FUNCTION migrate_mail_archive_response_to_json(response_encoded TEXT, mail_id INTEGER) RETURNS JSONB AS
+$$
+DECLARE
+    response_header JSONB;
+BEGIN
+    SELECT migrate_mail_archive_response_to_json_impl(response_encoded, mail_id, 'UTF-8') INTO response_header;
     RETURN response_header;
-    EXCEPTION
-        WHEN data_exception THEN
-            RAISE NOTICE 'Could not decode or convert response (id=%)', mail_id;
-            RETURN NULL;
+EXCEPTION
+    WHEN data_exception THEN
+        BEGIN
+            RAISE NOTICE 'Could not decode or convert response with UTF-8 trying WINDOWS-1250 (id=%)', mail_id;
+            SELECT migrate_mail_archive_response_to_json_impl(response_encoded, mail_id, 'WINDOWS-1250') INTO response_header;
+            RETURN response_header;
+        EXCEPTION
+            WHEN data_exception THEN
+                RAISE NOTICE 'Could not decode or convert response (id=%)', mail_id;
+                RETURN NULL;
+        END;
 END;
 $$
 LANGUAGE PLPGSQL;
