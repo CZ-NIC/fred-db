@@ -52,7 +52,7 @@ $$
                'body', json_build_object(
                    'registrar',
                        SUBSTRING(message FROM 'submitted via the registrar (.*?),\nwe are sending you'),
-                   'password',
+                   'authinfo',
                        REGEXP_REPLACE(SUBSTRING(message FROM 'The password is:(.*?)\nThis'), '\s', '', 'g'),
                    'type',
                        CASE WHEN SUBSTRING(message FROM 'příslušející k doméně') IS NOT NULL THEN 3
