@@ -91,8 +91,6 @@ $$
                        REGEXP_REPLACE(SUBSTRING(message FROM 'To:(.*?)Message-ID: '), '\s', '', 'g')
                ),
                'body', json_build_object(
-                   'header_to',
-                       REGEXP_REPLACE(SUBSTRING(message FROM 'To:(.*?)Message-ID: '), '\s', '', 'g'),
                    'checkdate',
                        REGEXP_REPLACE(SUBSTRING(message FROM 'We would like to inform you that as of(.*?), your registrar'), '\s', '', 'g'),
                    'domain',
@@ -1132,8 +1130,6 @@ $$
                            REGEXP_REPLACE(SUBSTRING(message FROM 'To:(.*?)Message-ID: '), '\s', '', 'g')
                    ),
                    'body', json_build_object(
-                       'header_to',
-                           REGEXP_REPLACE(SUBSTRING(message FROM 'To:(.*?)Message-ID: '), '\s', '', 'g'),
                        'zone',
                            REGEXP_REPLACE(SUBSTRING(message FROM 'payment received for the (.*?) zone'), '\s', '', 'g')
                    )
