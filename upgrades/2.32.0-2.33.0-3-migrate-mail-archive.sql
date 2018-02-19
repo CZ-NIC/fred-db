@@ -1366,17 +1366,17 @@ $$
                        'ident_value',
                            CASE
                            WHEN SUBSTRING(message FROM 'Birth date: ') IS NOT NULL
-                               THEN SUBSTRING(message FROM 'Birth date: (.*?)\n')
+                               THEN BTRIM(SUBSTRING(message FROM 'Birth date: (.*?)\n'))
                            WHEN SUBSTRING(message FROM 'Číslo OP: ') IS NOT NULL
-                               THEN SUBSTRING(message FROM 'Číslo OP: (.*?)\n')
+                               THEN BTRIM(SUBSTRING(message FROM 'Číslo OP: (.*?)\n'))
                            WHEN SUBSTRING(message FROM 'Číslo pasu: ') IS NOT NULL
-                               THEN SUBSTRING(message FROM 'Číslo pasu: (.*?)\n')
+                               THEN BTRIM(SUBSTRING(message FROM 'Číslo pasu: (.*?)\n'))
                            WHEN SUBSTRING(message FROM 'IČO: ') IS NOT NULL
-                               THEN SUBSTRING(message FROM 'IČO: (.*?)\n')
+                               THEN BTRIM(SUBSTRING(message FROM 'IČO: (.*?)\n'))
                            WHEN SUBSTRING(message FROM 'Identifikátor MPSV: ') IS NOT NULL
-                               THEN SUBSTRING(message FROM 'Identifikátor MPSV: (.*?)\n')
+                               THEN BTRIM(SUBSTRING(message FROM 'Identifikátor MPSV: (.*?)\n'))
                            WHEN SUBSTRING(message FROM 'Birth day: ') IS NOT NULL
-                               THEN SUBSTRING(message FROM 'Birth day: (.*?)\n')
+                               THEN BTRIM(SUBSTRING(message FROM 'Birth day: (.*?)\n'))
                            END,
                        'dic',
                            SUBSTRING(message FROM 'DIČ: (.*?)\n'),
