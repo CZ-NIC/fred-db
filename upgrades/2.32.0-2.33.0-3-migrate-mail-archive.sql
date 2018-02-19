@@ -1,6 +1,6 @@
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_1(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 1 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 1 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
@@ -34,13 +34,16 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- sendauthinfo_pif
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_2(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 2 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 2 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
@@ -72,13 +75,16 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- sendauthinfo_epp
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_3(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 3 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 3 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
@@ -110,13 +116,16 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- expiration_notify
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_4(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 4 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 4 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
@@ -144,13 +153,16 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- expiration_dns_owner
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_5(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 5 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 5 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
@@ -163,13 +175,16 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- expiration_register_owner
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_6(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 6 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 6 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
@@ -187,13 +202,16 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- expiration_dns_tech
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_7(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 7 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 7 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
@@ -211,13 +229,16 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- expiration_register_tech
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_8(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 8 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 8 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
@@ -241,13 +262,16 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- expiration_validation_before
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_9(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 9 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 9 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
@@ -271,14 +295,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- expiration_validation
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_10(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 10 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 10 THEN
                CASE
                WHEN message LIKE '%Domain creation%' THEN
                    json_build_object(
@@ -420,14 +447,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- notification_create
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_11(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 11 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 11 THEN
                CASE
                WHEN message like '%Contact data change%' THEN
                    json_build_object(
@@ -786,14 +816,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- notification_update
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_12(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 12 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 12 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -822,14 +855,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- notification_transfer
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_13(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 13 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 13 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -848,14 +884,17 @@ $$
           ELSE NULL
           END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- notification_renew
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_14(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 14 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 14 THEN
                CASE
                WHEN message LIKE '%contact identified%' THEN
                    json_build_object(
@@ -905,14 +944,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- notification_unused
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_15(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 15 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 15 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -931,14 +973,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- notification_delete
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_16(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 16 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 16 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -956,14 +1001,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- techcheck
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_17(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 17 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 17 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -979,14 +1027,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- invoice_deposit
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_18(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 18 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 18 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1004,14 +1055,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- invoice_audit
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_19(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 19 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 19 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1029,14 +1083,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- invoice_noaudit
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_20(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 20 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 20 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1079,14 +1136,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- request_block
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_21(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 21 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 21 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1112,14 +1172,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- mojeid_identification
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_22(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 22 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 22 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1150,14 +1213,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- mojeid_validation
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_23(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 23 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 23 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1234,14 +1300,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- annual_contact_reminder
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_24(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 24 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 24 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1255,14 +1324,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- mojeid_email_change
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_25(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 25 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 25 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1288,14 +1360,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- conditional_contact_identification
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_26(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 26 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 26 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1319,14 +1394,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- contact_identification
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_27(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 27 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 27 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1352,14 +1430,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- mojeid_verified_contact_transfer
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_28(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 28 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 28 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1383,14 +1464,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- merge_contacts_auto
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_29(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 29 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 29 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1404,14 +1488,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- contact_check_notice
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_30(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 30 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 30 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1427,14 +1514,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- contact_check_warning
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_31(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 31 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 31 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1464,14 +1554,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- expiration_dns_warning_owner
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_32(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 32 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 32 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1489,14 +1582,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- akm_candidate_state_ok
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_33(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 33 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 33 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1512,14 +1608,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- akm_candidate_state_ko
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_34(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 34 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 34 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1539,14 +1638,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- akm_keyset_update
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_35(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 35 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 35 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1564,7 +1666,10 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- record_statement
 
 
@@ -1580,15 +1685,14 @@ BEGIN
     RETURN message_params;
 END;
 $$
-LANGUAGE PLPGSQL;
+LANGUAGE PLPGSQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_response_to_json_impl(response_encoded TEXT, mail_id INTEGER, encoding TEXT) RETURNS JSONB AS
 $$
-    WITH decoded AS
-    (
-        SELECT CONVERT_FROM(DECODE(response_encoded, 'BASE64'), encoding) AS response
-    )
     SELECT CASE
            WHEN COALESCE(BTRIM(response_encoded), '') != '' THEN
                json_build_object(
@@ -1613,9 +1717,13 @@ $$
                )::JSONB
            ELSE NULL
            END
-      FROM decoded;
+      FROM (
+          SELECT CONVERT_FROM(DECODE(response_encoded, 'BASE64'), encoding) AS response
+      ) AS decoded;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+PARALLEL SAFE;
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_response_to_json(response_encoded TEXT, mail_id INTEGER) RETURNS JSONB AS
@@ -1638,4 +1746,6 @@ EXCEPTION
         END;
 END;
 $$
-LANGUAGE PLPGSQL;
+LANGUAGE PLPGSQL
+IMMUTABLE
+PARALLEL SAFE;
