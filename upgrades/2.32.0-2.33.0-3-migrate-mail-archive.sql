@@ -247,6 +247,8 @@ $$
                        REGEXP_REPLACE(SUBSTRING(message FROM 'We would like to notify you that as of(.*?),\n'), '\s', '', 'g'),
                    'domain',
                        REGEXP_REPLACE(SUBSTRING(message FROM '\nthe(.*?)domain name validation has'), '\s', '', 'g'),
+                   'valdate',
+                       REGEXP_REPLACE(SUBSTRING(message FROM 'The validation will expire on (.*?). If you'), '\s', '', 'g'),
                    'owner',
                        REGEXP_REPLACE(SUBSTRING(message FROM 'Owner:(.*?)\n'), '\s', '', 'g'),
                    'registrar',
