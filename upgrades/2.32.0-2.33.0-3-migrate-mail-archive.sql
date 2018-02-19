@@ -1380,7 +1380,7 @@ $$
                            END,
                        'dic',
                            SUBSTRING(message FROM 'DIČ: (.*?)\n'),
-                       'telephne',
+                       'telephone',
                            SUBSTRING(message FROM 'Telefon: (.*?)\n'),
                        'fax',
                            SUBSTRING(message FROM 'Fax: (.*?)\n'),
