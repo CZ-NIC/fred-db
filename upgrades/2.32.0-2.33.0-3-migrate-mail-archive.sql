@@ -1397,13 +1397,13 @@ $$
                        'registrar_memo_en',
                            SUBSTRING(message FROM 'Other information provided by your registrar:\n(.*?)\nPlease, do not take any measures if your data are correct\.'),
                        'domains', (
-                           SELECT STRING_TO_ARRAY(ARRAY_TO_STRING(REGEXP_MATCHES(message, 'Seznam domén, kde je kontakt v roli držitele nebo administrativního\nkontaktu:\n(.*)\n(Kontakt není uveden u žádného doménového jména\.|Seznam sad jmenných serverů, kde je kontakt v roli technického kontaktu:|Seznam sad klíčů, kde je kontakt v roli technického kontaktu:|Dear customer,)'), ''), E'\n')
+                           SELECT STRING_TO_ARRAY(ARRAY_TO_STRING(REGEXP_MATCHES(message, 'Seznam domén, kde je kontakt v roli držitele nebo administrativního\nkontaktu:\n(.*?)\n\n(?=(Kontakt není uveden u žádného doménového jména\.|Seznam sad jmenných serverů, kde je kontakt v roli technického kontaktu:|Seznam sad klíčů, kde je kontakt v roli technického kontaktu:|\n\nDear customer,))'), ''), E'\n')
                        ),
                        'nssets', (
-                           SELECT STRING_TO_ARRAY(ARRAY_TO_STRING(REGEXP_MATCHES(message, 'Seznam sad jmenných serverů, kde je kontakt v roli technického kontaktu:\n(.*)\n(Seznam sad klíčů, kde je kontakt v roli technického kontaktu:|Dear customer,)'), ''), E'\n')
+                           SELECT STRING_TO_ARRAY(ARRAY_TO_STRING(REGEXP_MATCHES(message, 'Seznam sad jmenných serverů, kde je kontakt v roli technického kontaktu:\n(.*?)\n\n(?=(Seznam sad klíčů, kde je kontakt v roli technického kontaktu:|\n\nDear customer,))'), ''), E'\n')
                         ),
                        'keysets', (
-                           SELECT STRING_TO_ARRAY(ARRAY_TO_STRING(REGEXP_MATCHES(message, 'Seznam sad klíčů, kde je kontakt v roli technického kontaktu:\n(.*?)\nDear customer,'), ''), E'\n')
+                           SELECT STRING_TO_ARRAY(ARRAY_TO_STRING(REGEXP_MATCHES(message, 'Seznam sad klíčů, kde je kontakt v roli technického kontaktu:\n(.*?)\n\n\n\nDear customer,'), ''), E'\n')
                        )
                    )
                )::JSONB
