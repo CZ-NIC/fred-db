@@ -132,8 +132,8 @@ INSERT INTO mail_template
        (mail_type_id, subject, body_template, body_template_content_type,
         mail_template_footer_id, mail_template_default_id, mail_header_default_id)
 SELECT mt.id, mt.subject, mts.template, mts.contenttype,
-       mts.footer, 1, mtmhdm.mail_header_defaults_id
+       mts.footer, 1, COALESCE(mtmhdm.mail_header_defaults_id, 1)
   FROM mail_type mt
   JOIN mail_type_template_map mttm ON mttm.typeid = mt.id
   JOIN mail_templates mts ON mts.id = mttm.templateid
-  JOIN mail_type_mail_header_defaults_map mtmhdm ON mtmhdm.mail_type_id = mt.id;
+  LEFT JOIN mail_type_mail_header_defaults_map mtmhdm ON mtmhdm.mail_type_id = mt.id;
