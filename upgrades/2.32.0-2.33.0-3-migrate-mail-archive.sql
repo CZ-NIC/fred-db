@@ -1,6 +1,6 @@
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_1(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 1 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 1 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
@@ -34,13 +34,16 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- sendauthinfo_pif
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_2(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 2 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 2 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
@@ -49,7 +52,7 @@ $$
                'body', json_build_object(
                    'registrar',
                        SUBSTRING(message FROM 'submitted via the registrar (.*?),\nwe are sending you'),
-                   'password',
+                   'authinfo',
                        REGEXP_REPLACE(SUBSTRING(message FROM 'The password is:(.*?)\nThis'), '\s', '', 'g'),
                    'type',
                        CASE WHEN SUBSTRING(message FROM 'příslušející k doméně') IS NOT NULL THEN 3
@@ -72,21 +75,22 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- sendauthinfo_epp
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_3(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 3 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 3 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
                        REGEXP_REPLACE(SUBSTRING(message FROM 'To:(.*?)Message-ID: '), '\s', '', 'g')
                ),
                'body', json_build_object(
-                   'header_to',
-                       REGEXP_REPLACE(SUBSTRING(message FROM 'To:(.*?)Message-ID: '), '\s', '', 'g'),
                    'checkdate',
                        REGEXP_REPLACE(SUBSTRING(message FROM 'We would like to inform you that as of(.*?), your registrar'), '\s', '', 'g'),
                    'domain',
@@ -110,13 +114,16 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- expiration_notify
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_4(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 4 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 4 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
@@ -144,13 +151,16 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- expiration_dns_owner
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_5(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 5 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 5 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
@@ -163,13 +173,16 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- expiration_register_owner
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_6(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 6 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 6 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
@@ -187,13 +200,16 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- expiration_dns_tech
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_7(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 7 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 7 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
@@ -211,13 +227,16 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- expiration_register_tech
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_8(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 8 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 8 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
@@ -228,6 +247,8 @@ $$
                        REGEXP_REPLACE(SUBSTRING(message FROM 'We would like to notify you that as of(.*?),\n'), '\s', '', 'g'),
                    'domain',
                        REGEXP_REPLACE(SUBSTRING(message FROM '\nthe(.*?)domain name validation has'), '\s', '', 'g'),
+                   'valdate',
+                       REGEXP_REPLACE(SUBSTRING(message FROM 'The validation will expire on (.*?). If you'), '\s', '', 'g'),
                    'owner',
                        REGEXP_REPLACE(SUBSTRING(message FROM 'Owner:(.*?)\n'), '\s', '', 'g'),
                    'registrar',
@@ -241,13 +262,16 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- expiration_validation_before
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_9(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
-    SELECT CASE WHEN mail_type_id = 9 THEN
+    SELECT CASE WHEN message IS NOT NULL AND mail_type_id = 9 THEN
            json_build_object(
                'header', json_build_object(
                    'To',
@@ -271,14 +295,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- expiration_validation
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_10(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 10 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 10 THEN
                CASE
                WHEN message LIKE '%Domain creation%' THEN
                    json_build_object(
@@ -342,77 +369,85 @@ $$
                            'registrar',
                                SUBSTRING(message FROM '/ Registrar : (.*?)\n'),
                            'type', 1,
-                           'fresh.contact.name',
-                               BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Jméno / Name: (.*?)\n.*?Viditelnost údajů')),
-                           'fresh.contact.org',
-                               BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Organizace / Organization: (.*?)\n.*?Viditelnost údajů')),
-                           'fresh.contact.address.permanent',
-                               BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Trvalá Adresa / Permanent Address: (.*?)\n.*?Viditelnost údajů')),
-                           'fresh.contact.address.mailing',
-                               BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Korespondenční adresa / Mailing address: (.*?)\n.*?Viditelnost údajů')),
-                           'fresh.contact.address.billing',
-                               BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Fakturační adresa / Billing address: (.*?)\n.*?Viditelnost údajů')),
-                           'fresh.contact.address.shipping',
-                               BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Dodací adresa / Shipping address: (.*?)\n.*?Viditelnost údajů')),
-                           'fresh.contact.telephone',
-                               BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Telefon / Telephone: (.*?)\n.*?Viditelnost údajů')),
-                           'fresh.contact.fax',
-                               BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Fax / Fax: (.*?)\n.*?Viditelnost údajů')),
-                           'fresh.contact.email',
-                               BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?E-mail / Email: (.*?)\n.*?Viditelnost údajů')),
-                           'fresh.contact.notify_email',
-                               BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Notifikační e-mail / Notification email: (.*?)\n.*?Viditelnost údajů')),
-                           'fresh.contact.ident_type',
-                               BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Typ identifikace / Identification type: (.*?)\n.*?Viditelnost údajů')),
-                           'fresh.contact.ident',
-                               BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Identifikační údaj / Identification data: (.*?)\n.*?Viditelnost údajů')),
-                           'fresh.contact.vat',
-                               BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?DIČ / VAT number: (.*?)\n.*?Viditelnost údajů')),
-                           'fresh.contact.disclose.name',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Jméno / Name: (.*?)\n')) ~ 'public'
-                                   THEN 1 ELSE 0
-                               END,
-                           'fresh.contact.disclose.org',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Organizace / Organization: (.*?)\n')) ~ 'public'
-                                   THEN 1 ELSE 0
-                               END,
-                           'fresh.contact.disclose.email',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?E-mail / Email: (.*?)\n')) ~ 'public'
-                                   THEN 1 ELSE 0
-                               END,
-                           'fresh.contact.disclose.address',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Adresa / Address: (.*?)\n')) ~ 'public'
-                                   THEN 1 ELSE 0
-                               END,
-                           'fresh.contact.disclose.notify_email',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Notifikační e-mail / Notification email: (.*?)\n')) ~ 'public'
-                                   THEN 1 ELSE 0
-                               END,
-                           'fresh.contact.disclose.ident',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Identifikační údaj / Identification data: (.*?)\n')) ~ 'public'
-                                   THEN 1 ELSE 0
-                               END,
-                           'fresh.contact.disclose.vat',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?DIČ / VAT number: (.*?)\n')) ~ 'public'
-                                   THEN 1 ELSE 0
-                               END,
-                           'fresh.contact.disclose.telephone',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Telefon / Telephone: (.*?)\n')) ~ 'public'
-                                   THEN 1 ELSE 0
-                               END,
-                           'fresh.contact.disclose.fax',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Fax / Fax: (.*?)\n')) ~ 'public'
-                                   THEN 1 ELSE 0
-                               END
+                           'fresh', json_build_object(
+                               'contact', json_build_object(
+                                   'name',
+                                       BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Jméno / Name: (.*?)\n.*?Viditelnost údajů')),
+                                   'org',
+                                       BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Organizace / Organization: (.*?)\n.*?Viditelnost údajů')),
+                                   'telephone',
+                                       BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Telefon / Telephone: (.*?)\n.*?Viditelnost údajů')),
+                                   'fax',
+                                       BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Fax / Fax: (.*?)\n.*?Viditelnost údajů')),
+                                   'email',
+                                       BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?E-mail / Email: (.*?)\n.*?Viditelnost údajů')),
+                                   'notify_email',
+                                       BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Notifikační e-mail / Notification email: (.*?)\n.*?Viditelnost údajů')),
+                                   'ident_type',
+                                       BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Typ identifikace / Identification type: (.*?)\n.*?Viditelnost údajů')),
+                                   'ident',
+                                       BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Identifikační údaj / Identification data: (.*?)\n.*?Viditelnost údajů')),
+                                   'vat',
+                                       BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?DIČ / VAT number: (.*?)\n.*?Viditelnost údajů')),
+                                   'address', json_build_object(
+                                       'permanent',
+                                           BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Trvalá Adresa / Permanent Address: (.*?)\n.*?Viditelnost údajů')),
+                                       'mailing',
+                                           BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Korespondenční adresa / Mailing address: (.*?)\n.*?Viditelnost údajů')),
+                                       'billing',
+                                           BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Fakturační adresa / Billing address: (.*?)\n.*?Viditelnost údajů')),
+                                       'shipping',
+                                           BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Dodací adresa / Shipping address: (.*?)\n.*?Viditelnost údajů'))
+                                   ),
+                                   'disclose', json_build_object(
+                                       'name',
+                                           CASE
+                                           WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Jméno / Name: (.*?)\n')) ~ 'public'
+                                               THEN 1 ELSE 0
+                                           END,
+                                       'org',
+                                           CASE
+                                           WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Organizace / Organization: (.*?)\n')) ~ 'public'
+                                               THEN 1 ELSE 0
+                                           END,
+                                       'email',
+                                           CASE
+                                           WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?E-mail / Email: (.*?)\n')) ~ 'public'
+                                               THEN 1 ELSE 0
+                                           END,
+                                       'address',
+                                           CASE
+                                           WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Adresa / Address: (.*?)\n')) ~ 'public'
+                                               THEN 1 ELSE 0
+                                           END,
+                                       'notify_email',
+                                           CASE
+                                           WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Notifikační e-mail / Notification email: (.*?)\n')) ~ 'public'
+                                               THEN 1 ELSE 0
+                                           END,
+                                       'ident',
+                                           CASE
+                                           WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Identifikační údaj / Identification data: (.*?)\n')) ~ 'public'
+                                               THEN 1 ELSE 0
+                                           END,
+                                       'vat',
+                                           CASE
+                                           WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?DIČ / VAT number: (.*?)\n')) ~ 'public'
+                                               THEN 1 ELSE 0
+                                           END,
+                                       'telephone',
+                                           CASE
+                                           WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Telefon / Telephone: (.*?)\n')) ~ 'public'
+                                               THEN 1 ELSE 0
+                                           END,
+                                       'fax',
+                                           CASE
+                                           WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Fax / Fax: (.*?)\n')) ~ 'public'
+                                               THEN 1 ELSE 0
+                                           END
+                                   )
+                               )
+                           )
                        )
                    )::JSONB
                ELSE NULL
@@ -420,14 +455,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- notification_create
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_11(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 11 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 11 THEN
                CASE
                WHEN message like '%Contact data change%' THEN
                    json_build_object(
@@ -437,233 +475,291 @@ $$
                        ),
                        'body', json_build_object(
                            'type', 1,
-                           'changes.object.authinfo.old',
-                               BTRIM(SUBSTRING(message FROM '\nHeslo / Authinfo: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.contact.name.old',
-                               BTRIM(SUBSTRING(message FROM '\nPůvodní hodnoty / Original values:.*?Jméno / Name: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.contact.org.old',
-                               BTRIM(SUBSTRING(message FROM '\nOrganizace / Organization: (.*?)\n')),
-                           'changes.contact.address.permanent.old',
-                               BTRIM(SUBSTRING(message FROM '\nTrvalá Adresa / Permanent Address: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.contact.address.mailing.old',
-                               BTRIM(SUBSTRING(message FROM '\nKorespondenční adresa / Mailing address: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.contact.address.billing.old',
-                               BTRIM(SUBSTRING(message FROM '\nFakturační adresa / Billing address: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.contact.address.shipping.old',
-                               BTRIM(SUBSTRING(message FROM '\nDodací adresa / Shipping address: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.contact.address.shipping_2.old',
-                               BTRIM(SUBSTRING(message FROM '\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.contact.address.shipping_3.old',
-                               BTRIM(SUBSTRING(message FROM '\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.contact.telephone.old',
-                               BTRIM(SUBSTRING(message FROM '\nTelefon / Telephone: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.contact.fax.old',
-                               BTRIM(SUBSTRING(message FROM '\nFax / Fax: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.contact.email.old',
-                               BTRIM(SUBSTRING(message FROM '\nE-mail / Email: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.contact.notify_email.old',
-                               BTRIM(SUBSTRING(message FROM '\nNotifikační e-mail / Notification email: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.contact.ident_type.old',
-                               BTRIM(SUBSTRING(message FROM '\nTyp identifikace / Identification type: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.contact.ident.old',
-                               BTRIM(SUBSTRING(message FROM '\nIdentifikační údaj / Identification data: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.contact.vat.old',
-                               BTRIM(SUBSTRING(message FROM '\nDIČ / VAT number: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.contact.disclose.name.old',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Jméno / Name: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Jméno / Name: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END,
-                           'changes.contact.disclose.org.old',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Organizace / Organization: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Organizace / Organization: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END,
-                           'changes.contact.disclose.email.old',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  E-mail / Email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  E-mail / Email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END,
-                           'changes.contact.disclose.address.old',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Adresa / Address: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Adresa / Address: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END,
-                           'changes.contact.disclose.notify_email.old',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Notifikační e-mail / Notification email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Notifikační e-mail / Notification email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END,
-                           'changes.contact.disclose.ident.old',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Identifikační údaj / Identification data: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Identifikační údaj / Identification data: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END,
-                           'changes.contact.disclose.vat.old',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  DIČ / VAT number: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  DIČ / VAT number: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END,
-                           'changes.contact.disclose.telephone.old',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Telefon / Telephone: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Telefon / Telephone: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END,
-                           'changes.contact.disclose.fax.old',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END,
-                           'changes.object.authinfo.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nHeslo / Authinfo: (.*?)\n.*?Ostatn')),
-                           'changes.contact.name.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nJméno / Name: (.*?)\n.*?Ostatn')),
-                           'changes.contact.org.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nOrganizace / Organization: (.*?)\n.*?Ostatn')),
-                           'changes.contact.address.permanent.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTrvalá Adresa / Permanent Address: (.*?)\n.*?Ostatn')),
-                           'changes.contact.address.mailing.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nKorespondenční adresa / Mailing address: (.*?)\n.*?Ostatn')),
-                           'changes.contact.address.billing.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nFakturační adresa / Billing address: (.*?)\n.*?Ostatn')),
-                           'changes.contact.address.shipping.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Ostatn')),
-                           'changes.contact.address.shipping_2.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Ostatn')),
-                           'changes.contact.address.shipping_3.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Ostatn')),
-                           'changes.contact.telephone.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTelefon / Telephone: (.*?)\n.*?Ostatn')),
-                           'changes.contact.fax.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nFax / Fax: (.*?)\n.*?Ostatn')),
-                           'changes.contact.email.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nE-mail / Email: (.*?)\n.*?Ostatn')),
-                           'changes.contact.notify_email.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nNotifikační e-mail / Notification email: (.*?)\n.*?Ostatn')),
-                           'changes.contact.ident_type.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTyp identifikace / Identification type: (.*?)\n.*?Ostatn')),
-                           'changes.contact.ident.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nIdentifikační údaj / Identification data: (.*?)\n.*?Ostatn')),
-                           'changes.contact.vat.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDIČ / VAT number: (.*?)\n.*?Ostatn')),
-                           'changes.contact.disclose.name.new',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Jméno / Name: (.*?)\n.*?Ostatn')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Jméno / Name: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END,
-                           'changes.contact.disclose.org.new',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Organizace / Organization: (.*?)\n.*?Ostatn')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Organizace / Organization: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END,
-                           'changes.contact.disclose.email.new',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  E-mail / Email: (.*?)\n.*?Ostatn')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  E-mail / Email: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END,
-                           'changes.contact.disclose.address.new',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Adresa / Address: (.*?)\n.*?Ostatn')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Adresa / Address: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END,
-                           'changes.contact.disclose.notify_email.new',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Notifikační e-mail / Notification email: (.*?)\n.*?Ostatn')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Notifikační e-mail / Notification email: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END,
-                           'changes.contact.disclose.ident.new',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Identifikační údaj / Identification data: (.*?)\n.*?Ostatn')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Identifikační údaj / Identification data: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END,
-                           'changes.contact.disclose.vat.new',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  DIČ / VAT number: (.*?)\n.*?Ostatn')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  DIČ / VAT number: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                   THEN 0
-                               END
-                       )::JSONB
-                            || json_build_object(
-                           'changes.contact.disclose.telephone.new',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Telefon / Telephone: (.*?)\n.*?Ostatn')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Telefon / Telephone: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END,
-                           'changes.contact.disclose.fax.new',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*?Ostatn')) ~ 'public'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END
-                       )::JSONB
+                           'changes', json_build_object(
+                               'object', json_build_object(
+                                   'authinfo', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nHeslo / Authinfo: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nHeslo / Authinfo: (.*?)\n.*?Ostatn'))
+                                   )
+                               ),
+                               'contact', json_build_object(
+                                   'name', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nPůvodní hodnoty / Original values:.*?Jméno / Name: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nJméno / Name: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'org', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nOrganizace / Organization: (.*?)\n')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nOrganizace / Organization: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'telephone', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nTelefon / Telephone: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTelefon / Telephone: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'fax', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nFax / Fax: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nFax / Fax: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'email', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nE-mail / Email: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nE-mail / Email: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'notify_email', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nNotifikační e-mail / Notification email: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nNotifikační e-mail / Notification email: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'ident_type', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nTyp identifikace / Identification type: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTyp identifikace / Identification type: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'ident', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nIdentifikační údaj / Identification data: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nIdentifikační údaj / Identification data: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'vat', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nDIČ / VAT number: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDIČ / VAT number: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'address', json_build_object(
+                                       'permanent', json_build_object(
+                                           'old',
+                                               BTRIM(SUBSTRING(message FROM '\nTrvalá Adresa / Permanent Address: (.*?)\n.*?Nové hodnoty / New values:')),
+                                           'new',
+                                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTrvalá Adresa / Permanent Address: (.*?)\n.*?Ostatn'))
+                                       ),
+                                       'mailing', json_build_object(
+                                           'old',
+                                               BTRIM(SUBSTRING(message FROM '\nKorespondenční adresa / Mailing address: (.*?)\n.*?Nové hodnoty / New values:')),
+                                           'new',
+                                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nKorespondenční adresa / Mailing address: (.*?)\n.*?Ostatn'))
+                                       ),
+                                       'billing', json_build_object(
+                                           'old',
+                                               BTRIM(SUBSTRING(message FROM '\nFakturační adresa / Billing address: (.*?)\n.*?Nové hodnoty / New values:')),
+                                           'new',
+                                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nFakturační adresa / Billing address: (.*?)\n.*?Ostatn'))
+                                       ),
+                                       'shipping', json_build_object(
+                                           'old',
+                                               BTRIM(SUBSTRING(message FROM '\nDodací adresa / Shipping address: (.*?)\n.*?Nové hodnoty / New values:')),
+                                           'new',
+                                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Ostatn'))
+                                       ),
+                                       'shipping_2', json_build_object(
+                                           'old',
+                                               BTRIM(SUBSTRING(message FROM '\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Nové hodnoty / New values:')),
+                                           'new',
+                                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Ostatn'))
+                                       ),
+                                       'shipping_3', json_build_object(
+                                           'old',
+                                               BTRIM(SUBSTRING(message FROM '\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Nové hodnoty / New values:')),
+                                           'new',
+                                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Ostatn'))
+                                       )
+                                   ),
+                                   'disclose', json_build_object(
+                                       'name', json_build_object(
+                                           'old',
+                                                CASE
+                                                WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Jméno / Name: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
+                                                    THEN 1
+                                                WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Jméno / Name: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                                    THEN 0
+                                                ELSE
+                                                    NULL
+                                                END,
+                                           'new',
+                                                CASE
+                                                WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Jméno / Name: (.*?)\n.*?Ostatn')) ~ 'public'
+                                                    THEN 1
+                                                WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Jméno / Name: (.*?)\n.*?Ostatn')) ~ 'hidden'
+                                                    THEN 0
+                                                ELSE
+                                                    NULL
+                                                END
+                                       ),
+                                       'org', json_build_object(
+                                           'old',
+                                               CASE
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Organizace / Organization: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
+                                                   THEN 1
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Organizace / Organization: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                                   THEN 0
+                                               ELSE
+                                                   NULL
+                                               END,
+                                           'new',
+                                               CASE
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Organizace / Organization: (.*?)\n.*?Ostatn')) ~ 'public'
+                                                   THEN 1
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Organizace / Organization: (.*?)\n.*?Ostatn')) ~ 'hidden'
+                                                   THEN 0
+                                               ELSE
+                                                   NULL
+                                            END
+                                       ),
+                                       'email', json_build_object(
+                                           'old',
+                                               CASE
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  E-mail / Email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
+                                                   THEN 1
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  E-mail / Email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                                   THEN 0
+                                               ELSE
+                                                   NULL
+                                               END,
+                                           'new',
+                                               CASE
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  E-mail / Email: (.*?)\n.*?Ostatn')) ~ 'public'
+                                                   THEN 1
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  E-mail / Email: (.*?)\n.*?Ostatn')) ~ 'hidden'
+                                                   THEN 0
+                                               ELSE
+                                                   NULL
+                                               END
+                                       ),
+                                       'address', json_build_object(
+                                           'old',
+                                               CASE
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Adresa / Address: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
+                                                   THEN 1
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Adresa / Address: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                                   THEN 0
+                                               ELSE
+                                                   NULL
+                                               END,
+                                           'new',
+                                               CASE
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Adresa / Address: (.*?)\n.*?Ostatn')) ~ 'public'
+                                                   THEN 1
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Adresa / Address: (.*?)\n.*?Ostatn')) ~ 'hidden'
+                                                   THEN 0
+                                               ELSE
+                                                   NULL
+                                               END
+                                       ),
+                                       'notify_email', json_build_object(
+                                           'old',
+                                               CASE
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Notifikační e-mail / Notification email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
+                                                   THEN 1
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Notifikační e-mail / Notification email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                                   THEN 0
+                                               ELSE
+                                                   NULL
+                                               END,
+                                           'new',
+                                               CASE
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Notifikační e-mail / Notification email: (.*?)\n.*?Ostatn')) ~ 'public'
+                                                   THEN 1
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Notifikační e-mail / Notification email: (.*?)\n.*?Ostatn')) ~ 'hidden'
+                                                   THEN 0
+                                               ELSE
+                                                   NULL
+                                               END
+                                       ),
+                                       'ident', json_build_object(
+                                           'old',
+                                               CASE
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Identifikační údaj / Identification data: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
+                                                   THEN 1
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Identifikační údaj / Identification data: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                                   THEN 0
+                                               ELSE
+                                                   NULL
+                                               END,
+                                           'new',
+                                               CASE
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Identifikační údaj / Identification data: (.*?)\n.*?Ostatn')) ~ 'public'
+                                                   THEN 1
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Identifikační údaj / Identification data: (.*?)\n.*?Ostatn')) ~ 'hidden'
+                                                   THEN 0
+                                               ELSE
+                                                   NULL
+                                               END
+                                       ),
+                                       'vat', json_build_object(
+                                           'old',
+                                               CASE
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  DIČ / VAT number: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
+                                                   THEN 1
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  DIČ / VAT number: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                                   THEN 0
+                                               ELSE
+                                                   NULL
+                                               END,
+                                           'new',
+                                               CASE
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  DIČ / VAT number: (.*?)\n.*?Ostatn')) ~ 'public'
+                                                   THEN 1
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  DIČ / VAT number: (.*?)\n.*?Ostatn')) ~ 'hidden'
+                                                   THEN 0
+                                               END
+                                       ),
+                                       'telephone', json_build_object(
+                                           'old',
+                                               CASE
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Telefon / Telephone: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
+                                                   THEN 1
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Telefon / Telephone: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                                   THEN 0
+                                               ELSE
+                                                   NULL
+                                               END,
+                                           'new',
+                                               CASE
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Telefon / Telephone: (.*?)\n.*?Ostatn')) ~ 'public'
+                                                   THEN 1
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Telefon / Telephone: (.*?)\n.*?Ostatn')) ~ 'hidden'
+                                                   THEN 0
+                                               ELSE
+                                                   NULL
+                                               END
+                                       ),
+                                       'fax', json_build_object(
+                                           'old',
+                                               CASE
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
+                                                   THEN 1
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
+                                                   THEN 0
+                                               ELSE
+                                                   NULL
+                                               END,
+                                           'new',
+                                               CASE
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*?Ostatn')) ~ 'public'
+                                                   THEN 1
+                                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*?Ostatn')) ~ 'hidden'
+                                                   THEN 0
+                                               ELSE
+                                                   NULL
+                                               END
+                                       )
+                                   )
+                               )
+                           )
+                       )
                    )::JSONB
                WHEN message LIKE '%NS set data change%' THEN
                    json_build_object(
@@ -673,27 +769,41 @@ $$
                        ),
                        'body', json_build_object(
                            'type', 2,
-                           'changes.object.authinfo.old',
-                               BTRIM(SUBSTRING(message FROM '\nHeslo / Authinfo: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.nsset.check_level.old',
-                               BTRIM(SUBSTRING(message FROM '\nÚroveň tech. kontrol / Check level: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.nsset.tech_c.old',
-                               BTRIM(SUBSTRING(message FROM '\nTechnické kontakty / Technical contacts: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.nsset.dns.old', (
-                               SELECT ARRAY_AGG(foo.a) AS dns
-                                 FROM (SELECT ARRAY_TO_STRING(REGEXP_MATCHES(SUBSTRING(message
-                                         FROM '(.*)\nNové hodnoty / New values:'), '\nJmenný server / Name server: (.*?)\n', 'g'), '') AS a) AS foo
-                           ),
-                           'changes.object.authinfo.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nHeslo / Authinfo: (.*?)\n.*?Ostatn')),
-                           'changes.nsset.check_level.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nÚroveň tech. kontrol / Check level: (.*?)\n.*?Ostatn')),
-                           'changes.nsset.tech_c.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTechnické kontakty / Technical contacts: (.*?)\n.*?Ostatn')),
-                           'changes.nsset.dns.new', (
-                               SELECT ARRAY_AGG(foo.a) AS dns
-                                 FROM (SELECT ARRAY_TO_STRING(REGEXP_MATCHES(SUBSTRING(message
-                                         FROM 'Nové hodnoty / New values:\n(.*)'), 'Nové hodnoty / New values:.*\nJmenný server / Name server: (.*?)\n', 'g'), '') AS a) AS foo
+                           'changes', json_build_object(
+                               'object', json_build_object(
+                                   'authinfo', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nHeslo / Authinfo: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nHeslo / Authinfo: (.*?)\n.*?Ostatn'))
+                                   )
+                               ),
+                               'nsset', json_build_object(
+                                   'check_level', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nÚroveň tech. kontrol / Check level: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nÚroveň tech. kontrol / Check level: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'tech_c', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nTechnické kontakty / Technical contacts: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTechnické kontakty / Technical contacts: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'dns', json_build_object(
+                                       'old', (
+                                           SELECT ARRAY_AGG(foo.a) AS dns
+                                             FROM (SELECT ARRAY_TO_STRING(REGEXP_MATCHES(SUBSTRING(message
+                                                     FROM '(.*)\nNové hodnoty / New values:'), '\nJmenný server / Name server: (.*?)\n', 'g'), '') AS a) AS foo
+                                       ),
+                                       'new', (
+                                           SELECT ARRAY_AGG(foo.a) AS dns
+                                             FROM (SELECT ARRAY_TO_STRING(REGEXP_MATCHES(SUBSTRING(message
+                                                     FROM 'Nové hodnoty / New values:\n(.*)'), 'Nové hodnoty / New values:.*\nJmenný server / Name server: (.*?)\n', 'g'), '') AS a) AS foo
+                                       )
+                                   )
+                               )
                            )
                        )
                    )::JSONB
@@ -705,52 +815,74 @@ $$
                        ),
                        'body', json_build_object(
                            'type', 3,
-                           'changes.object.authinfo.old',
-                               BTRIM(SUBSTRING(message FROM '\nHeslo / Authinfo: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.domain.registrant.old',
-                               BTRIM(SUBSTRING(message FROM '\nDržitel / Holder: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.domain.nsset.old',
-                               BTRIM(SUBSTRING(message FROM '\nSada jmenných serverů / Name server set: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.domain.keyset.old',
-                               BTRIM(SUBSTRING(message FROM '\nSada klíčů / Key set: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.domain.admin_c.old',
-                               BTRIM(SUBSTRING(message FROM '\nAdministrativní kontakty / Administrative contacts: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.domain.temp_c.old',
-                               BTRIM(SUBSTRING(message FROM '\nDočasné kontakty / Temporary contacts: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.domain.val_ex_date.old',
-                               BTRIM(SUBSTRING(message FROM '\nValidováno do / Validation expiration date: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.domain.publish.old',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Přidat do ENUM tel.sezn. / Include in ENUM dict: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'yes'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Přidat do ENUM tel.sezn. / Include in ENUM dict: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'no'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END,
-                           'changes.object.authinfo.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nHeslo / Authinfo: (.*?)\n.*?Ostatn')),
-                           'changes.domain.registrant.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDržitel / Holder: (.*?)\n.*?Ostatn')),
-                           'changes.domain.nsset.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nSada jmenných serverů / Name server set: (.*?)\n.*?Ostatn')),
-                           'changes.domain.keyset.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nSada klíčů / Key set: (.*?)\n.*?Ostatn')),
-                           'changes.domain.admin_c.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nAdministrativní kontakty / Administrative contacts: (.*?)\n.*?Ostatn')),
-                           'changes.domain.temp_c.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDočasné kontakty / Temporary contacts: (.*?)\n.*?Ostatn')),
-                           'changes.domain.val_ex_date.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nValidováno do / Validation expiration date: (.*?)\n.*?Ostatn')),
-                           'changes.domain.publish.new',
-                               CASE
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nPřidat do ENUM tel.sezn. / Include in ENUM dict: (.*?)\n')) ~ 'yes'
-                                   THEN 1
-                               WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nPřidat do ENUM tel.sezn. / Include in ENUM dict: (.*?)\n')) ~ 'no'
-                                   THEN 0
-                               ELSE
-                                   NULL
-                               END
+                           'changes', json_build_object(
+                               'object', json_build_object(
+                                   'authinfo', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nHeslo / Authinfo: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nHeslo / Authinfo: (.*?)\n.*?Ostatn'))
+                                   )
+                               ),
+                               'domain', json_build_object(
+                                   'registrant', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nDržitel / Holder: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDržitel / Holder: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'nsset', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nSada jmenných serverů / Name server set: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nSada jmenných serverů / Name server set: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'keyset', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nSada klíčů / Key set: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nSada klíčů / Key set: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'admin_c', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nAdministrativní kontakty / Administrative contacts: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nAdministrativní kontakty / Administrative contacts: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'temp_c', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nDočasné kontakty / Temporary contacts: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDočasné kontakty / Temporary contacts: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'val_ex_date', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nValidováno do / Validation expiration date: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nValidováno do / Validation expiration date: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'publish', json_build_object(
+                                       'old',
+                                           CASE
+                                           WHEN BTRIM(SUBSTRING(message FROM 'Přidat do ENUM tel.sezn. / Include in ENUM dict: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'yes'
+                                               THEN 1
+                                           WHEN BTRIM(SUBSTRING(message FROM 'Přidat do ENUM tel.sezn. / Include in ENUM dict: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'no'
+                                               THEN 0
+                                           ELSE
+                                               NULL
+                                           END,
+                                       'new',
+                                           CASE
+                                           WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nPřidat do ENUM tel.sezn. / Include in ENUM dict: (.*?)\n')) ~ 'yes'
+                                               THEN 1
+                                           WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nPřidat do ENUM tel.sezn. / Include in ENUM dict: (.*?)\n')) ~ 'no'
+                                               THEN 0
+                                           ELSE
+                                               NULL
+                                           END
+                                   )
+                               )
+                           )
                        )
                    )::JSONB
                WHEN message LIKE '%Keyset data change%' THEN
@@ -761,23 +893,35 @@ $$
                        ),
                        'body', json_build_object(
                            'type', 4,
-                           'changes.object.authinfo.old',
-                               BTRIM(SUBSTRING(message FROM '\nHeslo / Authinfo: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.keyset.tech_c.old',
-                               BTRIM(SUBSTRING(message FROM '\nTechnické kontakty / Technical contacts: (.*?)\n.*?Nové hodnoty / New values:')),
-                           'changes.nsset.dnskey.old', (
-                               SELECT ARRAY_AGG(foo.a) AS dnskey
-                                 FROM (SELECT ARRAY_TO_STRING(REGEXP_MATCHES(SUBSTRING(message
-                                         FROM '(.*)\nNové hodnoty / New values:'), '\nklíče DNS / DNS keys: (.*?)\n', 'g'), '') AS a) AS foo
-                           ),
-                           'changes.object.authinfo.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nHeslo / Authinfo: (.*?)\n.*?Ostatn')),
-                           'changes.keyset.tech_c.new',
-                               BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTechnické kontakty / Technical contacts: (.*?)\n.*?Ostatn')),
-                           'changes.nsset.dnskey.new', (
-                               SELECT ARRAY_AGG(foo.a) AS dnskey
-                                 FROM (SELECT ARRAY_TO_STRING(REGEXP_MATCHES(SUBSTRING(message
-                                         FROM 'Nové hodnoty / New values:\n(.*)'), 'Nové hodnoty / New values:.*\nklíče DNS / DNS keys: (.*?)\n', 'g'), '') AS a) AS foo
+                           'changes', json_build_object(
+                               'object', json_build_object(
+                                   'authinfo', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nHeslo / Authinfo: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nHeslo / Authinfo: (.*?)\n.*?Ostatn'))
+                                   )
+                               ),
+                               'keyset', json_build_object(
+                                   'tech_c', json_build_object(
+                                       'old',
+                                           BTRIM(SUBSTRING(message FROM '\nTechnické kontakty / Technical contacts: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       'new',
+                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTechnické kontakty / Technical contacts: (.*?)\n.*?Ostatn'))
+                                   ),
+                                   'dnskey', json_build_object(
+                                       'old', (
+                                           SELECT ARRAY_AGG(foo.a) AS dnskey
+                                             FROM (SELECT ARRAY_TO_STRING(REGEXP_MATCHES(SUBSTRING(message
+                                                     FROM '(.*)\nNové hodnoty / New values:'), '\nklíče DNS / DNS keys: (.*?)\n', 'g'), '') AS a) AS foo
+                                       ),
+                                       'new', (
+                                           SELECT ARRAY_AGG(foo.a) AS dnskey
+                                             FROM (SELECT ARRAY_TO_STRING(REGEXP_MATCHES(SUBSTRING(message
+                                                     FROM 'Nové hodnoty / New values:\n(.*)'), 'Nové hodnoty / New values:.*\nklíče DNS / DNS keys: (.*?)\n', 'g'), '') AS a) AS foo
+                                       )
+                                   )
+                               )
                            )
                        )
                    )::JSONB
@@ -786,14 +930,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- notification_update
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_12(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 12 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 12 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -822,14 +969,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- notification_transfer
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_13(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 13 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 13 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -848,14 +998,17 @@ $$
           ELSE NULL
           END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- notification_renew
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_14(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 14 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 14 THEN
                CASE
                WHEN message LIKE '%contact identified%' THEN
                    json_build_object(
@@ -905,14 +1058,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- notification_unused
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_15(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 15 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 15 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -931,14 +1087,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- notification_delete
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_16(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 16 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 16 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -956,22 +1115,23 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- techcheck
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_17(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 17 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 17 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
                            REGEXP_REPLACE(SUBSTRING(message FROM 'To:(.*?)Message-ID: '), '\s', '', 'g')
                    ),
                    'body', json_build_object(
-                       'header_to',
-                           REGEXP_REPLACE(SUBSTRING(message FROM 'To:(.*?)Message-ID: '), '\s', '', 'g'),
                        'zone',
                            REGEXP_REPLACE(SUBSTRING(message FROM 'payment received for the (.*?) zone'), '\s', '', 'g')
                    )
@@ -979,14 +1139,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- invoice_deposit
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_18(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 18 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 18 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1004,14 +1167,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- invoice_audit
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_19(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 19 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 19 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1029,14 +1195,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- invoice_noaudit
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_20(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 20 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 20 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1079,14 +1248,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- request_block
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_21(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 21 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 21 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1112,14 +1284,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- mojeid_identification
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_22(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 22 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 22 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1150,14 +1325,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- mojeid_validation
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_23(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 23 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 23 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1190,21 +1368,21 @@ $$
                        'ident_value',
                            CASE
                            WHEN SUBSTRING(message FROM 'Birth date: ') IS NOT NULL
-                               THEN SUBSTRING(message FROM 'Birth date: (.*?)\n')
+                               THEN BTRIM(SUBSTRING(message FROM 'Birth date: (.*?)\n'))
                            WHEN SUBSTRING(message FROM 'Číslo OP: ') IS NOT NULL
-                               THEN SUBSTRING(message FROM 'Číslo OP: (.*?)\n')
+                               THEN BTRIM(SUBSTRING(message FROM 'Číslo OP: (.*?)\n'))
                            WHEN SUBSTRING(message FROM 'Číslo pasu: ') IS NOT NULL
-                               THEN SUBSTRING(message FROM 'Číslo pasu: (.*?)\n')
+                               THEN BTRIM(SUBSTRING(message FROM 'Číslo pasu: (.*?)\n'))
                            WHEN SUBSTRING(message FROM 'IČO: ') IS NOT NULL
-                               THEN SUBSTRING(message FROM 'IČO: (.*?)\n')
+                               THEN BTRIM(SUBSTRING(message FROM 'IČO: (.*?)\n'))
                            WHEN SUBSTRING(message FROM 'Identifikátor MPSV: ') IS NOT NULL
-                               THEN SUBSTRING(message FROM 'Identifikátor MPSV: (.*?)\n')
+                               THEN BTRIM(SUBSTRING(message FROM 'Identifikátor MPSV: (.*?)\n'))
                            WHEN SUBSTRING(message FROM 'Birth day: ') IS NOT NULL
-                               THEN SUBSTRING(message FROM 'Birth day: (.*?)\n')
+                               THEN BTRIM(SUBSTRING(message FROM 'Birth day: (.*?)\n'))
                            END,
                        'dic',
                            SUBSTRING(message FROM 'DIČ: (.*?)\n'),
-                       'telephne',
+                       'telephone',
                            SUBSTRING(message FROM 'Telefon: (.*?)\n'),
                        'fax',
                            SUBSTRING(message FROM 'Fax: (.*?)\n'),
@@ -1221,27 +1399,30 @@ $$
                        'registrar_memo_en',
                            SUBSTRING(message FROM 'Other information provided by your registrar:\n(.*?)\nPlease, do not take any measures if your data are correct\.'),
                        'domains', (
-                           SELECT STRING_TO_ARRAY(ARRAY_TO_STRING(REGEXP_MATCHES(message, 'Seznam domén, kde je kontakt v roli držitele nebo administrativního\nkontaktu:\n(.*)\n(Kontakt není uveden u žádného doménového jména\.|Seznam sad jmenných serverů, kde je kontakt v roli technického kontaktu:|Seznam sad klíčů, kde je kontakt v roli technického kontaktu:|Dear customer,)'), ''), E'\n')
+                           SELECT STRING_TO_ARRAY(ARRAY_TO_STRING(REGEXP_MATCHES(message, 'Seznam domén, kde je kontakt v roli držitele nebo administrativního\nkontaktu:\n(.*?)\n\n(?=(Kontakt není uveden u žádného doménového jména\.|Seznam sad jmenných serverů, kde je kontakt v roli technického kontaktu:|Seznam sad klíčů, kde je kontakt v roli technického kontaktu:|\n\nDear customer,))'), ''), E'\n')
                        ),
                        'nssets', (
-                           SELECT STRING_TO_ARRAY(ARRAY_TO_STRING(REGEXP_MATCHES(message, 'Seznam sad jmenných serverů, kde je kontakt v roli technického kontaktu:\n(.*)\n(Seznam sad klíčů, kde je kontakt v roli technického kontaktu:|Dear customer,)'), ''), E'\n')
+                           SELECT STRING_TO_ARRAY(ARRAY_TO_STRING(REGEXP_MATCHES(message, 'Seznam sad jmenných serverů, kde je kontakt v roli technického kontaktu:\n(.*?)\n\n(?=(Seznam sad klíčů, kde je kontakt v roli technického kontaktu:|\n\nDear customer,))'), ''), E'\n')
                         ),
                        'keysets', (
-                           SELECT STRING_TO_ARRAY(ARRAY_TO_STRING(REGEXP_MATCHES(message, 'Seznam sad klíčů, kde je kontakt v roli technického kontaktu:\n(.*?)\nDear customer,'), ''), E'\n')
+                           SELECT STRING_TO_ARRAY(ARRAY_TO_STRING(REGEXP_MATCHES(message, 'Seznam sad klíčů, kde je kontakt v roli technického kontaktu:\n(.*?)\n\n\n\nDear customer,'), ''), E'\n')
                        )
                    )
                )::JSONB
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- annual_contact_reminder
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_24(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 24 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 24 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1255,14 +1436,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- mojeid_email_change
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_25(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 25 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 25 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1288,14 +1472,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- conditional_contact_identification
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_26(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 26 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 26 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1319,14 +1506,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- contact_identification
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_27(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 27 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 27 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1352,14 +1542,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- mojeid_verified_contact_transfer
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_28(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 28 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 28 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1383,14 +1576,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- merge_contacts_auto
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_29(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 29 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 29 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1404,14 +1600,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- contact_check_notice
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_30(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 30 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 30 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1427,14 +1626,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- contact_check_warning
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_31(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 31 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 31 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1464,14 +1666,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- expiration_dns_warning_owner
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_32(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 32 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 32 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1489,14 +1694,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- akm_candidate_state_ok
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_33(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 33 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 33 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1512,14 +1720,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- akm_candidate_state_ko
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_34(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 34 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 34 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1539,14 +1750,17 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- akm_keyset_update
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_35(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
-           WHEN mail_type_id = 35 THEN
+           WHEN message IS NOT NULL AND mail_type_id = 35 THEN
                json_build_object(
                    'header', json_build_object(
                        'To',
@@ -1564,7 +1778,10 @@ $$
            ELSE NULL
            END;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 -- record_statement
 
 
@@ -1580,15 +1797,14 @@ BEGIN
     RETURN message_params;
 END;
 $$
-LANGUAGE PLPGSQL;
+LANGUAGE PLPGSQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_response_to_json_impl(response_encoded TEXT, mail_id INTEGER, encoding TEXT) RETURNS JSONB AS
 $$
-    WITH decoded AS
-    (
-        SELECT CONVERT_FROM(DECODE(response_encoded, 'BASE64'), encoding) AS response
-    )
     SELECT CASE
            WHEN COALESCE(BTRIM(response_encoded), '') != '' THEN
                json_build_object(
@@ -1613,9 +1829,13 @@ $$
                )::JSONB
            ELSE NULL
            END
-      FROM decoded;
+      FROM (
+          SELECT CONVERT_FROM(DECODE(response_encoded, 'BASE64'), encoding) AS response
+      ) AS decoded;
 $$
-LANGUAGE SQL;
+LANGUAGE SQL
+IMMUTABLE
+PARALLEL SAFE;
 
 
 CREATE OR REPLACE FUNCTION migrate_mail_archive_response_to_json(response_encoded TEXT, mail_id INTEGER) RETURNS JSONB AS
@@ -1638,4 +1858,6 @@ EXCEPTION
         END;
 END;
 $$
-LANGUAGE PLPGSQL;
+LANGUAGE PLPGSQL
+IMMUTABLE
+PARALLEL SAFE;
