@@ -109,20 +109,6 @@ ALTER TABLE mail_archive ADD COLUMN IF NOT EXISTS mail_template_version INTEGER 
 ALTER TABLE mail_archive ADD COLUMN IF NOT EXISTS message_params JSONB;
 ALTER TABLE mail_archive ADD COLUMN IF NOT EXISTS response_header JSONB;
 
-DO
-$$
-BEGIN
-    BEGIN
-        ALTER TABLE mail_archive ADD CONSTRAINT mail_archive_mail_type_id_fkey FOREIGN KEY (mail_type_id) REFERENCES mail_type(id);
-    EXCEPTION
-        WHEN duplicate_object THEN
-            RAISE NOTICE 'Constraint `mail_archive_mail_type_id_fkey` already exists';
-    END;
-END
-$$;
-
-ALTER TABLE mail_archive ADD CONSTRAINT mail_archive_mail_type_template_version_fkey FOREIGN KEY (mail_type_id, mail_template_version)
-      REFERENCES mail_template(mail_type_id, version);
 
 CREATE FUNCTION set_current_mail_template_version() RETURNS TRIGGER AS
 $$
