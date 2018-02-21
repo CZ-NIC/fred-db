@@ -397,7 +397,11 @@ $$
                                        'billing',
                                            BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Fakturační adresa / Billing address: (.*?)\n.*?Viditelnost údajů')),
                                        'shipping',
-                                           BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Dodací adresa / Shipping address: (.*?)\n.*?Viditelnost údajů'))
+                                           BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Dodací adresa / Shipping address: (.*?)\n.*?Viditelnost údajů')),
+                                       'shipping_2',
+                                           BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Dodací adresa / Shipping address:.*?Dodací adresa / Shipping address: (.*?)\n.*?Viditelnost údajů')),
+                                       'shipping_3',
+                                           BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Dodací adresa / Shipping address:.*?Dodací adresa / Shipping address:.*?Dodací adresa / Shipping address: (.*?)\n.*?Viditelnost údajů'))
                                    ),
                                    'disclose', json_build_object(
                                        'name',
