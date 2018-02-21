@@ -481,6 +481,8 @@ $$
                            'type', '1',
                            'handle',
                                REGEXP_REPLACE(SUBSTRING(message FROM '/ Contact handle :(.*?)\n'), '\s', '', 'g'),
+                           'ticket',
+                               REGEXP_REPLACE(SUBSTRING(message FROM '/ Ticket : (.*?)\n'), '\s', '', 'g'),
                            'changes', json_build_object(
                                'object', json_build_object(
                                    'authinfo', json_build_object(
@@ -777,6 +779,8 @@ $$
                            'type', '2',
                            'handle',
                                REGEXP_REPLACE(SUBSTRING(message FROM '/ NS set handle :(.*?)\n'), '\s', '', 'g'),
+                           'ticket',
+                               REGEXP_REPLACE(SUBSTRING(message FROM '/ Ticket : (.*?)\n'), '\s', '', 'g'),
                            'changes', json_build_object(
                                'object', json_build_object(
                                    'authinfo', json_build_object(
@@ -825,6 +829,8 @@ $$
                            'type', '3',
                            'handle',
                                REGEXP_REPLACE(SUBSTRING(message FROM '/ Domain handle :(.*?)\n'), '\s', '', 'g'),
+                           'ticket',
+                               REGEXP_REPLACE(SUBSTRING(message FROM '/ Ticket : (.*?)\n'), '\s', '', 'g'),
                            'changes', json_build_object(
                                'object', json_build_object(
                                    'authinfo', json_build_object(
@@ -905,6 +911,8 @@ $$
                            'type', '4',
                            'handle',
                                REGEXP_REPLACE(SUBSTRING(message FROM '/ Keyset handle :(.*?)\n'), '\s', '', 'g'),
+                           'ticket',
+                               REGEXP_REPLACE(SUBSTRING(message FROM '/ Ticket : (.*?)\n'), '\s', '', 'g'),
                            'changes', json_build_object(
                                'object', json_build_object(
                                    'authinfo', json_build_object(
