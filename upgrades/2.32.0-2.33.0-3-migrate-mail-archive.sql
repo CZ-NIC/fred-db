@@ -483,6 +483,8 @@ $$
                                REGEXP_REPLACE(SUBSTRING(message FROM '/ Contact handle :(.*?)\n'), '\s', '', 'g'),
                            'ticket',
                                REGEXP_REPLACE(SUBSTRING(message FROM '/ Ticket : (.*?)\n'), '\s', '', 'g'),
+                           'registrar',
+                               SUBSTRING(message FROM '/ Registrar : (.*?)\n'),
                            'changes', json_build_object(
                                'object', json_build_object(
                                    'authinfo', json_build_object(
@@ -781,6 +783,8 @@ $$
                                REGEXP_REPLACE(SUBSTRING(message FROM '/ NS set handle :(.*?)\n'), '\s', '', 'g'),
                            'ticket',
                                REGEXP_REPLACE(SUBSTRING(message FROM '/ Ticket : (.*?)\n'), '\s', '', 'g'),
+                           'registrar',
+                               SUBSTRING(message FROM '/ Registrar : (.*?)\n'),
                            'changes', json_build_object(
                                'object', json_build_object(
                                    'authinfo', json_build_object(
@@ -831,6 +835,8 @@ $$
                                REGEXP_REPLACE(SUBSTRING(message FROM '/ Domain handle :(.*?)\n'), '\s', '', 'g'),
                            'ticket',
                                REGEXP_REPLACE(SUBSTRING(message FROM '/ Ticket : (.*?)\n'), '\s', '', 'g'),
+                           'registrar',
+                               SUBSTRING(message FROM '/ Registrar : (.*?)\n'),
                            'changes', json_build_object(
                                'object', json_build_object(
                                    'authinfo', json_build_object(
@@ -913,6 +919,8 @@ $$
                                REGEXP_REPLACE(SUBSTRING(message FROM '/ Keyset handle :(.*?)\n'), '\s', '', 'g'),
                            'ticket',
                                REGEXP_REPLACE(SUBSTRING(message FROM '/ Ticket : (.*?)\n'), '\s', '', 'g'),
+                           'registrar',
+                               SUBSTRING(message FROM '/ Registrar : (.*?)\n'),
                            'changes', json_build_object(
                                'object', json_build_object(
                                    'authinfo', json_build_object(
