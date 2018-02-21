@@ -14,10 +14,10 @@ $$
                    'authinfo',
                        REGEXP_REPLACE(SUBSTRING(message FROM 'The password is:(.*?)If you did not submit the aforementioned'), '\s', '', 'g'),
                    'type',
-                       CASE WHEN SUBSTRING(message FROM 'belonging to the domain name') IS NOT NULL THEN 3
-                            WHEN SUBSTRING(message FROM 'belonging to the contact identified with') IS NOT NULL THEN 1
-                            WHEN SUBSTRING(message FROM 'belonging to the NS set identified') IS NOT NULL THEN 2
-                            WHEN SUBSTRING(message FROM 'belonging to the keyset identified with') IS NOT NULL THEN 4
+                       CASE WHEN SUBSTRING(message FROM 'belonging to the domain name') IS NOT NULL THEN '3'
+                            WHEN SUBSTRING(message FROM 'belonging to the contact identified with') IS NOT NULL THEN '1'
+                            WHEN SUBSTRING(message FROM 'belonging to the NS set identified') IS NOT NULL THEN '2'
+                            WHEN SUBSTRING(message FROM 'belonging to the keyset identified with') IS NOT NULL THEN '4'
                        END,
                    'handle',
                        CASE WHEN SUBSTRING(message FROM 'belonging to the domain name') IS NOT NULL
@@ -55,10 +55,10 @@ $$
                    'authinfo',
                        REGEXP_REPLACE(SUBSTRING(message FROM 'The password is:(.*?)\nThis'), '\s', '', 'g'),
                    'type',
-                       CASE WHEN SUBSTRING(message FROM 'příslušející k doméně') IS NOT NULL THEN 3
-                            WHEN SUBSTRING(message FROM 'příslušející ke kontaktu s identifikátorem') IS NOT NULL THEN 1
-                            WHEN SUBSTRING(message FROM 'příslušející k sadě nameserverů s identifikátorem') IS NOT NULL THEN 2
-                            WHEN SUBSTRING(message FROM 'příslušející k sadě klíčů s identifikátorem') IS NOT NULL THEN 4
+                       CASE WHEN SUBSTRING(message FROM 'příslušející k doméně') IS NOT NULL THEN '3'
+                            WHEN SUBSTRING(message FROM 'příslušející ke kontaktu s identifikátorem') IS NOT NULL THEN '1'
+                            WHEN SUBSTRING(message FROM 'příslušející k sadě nameserverů s identifikátorem') IS NOT NULL THEN '2'
+                            WHEN SUBSTRING(message FROM 'příslušející k sadě klíčů s identifikátorem') IS NOT NULL THEN '4'
                        END,
                    'handle',
                        CASE WHEN SUBSTRING(message FROM 'příslušející k doméně') IS NOT NULL
@@ -320,7 +320,7 @@ $$
                                REGEXP_REPLACE(SUBSTRING(message FROM '/ Ticket :(.*?)\n'), '\s', '', 'g'),
                            'registrar',
                                SUBSTRING(message FROM '/ Registrar : (.*?)\n'),
-                           'type', 3
+                           'type', '3'
                        )
                    )::JSONB
                WHEN message LIKE '%NS set creation%' THEN
@@ -336,7 +336,7 @@ $$
                                REGEXP_REPLACE(SUBSTRING(message FROM '/ Ticket :(.*?)\n'), '\s', '', 'g'),
                            'registrar',
                                SUBSTRING(message FROM '/ Registrar : (.*?)\n'),
-                           'type', 2
+                           'type', '2'
                        )
                    )::JSONB
                WHEN message LIKE '%Keyset creation%' THEN
@@ -352,7 +352,7 @@ $$
                                REGEXP_REPLACE(SUBSTRING(message FROM '/ Ticket :(.*?)\n'), '\s', '', 'g'),
                            'registrar',
                                SUBSTRING(message FROM '/ Registrar : (.*?)\n'),
-                           'type', 4
+                           'type', '4'
                        )
                    )::JSONB
                WHEN message LIKE '%Contact creation%' THEN
@@ -368,7 +368,7 @@ $$
                                REGEXP_REPLACE(SUBSTRING(message FROM '/ Ticket :(.*?)\n'), '\s', '', 'g'),
                            'registrar',
                                SUBSTRING(message FROM '/ Registrar : (.*?)\n'),
-                           'type', 1,
+                           'type', '1',
                            'fresh', json_build_object(
                                'contact', json_build_object(
                                    'name',
@@ -474,7 +474,7 @@ $$
                                REGEXP_REPLACE(SUBSTRING(message FROM 'To:(.*?)Message-ID: '), '\s', '', 'g')
                        ),
                        'body', json_build_object(
-                           'type', 1,
+                           'type', '1',
                            'changes', json_build_object(
                                'object', json_build_object(
                                    'authinfo', json_build_object(
@@ -768,7 +768,7 @@ $$
                                REGEXP_REPLACE(SUBSTRING(message FROM 'To:(.*?)Message-ID: '), '\s', '', 'g')
                        ),
                        'body', json_build_object(
-                           'type', 2,
+                           'type', '2',
                            'changes', json_build_object(
                                'object', json_build_object(
                                    'authinfo', json_build_object(
@@ -814,7 +814,7 @@ $$
                                REGEXP_REPLACE(SUBSTRING(message FROM 'To:(.*?)Message-ID: '), '\s', '', 'g')
                        ),
                        'body', json_build_object(
-                           'type', 3,
+                           'type', '3',
                            'changes', json_build_object(
                                'object', json_build_object(
                                    'authinfo', json_build_object(
@@ -892,7 +892,7 @@ $$
                                REGEXP_REPLACE(SUBSTRING(message FROM 'To:(.*?)Message-ID: '), '\s', '', 'g')
                        ),
                        'body', json_build_object(
-                           'type', 4,
+                           'type', '4',
                            'changes', json_build_object(
                                'object', json_build_object(
                                    'authinfo', json_build_object(
@@ -950,13 +950,13 @@ $$
                        'type',
                            CASE
                            WHEN SUBSTRING(message FROM '(Transfer .*? transfer)\n') = 'Transfer kontaktu / Contact transfer'
-                               THEN 1
+                               THEN '1'
                            WHEN SUBSTRING(message FROM '(Transfer .*? transfer)\n') = 'Transfer sady nameserverů / NS set transfer'
-                               THEN 2
+                               THEN '2'
                            WHEN SUBSTRING(message FROM '(Transfer .*? transfer)\n') = 'Transfer domény / Domain transfer'
-                               THEN 3
+                               THEN '3'
                            WHEN SUBSTRING(message FROM '(Transfer .*? transfer)\n') = 'Transfer sady klíčů / Keyset transfer'
-                               THEN 4
+                               THEN '4'
                            END,
                        'handle',
                            REGEXP_REPLACE(SUBSTRING(message FROM '/ .*? handle : (.*?)\n'), '\s', '', 'g'),
@@ -992,7 +992,7 @@ $$
                            REGEXP_REPLACE(SUBSTRING(message FROM '/ Ticket :(.*?)\n'), '\s', '', 'g'),
                        'registrar',
                            SUBSTRING(message FROM '/ Registrar : (.*?)\n'),
-                       'type', 4
+                       'type', '4'
                    )
                )::JSONB
           ELSE NULL
@@ -1021,7 +1021,7 @@ $$
                                REGEXP_REPLACE(SUBSTRING(message FROM 'contact identified with (.*?)\n'), '\s', '', 'g'),
                            'deldate',
                                REGEXP_REPLACE(SUBSTRING(message FROM 'cancelling the aforementioned contact as of (.*?)\.\n'), '\s', '', 'g'),
-                           'type', 1
+                           'type', '1'
 
                        )
                    )::JSONB
@@ -1036,7 +1036,7 @@ $$
                                REGEXP_REPLACE(SUBSTRING(message FROM 'the NS set identified with (.*?)\n'), '\s', '', 'g'),
                            'deldate',
                                REGEXP_REPLACE(SUBSTRING(message FROM 'cancelling the aforementioned set of nameservers as of (.*?)\.\n'), '\s', '', 'g'),
-                           'type', 2
+                           'type', '2'
                        )
                    )::JSONB
                WHEN message LIKE '%keyset identified with%' THEN
@@ -1050,7 +1050,7 @@ $$
                                REGEXP_REPLACE(SUBSTRING(message FROM 'the keyset identified with (.*?)\n'), '\s', '', 'g'),
                            'deldate',
                                REGEXP_REPLACE(SUBSTRING(message FROM 'cancelling the aforementioned set of keysets as of (.*?)\.\n'), '\s', '', 'g'),
-                           'type', 4
+                           'type', '4'
                        )
                    )::JSONB
                ELSE NULL
@@ -1081,7 +1081,7 @@ $$
                            REGEXP_REPLACE(SUBSTRING(message FROM '/ Ticket : \xa0(.*?)\n'), '\s', '', 'g'),
                        'registrar',
                            SUBSTRING(message FROM '/ Registrar : (.*?)\n'),
-                       'type', 3
+                       'type', '3'
                    )
                )::JSONB
            ELSE NULL
@@ -1219,27 +1219,27 @@ $$
                        'otype',
                            CASE
                            WHEN SUBSTRING(message FROM 'we are announcing that your request for (.*?)\n') = 'blocking'
-                               THEN 1
+                               THEN '1'
                            WHEN SUBSTRING(message FROM 'we are announcing that your request for (.*?)\n') = 'unblocking'
-                               THEN 2
+                               THEN '2'
                            END,
                        'rtype',
                            CASE
                            WHEN SUBSTRING(message FROM 'your request for.*?\n(.*?) for') = 'data changes'
-                               THEN 1
+                               THEN '1'
                            WHEN SUBSTRING(message FROM 'your request for.*?\n(.*?) for') = 'transfer to other registrar'
-                               THEN 2
+                               THEN '2'
                            END,
                        'type',
                            CASE
                            WHEN SUBSTRING(message FROM 'your request.*?\n.* for (.*?) [^ ]*?\nhas been dealt with') = 'domain name'
-                               THEN 3
+                               THEN '3'
                            WHEN SUBSTRING(message FROM 'your request.*?\n.* for (.*?) [^ ]*?\nhas been dealt with') = 'contact identified with'
-                               THEN 1
+                               THEN '1'
                            WHEN SUBSTRING(message FROM 'your request.*?\n.* for (.*?) [^ ]*?\nhas been dealt with') = 'NS set identified with'
-                               THEN 2
+                               THEN '2'
                            WHEN SUBSTRING(message FROM 'your request.*?\n.* for (.*?) [^ ]*?\nhas been dealt with') = 'keyset identified with'
-                               THEN 4
+                               THEN '4'
                            END,
                        'handle',
                            SUBSTRING(message FROM ' ([^ ]*?)\nhas been dealt with')
