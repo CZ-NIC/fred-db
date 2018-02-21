@@ -9,20 +9,20 @@ Typ kontroly / Check type: periodická / periodic
 
 <?cs def:printtest(par_test) ?><?cs if:par_test.name == "glue_ok" ?>U následujících nameserverů chybí povinný glue záznam:
 The required glue record is missing for the following nameservers:
-<?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
+<?cs each:ns = par_test.ns ?>    <?cs var:ns.hostname ?>
 <?cs /each ?><?cs /if ?><?cs if:par_test.name == "existence" ?>Následující nameservery v sadě nameserverů nejsou dosažitelné:
 Following nameservers in the NS set are unreachable:
-<?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
+<?cs each:ns = par_test.ns ?>    <?cs var:ns.hostname ?>
 <?cs /each ?><?cs /if ?><?cs if:par_test.name == "autonomous" ?>Sada nameserverů neobsahuje minimálně dva nameservery v různých
 autonomních systémech.
 The NS set does not contain at least two nameservers in different autonomous systems.
 
-<?cs /if ?><?cs if:par_test.name == "presence" ?><?cs each:ns = par_test.ns ?>Nameserver <?cs var:ns ?> neobsahuje záznam pro domény:
-Nameserver <?cs var:ns ?> does not contain a record for any of the domains:
+<?cs /if ?><?cs if:par_test.name == "presence" ?><?cs each:ns = par_test.ns ?>Nameserver <?cs var:ns.hostname ?> neobsahuje záznam pro domény:
+Nameserver <?cs var:ns.hostname ?> does not contain a record for any of the domains:
 <?cs each:fqdn = ns.fqdn ?>    <?cs var:fqdn ?>
 <?cs /each ?><?cs if:ns.overfull ?>    ...
-<?cs /if ?><?cs /each ?><?cs /if ?><?cs if:par_test.name == "authoritative" ?><?cs each:ns = par_test.ns ?>Nameserver <?cs var:ns ?> není autoritativní pro domény:
-Nameserver <?cs var:ns ?> is not authoritative for domains:
+<?cs /if ?><?cs /each ?><?cs /if ?><?cs if:par_test.name == "authoritative" ?><?cs each:ns = par_test.ns ?>Nameserver <?cs var:ns.hostname ?> není autoritativní pro domény:
+Nameserver <?cs var:ns.hostname ?> is not authoritative for domains:
 <?cs each:fqdn = ns.fqdn ?>    <?cs var:fqdn ?>
 <?cs /each ?><?cs if:ns.overfull ?>    ...
 <?cs /if ?><?cs /each ?><?cs /if ?><?cs if:par_test.name == "heterogenous" ?>Všechny nameservery v sadě nameserverů používají stejnou implementaci
@@ -31,10 +31,10 @@ All nameservers in the NS set use the same implementation of DNS server.
 
 <?cs /if ?><?cs if:par_test.name == "notrecursive" ?>Následující nameservery v sadě nameserverů jsou rekurzivní:
 Following nameservers in the NS set are recursive:
-<?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
+<?cs each:ns = par_test.ns ?>    <?cs var:ns.hostname ?>
 <?cs /each ?><?cs /if ?><?cs if:par_test.name == "notrecursive4all" ?>Následující nameservery v sadě nameserverů zodpověděly dotaz rekurzivně:
 Following nameservers in the NS set answered a query recursively:
-<?cs each:ns = par_test.ns ?>    <?cs var:ns ?>
+<?cs each:ns = par_test.ns ?>    <?cs var:ns.hostname ?>
 <?cs /each ?><?cs /if ?><?cs if:par_test.name == "dnsseckeychase" ?>Pro následující domény přislušející sadě nameserverů nebylo možno
 ověřit validitu podpisu DNSSEC:
 For the following domains belonging to the NS set, the DNSSEC signature
