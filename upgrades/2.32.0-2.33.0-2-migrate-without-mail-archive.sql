@@ -104,7 +104,6 @@ WHERE id = 11;
 
 
 UPDATE mail_templates SET template =
-'Výsledek technické kontroly sady nameserverů <?cs var:handle ?> / Results of technical check on the NS set <?cs var:handle ?>',
 'Sada nameserverů / NS set: <?cs var:handle ?>
 
 Datum kontroly / Date of the check: <?cs var:checkdate ?>
