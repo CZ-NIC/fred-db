@@ -1371,9 +1371,7 @@ $$
                    'email',
                        SUBSTRING(message FROM 'e-mail:        (.*?)\n'),
                    'hostname',
-                       SUBSTRING(message FROM 'https://(.*?)/verification/'),
-                   'identification',
-                       SUBSTRING(message FROM 'https://.*?/verification/identify/letter/\?handle=')
+                       SUBSTRING(message FROM 'https://(.*?)/verification/')
                )::JSONB
            ELSE NULL
            END;
