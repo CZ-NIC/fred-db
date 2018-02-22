@@ -1198,13 +1198,15 @@ $$
                json_build_object(
                    'status',
                        CASE
-                       WHEN SUBSTRING(message FROM 'Validace účtu mojeID (.*?)\n') = 'provedena'
-                           THEN 1
-                       WHEN SUBSTRING(message FROM 'Validace účtu mojeID (.*?)\n') = 'neprovedena'
-                           THEN 0 -- XXX
+                       WHEN SUBSTRING(message FROM 'byla provedena validace') IS NOT NULL
+                           THEN '1'
+                       WHEN SUBSTRING(message FROM 'nebyl validován') IS NOT NULL
+                           THEN '0'
                        END,
+                   'reqid',
+                       SUBSTRING(message FROM 'číslo (.*?) ze dne'),
                    'reqdate',
-                       SUBSTRING(message FROM 'žádosti číslo .*? ze dne (.*?)( byla provedena validace účtu mojeID|, nebyl validován)\.'),
+                       SUBSTRING(message FROM 'ze dne (.*?)( byla provedena validace účtu mojeID|, nebyl validován)'),
                    'name',
                        SUBSTRING(message FROM 'Jméno: (.*?)\n'),
                    'org',
