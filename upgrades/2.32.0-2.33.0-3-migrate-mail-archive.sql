@@ -347,47 +347,47 @@ $$
                                    'name',
                                        CASE
                                        WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Jméno / Name: (.*?)\n')) ~ 'public'
-                                           THEN 1 ELSE 0
+                                           THEN '1' ELSE '0'
                                        END,
                                    'org',
                                        CASE
                                        WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Organizace / Organization: (.*?)\n')) ~ 'public'
-                                           THEN 1 ELSE 0
+                                           THEN '1' ELSE '0'
                                        END,
                                    'email',
                                        CASE
                                        WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?E-mail / Email: (.*?)\n')) ~ 'public'
-                                           THEN 1 ELSE 0
+                                           THEN '1' ELSE '0'
                                        END,
                                    'address',
                                        CASE
                                        WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Adresa / Address: (.*?)\n')) ~ 'public'
-                                           THEN 1 ELSE 0
+                                           THEN '1' ELSE '0'
                                        END,
                                    'notify_email',
                                        CASE
                                        WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Notifikační e-mail / Notification email: (.*?)\n')) ~ 'public'
-                                           THEN 1 ELSE 0
+                                           THEN '1' ELSE '0'
                                        END,
                                    'ident',
                                        CASE
                                        WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Identifikační údaj / Identification data: (.*?)\n')) ~ 'public'
-                                           THEN 1 ELSE 0
+                                           THEN '1' ELSE '0'
                                        END,
                                    'vat',
                                        CASE
                                        WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?DIČ / VAT number: (.*?)\n')) ~ 'public'
-                                           THEN 1 ELSE 0
+                                           THEN '1' ELSE '0'
                                        END,
                                    'telephone',
                                        CASE
                                        WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Telefon / Telephone: (.*?)\n')) ~ 'public'
-                                           THEN 1 ELSE 0
+                                           THEN '1' ELSE '0'
                                        END,
                                    'fax',
                                        CASE
                                        WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:\n.*?Fax / Fax: (.*?)\n')) ~ 'public'
-                                           THEN 1 ELSE 0
+                                           THEN '1' ELSE '0'
                                        END
                                )
                            )
@@ -526,18 +526,18 @@ $$
                                        'old',
                                             CASE
                                             WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Jméno / Name: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                                THEN 1
+                                                THEN '1'
                                             WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Jméno / Name: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                                THEN 0
+                                                THEN '0'
                                             ELSE
                                                 NULL
                                             END,
                                        'new',
                                             CASE
                                             WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Jméno / Name: (.*?)\n.*?Ostatn')) ~ 'public'
-                                                THEN 1
+                                                THEN '1'
                                             WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Jméno / Name: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                                THEN 0
+                                                THEN '0'
                                             ELSE
                                                 NULL
                                             END
@@ -546,18 +546,18 @@ $$
                                        'old',
                                            CASE
                                            WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Organizace / Organization: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                               THEN 1
+                                               THEN '1'
                                            WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Organizace / Organization: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                               THEN 0
+                                               THEN '0'
                                            ELSE
                                                NULL
                                            END,
                                        'new',
                                            CASE
                                            WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Organizace / Organization: (.*?)\n.*?Ostatn')) ~ 'public'
-                                               THEN 1
+                                               THEN '1'
                                            WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Organizace / Organization: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                               THEN 0
+                                               THEN '0'
                                            ELSE
                                                NULL
                                         END
@@ -566,18 +566,18 @@ $$
                                        'old',
                                            CASE
                                            WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  E-mail / Email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                               THEN 1
+                                               THEN '1'
                                            WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  E-mail / Email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                               THEN 0
+                                               THEN '0'
                                            ELSE
                                                NULL
                                            END,
                                        'new',
                                            CASE
                                            WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  E-mail / Email: (.*?)\n.*?Ostatn')) ~ 'public'
-                                               THEN 1
+                                               THEN '1'
                                            WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  E-mail / Email: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                               THEN 0
+                                               THEN '0'
                                            ELSE
                                                NULL
                                            END
@@ -586,18 +586,18 @@ $$
                                        'old',
                                            CASE
                                            WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Adresa / Address: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                               THEN 1
+                                               THEN '1'
                                            WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Adresa / Address: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                               THEN 0
+                                               THEN '0'
                                            ELSE
                                                NULL
                                            END,
                                        'new',
                                            CASE
                                            WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Adresa / Address: (.*?)\n.*?Ostatn')) ~ 'public'
-                                               THEN 1
+                                               THEN '1'
                                            WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Adresa / Address: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                               THEN 0
+                                               THEN '0'
                                            ELSE
                                                NULL
                                            END
@@ -606,18 +606,18 @@ $$
                                        'old',
                                            CASE
                                            WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Notifikační e-mail / Notification email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                               THEN 1
+                                               THEN '1'
                                            WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Notifikační e-mail / Notification email: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                               THEN 0
+                                               THEN '0'
                                            ELSE
                                                NULL
                                            END,
                                        'new',
                                            CASE
                                            WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Notifikační e-mail / Notification email: (.*?)\n.*?Ostatn')) ~ 'public'
-                                               THEN 1
+                                               THEN '1'
                                            WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Notifikační e-mail / Notification email: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                               THEN 0
+                                               THEN '0'
                                            ELSE
                                                NULL
                                            END
@@ -626,18 +626,18 @@ $$
                                        'old',
                                            CASE
                                            WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Identifikační údaj / Identification data: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                               THEN 1
+                                               THEN '1'
                                            WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Identifikační údaj / Identification data: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                               THEN 0
+                                               THEN '0'
                                            ELSE
                                                NULL
                                            END,
                                        'new',
                                            CASE
                                            WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Identifikační údaj / Identification data: (.*?)\n.*?Ostatn')) ~ 'public'
-                                               THEN 1
+                                               THEN '1'
                                            WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Identifikační údaj / Identification data: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                               THEN 0
+                                               THEN '0'
                                            ELSE
                                                NULL
                                            END
@@ -646,36 +646,36 @@ $$
                                        'old',
                                            CASE
                                            WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  DIČ / VAT number: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                               THEN 1
+                                               THEN '1'
                                            WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  DIČ / VAT number: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                               THEN 0
+                                               THEN '0'
                                            ELSE
                                                NULL
                                            END,
                                        'new',
                                            CASE
                                            WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  DIČ / VAT number: (.*?)\n.*?Ostatn')) ~ 'public'
-                                               THEN 1
+                                               THEN '1'
                                            WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  DIČ / VAT number: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                               THEN 0
+                                               THEN '0'
                                            END
                                    ),
                                    'telephone', json_build_object(
                                        'old',
                                            CASE
                                            WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Telefon / Telephone: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                               THEN 1
+                                               THEN '1'
                                            WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Telefon / Telephone: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                               THEN 0
+                                               THEN '0'
                                            ELSE
                                                NULL
                                            END,
                                        'new',
                                            CASE
                                            WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Telefon / Telephone: (.*?)\n.*?Ostatn')) ~ 'public'
-                                               THEN 1
+                                               THEN '1'
                                            WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Telefon / Telephone: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                               THEN 0
+                                               THEN '0'
                                            ELSE
                                                NULL
                                            END
@@ -684,18 +684,18 @@ $$
                                        'old',
                                            CASE
                                            WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'public'
-                                               THEN 1
+                                               THEN '1'
                                            WHEN BTRIM(SUBSTRING(message FROM 'Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'hidden'
-                                               THEN 0
+                                               THEN '0'
                                            ELSE
                                                NULL
                                            END,
                                        'new',
                                            CASE
                                            WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*?Ostatn')) ~ 'public'
-                                               THEN 1
+                                               THEN '1'
                                            WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?Viditelnost údajů / Data visibility:.*\n  Fax / Fax: (.*?)\n.*?Ostatn')) ~ 'hidden'
-                                               THEN 0
+                                               THEN '0'
                                            ELSE
                                                NULL
                                            END
