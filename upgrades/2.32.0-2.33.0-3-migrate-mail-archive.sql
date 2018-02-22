@@ -405,6 +405,32 @@ PARALLEL SAFE;
 -- notification_create
 
 
+CREATE OR REPLACE FUNCTION helper_fix_new_value(value TEXT) RETURNS TEXT AS
+$$
+    SELECT CASE WHEN value = 'hodnota smazána / value deleted'
+                THEN ''
+                ELSE value
+          END;
+$$
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
+
+
+CREATE OR REPLACE FUNCTION helper_fix_old_value(value TEXT) RETURNS TEXT AS
+$$
+    SELECT CASE WHEN value = 'hodnota nenastavena / value not set'
+                THEN ''
+                ELSE value
+           END;
+$$
+LANGUAGE SQL
+IMMUTABLE
+RETURNS NULL ON NULL INPUT
+PARALLEL SAFE;
+
+
 CREATE OR REPLACE FUNCTION migrate_mail_archive_type_11(message TEXT, mail_type_id INTEGER) RETURNS JSONB AS
 $$
     SELECT CASE
@@ -431,94 +457,94 @@ $$
                            'contact', json_build_object(
                                'name', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nPůvodní hodnoty / Original values:.*?Jméno / Name: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nPůvodní hodnoty / Original values:.*?Jméno / Name: (.*?)\n.*?Nové hodnoty / New values:'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nJméno / Name: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nJméno / Name: (.*?)\n.*?Ostatn')))
                                ),
                                'org', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nOrganizace / Organization: (.*?)\n')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nOrganizace / Organization: (.*?)\n'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nOrganizace / Organization: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nOrganizace / Organization: (.*?)\n.*?Ostatn')))
                                ),
                                'telephone', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nTelefon / Telephone: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nTelefon / Telephone: (.*?)\n.*?Nové hodnoty / New values:'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTelefon / Telephone: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTelefon / Telephone: (.*?)\n.*?Ostatn')))
                                ),
                                'fax', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nFax / Fax: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nFax / Fax: (.*?)\n.*?Nové hodnoty / New values:'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nFax / Fax: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nFax / Fax: (.*?)\n.*?Ostatn')))
                                ),
                                'email', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nE-mail / Email: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nE-mail / Email: (.*?)\n.*?Nové hodnoty / New values:'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nE-mail / Email: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nE-mail / Email: (.*?)\n.*?Ostatn')))
                                ),
                                'notify_email', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nNotifikační e-mail / Notification email: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nNotifikační e-mail / Notification email: (.*?)\n.*?Nové hodnoty / New values:'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nNotifikační e-mail / Notification email: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nNotifikační e-mail / Notification email: (.*?)\n.*?Ostatn')))
                                ),
                                'ident_type', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nTyp identifikace / Identification type: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nTyp identifikace / Identification type: (.*?)\n.*?Nové hodnoty / New values:'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTyp identifikace / Identification type: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTyp identifikace / Identification type: (.*?)\n.*?Ostatn')))
                                ),
                                'ident', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nIdentifikační údaj / Identification data: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nIdentifikační údaj / Identification data: (.*?)\n.*?Nové hodnoty / New values:'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nIdentifikační údaj / Identification data: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nIdentifikační údaj / Identification data: (.*?)\n.*?Ostatn')))
                                ),
                                'vat', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nDIČ / VAT number: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nDIČ / VAT number: (.*?)\n.*?Nové hodnoty / New values:'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDIČ / VAT number: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDIČ / VAT number: (.*?)\n.*?Ostatn')))
                                ),
                                'address', json_build_object(
                                    'permanent', json_build_object(
                                        'old',
-                                           BTRIM(SUBSTRING(message FROM '\nTrvalá Adresa / Permanent Address: (.*?)\n.*?Nové hodnoty / New values:')),
+                                           helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nTrvalá Adresa / Permanent Address: (.*?)\n.*?Nové hodnoty / New values:'))),
                                        'new',
-                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTrvalá Adresa / Permanent Address: (.*?)\n.*?Ostatn'))
+                                           helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTrvalá Adresa / Permanent Address: (.*?)\n.*?Ostatn')))
                                    ),
                                    'mailing', json_build_object(
                                        'old',
-                                           BTRIM(SUBSTRING(message FROM '\nKorespondenční adresa / Mailing address: (.*?)\n.*?Nové hodnoty / New values:')),
+                                           helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nKorespondenční adresa / Mailing address: (.*?)\n.*?Nové hodnoty / New values:'))),
                                        'new',
-                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nKorespondenční adresa / Mailing address: (.*?)\n.*?Ostatn'))
+                                           helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nKorespondenční adresa / Mailing address: (.*?)\n.*?Ostatn')))
                                    ),
                                    'billing', json_build_object(
                                        'old',
-                                           BTRIM(SUBSTRING(message FROM '\nFakturační adresa / Billing address: (.*?)\n.*?Nové hodnoty / New values:')),
+                                           helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nFakturační adresa / Billing address: (.*?)\n.*?Nové hodnoty / New values:'))),
                                        'new',
-                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nFakturační adresa / Billing address: (.*?)\n.*?Ostatn'))
+                                           helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nFakturační adresa / Billing address: (.*?)\n.*?Ostatn')))
                                    ),
                                    'shipping', json_build_object(
                                        'old',
-                                           BTRIM(SUBSTRING(message FROM '\nDodací adresa / Shipping address: (.*?)\n.*?Nové hodnoty / New values:')),
+                                           helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nDodací adresa / Shipping address: (.*?)\n.*?Nové hodnoty / New values:'))),
                                        'new',
-                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Ostatn'))
+                                           helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Ostatn')))
                                    ),
                                    'shipping_2', json_build_object(
                                        'old',
-                                           BTRIM(SUBSTRING(message FROM '\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Nové hodnoty / New values:')),
+                                           helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Nové hodnoty / New values:'))),
                                        'new',
-                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Ostatn'))
+                                           helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Ostatn')))
                                    ),
                                    'shipping_3', json_build_object(
                                        'old',
-                                           BTRIM(SUBSTRING(message FROM '\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Nové hodnoty / New values:')),
+                                           helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Nové hodnoty / New values:'))),
                                        'new',
-                                           BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Ostatn'))
+                                           helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*?\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address:.*?\nDodací adresa / Shipping address: (.*?)\n.*?Ostatn')))
                                    )
                                ),
                                'disclose', json_build_object(
@@ -725,15 +751,15 @@ $$
                            'nsset', json_build_object(
                                'check_level', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nÚroveň tech. kontrol / Check level: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nÚroveň tech. kontrol / Check level: (.*?)\n.*?Nové hodnoty / New values:'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nÚroveň tech. kontrol / Check level: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nÚroveň tech. kontrol / Check level: (.*?)\n.*?Ostatn')))
                                ),
                                'tech_c', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nTechnické kontakty / Technical contacts: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nTechnické kontakty / Technical contacts: (.*?)\n.*?Nové hodnoty / New values:'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTechnické kontakty / Technical contacts: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTechnické kontakty / Technical contacts: (.*?)\n.*?Ostatn')))
                                ),
                                'dns', json_build_object(
                                    'old', (
@@ -771,39 +797,39 @@ $$
                            'domain', json_build_object(
                                'registrant', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nDržitel / Holder: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nDržitel / Holder: (.*?)\n.*?Nové hodnoty / New values:'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDržitel / Holder: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDržitel / Holder: (.*?)\n.*?Ostatn')))
                                ),
                                'nsset', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nSada jmenných serverů / Name server set: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nSada jmenných serverů / Name server set: (.*?)\n.*?Nové hodnoty / New values:'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nSada jmenných serverů / Name server set: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nSada jmenných serverů / Name server set: (.*?)\n.*?Ostatn')))
                                ),
                                'keyset', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nSada klíčů / Key set: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nSada klíčů / Key set: (.*?)\n.*?Nové hodnoty / New values:'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nSada klíčů / Key set: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nSada klíčů / Key set: (.*?)\n.*?Ostatn')))
                                ),
                                'admin_c', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nAdministrativní kontakty / Administrative contacts: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nAdministrativní kontakty / Administrative contacts: (.*?)\n.*?Nové hodnoty / New values:'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nAdministrativní kontakty / Administrative contacts: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nAdministrativní kontakty / Administrative contacts: (.*?)\n.*?Ostatn')))
                                ),
                                'temp_c', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nDočasné kontakty / Temporary contacts: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nDočasné kontakty / Temporary contacts: (.*?)\n.*?Nové hodnoty / New values:'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDočasné kontakty / Temporary contacts: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nDočasné kontakty / Temporary contacts: (.*?)\n.*?Ostatn')))
                                ),
                                'val_ex_date', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nValidováno do / Validation expiration date: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nValidováno do / Validation expiration date: (.*?)\n.*?Nové hodnoty / New values:'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nValidováno do / Validation expiration date: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nValidováno do / Validation expiration date: (.*?)\n.*?Ostatn')))
                                ),
                                'publish', json_build_object(
                                    'old',
@@ -849,9 +875,9 @@ $$
                            'keyset', json_build_object(
                                'tech_c', json_build_object(
                                    'old',
-                                       BTRIM(SUBSTRING(message FROM '\nTechnické kontakty / Technical contacts: (.*?)\n.*?Nové hodnoty / New values:')),
+                                       helper_fix_old_value(BTRIM(SUBSTRING(message FROM '\nTechnické kontakty / Technical contacts: (.*?)\n.*?Nové hodnoty / New values:'))),
                                    'new',
-                                       BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTechnické kontakty / Technical contacts: (.*?)\n.*?Ostatn'))
+                                       helper_fix_new_value(BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nTechnické kontakty / Technical contacts: (.*?)\n.*?Ostatn')))
                                ),
                                'dnskey', json_build_object(
                                    'old', (
