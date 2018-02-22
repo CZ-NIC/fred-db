@@ -839,18 +839,18 @@ $$
                                    'old',
                                        CASE
                                        WHEN BTRIM(SUBSTRING(message FROM 'Přidat do ENUM tel.sezn. / Include in ENUM dict: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'yes'
-                                           THEN 1
+                                           THEN '1'
                                        WHEN BTRIM(SUBSTRING(message FROM 'Přidat do ENUM tel.sezn. / Include in ENUM dict: (.*?)\n.*?Nové hodnoty / New values:')) ~ 'no'
-                                           THEN 0
+                                           THEN '0'
                                        ELSE
                                            NULL
                                        END,
                                    'new',
                                        CASE
                                        WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nPřidat do ENUM tel.sezn. / Include in ENUM dict: (.*?)\n')) ~ 'yes'
-                                           THEN 1
+                                           THEN '1'
                                        WHEN BTRIM(SUBSTRING(message FROM 'Nové hodnoty / New values:.*\nPřidat do ENUM tel.sezn. / Include in ENUM dict: (.*?)\n')) ~ 'no'
-                                           THEN 0
+                                           THEN '0'
                                        ELSE
                                            NULL
                                        END
