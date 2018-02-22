@@ -310,6 +310,10 @@ $$
                            SUBSTRING(message FROM '/ Registrar : (.*?)\n'),
                        'type', '1',
                        'fresh', json_build_object(
+                           'object', json_build_object(
+                               'authinfo',
+                                   BTRIM(SUBSTRING(message FROM 'Heslo / Authinfo: (.*?)\n.*?Viditelnost údajů'))
+                           ),
                            'contact', json_build_object(
                                'name',
                                    BTRIM(SUBSTRING(message FROM 'Details of the contact are:.*?Jméno / Name: (.*?)\n.*?Viditelnost údajů')),
