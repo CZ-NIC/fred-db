@@ -14,7 +14,7 @@ UPDATE mail_templates SET template =
 <?cs def:whoislink(type,handle) ?><?cs var:defaults.whoispage ?>/<?cs call:objtype(type) ?>/<?cs var:handle ?>/<?cs /def ?>
 
 <?cs def:value_list(which) ?><?cs if:subcount(changes.object.authinfo) ?>Heslo / Authinfo: <?cs if:which == "old" ?>důvěrný údaj / private value<?cs elif:which == "new" ?>hodnota byla změněna / value was changed<?cs /if ?>
-<?cs /if ?><?cs if:type == #1 ?><?cs if:changes.contact.name ?>Jméno / Name: <?cs call:print_value(which, changes.contact.name) ?>
+<?cs /if ?><?cs if:type == #1 ?><?cs if:subcount(changes.contact.name) ?>Jméno / Name: <?cs call:print_value(which, changes.contact.name) ?>
 <?cs /if ?><?cs if:subcount(changes.contact.org) ?>Organizace / Organization: <?cs call:print_value(which, changes.contact.org) ?>
 <?cs /if ?><?cs if:subcount(changes.contact.address.permanent) ?>Trvalá Adresa / Permanent Address: <?cs call:print_value(which, changes.contact.address.permanent) ?>
 <?cs /if ?><?cs if:subcount(changes.contact.address.mailing) ?>Korespondenční adresa / Mailing address: <?cs call:print_value(which, changes.contact.address.mailing) ?>
