@@ -855,7 +855,7 @@ $$
                        REGEXP_REPLACE(SUBSTRING(message FROM '/ Ticket :(.*?)\n'), '\s', '', 'g'),
                    'registrar',
                        SUBSTRING(message FROM '/ Registrar : (.*?)\n'),
-                   'type', '4'
+                   'type', '3'
                )::JSONB
           ELSE NULL
           END;
