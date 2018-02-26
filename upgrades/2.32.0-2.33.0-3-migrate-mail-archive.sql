@@ -1514,7 +1514,7 @@ BEGIN
                         'header',
                             migrate_mail_header($1),
                         'body',
-                            migrate_mail_archive_type_$e$ || mail_type_id || $e$($1, $2)
+                            jsonb_strip_nulls(migrate_mail_archive_type_$e$ || mail_type_id || $e$($1, $2))
                     )$e$ INTO message_params USING message, mail_type_id;
     RETURN message_params;
 END;
