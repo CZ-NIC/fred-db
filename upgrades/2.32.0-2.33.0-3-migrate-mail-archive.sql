@@ -1432,7 +1432,7 @@ $$
                    'domain',
                        REGEXP_REPLACE(SUBSTRING(message FROM 'all DNS servers of your domain (.*?)\. The CDNSKEY'), '\s', '', 'g'),
                    'keys',
-                       '[' || SUBSTRING(message, 'contained the following key\(s\):\n.*?\[(.*?)\]\n') || ']',
+                       STRING_TO_ARRAY(SUBSTRING(message, 'contained the following key\(s\):\n\n(.*?)\n\n'), E'\n'),
                    'datetime',
                        SUBSTRING(message FROM '\nDiscovered at: (.*?)\n')
                )::JSONB
