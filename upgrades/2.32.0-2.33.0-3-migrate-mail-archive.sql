@@ -877,7 +877,7 @@ $$
                       'handle',
                            REGEXP_REPLACE(SUBSTRING(message FROM 'contact identified with (.*?)\n'), '\s', '', 'g'),
                        'deldate',
-                           REGEXP_REPLACE(SUBSTRING(message FROM 'cancelling the aforementioned contact as of (.*?)\.\n'), '\s', '', 'g'),
+                           SUBSTRING(message FROM 'cancelling the aforementioned contact as of (.*?)\.\n'),
                        'type', '1'
                    )::JSONB
                WHEN message LIKE '%NS set identified with%' THEN
@@ -885,7 +885,7 @@ $$
                        'handle',
                            REGEXP_REPLACE(SUBSTRING(message FROM 'the NS set identified with (.*?)\n'), '\s', '', 'g'),
                        'deldate',
-                           REGEXP_REPLACE(SUBSTRING(message FROM 'cancelling the aforementioned set of nameservers as of (.*?)\.\n'), '\s', '', 'g'),
+                           SUBSTRING(message FROM 'cancelling the aforementioned set of nameservers as of (.*?)\.\n'),
                        'type', '2'
                    )::JSONB
                WHEN message LIKE '%keyset identified with%' THEN
@@ -893,7 +893,7 @@ $$
                        'handle',
                            REGEXP_REPLACE(SUBSTRING(message FROM 'the keyset identified with (.*?)\n'), '\s', '', 'g'),
                        'deldate',
-                           REGEXP_REPLACE(SUBSTRING(message FROM 'cancelling the aforementioned set of keysets as of (.*?)\.\n'), '\s', '', 'g'),
+                           SUBSTRING(message FROM 'cancelling the aforementioned set of keysets as of (.*?)\.\n'),
                        'type', '4'
                    )::JSONB
                ELSE NULL
