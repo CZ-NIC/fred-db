@@ -913,13 +913,23 @@ $$
     SELECT CASE
            WHEN message IS NOT NULL AND mail_type_id = 15 THEN
                json_build_object(
+                   'type',
+                       CASE
+                       WHEN SUBSTRING(message FROM '(Zrušení .*? / .*? deletion)\n') = 'Zrušení kontaktu / Contact deletion'
+                           THEN '1'
+                       WHEN SUBSTRING(message FROM '(Zrušení .*? / .*? deletion)\n') = 'Zrušení sady nameserverů / NS set deletion'
+                           THEN '2'
+                       WHEN SUBSTRING(message FROM '(Zrušení .*? / .*? deletion)\n') = 'Zrušení domény / Domain deletion'
+                           THEN '3'
+                       WHEN SUBSTRING(message FROM '(Zrušení .*? / .*? deletion)\n') = 'Zrušení sady klíčů / Keyset deletion'
+                           THEN '4'
+                       END,
                    'handle',
-                       REGEXP_REPLACE(SUBSTRING(message FROM '/ Domain handle :(.*?)\n'), '\s', '', 'g'),
+                       REGEXP_REPLACE(SUBSTRING(message FROM '/ .*? handle : (.*?)\n'), '\s', '', 'g'),
                    'ticket',
-                       REGEXP_REPLACE(SUBSTRING(message FROM '/ Ticket : \xa0(.*?)\n'), '\s', '', 'g'),
+                       REGEXP_REPLACE(SUBSTRING(message FROM '/ Ticket :  (.*?)\n'), '\s', '', 'g'),
                    'registrar',
-                       SUBSTRING(message FROM '/ Registrar : (.*?)\n'),
-                   'type', '3'
+                       SUBSTRING(message FROM '/ Registrar : (.*?)\n')
                )::JSONB
            ELSE NULL
            END;
