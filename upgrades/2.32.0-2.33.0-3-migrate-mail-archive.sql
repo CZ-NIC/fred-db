@@ -1434,7 +1434,11 @@ $$
                    'keys',
                        STRING_TO_ARRAY(SUBSTRING(message, 'contained the following key\(s\):\n\n(.*?)\n\n'), E'\n'),
                    'datetime',
-                       SUBSTRING(message FROM '\nDiscovered at: (.*?)\n')
+                       SUBSTRING(message FROM '\nDiscovered at: (.*?)\n'),
+                   'days_to_left',
+                       SUBSTRING(message FROM 'any of these DNS servers in the next (.*?) days, these keys'),
+                   'zone',
+                       SUBSTRING(message FROM 'subsequently published as DS records in the (.*?) zone.')
                )::JSONB
            ELSE NULL
            END;
