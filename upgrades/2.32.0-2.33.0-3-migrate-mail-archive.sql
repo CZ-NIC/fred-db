@@ -1601,17 +1601,14 @@ IMMUTABLE
 PARALLEL SAFE;
 
 
-CREATE OR REPLACE FUNCTION migrate_mail_archive(from_to TSRANGE) RETURNS BIGINT AS
+CREATE OR REPLACE FUNCTION migrate_mail_archive(from_date DATE, to_date DATE) RETURNS VOID AS
 $$
-    WITH change AS (
-        UPDATE mail_archive
-           SET message_params = migrate_mail_archive_message_to_json(message, mailtype),
-               response_header = migrate_mail_archive_response_to_json(response, id),
-               mail_type_id = mailtype,
-               mail_template_version = 1
-         WHERE crdate <@ from_to
-     RETURNING 1
-    )
-    SELECT count(*) FROM change;
+    UPDATE mail_archive
+       SET message_params = migrate_mail_archive_message_to_json(message, mailtype),
+           response_header = migrate_mail_archive_response_to_json(response, id),
+           mail_type_id = mailtype,
+           mail_template_version = 1
+     WHERE crdate >= COALESCE(from_date, (SELECT MIN(crdate) FROM mail_archive))
+           AND crdate < COALESCE(to_date, (SELECT MAX(crdate) FROM mail_archive))
 $$
 LANGUAGE SQL;
