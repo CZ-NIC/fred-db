@@ -1597,3 +1597,19 @@ $$
 LANGUAGE PLPGSQL
 IMMUTABLE
 PARALLEL SAFE;
+
+
+CREATE OR REPLACE FUNCTION migrate_mail_archive(from_to TSRANGE) RETURNS BIGINT AS
+$$
+    WITH change AS (
+        UPDATE mail_archive
+           SET message_params = migrate_mail_archive_message_to_json(message, mailtype),
+               response_header = migrate_mail_archive_response_to_json(response, id),
+               mail_type_id = mailtype,
+               mail_template_version = 1
+         WHERE crdate <@ from_to
+     RETURNING 1
+    )
+    SELECT count(*) FROM change;
+$$
+LANGUAGE SQL;
