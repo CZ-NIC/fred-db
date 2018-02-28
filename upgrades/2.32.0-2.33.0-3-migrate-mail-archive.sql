@@ -6,7 +6,9 @@ $$
                 'Cc',
                     REGEXP_REPLACE(SUBSTRING(message FROM 'Cc:(.*?)(\n[^\n]*?:|\n\n)'), '\s', '', 'g'),
                 'Bcc',
-                    REGEXP_REPLACE(SUBSTRING(message FROM 'Bcc:(.*?)(\n[^\n]*?:|\n\n)'), '\s', '', 'g')
+                    REGEXP_REPLACE(SUBSTRING(message FROM 'Bcc:(.*?)(\n[^\n]*?:|\n\n)'), '\s', '', 'g'),
+                'Message-ID',
+                    SUBSTRING(message FROM 'Message-ID: (.*?)\n')
            ))::JSONB;
 $$
 LANGUAGE SQL
