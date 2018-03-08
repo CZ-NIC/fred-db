@@ -1,3 +1,10 @@
+2018-03-08 (2.33.0)
+
+    * reworked e-mail archive tables
+        - drop support for multiple templates (parts) for one e-mail type
+        - support template versioning
+        - save only template parameters and generate e-mail when sending or rendering
+
 2017-12-19 (2.32.0)
 
     * registrar passwords in registraracl table can be in hashed form
