@@ -1,3 +1,7 @@
+2018-03-27 (2.33.1)
+
+    * Remove no longer needed (not used) indexes
+
 2018-03-08 (2.33.0)
 
     * reworked e-mail archive tables
