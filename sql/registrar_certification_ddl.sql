@@ -114,8 +114,6 @@ CREATE TRIGGER "trigger_cancel_registrar_group"
   FOR EACH ROW EXECUTE PROCEDURE cancel_registrar_group_check();
 
 
-CREATE INDEX registrar_group_short_name_idx ON registrar_group(short_name);
-
 COMMENT ON TABLE registrar_group IS 'available groups of registars';
 COMMENT ON COLUMN registrar_group.id IS 'group id';
 COMMENT ON COLUMN registrar_group.short_name IS 'group short name';

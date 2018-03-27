@@ -283,12 +283,6 @@ CREATE TABLE ENUMVal (
         publish BOOLEAN NOT NULL DEFAULT false
         );
         
----
---- Ticket #7873
----
-
--- enumval domainid unique constraint
-ALTER TABLE enumval ADD CONSTRAINT enumval_domainid_key UNIQUE (domainid);
 
 ---
 --- Ticket #16022 - nsset dnshost prohibited IP address config

@@ -81,7 +81,6 @@ CREATE TABLE Domain_History (
         Registrant INTEGER , -- canceled references
         NSSet INTEGER  -- canceled references
         );
-CREATE INDEX domain_History_historyid_idx ON Domain_History (historyID);
 
 comment on table Domain_History is
 'Historic data from domain table
@@ -109,7 +108,6 @@ CREATE TABLE NSSet_history  (
         ID INTEGER CONSTRAINT nsset_history_id_fkey REFERENCES object_registry (id),
         checklevel smallint --write up check level
         );
-CREATE INDEX nsset_history_historyid_idx ON NSSet_History (historyID);
 
 comment on table NSSet_History is
 'Historic data from domain nsset
