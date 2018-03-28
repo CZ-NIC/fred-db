@@ -1,3 +1,9 @@
+---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.33.1' WHERE id = 1;
+
+
 DROP INDEX IF EXISTS mail_archive_mail_type_id_idx;
 DROP INDEX IF EXISTS history_action_idx;
 DROP INDEX IF EXISTS history_request_id_idx;
