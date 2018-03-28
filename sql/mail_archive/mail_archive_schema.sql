@@ -217,7 +217,6 @@ ALTER TABLE ONLY mail_vcard
 
 
 CREATE INDEX mail_archive_crdate_idx ON mail_archive USING btree (crdate);
-CREATE INDEX mail_archive_mail_type_id_idx ON mail_archive USING btree (mail_type_id);
 CREATE INDEX mail_archive_mail_type_id_mail_template_version_idx ON mail_archive USING btree (mail_type_id, mail_template_version);
 CREATE INDEX mail_archive_status_idx ON mail_archive USING btree (status);
 

@@ -209,7 +209,6 @@ CREATE TABLE nsset_contact_map (
         ContactID INTEGER CONSTRAINT nsset_contact_map_contactid_fkey REFERENCES Contact ON UPDATE CASCADE NOT NULL,
         CONSTRAINT nsset_contact_map_pkey PRIMARY KEY (NSSetID, ContactID)
         );
-CREATE INDEX nsset_contact_map_nssetid_idx ON nsset_contact_map (NSSetID);
 CREATE INDEX nsset_contact_map_contactid_idx ON nsset_contact_map (ContactID);
 
 
@@ -223,7 +222,6 @@ CREATE TABLE Host (
         );
 
 
-CREATE INDEX host_nsset_idx ON Host (NSSetID);
 CREATE INDEX host_fqdn_idx ON Host (FQDN);
 
 comment on table Host is 'Records of relationship between nameserver and ip address';
@@ -283,12 +281,6 @@ CREATE TABLE ENUMVal (
         publish BOOLEAN NOT NULL DEFAULT false
         );
         
----
---- Ticket #7873
----
-
--- enumval domainid unique constraint
-ALTER TABLE enumval ADD CONSTRAINT enumval_domainid_key UNIQUE (domainid);
 
 ---
 --- Ticket #16022 - nsset dnshost prohibited IP address config
