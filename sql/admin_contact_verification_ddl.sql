@@ -255,7 +255,6 @@ create index idx_contact_check_enum_testsuite_id on contact_check (enum_contact_
 create index idx_contact_check_enum_check_status_id on contact_check (enum_contact_check_status_id) ;
 create unique index idx_contact_check_handle on contact_check (handle) ;
 create unique index idx_enum_contact_check_status_handle on enum_contact_check_status (handle) ;
-create index idx_contact_test_result_contact_check_id on contact_test_result (contact_check_id) ;
 create index idx_contact_test_result_enum_test_id on contact_test_result (enum_contact_test_id) ;
 create index idx_contact_test_result_log_request_id on contact_test_result (logd_request_id) ;
 create index idx_contact_test_result_enum_test_status_id on contact_test_result (enum_contact_test_status_id) ;

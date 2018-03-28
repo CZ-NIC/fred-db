@@ -113,8 +113,6 @@ comment on column invoice_credit_payment_map.ad_invoice_id is 'id of advance inv
 comment on column invoice_credit_payment_map.credit is 'seized credit';
 comment on column invoice_credit_payment_map.balance is 'actual tax balance advance invoice';
 
-CREATE INDEX invoice_credit_payment_map_ac_invoice_id_idx
-       ON invoice_credit_payment_map (ac_invoice_id);
 CREATE INDEX invoice_credit_payment_map_ad_invoice_id_idx
        ON invoice_credit_payment_map (ad_invoice_id);
 
