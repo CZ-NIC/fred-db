@@ -1,4 +1,6 @@
-INSERT INTO mail_template VALUES
+INSERT INTO mail_template
+(mail_type_id, version, subject, body_template, body_template_content_type, mail_template_footer_id, mail_template_default_id, mail_header_default_id, created_at)
+VALUES
 (25, 1,
 'Podmíněná identifikace kontaktu / Conditional contact identification',
 'Vážený uživateli,
