@@ -120,6 +120,7 @@ write_script()
     cat $DIR/public_request_dml_authinfo.sql
     cat $DIR/public_request_dml_block.sql
     cat $DIR/public_request_dml_verification.sql
+    cat $DIR/public_request_dml_personalinfo.sql
 	# registrar's certifications and groups
 	cat $DIR/registrar_certification_ddl.sql
     cat $DIR/registrar_disconnect.sql
