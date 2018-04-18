@@ -37,6 +37,7 @@ write_script()
     cat $DIR/mail_archive/mail_type_admin_contact_verification.sql
     cat $DIR/mail_archive/mail_type_akm.sql
     cat $DIR/mail_archive/mail_type_authinfo.sql
+    cat $DIR/mail_archive/mail_type_personalinfo.sql
     cat $DIR/mail_archive/mail_type_contact_merge.sql
     cat $DIR/mail_archive/mail_type_contact_reminder.sql
     cat $DIR/mail_archive/mail_type_contact_verification.sql
@@ -85,6 +86,7 @@ write_script()
     cat $DIR/_defaults/mail_archive/mail_template_request_block.sql
     cat $DIR/_defaults/mail_archive/mail_template_sendauthinfo_epp.sql
     cat $DIR/_defaults/mail_archive/mail_template_sendauthinfo_pif.sql
+    cat $DIR/_defaults/mail_archive/mail_template_sendpersonalinfo_pif.sql
     cat $DIR/_defaults/mail_archive/mail_template_techcheck.sql
 	# banking
 	cat $DIR/enum_bank_code.sql
