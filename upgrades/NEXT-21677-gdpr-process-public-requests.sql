@@ -36,25 +36,21 @@ měnit.
 ID kontaktu v registru: <?cs var:handle ?>
 Organizace: <?cs var:organization ?>
 Jméno: <?cs var:name ?>
-Adresa: <?cs var:address ?>
-Doručovací adresa:  <?cs var:delivery_address ?>
-<?cs if:ident_type != "" ?>
-Typ identifikace:
-<?cs if:ident_type == "RC"?>Datum narození
-<?cs elif:ident_type == "OP"?>Číslo OP
-<?cs elif:ident_type == "PASS"?>Číslo pasu
-<?cs elif:ident_type == "ICO"?>IČO
-<?cs elif:ident_type == "MPSV"?>Identifikátor MPSV
-<?cs elif:ident_type == "BIRTHDAY"?>Datum narození
+Adresa trvalého bydliště / sídla firmy: <?cs var:address ?>
+Korespondenční adresa: <?cs var:mailing_address ?>
+Fakturační adresa: <?cs var:billing_address ?>
+Dodací adresa 1: <?cs var:shipping_address_1 ?>
+Dodací adresa 2: <?cs var:shipping_address_2 ?>
+Dodací adresa 3: <?cs var:shipping_address_3 ?>
+Typ identifikace: <?cs if:ident_type != "" ?><?cs if:ident_type == "RC"?>Datum narození<?cs elif:ident_type == "OP"?>Číslo OP<?cs elif:ident_type == "PASS"?>Číslo pasu<?cs elif:ident_type == "ICO"?>IČO<?cs elif:ident_type == "MPSV"?>Identifikátor MPSV<?cs elif:ident_type == "BIRTHDAY"?>Datum narození<?cs /if ?>
 <?cs /if ?>
 Identifikace: <?cs var:ident_value ?>
-<?cs /if ?>
 DIČ: <?cs var:dic ?>
 Telefon: <?cs var:telephone ?>
 Fax: <?cs var:fax ?>
 E-mail: <?cs var:email ?>
 Notifikační e-mail: <?cs var:notify_email ?>
-Určený registrátor: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>) <?cs if:registrar_memo_cz ?>Další informace poskytnuté registrátorem: <?cs var:registrar_memo_cz ?><?cs /if ?>
+Určený registrátor: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
 
 
 
@@ -87,24 +83,20 @@ Contact ID in the registry: <?cs var:handle ?>
 Organisation: <?cs var:organization ?>
 Name: <?cs var:name ?>
 Address: <?cs var:address ?>
-Delivery address:  <?cs var:delivery_address ?>
-<?cs if:ident_type != "" ?>
-Identification type:
-<?cs if:ident_type == "RC"?>Birth date
-<?cs elif:ident_type == "OP"?>Personal ID
-<?cs elif:ident_type == "PASS"?>Passport number
-<?cs elif:ident_type == "ICO"?>ID number
-<?cs elif:ident_type == "MPSV"?>MSPV ID
-<?cs elif:ident_type == "BIRTHDAY"?>Birth day
+Mailing address: <?cs var:mailing_address ?>
+Billing address: <?cs var:billing_address ?>
+Shipping address 1: <?cs var:shipping_address_1 ?>
+Shipping address 2: <?cs var:shipping_address_2 ?>
+Shipping address 3: <?cs var:shipping_address_3 ?>
+Identification type: <?cs if:ident_type != "" ?><?cs if:ident_type == "RC"?>Birth date<?cs elif:ident_type == "OP"?>Personal ID<?cs elif:ident_type == "PASS"?>Passport number<?cs elif:ident_type == "ICO"?>ID number<?cs elif:ident_type == "MPSV"?>MSPV ID<?cs elif:ident_type == "BIRTHDAY"?>Birth day<?cs /if ?>
 <?cs /if ?>
 Identification: <?cs var:ident_value ?>
-<?cs /if ?>
 VAT No.: <?cs var:dic ?>
 Phone: <?cs var:telephone ?>
 Fax: <?cs var:fax ?>
 E-mail: <?cs var:email ?>
 Notification e-mail: <?cs var:notify_email ?>
-Designated registrar: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>) <?cs if:registrar_memo_en ?>Other information provided by your registrar: <?cs var:registrar_memo_en ?><?cs /if ?>
+Designated registrar: <?cs var:registrar_name ?> (<?cs var:registrar_url ?>)
 
 
 
