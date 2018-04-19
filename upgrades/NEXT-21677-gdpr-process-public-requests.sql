@@ -11,7 +11,9 @@ comment on column public_request.on_status_action is 'state of action performed 
 
 INSERT INTO mail_type VALUES (36, 'sendpersonalinfo_pif');
 
-INSERT INTO mail_template VALUES
+INSERT INTO mail_template
+(mail_type_id, version, subject, body_template, body_template_content_type, mail_template_footer_id, mail_template_default_id, mail_header_default_id, created_at)
+VALUES
 (36, 1, 'Zaslání osobních informací / Sending personal information',
 'Vážená paní, vážený pane,
 
@@ -69,7 +71,7 @@ podpora <?cs var:defaults.company_cs ?>
 
 
 
-Dearr Sir/Madam,
+Dear Sir/Madam,
 
 We have received your request for providing the information that is currently registered for your contact that you use for the domain name registration.
 This request was sent to us via the web interface at www.nic.cz.
