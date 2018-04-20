@@ -1,3 +1,33 @@
+---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.34.0' WHERE id = 1;
+
+
+---
+--- Public request types for sending personalinfo
+---
+INSERT INTO enum_public_request_type (id, name, description)
+    VALUES (22, 'personalinfo_auto_pif', 'PersonalInfo (Web/Auto)');
+INSERT INTO enum_public_request_type (id, name, description)
+    VALUES (23, 'personalinfo_email_pif', 'PersonalInfo (Web/Email)');
+INSERT INTO enum_public_request_type (id, name, description)
+    VALUES (24, 'personalinfo_post_pif', 'PersonalInfo (Web/Post)');
+
+
+--
+-- Ticket #21691 - Personal info public request
+--
+INSERT INTO request_type (id, name, service_id)
+    VALUES
+        (1609, 'PersonalInfo', 2);
+
+
+---
+--- Ticket #21503
+---   - little bit rework of mail template version trigger
+---   - new version of conditional_contact_identification template
+---
 DROP TRIGGER set_next_mail_template_version_trigger ON mail_template;
 
 DROP FUNCTION get_next_mail_template_version();
@@ -26,10 +56,12 @@ CREATE TRIGGER check_next_mail_template_version_trigger
        BEFORE INSERT ON mail_template
        FOR EACH ROW EXECUTE PROCEDURE check_next_mail_template_version();
 
-INSERT INTO mail_template
-(mail_type_id, version, subject, body_template, body_template_content_type, mail_template_footer_id, mail_template_default_id, mail_header_default_id, created_at)
+INSERT INTO mail_template (
+    mail_type_id, version, subject, body_template, body_template_content_type,
+    mail_template_footer_id, mail_template_default_id, mail_header_default_id, created_at
+)
 VALUES
-(25, get_next_mail_template_version(25),
+    (25, get_next_mail_template_version(25),
 'Podmíněná identifikace kontaktu / Conditional contact identification',
 'Vážený uživateli,
 
