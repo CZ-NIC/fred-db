@@ -15,14 +15,6 @@ INSERT INTO enum_public_request_type (id, name, description)
     VALUES (24, 'personalinfo_post_pif', 'PersonalInfo (Web/Post)');
 
 
---
--- Ticket #21691 - Personal info public request
---
-INSERT INTO request_type (id, name, service_id)
-    VALUES
-        (1609, 'PersonalInfo', 2);
-
-
 ---
 --- Ticket #21503
 ---   - little bit rework of mail template version trigger
