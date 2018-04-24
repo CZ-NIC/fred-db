@@ -91,7 +91,7 @@ Billing address: <?cs var:billing_address ?>
 Shipping address 1: <?cs var:shipping_address_1 ?>
 Shipping address 2: <?cs var:shipping_address_2 ?>
 Shipping address 3: <?cs var:shipping_address_3 ?>
-Identification type: <?cs if:ident_type != "" ?><?cs if:ident_type == "RC"?>Birth date<?cs elif:ident_type == "OP"?>Personal ID<?cs elif:ident_type == "PASS"?>Passport number<?cs elif:ident_type == "ICO"?>ID number<?cs elif:ident_type == "MPSV"?>MSPV ID<?cs elif:ident_type == "BIRTHDAY"?>Birth day<?cs /if ?>
+Identification type: <?cs if:ident_type != "" ?><?cs if:ident_type == "RC"?>National Identity Number<?cs elif:ident_type == "OP"?>National Identity Card<?cs elif:ident_type == "PASS"?>Passport Number<?cs elif:ident_type == "ICO"?>Company Registration Number<?cs elif:ident_type == "MPSV"?>Social Security Number<?cs elif:ident_type == "BIRTHDAY"?>Birthdate<?cs /if ?>
 <?cs /if ?>
 Identification: <?cs var:ident_value ?>
 VAT No.: <?cs var:dic ?>
