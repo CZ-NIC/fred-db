@@ -9,6 +9,9 @@ ALTER TABLE public_request ADD COLUMN on_status_action enum_on_status_action_typ
 comment on column public_request.on_status_action is 'state of action performed during asynchronous processing of the public request';
 
 
+INSERT INTO enum_filetype (id, name) VALUES (12, 'personal info csv');
+
+
 INSERT INTO mail_type VALUES (36, 'sendpersonalinfo_pif');
 
 INSERT INTO mail_template
