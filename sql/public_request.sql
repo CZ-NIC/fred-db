@@ -32,6 +32,8 @@ comment on column public_request.answer_email_id is 'reference to mail which was
 comment on column public_request.registrar_id is 'reference to registrar when request is submitted via EPP protocol (otherwise NULL)';
 comment on column public_request.on_status_action is 'state of action performed during asynchronous processing of the public request';
 
+CREATE INDEX public_request_on_status_action_index ON public_request (on_status_action) WHERE (on_status_action = 'scheduled'::enum_on_status_action_type);
+
 -- used for mojeid asynchronous generation of messages
 CREATE INDEX public_request_status_create_time_idx ON public_request(status,create_time);
 

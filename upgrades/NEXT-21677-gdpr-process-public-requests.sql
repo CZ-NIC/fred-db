@@ -8,6 +8,8 @@ ALTER TABLE public_request ADD COLUMN on_status_action enum_on_status_action_typ
 
 comment on column public_request.on_status_action is 'state of action performed during asynchronous processing of the public request';
 
+CREATE INDEX public_request_on_status_action_index ON public_request (on_status_action) WHERE (on_status_action = 'scheduled'::enum_on_status_action_type);
+
 
 INSERT INTO enum_filetype (id, name) VALUES (12, 'personal info csv');
 
