@@ -29,8 +29,7 @@ Fakturační adresa: <?cs var:billing_address ?>
 Dodací adresa 1: <?cs var:shipping_address_1 ?>
 Dodací adresa 2: <?cs var:shipping_address_2 ?>
 Dodací adresa 3: <?cs var:shipping_address_3 ?>
-Typ identifikace: <?cs if:ident_type != "" ?><?cs if:ident_type == "RC"?>Datum narození<?cs elif:ident_type == "OP"?>Číslo OP<?cs elif:ident_type == "PASS"?>Číslo pasu<?cs elif:ident_type == "ICO"?>IČO<?cs elif:ident_type == "MPSV"?>Identifikátor MPSV<?cs elif:ident_type == "BIRTHDAY"?>Datum narození<?cs /if ?>
-<?cs /if ?>
+Typ identifikace: <?cs if:ident_type != "" ?><?cs if:ident_type == "RC"?>Rodné číslo<?cs elif:ident_type == "OP"?>Číslo OP<?cs elif:ident_type == "PASS"?>Číslo pasu<?cs elif:ident_type == "ICO"?>IČO<?cs elif:ident_type == "MPSV"?>Identifikátor MPSV<?cs elif:ident_type == "BIRTHDAY"?>Datum narození<?cs /if ?><?cs /if ?>
 Identifikace: <?cs var:ident_value ?>
 DIČ: <?cs var:dic ?>
 Telefon: <?cs var:telephone ?>
