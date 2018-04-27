@@ -11,6 +11,8 @@ INSERT INTO enum_filetype (id, name) VALUES (5, 'expiration warning letter');
 
 INSERT INTO enum_filetype (id, name) VALUES (11, 'record statement');
 
+INSERT INTO enum_filetype (id, name) VALUES (12, 'personal info csv');
+
 comment on table enum_filetype is 'list of file types
 
 id - name
