@@ -23,8 +23,9 @@ INSERT INTO MessageType VALUES (18, 'update_nsset');
 INSERT INTO MessageType VALUES (19, 'update_keyset');
 INSERT INTO MessageType VALUES (20, 'delete_contact');
 INSERT INTO MessageType VALUES (21, 'delete_domain');
+INSERT INTO MessageType VALUES (22, 'update_contact');
 
-comment on table MessageType is
+COMMENT ON TABLE MessageType IS
 'table with message number codes and its names
 
 id - name
@@ -40,7 +41,15 @@ id - name
 10 - expiration
 11 - imp_validation
 12 - validation
-13 - outzone';
+13 - outzone
+14 - transfer_keyset
+15 - idle_delete_keyset
+17 - update_domain
+18 - update_nsset
+19 - update_keyset
+20 - delete_contact
+21 - delete_domain
+22 - update_contact';
 
 CREATE TABLE Message (
         ID SERIAL CONSTRAINT message_pkey PRIMARY KEY,
