@@ -6,6 +6,8 @@
 
     * New version of conditional_contact_identification mail template
 
+    * New type of poll message (update contact)
+
 2018-03-27 (2.33.1)
 
     * Remove no longer needed (not used) indexes
