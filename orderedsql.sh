@@ -37,6 +37,7 @@ write_script()
     cat $DIR/mail_archive/mail_type_admin_contact_verification.sql
     cat $DIR/mail_archive/mail_type_akm.sql
     cat $DIR/mail_archive/mail_type_authinfo.sql
+    cat $DIR/mail_archive/mail_type_personalinfo.sql
     cat $DIR/mail_archive/mail_type_contact_merge.sql
     cat $DIR/mail_archive/mail_type_contact_reminder.sql
     cat $DIR/mail_archive/mail_type_contact_verification.sql
@@ -85,6 +86,7 @@ write_script()
     cat $DIR/_defaults/mail_archive/mail_template_request_block.sql
     cat $DIR/_defaults/mail_archive/mail_template_sendauthinfo_epp.sql
     cat $DIR/_defaults/mail_archive/mail_template_sendauthinfo_pif.sql
+    cat $DIR/_defaults/mail_archive/mail_template_sendpersonalinfo_pif.sql
     cat $DIR/_defaults/mail_archive/mail_template_techcheck.sql
 	# banking
 	cat $DIR/enum_bank_code.sql
@@ -120,6 +122,7 @@ write_script()
     cat $DIR/public_request_dml_authinfo.sql
     cat $DIR/public_request_dml_block.sql
     cat $DIR/public_request_dml_verification.sql
+    cat $DIR/public_request_dml_personalinfo.sql
 	# registrar's certifications and groups
 	cat $DIR/registrar_certification_ddl.sql
     cat $DIR/registrar_disconnect.sql
