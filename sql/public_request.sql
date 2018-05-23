@@ -8,9 +8,9 @@ CREATE TABLE public_request (
 -- further description in src/register/public_request.h, enum Type
   create_time timestamp without time zone DEFAULT now() NOT NULL,
   status smallint NOT NULL,
--- Request status, values: PRS_NEW,       ///< Request was created and waiting for autorization
---                         PRS_ANSWERED,  ///< Email with answer was sent
---                         PRS_INVALID    ///< Time passed without authorization
+-- Request status, values: PRS_OPENED,       ///< Request was created and waiting for autorization
+--                         PRS_RESOLVED,     ///< Email with answer was sent
+--                         PRS_INVALIDATED   ///< Time passed without authorization
   resolve_time timestamp without time zone,
   reason character varying(512),
   email_to_answer character varying(255),
