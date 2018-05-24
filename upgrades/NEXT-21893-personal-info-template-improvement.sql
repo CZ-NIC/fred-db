@@ -1,7 +1,5 @@
-INSERT INTO mail_template
-(mail_type_id, version, subject, body_template, body_template_content_type, mail_template_footer_id, mail_template_default_id, mail_header_default_id, created_at)
-VALUES
-(36, 1, 'Zaslání osobních informací / Sending personal information',
+UPDATE mail_template
+SET    body_template =
 'Vážená paní, vážený pane,
 
 obdrželi jsme Váš požadavek na zaslání informací, které jsou aktuálně
@@ -92,4 +90,5 @@ We also include your contact details in the csv format.
 Kind regards,
 
 Support of <?cs var:defaults.company_en ?>
-', 'plain', 1, 1, 1, DEFAULT);
+'
+WHERE mail_type_id=(select id from mail_type where name='sendpersonalinfo_pif');
