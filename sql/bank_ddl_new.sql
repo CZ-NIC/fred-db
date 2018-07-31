@@ -41,6 +41,7 @@ CREATE TABLE bank_payment
     account_memo  varchar(64), -- note
     account_name  varchar(64), -- account name
     crtime timestamp NOT NULL default now(),
+    uuid UUID UNIQUE, -- NOT NULL,
     CONSTRAINT bank_payment_account_id_account_evid_key UNIQUE(account_id, account_evid)
 );
 
@@ -61,11 +62,12 @@ comment on column bank_payment.account_date is 'accounting date';
 comment on column bank_payment.account_memo is 'note';
 comment on column bank_payment.account_name is 'account name';
 comment on column bank_payment.crtime is 'create timestamp';
+comment on column bank_payment.uuid is 'UUID';
 
 CREATE TABLE bank_payment_registrar_credit_transaction_map
 (
     id BIGSERIAL CONSTRAINT bank_payment_registrar_credit_transaction_map_pkey PRIMARY KEY
-    , bank_payment_id bigint NOT NULL REFERENCES bank_payment(id)
+    , bank_payment_uuid UUID UNIQUE NOT NULL
     , registrar_credit_transaction_id bigint
     CONSTRAINT bank_payment_registrar_credit_registrar_credit_transaction__key UNIQUE
     NOT NULL
