@@ -77,7 +77,7 @@ COPY(
                 ON registrar.id = rc.registrar_id
            ) payment
 )
-TO 'payments-export-for-pain.json';
+TO '/var/tmp/payments-export-for-pain.json';
 
 ALTER TABLE bank_payment_registrar_credit_transaction_map DROP COLUMN bank_payment_id;
 DROP TABLE bank_payment;
