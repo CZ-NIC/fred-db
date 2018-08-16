@@ -1,3 +1,14 @@
+2018-08-16 (2.35.0)
+
+    * Bank payments moved to separate project (django-pain, fred-pain)
+        - preparations for moving invoices as well
+        - FRED will manage only registrar credit transactions through accouting interface (fred-accifd)
+
+    * Public request
+        - status enum renaming
+        - fix personal info template
+        - new verification type for requests (government)
+
 2018-04-20 (2.34.0)
 
     * Little rework of mail template version trigger (just check expected version)
