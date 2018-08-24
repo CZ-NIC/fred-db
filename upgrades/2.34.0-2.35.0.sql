@@ -70,7 +70,7 @@ COPY(
                    bank_payment.account_name as counter_account_name,
                    bank_payment.crtime AS creation_time,
                    bank_payment.uuid,
-                   (SELECT array_agg(icm.invoice_id)
+                   (SELECT json_object_agg(i.id, i.prefix)
                       FROM invoice_registrar_credit_transaction_map icm
                       JOIN bank_payment_registrar_credit_transaction_map bpcm
                         ON icm.registrar_credit_transaction_id = bpcm.registrar_credit_transaction_id
@@ -82,7 +82,7 @@ COPY(
                         ON ip.id = i.invoice_prefix_id
                      WHERE bpcm.bank_payment_id = bank_payment.id
                        AND ip.typ = 0) as advance_invoice,
-                   (SELECT array_agg(icm.invoice_id)
+                   (SELECT json_object_agg(i.id, i.prefix)
                       FROM invoice_registrar_credit_transaction_map icm
                       JOIN bank_payment_registrar_credit_transaction_map bpcm
                         ON icm.registrar_credit_transaction_id = bpcm.registrar_credit_transaction_id
@@ -93,7 +93,7 @@ COPY(
                       JOIN invoice_prefix ip
                         ON ip.id = i.invoice_prefix_id
                      WHERE bpcm.bank_payment_id = bank_payment.id
-                       AND ip.typ = 1) as account_invoice,
+                       AND ip.typ = 1) as account_invoices,
                    payment_registrar.id AS registrar_id,
                    payment_registrar.handle AS registrar_handle
               FROM bank_payment
