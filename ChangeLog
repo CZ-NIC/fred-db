@@ -9,6 +9,10 @@
         - fix personal info template
         - new verification type for requests (government)
 
+2018-08-08 (2.34.1)
+
+    * Set schema_path for check constraint function (fixing backup restore)
+
 2018-04-20 (2.34.0)
 
     * Little rework of mail template version trigger (just check expected version)

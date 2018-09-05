@@ -18,7 +18,8 @@ INSERT INTO enum_object_type (id,name) VALUES ( 4 , 'keyset' );
 CREATE FUNCTION get_object_type_id(TEXT)
 RETURNS integer AS
 'SELECT id FROM enum_object_type WHERE name=$1'
-LANGUAGE SQL IMMUTABLE RETURNS NULL ON NULL INPUT;
+LANGUAGE SQL IMMUTABLE RETURNS NULL ON NULL INPUT
+SET search_path = 'public';
 
 CREATE OR REPLACE FUNCTION domain_name_syntax_check(fqdn text) RETURNS bool AS $$
 SELECT CASE WHEN length($1::text) = 0 THEN FALSE ELSE -- bool_and() returns NULL if given 0 rows from unnest, so for empty fqdn it has to be FALSE
