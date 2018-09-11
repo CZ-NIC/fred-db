@@ -8,9 +8,9 @@ autom4te.cache/
 configure
 install-sh
 missing
-Makefile
+./Makefile
 config.log
 config.status
-fred-db.spec
+./fred-db.spec
 fred-dbmanager
 structure.sql
