@@ -3,7 +3,8 @@ CREATE TABLE History (
         valid_from TIMESTAMP NOT NULL DEFAULT NOW(),
         valid_to TIMESTAMP,
         next INTEGER,
-        request_id BIGINT
+        request_id BIGINT,
+        uuid UUID NOT NULL UNIQUE DEFAULT gen_random_uuid()
 );
 
 COMMENT ON TABLE history IS
