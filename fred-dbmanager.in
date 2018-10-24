@@ -121,11 +121,17 @@ host @DBNAME@ @DBUSER@ @CIDRIPV6@ @METHOD@ \
                             -p @DBPORT@ > /dev/null 2>&1
         @PGBINDIR@/createlang plpgsql @DBNAME@ \
                               -p @DBPORT@ > /dev/null 2>&1
+        error_msg=$(( echo "CREATE EXTENSION pgcrypto" | @PGBINDIR@/psql @DBNAME@ -p @DBPORT@ ) 2>&1 | grep "ERROR" )
+        if [ "$error_msg" != "" ]
+        then
+            echo -e "Unable to create extension pgcrypto. Installation terminated.\nError message: $error_msg"
+            exit 1
+        fi
         error_msg=$(( @PGBINDIR@/psql @DBNAME@ -U @DBUSER@ -f $STRUCTSQL -p @DBPORT@ ) 2>&1 | grep "ERROR" )
-	if [ "$error_msg" != "" ]; then
-	    echo -e "There are errors in SQL script file $STRUCTSQL. Installation terminated.\nError message: $error_msg"
-	    exit 1
-	fi
+        if [ "$error_msg" != "" ]; then
+            echo -e "There are errors in SQL script file $STRUCTSQL. Installation terminated.\nError message: $error_msg"
+            exit 1
+        fi
     fi
 }
 
