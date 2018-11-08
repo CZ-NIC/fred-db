@@ -28,6 +28,18 @@ INSERT INTO enum_public_request_type (id, name, description)
 INSERT INTO enum_public_request_type (id, name, description)
      VALUES (30, 'personalinfo_government_pif', 'PersonalInfo (Web/Government)');
 
+--- Ticket #23065
+ALTER TABLE public_request DISABLE TRIGGER trigger_lock_public_request;
+--- we expect that all updates to public_requests are already commited
+UPDATE public_request pr
+   SET on_status_action = 'processed'::enum_on_status_action_type
+ WHERE pr.request_type NOT IN (
+        SELECT id
+          FROM enum_public_request_type eprt
+         WHERE eprt.name IN ('personalinfo_auto_pif', 'personalinfo_email_pif', 'personalinfo_post_pif', 'personalinfo_government_pif')
+       );
+ALTER TABLE public_request ENABLE TRIGGER trigger_lock_public_request;
+--- do not update public_requests again until commit
 
 --- Ticket #22449
 ALTER TABLE bank_payment ADD COLUMN uuid UUID;
