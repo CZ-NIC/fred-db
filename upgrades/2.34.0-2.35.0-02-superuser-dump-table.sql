@@ -1,5 +1,7 @@
 --- Ticket #22449 (superuser)
 
+COPY bank_account TO '/var/lib/postgtresql/bank_account.csv' DELIMITER ',' CSV HEADER;
+
 -- DUMP to /var/lib/postgresql
 COPY(
     SELECT ROW_TO_JSON(payment)
