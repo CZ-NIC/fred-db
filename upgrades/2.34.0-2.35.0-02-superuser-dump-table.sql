@@ -1,5 +1,7 @@
 --- Ticket #22449 (superuser)
 
+COPY bank_account TO '/var/lib/postgtresql/bank_account.csv' DELIMITER ',' CSV HEADER;
+
 -- DUMP to /var/lib/postgresql
 COPY(
     SELECT ROW_TO_JSON(payment)
@@ -46,24 +48,31 @@ COPY(
                         ON ip.id = i.invoice_prefix_id
                      WHERE bpcm.bank_payment_id = bank_payment.id
                        AND ip.typ = 1) as account_invoices,
-                   payment_registrar.id AS registrar_id,
-                   payment_registrar.handle AS registrar_handle
-              FROM bank_payment
-              LEFT JOIN bank_account
-                ON bank_payment.account_id = bank_account.id
-              LEFT JOIN (
-                    SELECT sub_bank_payment.id as payment_id, registrar.id, registrar.handle
-                      FROM bank_payment AS sub_bank_payment
-                      JOIN bank_payment_registrar_credit_transaction_map bpcm
-                        ON bpcm.bank_payment_id = sub_bank_payment.id
+                    (SELECT registrar.id
+                      FROM bank_payment_registrar_credit_transaction_map bpcm
                       JOIN registrar_credit_transaction rct
                         ON rct.id = bpcm.registrar_credit_transaction_id
                       JOIN registrar_credit rc
                         ON rct.registrar_credit_id = rc.id
                       JOIN registrar
                         ON registrar.id = rc.registrar_id
-                     LIMIT 1) AS payment_registrar
-               ON payment_registrar.payment_id = bank_payment.id
+                     WHERE bpcm.bank_payment_id = bank_payment.id
+                     LIMIT 1
+                     ) AS registrar_id,
+                    (SELECT registrar.handle
+                      FROM bank_payment_registrar_credit_transaction_map bpcm
+                      JOIN registrar_credit_transaction rct
+                        ON rct.id = bpcm.registrar_credit_transaction_id
+                      JOIN registrar_credit rc
+                        ON rct.registrar_credit_id = rc.id
+                      JOIN registrar
+                        ON registrar.id = rc.registrar_id
+                     WHERE bpcm.bank_payment_id = bank_payment.id
+                     LIMIT 1
+                     ) AS registrar_handle
+              FROM bank_payment
+              LEFT JOIN bank_account
+                ON bank_payment.account_id = bank_account.id
            ) payment
 )
 TO '/var/lib/postgresql/payments-export-for-pain.json';
