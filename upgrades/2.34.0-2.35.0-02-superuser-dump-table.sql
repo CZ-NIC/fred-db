@@ -8,7 +8,7 @@ COPY(
       FROM (
             SELECT trim(both ' ' from bank_account.account_name) as account_name,
                    trim(both ' ' from bank_account.account_number) as account_number,
-                   bank_payment.bank_code,
+                   bank_account.bank_code,
                    bank_payment.account_evid as account_payment_ident,
                    bank_payment.account_number AS counter_account_number,
                    bank_payment.bank_code AS counter_account_bank_code,
