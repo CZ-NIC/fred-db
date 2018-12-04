@@ -1,6 +1,11 @@
 --- Ticket #22449 (superuser)
 
-COPY bank_account TO '/var/lib/postgresql/bank_account.csv' DELIMITER ',' CSV HEADER;
+COPY (SELECT id,
+             account_number || '/' || bank_code AS account_number,
+             btrim(account_name),
+             'CZK' AS currency
+        FROM bank_account
+) TO '/var/lib/postgresql/bank_account.csv' WITH CSV;
 
 -- DUMP to /var/lib/postgresql
 COPY(
