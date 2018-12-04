@@ -9,11 +9,10 @@ CREATE TABLE registrar_certification
     id serial CONSTRAINT registrar_certification_pkey PRIMARY KEY, -- certification id
     registrar_id integer NOT NULL CONSTRAINT registrar_certification_registrar_id_fkey REFERENCES registrar(id), -- registrar id
     valid_from date NOT NULL, --  registrar certification valid from
-    valid_until date NOT NULL, --  registrar certification valid until = valid_from + 1year
+    valid_until date, --  registrar certification valid until
     classification classification_type NOT NULL, -- registrar certification result checked 0-5
     eval_file_id integer NOT NULL CONSTRAINT registrar_certification_eval_file_id_fkey REFERENCES files(id) -- link to pdf file
 );
-
 
 -- check whether registrar_certification life is valid
 CREATE OR REPLACE FUNCTION registrar_certification_life_check() 
@@ -30,16 +29,19 @@ BEGIN
             WHERE registrar_id = NEW.registrar_id AND id < NEW.id
             ORDER BY valid_from DESC, id DESC LIMIT 1;
         IF FOUND THEN
-            IF last_reg_cert.valid_until > NEW.valid_from  THEN
-                RAISE EXCEPTION 'Invalid registrar certification life: last valid_until > new valid_from';
+            IF last_reg_cert.valid_until IS NULL  THEN
+                RAISE EXCEPTION 'Invalid registrar certification life: last registrar certification is still valid';
+            END IF;
+            IF last_reg_cert.valid_until >= NEW.valid_from  THEN
+                RAISE EXCEPTION 'Invalid registrar certification life: last valid_until >= new valid_from';
             END IF;
         END IF;
     ELSEIF TG_OP = 'UPDATE' THEN
         IF NEW.valid_from <> OLD.valid_from THEN
             RAISE EXCEPTION 'Change of valid_from not allowed';
         END IF;
-        IF NEW.valid_until > OLD.valid_until THEN
-            RAISE EXCEPTION 'Certification prolongation not allowed';
+        IF NEW.valid_until < OLD.valid_from THEN
+            RAISE EXCEPTION 'Invalid registrar certification life: valid_until < valid_from';
         END IF;
         IF NEW.registrar_id <> OLD.registrar_id THEN
             RAISE EXCEPTION 'Change of registrar not allowed';
