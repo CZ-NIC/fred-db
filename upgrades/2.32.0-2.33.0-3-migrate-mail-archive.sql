@@ -108,7 +108,7 @@ $$
            mail_type_id = mailtype,
            mail_template_version = 1
      WHERE crdate >= COALESCE(from_date, (SELECT MIN(crdate) FROM mail_archive))
-           AND crdate < COALESCE(to_date, (SELECT MAX(crdate) FROM mail_archive))
+           AND crdate <= COALESCE(to_date, (SELECT MAX(crdate) FROM mail_archive))
 $$
 LANGUAGE SQL;
 
