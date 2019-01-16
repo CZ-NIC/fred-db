@@ -1,7 +1,7 @@
 CREATE TABLE bank_payment_registrar_credit_transaction_map
 (
     id BIGSERIAL CONSTRAINT bank_payment_registrar_credit_transaction_map_pkey PRIMARY KEY
-    , bank_payment_uuid UUID UNIQUE NOT NULL
+    , bank_payment_uuid UUID NOT NULL
     , registrar_credit_transaction_id bigint
     CONSTRAINT bank_payment_registrar_credit_registrar_credit_transaction__key UNIQUE
     NOT NULL
