@@ -104,10 +104,10 @@ CREATE TRIGGER set_next_mail_template_version_trigger
 ---
 --- mail_archive
 ---
-ALTER TABLE mail_archive ADD COLUMN IF NOT EXISTS mail_type_id INTEGER NOT NULL;
-ALTER TABLE mail_archive ADD COLUMN IF NOT EXISTS mail_template_version INTEGER NOT NULL;
-ALTER TABLE mail_archive ADD COLUMN IF NOT EXISTS message_params JSONB;
-ALTER TABLE mail_archive ADD COLUMN IF NOT EXISTS response_header JSONB;
+ALTER TABLE mail_archive ADD COLUMN mail_type_id INTEGER;
+ALTER TABLE mail_archive ADD COLUMN mail_template_version INTEGER;
+ALTER TABLE mail_archive ADD COLUMN message_params JSONB;
+ALTER TABLE mail_archive ADD COLUMN response_header JSONB;
 
 
 CREATE FUNCTION set_current_mail_template_version() RETURNS TRIGGER AS

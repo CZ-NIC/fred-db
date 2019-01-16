@@ -1,6 +1,9 @@
 ---
 --- constraints
 ---
+ALTER TABLE mail_archive ALTER COLUMN mail_type_id SET NOT NULL;
+ALTER TABLE mail_archive ALTER COLUMN mail_template_version SET NOT NULL;
+
 DO
 $$
 BEGIN
