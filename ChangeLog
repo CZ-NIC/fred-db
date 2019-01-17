@@ -1,3 +1,10 @@
+2019-01-17 (2.35.1)
+
+    * Fix for clean db setup (removed unique constraint)
+
+    * Fix e-mail archive migration (2.33.0) and remove cz.nic specific
+      templates migration
+
 2018-08-16 (2.35.0)
 
     * Bank payments moved to separate project (django-pain, fred-pain)
