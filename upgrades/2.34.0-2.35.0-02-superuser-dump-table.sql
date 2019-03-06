@@ -1,13 +1,14 @@
 --- Ticket #22449 (superuser)
 
+-- DUMP accounts to /tmp/ directory
 COPY (SELECT id,
              account_number || '/' || bank_code AS account_number,
              btrim(account_name),
              'CZK' AS currency
         FROM bank_account
-) TO '/var/lib/postgresql/bank_account.csv' WITH CSV;
+) TO '/tmp/bank_account.csv' WITH CSV;
 
--- DUMP to /var/lib/postgresql
+-- DUMP payments to /tmp directory
 COPY(
     SELECT ROW_TO_JSON(payment)
       FROM (
@@ -80,4 +81,4 @@ COPY(
                 ON bank_payment.account_id = bank_account.id
            ) payment
 )
-TO '/var/lib/postgresql/payments-export-for-pain.json';
+TO '/tmp/payments-export-for-pain.json';
