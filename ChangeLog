@@ -1,3 +1,10 @@
+2019-03-08 (2.36.0)
+
+    * Add UUID identifier for every basic registry object (domain, contact, nsset, keyset)
+      and every history record
+
+    * Add indexes for similar string search (trigrams)
+
 2019-01-17 (2.35.1)
 
     * Fix for clean db setup (removed unique constraint)
