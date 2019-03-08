@@ -145,6 +145,8 @@ write_script()
     cat $DIR/message_type_forwarding_service_map_dml.sql
     # changes notifications
     cat $DIR/changes_notifications.sql
+    # similar search indexes
+    cat $DIR/similar_search_trigram_indexes.sql
 }
 
 usage()
