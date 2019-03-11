@@ -6,8 +6,6 @@ UPDATE enum_parameters SET val = '2.36.0' WHERE id = 1;
 ---
 --- Ticket #22922 - Add uuid to object_registry and history
 ---
-CREATE EXTENSION pgcrypto;  -- postgresql-contrib must be installed
-
 ALTER TABLE object_registry ADD COLUMN uuid UUID NOT NULL UNIQUE DEFAULT gen_random_uuid();
 ALTER TABLE history ADD COLUMN uuid UUID NOT NULL UNIQUE DEFAULT gen_random_uuid();
 
@@ -15,9 +13,6 @@ ALTER TABLE history ADD COLUMN uuid UUID NOT NULL UNIQUE DEFAULT gen_random_uuid
 ---
 --- Ticket #23262
 ---
-CREATE EXTENSION pg_trgm;  -- postgresql-contrib must be installed
-CREATE EXTENSION unaccent;
-
 CREATE OR REPLACE FUNCTION f_unaccent(TEXT)  -- unaccent is STABLE not IMMUTABLE
     RETURNS text AS
     $func$
