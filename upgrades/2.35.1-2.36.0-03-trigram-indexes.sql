@@ -4,28 +4,6 @@
 UPDATE enum_parameters SET val = '2.36.0' WHERE id = 1;
 
 ---
---- Ticket #22922 - Add uuid to object_registry and history
----
-ALTER TABLE object_registry ADD COLUMN uuid UUID;
-CREATE UNIQUE INDEX CONCURRENTLY ON object_registry (uuid);
-
-ALTER TABLE history ADD COLUMN uuid UUID;
-CREATE UNIQUE INDEX CONCURRENTLY ON history (uuid);
-
----
---- There is a possibility to run UPDATE of object_registry and history tables
---- in smaller batches (with autocommit) in order to upgrade schema without downtime.
----
-
-ALTER TABLE object_registry ALTER COLUMN uuid SET DEFAULT gen_random_uuid();
-UPDATE object_registry SET uuid = gen_random_uuid() WHERE uuid IS NULL;
-ALTER TABLE object_registry ALTER COLUMN uuid SET NOT NULL;
-
-ALTER TABLE history ALTER COLUMN uuid SET DEFAULT gen_random_uuid();
-UPDATE history SET uuid = gen_random_uuid() WHERE uuid IS NULL;
-ALTER TABLE history ALTER COLUMN uuid SET NOT NULL;
----
----
 --- Ticket #23262
 ---
 CREATE OR REPLACE FUNCTION f_unaccent(TEXT)  -- unaccent is STABLE not IMMUTABLE
