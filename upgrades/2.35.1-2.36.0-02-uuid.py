@@ -6,6 +6,52 @@ import time
 import datetime
 import multiprocessing
 
+class Progress(object):
+    def __init__(self, rows_done, rows_todo):
+        self.rows_done = rows_done
+        self.rows_total = rows_todo + rows_done
+        self.last_recalculation = self.percent_done
+
+    @property
+    def rows_todo(self):
+        return self.rows_total - self.rows_done
+
+    @property
+    def percent_done(self):
+        return (self.rows_done * 100) / float(self.rows_total)
+
+
+def recalculate(cursor, table_name, log):
+    log.info('rows todo recalculation...')
+    cursor.execute('SELECT uuid IS NOT NULL AS is_done, count(*) FROM {table} GROUP BY 1'.format(table=table_name))
+    log.info('...done')
+    rows_done = rows_todo = 0
+    for row in cursor.fetchall():
+        is_done, count = row
+        if is_done:
+            rows_done = count
+        else:
+            rows_todo = count
+    return Progress(rows_done, rows_todo)
+
+
+class TimeEstimate(object):
+    def __init__(self):
+        self._time_done = datetime.timedelta(seconds=0)
+        self._iterations = 0
+
+    @property
+    def time_done(self):
+        return self._time_done
+
+    def add(self, seconds):
+        self._time_done += seconds
+        self._iterations += 1
+
+    def time_left(self, progress, chunk):
+        return (progress.rows_todo / chunk) * (self._time_done / self._iterations)
+
+
 def add_uuid_column_impl(dsn, table_name, chunk, log, no_vacuum, no_final_constraint):
     log.info('migration started')
 
@@ -18,12 +64,9 @@ def add_uuid_column_impl(dsn, table_name, chunk, log, no_vacuum, no_final_constr
     cursor.execute('CREATE UNIQUE INDEX CONCURRENTLY IF NOT EXISTS {table}_uuid_idx ON {table} (uuid)'.format(table=table_name))
     log.info('uuid unique index created')
 
-    cursor.execute('SELECT count(*) FROM {table} WHERE uuid IS NULL'.format(table=table_name))
-    # this can change during migration - just for estimate
-    rows_todo = long(cursor.fetchone()[0])
+    progress = recalculate(cursor, table_name, log)
 
-    rows_done = 0
-    time_done = datetime.timedelta(seconds=0)
+    time_est = TimeEstimate()
     while True:
         iter_start = time.time()
         cursor.execute(
@@ -33,16 +76,21 @@ def add_uuid_column_impl(dsn, table_name, chunk, log, no_vacuum, no_final_constr
         )
         if cursor.rowcount < chunk:
             break
-        rows_done += cursor.rowcount
+        progress.rows_done += cursor.rowcount
 
         iter_took = datetime.timedelta(seconds=(time.time() - iter_start))
-        time_done += iter_took
-        if rows_done % (10 * chunk) == 0:
-            time_estimate = ((rows_todo - rows_done) / chunk) * (time_done / (rows_done / chunk))
-            percent_done = (rows_done * 100) / float(rows_todo)
+        time_est.add(iter_took)
+
+        if progress.rows_done % (10 * chunk) == 0:
             log.info('update at {:.2f}% -- elapsed: {}  estimated: {}  (rows: {:,}/{:,})'.format(
-                percent_done, str(time_done).split('.')[0], str(time_estimate).split('.')[0], rows_done, rows_todo
+                progress.percent_done,
+                str(time_est.time_done).split('.')[0],
+                str(time_est.time_left(progress, chunk)).split('.')[0],
+                progress.rows_done, progress.rows_todo
             ))
+
+        if (progress.last_recalculation + 5 < progress.percent_done) or progress.percent_done > 100:
+            progress = recalculate(cursor, table_name, log)
 
     if not no_vacuum:
         operation_start = time.time()
@@ -66,7 +114,9 @@ def add_uuid_column_impl(dsn, table_name, chunk, log, no_vacuum, no_final_constr
         cursor.execute('ALTER TABLE {table} ALTER COLUMN uuid SET NOT NULL'.format(table=table_name))
         log.info('{table}.uuid set not null - took {delta}'.format(table=table_name, delta=datetime.timedelta(seconds=time.time() - operation_start)))
 
-    log.info('migration finished')
+        log.info('migration finished')
+    else:
+        log.info('migration finished without creating final column contraints - rerun without this option to finalize')
 
 
 def run_parallel(dsn, args):
