@@ -45,9 +45,20 @@ def add_uuid_column_impl(dsn, table_name, chunk, log):
                 percent_done, str(time_done).split('.')[0], str(time_estimate).split('.')[0], rows_done, rows_todo
             ))
 
+    operation_start = time.time()
+    log.info('{table}.uuid set default - started at {now}'.format(table=table_name, now=datetime.datetime.now()))
     cursor.execute('ALTER TABLE {table} ALTER COLUMN uuid SET DEFAULT gen_random_uuid()'.format(table=table_name))
+    log.info('{table}.uuid set default - took {delta}'.format(table=table_name, delta=datetime.timedelta(seconds=time.time() - operation_start)))
+
+    operation_start = time.time()
+    log.info('update {table} leftovers - started at {now}'.format(table=table_name, now=datetime.datetime.now()))
     cursor.execute('UPDATE {table} SET uuid = gen_random_uuid() WHERE uuid IS NULL'.format(table=table_name))
+    log.info('update {table} leftovers - took {delta}'.format(table=table_name, delta=datetime.timedelta(seconds=time.time() - operation_start)))
+
+    operation_start = time.time()
+    log.info('{table}.uuid set not null - started at {now}'.format(table=table_name, now=datetime.datetime.now()))
     cursor.execute('ALTER TABLE {table} ALTER COLUMN uuid SET NOT NULL'.format(table=table_name))
+    log.info('{table}.uuid set not null - took {delta}'.format(table=table_name, delta=datetime.timedelta(seconds=time.time() - operation_start)))
 
     log.info('migration finished')
 
