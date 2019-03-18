@@ -6,7 +6,7 @@ import time
 import datetime
 import multiprocessing
 
-def add_uuid_column_impl(dsn, table_name, chunk, log):
+def add_uuid_column_impl(dsn, table_name, chunk, log, no_vacuum):
     log.info('migration started')
 
     conn = psycopg2.connect(dsn=dsn)
@@ -45,6 +45,12 @@ def add_uuid_column_impl(dsn, table_name, chunk, log):
                 percent_done, str(time_done).split('.')[0], str(time_estimate).split('.')[0], rows_done, rows_todo
             ))
 
+    if not no_vacuum:
+        operation_start = time.time()
+        log.info('{table} vacuum - started at {now}'.format(table=table_name, now=datetime.datetime.now()))
+        cursor.execute('VACUUM {table}'.format(table=table_name))
+        log.info('{table} vacuum - took {delta}'.format(table=table_name, delta=datetime.timedelta(seconds=time.time() - operation_start)))
+
     operation_start = time.time()
     log.info('{table}.uuid set default - started at {now}'.format(table=table_name, now=datetime.datetime.now()))
     cursor.execute('ALTER TABLE {table} ALTER COLUMN uuid SET DEFAULT gen_random_uuid()'.format(table=table_name))
@@ -63,19 +69,21 @@ def add_uuid_column_impl(dsn, table_name, chunk, log):
     log.info('migration finished')
 
 
-def run_parallel(dsn):
+def run_parallel(dsn, args):
     multiprocessing.log_to_stderr()
     log = multiprocessing.get_logger()
     log.setLevel(logging.DEBUG)
 
     p1 = multiprocessing.Process(
-        name='table::object_registry', target=add_uuid_column_impl, args=(dsn, 'object_registry', 2000, log)
+        name='table::object_registry', target=add_uuid_column_impl, args=(dsn, 'object_registry', 2000, log,
+        args.no_vacuum)
     )
     p1.daemon = True
     p1.start()
 
     p2 = multiprocessing.Process(
-        name='table::history', target=add_uuid_column_impl, args=(dsn, 'history', 2000, log)
+        name='table::history', target=add_uuid_column_impl, args=(dsn, 'history', 2000, log,
+        args.no_vacuum)
     )
     p2.daemon = True
     p2.start()
@@ -84,11 +92,17 @@ def run_parallel(dsn):
     p2.join()
 
 
-def run(dsn):
+def run(dsn, args):
     logging.basicConfig(level=logging.DEBUG)
 
-    add_uuid_column_impl(dsn, 'object_registry', 2000, logging.getLogger('table::object_registry'))
-    add_uuid_column_impl(dsn, 'history', 2000, logging.getLogger('table::history'))
+    add_uuid_column_impl(
+        dsn, 'object_registry', 2000, logging.getLogger('table::object_registry'),
+        no_vacuum=args.no_vacuum
+    )
+    add_uuid_column_impl(
+        dsn, 'history', 2000, logging.getLogger('table::history'),
+        no_vacuum=args.no_vacuum
+    )
 
 
 if __name__ == '__main__':
@@ -97,6 +111,8 @@ if __name__ == '__main__':
     parser.add_argument('--db-user', default='fred', help='database user')
     parser.add_argument('--db-name', default='fred', help='database name')
     parser.add_argument('--db-pass', default=None, help='database password')
+    parser.add_argument('--no-vacuum', default=False, action='store_true',
+        help='Do not run VACUUM command after table chunked UPDATE')
 
     args = parser.parse_args()
 
@@ -110,7 +126,7 @@ if __name__ == '__main__':
     dsn = ' '.join(['='.join((key, value)) for key, value in db_params.items() if value])
 
     try:
-        run(dsn)
-        # run_parallel(dsn)
+        run(dsn, args)
+        # run_parallel(dsn, args)
     except KeyboardInterrupt:
         pass
