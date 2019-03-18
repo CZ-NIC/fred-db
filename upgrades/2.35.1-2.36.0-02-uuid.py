@@ -22,7 +22,6 @@ def add_uuid_column_impl(dsn, table_name, chunk, log, no_vacuum, no_final_constr
     # this can change during migration - just for estimate
     rows_todo = long(cursor.fetchone()[0])
 
-    chunk = 2000
     rows_done = 0
     time_done = datetime.timedelta(seconds=0)
     while True:
@@ -32,7 +31,7 @@ def add_uuid_column_impl(dsn, table_name, chunk, log, no_vacuum, no_final_constr
             ' WHERE id IN (SELECT id FROM {table} WHERE uuid IS NULL' \
             ' LIMIT {limit} FOR UPDATE SKIP LOCKED)'.format(table=table_name, limit=chunk)
         )
-        if cursor.rowcount == 0:
+        if cursor.rowcount < chunk:
             break
         rows_done += cursor.rowcount
 
