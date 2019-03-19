@@ -115,14 +115,18 @@ def add_uuid_column_impl(dsn, table_name, chunk, log, no_vacuum, no_final_constr
             'ALTER TABLE {table} ALTER COLUMN uuid SET DEFAULT gen_random_uuid()'.format(table=table_name),
             msg='{table}.uuid set default'.format(table=table_name)
         )
-        time_cursor.execute(
+
+        conn.autocommit = False
+        tx_cursor = TimeMeasureCursor(conn.cursor(), log)
+        tx_cursor.execute(
             'UPDATE {table} SET uuid = gen_random_uuid() WHERE uuid IS NULL'.format(table=table_name),
             msg='update {table} leftovers'.format(table=table_name)
         )
-        time_cursor.execute(
+        tx_cursor.execute(
             'ALTER TABLE {table} ALTER COLUMN uuid SET NOT NULL'.format(table=table_name),
             msg='{table}.uuid set not null'.format(table=table_name)
         )
+        conn.commit()
         log.info('migration finished')
     else:
         log.info('migration finished without creating final column contraints - rerun without this option to finalize')
