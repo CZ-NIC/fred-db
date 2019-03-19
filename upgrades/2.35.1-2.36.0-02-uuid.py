@@ -171,6 +171,7 @@ def run(dsn, args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--db-host', required=True, help='database hostname')
+    parser.add_argument('--db-port', default=5432, type=int, help='database port')
     parser.add_argument('--db-user', default='fred', help='database user')
     parser.add_argument('--db-name', default='fred', help='database name')
     parser.add_argument('--db-pass', default=None, help='database password')
@@ -183,12 +184,13 @@ if __name__ == '__main__':
 
     db_params = {
         'host': args.db_host,
+        'port': args.db_port,
         'user': args.db_user,
         'dbname': args.db_name,
         'password': args.db_pass
     }
 
-    dsn = ' '.join(['='.join((key, value)) for key, value in db_params.items() if value])
+    dsn = ' '.join(['='.join((key, str(value))) for key, value in db_params.items() if value])
 
     try:
         run(dsn, args)
