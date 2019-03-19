@@ -52,6 +52,22 @@ class TimeEstimate(object):
         return (progress.rows_todo / chunk) * (self._time_done / self._iterations)
 
 
+class TimeMeasureCursor(object):
+    def __init__(self, cursor, log=None):
+        self.cursor = cursor
+        self.log = log
+        self.last_query_took = datetime.timedelta(seconds=0)
+
+    def execute(self, sql, msg=None):
+        start = time.time()
+        if self.log and msg:
+            self.log.info('{msg} - started at {now}'.format(msg=msg, now=datetime.datetime.now()))
+        self.cursor.execute(sql)
+        self.last_query_took = datetime.timedelta(seconds=time.time() - start)
+        if self.log and msg:
+            self.log.info('{msg} - took {duration}'.format(msg=msg, duration=self.last_query_took))
+
+
 def add_uuid_column_impl(dsn, table_name, chunk, log, no_vacuum, no_final_constraint):
     log.info('migration started')
 
@@ -67,53 +83,46 @@ def add_uuid_column_impl(dsn, table_name, chunk, log, no_vacuum, no_final_constr
     progress = recalculate(cursor, table_name, log)
 
     time_est = TimeEstimate()
+    time_cursor = TimeMeasureCursor(cursor, log)
     while True:
-        iter_start = time.time()
-        cursor.execute(
+        time_cursor.execute(
             'UPDATE {table} SET uuid = gen_random_uuid()' \
             ' WHERE id IN (SELECT id FROM {table} WHERE uuid IS NULL' \
             ' LIMIT {limit} FOR UPDATE SKIP LOCKED)'.format(table=table_name, limit=chunk)
         )
         if cursor.rowcount < chunk:
             break
-        progress.rows_done += cursor.rowcount
 
-        iter_took = datetime.timedelta(seconds=(time.time() - iter_start))
-        time_est.add(iter_took)
+        progress.rows_done += cursor.rowcount
+        time_est.add(time_cursor.last_query_took)
 
         if progress.rows_done % (10 * chunk) == 0:
             log.info('update at {:.2f}% -- elapsed: {}  estimated: {}  (rows: {:,}/{:,})'.format(
                 progress.percent_done,
                 str(time_est.time_done).split('.')[0],
                 str(time_est.time_left(progress, chunk)).split('.')[0],
-                progress.rows_done, progress.rows_todo
+                progress.rows_done, progress.rows_total
             ))
 
         if (progress.last_recalculation + 5 < progress.percent_done) or progress.percent_done > 100:
             progress = recalculate(cursor, table_name, log)
 
     if not no_vacuum:
-        operation_start = time.time()
-        log.info('{table} vacuum - started at {now}'.format(table=table_name, now=datetime.datetime.now()))
-        cursor.execute('VACUUM {table}'.format(table=table_name))
-        log.info('{table} vacuum - took {delta}'.format(table=table_name, delta=datetime.timedelta(seconds=time.time() - operation_start)))
+        time_cursor.execute('VACUUM {table}'.format(table=table_name), msg='{table} vacuum'.format(table=table_name))
 
     if not no_final_constraint:
-        operation_start = time.time()
-        log.info('{table}.uuid set default - started at {now}'.format(table=table_name, now=datetime.datetime.now()))
-        cursor.execute('ALTER TABLE {table} ALTER COLUMN uuid SET DEFAULT gen_random_uuid()'.format(table=table_name))
-        log.info('{table}.uuid set default - took {delta}'.format(table=table_name, delta=datetime.timedelta(seconds=time.time() - operation_start)))
-
-        operation_start = time.time()
-        log.info('update {table} leftovers - started at {now}'.format(table=table_name, now=datetime.datetime.now()))
-        cursor.execute('UPDATE {table} SET uuid = gen_random_uuid() WHERE uuid IS NULL'.format(table=table_name))
-        log.info('update {table} leftovers - took {delta}'.format(table=table_name, delta=datetime.timedelta(seconds=time.time() - operation_start)))
-
-        operation_start = time.time()
-        log.info('{table}.uuid set not null - started at {now}'.format(table=table_name, now=datetime.datetime.now()))
-        cursor.execute('ALTER TABLE {table} ALTER COLUMN uuid SET NOT NULL'.format(table=table_name))
-        log.info('{table}.uuid set not null - took {delta}'.format(table=table_name, delta=datetime.timedelta(seconds=time.time() - operation_start)))
-
+        time_cursor.execute(
+            'ALTER TABLE {table} ALTER COLUMN uuid SET DEFAULT gen_random_uuid()'.format(table=table_name),
+            msg='{table}.uuid set default'.format(table=table_name)
+        )
+        time_cursor.execute(
+            'UPDATE {table} SET uuid = gen_random_uuid() WHERE uuid IS NULL'.format(table=table_name),
+            msg='update {table} leftovers'.format(table=table_name)
+        )
+        time_cursor.execute(
+            'ALTER TABLE {table} ALTER COLUMN uuid SET NOT NULL'.format(table=table_name),
+            msg='{table}.uuid set not null'.format(table=table_name)
+        )
         log.info('migration finished')
     else:
         log.info('migration finished without creating final column contraints - rerun without this option to finalize')
