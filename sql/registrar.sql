@@ -3,7 +3,7 @@ CREATE TABLE Registrar (
   ID SERIAL CONSTRAINT registrar_pkey PRIMARY KEY,
   ICO  varchar(50), -- ICO of registrar
   DIC  varchar(50), -- DIC of registrar
-  varsymb  char(10) CONSTRAINT registrar_varsymb_key UNIQUE, -- coupling variable symbol ( ico )
+  varsymb  char(10)  , -- coupling variable symbol ( ico )
   VAT boolean NOT NULL DEFAULT True,
   Handle varchar(255) CONSTRAINT registrar_handle_key UNIQUE NOT NULL,
   Name varchar(1024),
