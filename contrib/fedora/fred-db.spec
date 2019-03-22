@@ -8,7 +8,7 @@ URL:		http://fred.nic.cz
 Source0:	%{name}-%{version}.tar.gz
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
-Requires:	postgresql-server
+Requires:	postgresql-server, postgresql-contrib
 BuildRequires: autoconf, automake
 
 %description
