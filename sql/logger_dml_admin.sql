@@ -17,7 +17,7 @@ INSERT INTO request_type (service_id, id, name)
         (8, 11, 'SAMLConsumerRegistration'),
         (8, 12, 'ConsumerRegistration'),
         (8, 13, 'CreateExpiredDomain'),
-        (8, 14, 'MojeidDeactivateU2F');
+        (8, 14, 'MojeidDeactivateFido2');
 
 INSERT INTO result_code (service_id, result_code, name)
     VALUES
