@@ -1,3 +1,9 @@
+2019-04-01 (2.37.0)
+
+    * Add unique constraint for registrar var. symbol
+
+    * Fix spec file
+
 2019-03-08 (2.36.0)
 
     * Add UUID identifier for every basic registry object (domain, contact, nsset, keyset)
