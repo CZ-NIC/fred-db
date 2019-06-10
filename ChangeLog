@@ -1,3 +1,7 @@
+2019-06-10 (2.37.1)
+
+    * New logger request type (MojeidDeactivateFido2)
+
 2019-04-01 (2.37.0)
 
     * Add unique constraint for registrar var. symbol
