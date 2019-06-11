@@ -1,5 +1,7 @@
 2019-06-10 (2.37.1)
 
+    * Set search_path for unaccent_streets function (fix autoanalyze run for tables with new function indexes)
+
     * New logger request type (MojeidDeactivateFido2)
 
 2019-04-01 (2.37.0)
