@@ -12,7 +12,8 @@ CREATE OR REPLACE FUNCTION unaccent_streets(TEXT, TEXT, TEXT)
         SELECT f_unaccent(COALESCE($1, '') || COALESCE(' ' || $2, '') || COALESCE(' ' || $3, ''))
     $func$
 LANGUAGE sql
-IMMUTABLE;
+IMMUTABLE
+SET search_path = 'public';
 
 
 CREATE INDEX object_registry_name_trgm_idx ON object_registry
