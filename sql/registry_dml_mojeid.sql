@@ -6,6 +6,7 @@ INSERT INTO message_type (id, type) VALUES ( 3, 'mojeid_pin3');
 INSERT INTO message_type (id, type) VALUES ( 4, 'mojeid_sms_change');
 INSERT INTO message_type (id, type) VALUES ( 8, 'mojeid_pin3_reminder');
 INSERT INTO message_type (id, type) VALUES (11, 'mojeid_card');
+INSERT INTO message_type (id, type) VALUES (12, 'mojeid_sms_password_reset');
 
 ---
 --- file types
