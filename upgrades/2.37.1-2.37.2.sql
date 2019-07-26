@@ -1,4 +1,9 @@
 ---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.37.2' WHERE id = 1;
+
+---
 --- new type for mojeid password reset SMS
 ---
 INSERT INTO message_type (id, type) VALUES (12, 'mojeid_sms_password_reset');
