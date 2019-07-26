@@ -1,3 +1,7 @@
+2019-07-26 (2.37.2)
+
+    * Add new message type (mojeid_sms_password_reset)
+
 2019-06-10 (2.37.1)
 
     * Set search_path for unaccent_streets function (fix autoanalyze run for tables with new function indexes)
