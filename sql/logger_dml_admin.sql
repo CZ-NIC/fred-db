@@ -18,7 +18,8 @@ INSERT INTO request_type (service_id, id, name)
         (8, 12, 'ConsumerRegistration'),
         (8, 13, 'CreateExpiredDomain'),
         (8, 14, 'MojeidDeactivateFido2'),
-        (8, 15, 'MojeidDeactivateNiaAuthenticators');
+        (8, 15, 'MojeidDeactivateNiaAuthenticators'),
+        (8, 16, 'BulkTransfer');
 
 INSERT INTO result_code (service_id, result_code, name)
     VALUES
