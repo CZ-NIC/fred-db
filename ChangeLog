@@ -1,3 +1,7 @@
+2020-01-09 (2.39.0)
+
+    * Add GIN trigram indexes for similar string search in contact history
+
 2019-11-20 (2.38.2)
 
     * Add new message type (mojeid_sms_two_factor_reset)
