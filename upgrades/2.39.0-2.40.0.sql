@@ -1,3 +1,9 @@
+---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.40.0' WHERE id = 1;
+
+
 CREATE INDEX CONCURRENTLY object_registry_domain_name_trgm_idx ON object_registry
        USING GIN (name gin_trgm_ops) WHERE type = get_object_type_id('domain'::TEXT);
 
