@@ -1,0 +1,20 @@
+DROP INDEX CONCURRENTLY object_registry_name_trgm_idx;
+
+DROP INDEX CONCURRENTLY contact_name_trgm_idx;
+DROP INDEX CONCURRENTLY contact_organization_trgm_idx;
+DROP INDEX CONCURRENTLY contact_streets_trgm_idx;
+DROP INDEX CONCURRENTLY contact_city_trgm_idx;
+DROP INDEX CONCURRENTLY contact_stateorprovince_trgm_idx;
+DROP INDEX CONCURRENTLY contact_postalcode_trgm_idx;
+DROP INDEX CONCURRENTLY contact_telephone_trgm_idx;
+DROP INDEX CONCURRENTLY contact_fax_trgm_idx;
+DROP INDEX CONCURRENTLY contact_email_trgm_idx;
+DROP INDEX CONCURRENTLY contact_notifyemail_trgm_idx;
+DROP INDEX CONCURRENTLY contact_vat_trgm_idx;
+DROP INDEX CONCURRENTLY contact_ssn_trgm_idx;
+
+DROP INDEX CONCURRENTLY contact_address_company_name_trgm_idx;
+DROP INDEX CONCURRENTLY contact_address_streets_trgm_idx;
+DROP INDEX CONCURRENTLY contact_address_city_trgm_idx;
+DROP INDEX CONCURRENTLY contact_address_stateorprovince_trgm_idx;
+DROP INDEX CONCURRENTLY contact_address_postalcode_trgm_idx;
