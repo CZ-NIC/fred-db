@@ -63,7 +63,7 @@ BEGIN
             || COALESCE(request_id::TEXT, 'NULL') || ', ' 
             || COALESCE(object_type_id::TEXT, 'NULL') || ', '
             || COALESCE(object_id::TEXT, 'NULL') || ', '
-            || COALESCE(object_ident::TEXT, 'NULL')
+            || COALESCE(quote_literal(object_ident), 'NULL')
             || ') ';
 
         raise notice 'generated SQL: %', stmt;

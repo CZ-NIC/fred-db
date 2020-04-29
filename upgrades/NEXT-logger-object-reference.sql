@@ -1,35 +1,24 @@
 ALTER TABLE request_object_ref ADD COLUMN object_ident TEXT;
-CREATE INDEX request_object_ref_object_ident_idx ON request_object_ref(object_ident);
+CREATE INDEX CONCURRENTLY request_object_ref_object_ident_idx ON request_object_ref(object_ident);
 
--- reuqest_object_ref trigger
-CREATE OR REPLACE FUNCTION tr_request_object_ref(id BIGINT, request_time_begin TIMESTAMP WITHOUT TIME ZONE, request_service_id INTEGER, request_monitoring BOOLEAN, request_id BIGINT, object_type_id INTEGER, object_id INTEGER, object_ident TEXT) RETURNS VOID AS $tr_request_object_ref$
+CREATE OR REPLACE FUNCTION add_index_to_request_object_ref_partitions_tmp() RETURNS VOID AS $$
 DECLARE
-        table_name VARCHAR(50);
-        stmt TEXT;
+    table_name RECORD;
 BEGIN
-        table_name := quote_ident('request_object_ref_' || partition_postfix(request_time_begin, request_service_id, request_monitoring));
-        stmt := 'INSERT INTO ' || table_name || ' (id, request_time_begin, request_service_id, request_monitoring, request_id, object_type_id, object_id, object_ident) VALUES ('
-            || COALESCE(id::TEXT, 'NULL') || ', '
-            || COALESCE(quote_literal(request_time_begin), 'NULL') || ', '
-            || COALESCE(request_service_id::TEXT, 'NULL') || ', '
-            || '''' || bool_to_str(request_monitoring) || ''', ' 
-            || COALESCE(request_id::TEXT, 'NULL') || ', ' 
-            || COALESCE(object_type_id::TEXT, 'NULL') || ', '
-            || COALESCE(object_id::TEXT, 'NULL') || ', '
-            || COALESCE(object_ident::TEXT, 'NULL')
-            || ') ';
-
-        raise notice 'generated SQL: %', stmt;
-        EXECUTE stmt;
-EXCEPTION
-        WHEN undefined_table THEN
-        BEGIN
-                raise notice 'In exception handler..... ';
-                PERFORM create_tbl_request_object_ref(request_time_begin, request_service_id, request_monitoring);
-                EXECUTE stmt;
-        END;
+  FOR table_name IN
+    SELECT tablename
+      FROM pg_tables
+     WHERE tablename LIKE 'request_object_ref_%'
+  LOOP
+    RAISE NOTICE 'Creating index on table %...', table_name;
+    PERFORM 'CREATE INDEX CONCURRENTLY ' || table_name || '_object_ident_idx '
+                'ON ' || table_name || '(object_ident);';
+  END LOOP;
 END;
-$tr_request_object_ref$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql;
+
+SELECT add_index_to_request_object_ref_partitions_tmp();
+DROP FUNCTION add_index_to_request_object_ref_partitions_tmp();
 
 CREATE OR REPLACE FUNCTION create_indexes_request_object_ref(table_name VARCHAR(50)) RETURNS VOID as $create_indexes_request_object_ref$
 DECLARE
@@ -45,6 +34,36 @@ BEGIN
         EXECUTE create_indexes;
 END;
 $create_indexes_request_object_ref$ LANGUAGE plpgsql;
+
+-- reuqest_object_ref trigger
+CREATE OR REPLACE FUNCTION tr_request_object_ref(id BIGINT, request_time_begin TIMESTAMP WITHOUT TIME ZONE, request_service_id INTEGER, request_monitoring BOOLEAN, request_id BIGINT, object_type_id INTEGER, object_id INTEGER, object_ident TEXT) RETURNS VOID AS $tr_request_object_ref$
+DECLARE
+        table_name VARCHAR(50);
+        stmt TEXT;
+BEGIN
+        table_name := quote_ident('request_object_ref_' || partition_postfix(request_time_begin, request_service_id, request_monitoring));
+        stmt := 'INSERT INTO ' || table_name || ' (id, request_time_begin, request_service_id, request_monitoring, request_id, object_type_id, object_id, object_ident) VALUES ('
+            || COALESCE(id::TEXT, 'NULL') || ', '
+            || COALESCE(quote_literal(request_time_begin), 'NULL') || ', '
+            || COALESCE(request_service_id::TEXT, 'NULL') || ', '
+            || '''' || bool_to_str(request_monitoring) || ''', '
+            || COALESCE(request_id::TEXT, 'NULL') || ', ' 
+            || COALESCE(object_type_id::TEXT, 'NULL') || ', '
+            || COALESCE(object_id::TEXT, 'NULL') || ', '
+            || COALESCE(quote_literal(object_ident), 'NULL')
+            || ') ';
+
+        raise notice 'generated SQL: %', stmt;
+        EXECUTE stmt;
+EXCEPTION
+        WHEN undefined_table THEN
+        BEGIN
+                raise notice 'In exception handler..... ';
+                PERFORM create_tbl_request_object_ref(request_time_begin, request_service_id, request_monitoring);
+                EXECUTE stmt;
+        END;
+END;
+$tr_request_object_ref$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE RULE request_object_ref_insert_function AS ON INSERT TO request_object_ref
 DO INSTEAD SELECT tr_request_object_ref (NEW.id, NEW.request_time_begin, NEW.request_service_id, NEW.request_monitoring, NEW.request_id, NEW.object_type_id, NEW.object_id, NEW.object_ident);
