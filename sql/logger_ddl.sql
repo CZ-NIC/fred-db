@@ -97,7 +97,8 @@ CREATE TABLE request_object_ref (
     request_id BIGINT NOT NULL CONSTRAINT request_object_ref_request_id_fkey REFERENCES request(id),
 
     object_type_id INTEGER  NOT NULL CONSTRAINT request_object_ref_object_type_id_fkey REFERENCES request_object_type(id),
-    object_id INTEGER NOT NULL
+    object_id INTEGER NOT NULL,
+    object_ident TEXT
 );
 
 
@@ -163,6 +164,7 @@ CREATE INDEX request_object_ref_time_begin_idx ON request_object_ref(request_tim
 CREATE INDEX request_object_ref_service_id_idx ON request_object_ref(request_service_id);
 CREATE INDEX request_object_ref_object_type_id_idx ON request_object_ref(object_type_id);
 CREATE INDEX request_object_ref_object_id_idx ON request_object_ref(object_id);
+CREATE INDEX request_object_ref_object_ident_idx ON request_object_ref(object_ident);
 
 CREATE INDEX session_user_name_idx ON session(user_name);
 CREATE INDEX session_login_date_idx ON session(login_date);
