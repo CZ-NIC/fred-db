@@ -2,6 +2,8 @@
 
     * Add textual object identifier request_object_ref.object_ident to logger
 
+    * Add Ferda service, request types and result codes to logger
+
 2020-03-17 (2.40.1)
 
     * Remove unused GiST indexes
