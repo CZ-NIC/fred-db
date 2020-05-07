@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import psycopg2
 import argparse
 import logging
@@ -6,7 +6,7 @@ import time
 import datetime
 import multiprocessing
 
-class Progress(object):
+class Progress:
     def __init__(self, rows_done, rows_total):
         self.rows_done = rows_done
         self._rows_total = rows_total
@@ -43,7 +43,7 @@ def recalculate(cursor, table_name, column_name, log):
     return Progress(rows_done, rows_done + rows_todo)
 
 
-class TimeEstimate(object):
+class TimeEstimate:
     def __init__(self):
         self._time_done = datetime.timedelta(seconds=0)
         self._iterations = 0
@@ -60,7 +60,7 @@ class TimeEstimate(object):
         return (progress.rows_todo / chunk) * (self._time_done / self._iterations)
 
 
-class TimeMeasureCursor(object):
+class TimeMeasureCursor:
     def __init__(self, cursor, log=None):
         self.cursor = cursor
         self.log = log
