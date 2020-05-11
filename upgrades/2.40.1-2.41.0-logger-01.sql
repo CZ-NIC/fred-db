@@ -1,3 +1,5 @@
+BEGIN;
+
 ALTER TABLE request_object_ref ADD COLUMN object_ident TEXT;
 CREATE INDEX CONCURRENTLY request_object_ref_object_ident_idx ON request_object_ref(object_ident);
 
@@ -67,3 +69,5 @@ $tr_request_object_ref$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE RULE request_object_ref_insert_function AS ON INSERT TO request_object_ref
 DO INSTEAD SELECT tr_request_object_ref (NEW.id, NEW.request_time_begin, NEW.request_service_id, NEW.request_monitoring, NEW.request_id, NEW.object_type_id, NEW.object_id, NEW.object_ident);
+
+COMMIT;
