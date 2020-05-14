@@ -19,7 +19,8 @@ INSERT INTO request_type (service_id, id, name)
         (8, 13, 'CreateExpiredDomain'),
         (8, 14, 'MojeidDeactivateFido2'),
         (8, 15, 'MojeidDeactivateNiaAuthenticators'),
-        (8, 16, 'BulkTransfer');
+        (8, 16, 'BulkTransfer'),
+        (8, 17, 'MojeidUpdateAccount');
 
 INSERT INTO result_code (service_id, result_code, name)
     VALUES
