@@ -1,27 +1,6 @@
 BEGIN;
 
 ALTER TABLE request_object_ref ADD COLUMN object_ident TEXT;
-CREATE INDEX CONCURRENTLY request_object_ref_object_ident_idx ON request_object_ref(object_ident);
-
-CREATE OR REPLACE FUNCTION add_index_to_request_object_ref_partitions_tmp() RETURNS VOID AS $$
-DECLARE
-    table_name RECORD;
-BEGIN
-  FOR table_name IN
-    SELECT tablename
-      FROM pg_tables
-     WHERE tablename LIKE 'request_object_ref_%'
-  LOOP
-    RAISE NOTICE 'Creating index on table %...', table_name;
-    PERFORM 'CREATE INDEX CONCURRENTLY ' || table_name || '_object_ident_idx '
-                'ON ' || table_name || '(object_ident);';
-  END LOOP;
-END;
-$$ LANGUAGE plpgsql;
-
-SELECT add_index_to_request_object_ref_partitions_tmp();
-DROP FUNCTION add_index_to_request_object_ref_partitions_tmp();
-
 CREATE OR REPLACE FUNCTION create_indexes_request_object_ref(table_name VARCHAR(50)) RETURNS VOID as $create_indexes_request_object_ref$
 DECLARE
         create_indexes TEXT;
