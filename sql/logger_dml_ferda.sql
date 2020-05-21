@@ -30,7 +30,9 @@ INSERT INTO request_type (service_id, id, name) VALUES
 (10, 10023, 'NssetState'),
 (10, 10024, 'RegistrarCreditList'),
 (10, 10025, 'RegistrarDetail'),
-(10, 10026, 'RegistrarList');
+(10, 10026, 'RegistrarList'),
+(10, 10027, 'ContactRepresentativeChange'),
+(10, 10028, 'ContactRepresentativeDelete');
 
 SELECT SETVAL('request_type_id_seq'::REGCLASS, (SELECT MAX(id) FROM request_type));
 
