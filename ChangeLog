@@ -1,3 +1,7 @@
+2020-06-01 (2.42.0)
+
+    * Add new request types for Ferda service (contact representatives)
+
 2020-04-30 (2.41.0)
 
     * Add textual object identifier request_object_ref.object_ident to logger
