@@ -1,3 +1,7 @@
+2020-06-03 (2.43.0)
+
+    * Add new request type for MojeID (MojeidNiaUpdateAccount)
+
 2020-06-01 (2.42.0)
 
     * Add new request types for Ferda service (contact representatives)
