@@ -42,7 +42,7 @@ CREATE TABLE result_code (
 
 CREATE TABLE request_object_type (
     id SERIAL CONSTRAINT request_object_type_pkey PRIMARY KEY,
-    name VARCHAR(64)
+    name VARCHAR(64) CONSTRAINT request_object_type_name_key UNIQUE NOT NULL
 );
 
 
