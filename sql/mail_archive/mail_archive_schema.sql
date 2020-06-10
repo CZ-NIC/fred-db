@@ -7,8 +7,7 @@ CREATE TABLE mail_archive (
     mail_type_id integer NOT NULL,
     mail_template_version integer NOT NULL,
     message_params jsonb NOT NULL,
-    response_header jsonb,
-    uuid uuid NOT NULL UNIQUE DEFAULT gen_random_uuid()
+    response_header jsonb
 );
 
 
