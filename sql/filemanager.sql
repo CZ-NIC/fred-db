@@ -29,8 +29,7 @@ CREATE TABLE files (
 	mimetype varchar(100) NOT NULL DEFAULT 'application/octet-stream',
 	crdate timestamp NOT NULL DEFAULT now(),
 	filesize integer NOT NULL,
-	filetype smallint CONSTRAINT files_filetype_fkey REFERENCES enum_filetype(id),
-	uuid uuid NOT NULL UNIQUE DEFAULT gen_random_uuid()
+	filetype smallint CONSTRAINT files_filetype_fkey REFERENCES enum_filetype(id)
 );
 
 comment on table files is
