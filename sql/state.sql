@@ -296,7 +296,7 @@ RETURNS BOOLEAN
 AS $$
 SELECT ($1+$2+($3||'hours')::INTERVAL)<=
        CURRENT_TIMESTAMP AT TIME ZONE $4;
-$$ IMMUTABLE LANGUAGE SQL;
+$$ STABLE LANGUAGE SQL;
 
 -- ========== 1. type ==============================
 -- following views and one setting function is for global setting of all
@@ -322,9 +322,9 @@ SELECT
   CASE WHEN date_time_test(d.exdate::date,dlp.expiration_dns_protection_period,ep_tm2.val,ep_tz.val)
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
        THEN ARRAY[10] ELSE '{}' END || -- unguarded
-  CASE WHEN date_test(e.exdate::date,ep_val_not1.val)
+  CASE WHEN date_test(e.exdate::date,dlp.validation_notify1_period)
        THEN ARRAY[11] ELSE '{}' END || -- validationWarning1
-  CASE WHEN date_test(e.exdate::date,ep_val_not2.val)
+  CASE WHEN date_test(e.exdate::date,dlp.validation_notify2_period)
        THEN ARRAY[12] ELSE '{}' END || -- validationWarning2
   CASE WHEN date_time_test(e.exdate::date,'0',ep_tm2.val,ep_tz.val)
        THEN ARRAY[13] ELSE '{}' END || -- notValidated
@@ -359,8 +359,6 @@ JOIN domain d ON d.id=o.id
 LEFT JOIN enumval e ON e.domainid=d.id
 LEFT JOIN object_state_request_now osr ON osr.object_id=d.id
 JOIN domain_lifecycle_parameters dlp ON dlp.valid_from=(SELECT MAX(valid_from) FROM domain_lifecycle_parameters WHERE valid_from<=d.exdate)
-JOIN enum_parameters ep_val_not1 ON (ep_val_not1.id=7) -- validation_notify1_period
-JOIN enum_parameters ep_val_not2 ON (ep_val_not2.id=8) -- validation_notify2_period
 JOIN enum_parameters ep_tm ON (ep_tm.id=9)  -- regular_day_procedure_period
 JOIN enum_parameters ep_tz ON (ep_tz.id=10) -- regular_day_procedure_zone
 JOIN enum_parameters ep_tm2 ON (ep_tm2.id=14); -- regular_day_outzone_procedure_period
