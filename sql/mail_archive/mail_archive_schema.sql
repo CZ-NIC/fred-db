@@ -7,8 +7,7 @@ CREATE TABLE mail_archive (
     mail_type_id integer NOT NULL,
     mail_template_version integer NOT NULL,
     message_params jsonb NOT NULL,
-    response_header jsonb,
-    uuid uuid NOT NULL UNIQUE DEFAULT gen_random_uuid()
+    response_header jsonb
 );
 
 
@@ -218,7 +217,6 @@ ALTER TABLE ONLY mail_vcard
 
 
 CREATE INDEX mail_archive_crdate_idx ON mail_archive USING btree (crdate);
-CREATE INDEX mail_archive_moddate_idx ON mail_archive USING btree (moddate);
 CREATE INDEX mail_archive_mail_type_id_mail_template_version_idx ON mail_archive USING btree (mail_type_id, mail_template_version);
 CREATE INDEX mail_archive_status_idx ON mail_archive USING btree (status);
 
