@@ -101,6 +101,7 @@ write_script()
 	cat $DIR/func.sql
 	# table with parameters
 	cat $DIR/enum_params.sql
+	cat $DIR/domain_lifecycle_parameters.sql
 	# keyset
 	cat $DIR/keyset.sql
 	# state and poll
