@@ -122,13 +122,23 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
     _nsset_new := NULL;
     _registrant_new := NULL;
     _keyset_new := NULL;
-    SELECT expiration_notify_period,
-           expiration_dns_protection_period,
-           expiration_letter_warning_period,
-           outzone_unguarded_email_warning_period
-    INTO _ex_not,_ex_dns,_ex_let,_ou_warn
-    FROM domain_lifecycle_parameters
-    WHERE valid_from=(SELECT MAX(valid_from) FROM domain_lifecycle_parameters WHERE valid_from<=NEW.exdate);
+    IF TG_OP = 'DELETE' THEN
+      SELECT expiration_notify_period,
+             expiration_dns_protection_period,
+             expiration_letter_warning_period,
+             outzone_unguarded_email_warning_period
+      INTO _ex_not,_ex_dns,_ex_let,_ou_warn
+      FROM domain_lifecycle_parameters
+      WHERE valid_from=(SELECT MAX(valid_from) FROM domain_lifecycle_parameters WHERE valid_from<=OLD.exdate);
+    ELSE
+      SELECT expiration_notify_period,
+             expiration_dns_protection_period,
+             expiration_letter_warning_period,
+             outzone_unguarded_email_warning_period
+      INTO _ex_not,_ex_dns,_ex_let,_ou_warn
+      FROM domain_lifecycle_parameters
+      WHERE valid_from=(SELECT MAX(valid_from) FROM domain_lifecycle_parameters WHERE valid_from<=NEW.exdate);
+    END IF;
     SELECT val INTO _proc_tm FROM enum_parameters WHERE id=9;
     SELECT val INTO _proc_tz FROM enum_parameters WHERE id=10;
     SELECT val INTO _proc_tm2 FROM enum_parameters WHERE id=14;

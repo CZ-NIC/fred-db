@@ -11,6 +11,7 @@ CREATE TABLE domain_lifecycle_parameters (
 );
 
 INSERT INTO domain_lifecycle_parameters (
+    valid_from,
     expiration_notify_period,
     outzone_unguarded_email_warning_period,
     expiration_dns_protection_period,
@@ -18,4 +19,4 @@ INSERT INTO domain_lifecycle_parameters (
     expiration_registration_protection_period,
     validation_notify1_period,
     validation_notify2_period)
-VALUES ('-30DAYS','25DAYS','30DAYS','34DAYS','61DAYS','-30DAYS','-15DAYS');
+VALUES (NOW()::DATE-'20YEARS'::INTERVAL,'-30DAYS','25DAYS','30DAYS','34DAYS','61DAYS','-30DAYS','-15DAYS');
