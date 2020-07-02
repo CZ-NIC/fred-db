@@ -276,6 +276,12 @@ AS $$
 SELECT $1 + ($2||' days')::interval <= CURRENT_DATE ;
 $$ IMMUTABLE LANGUAGE SQL;
 
+CREATE OR REPLACE FUNCTION date_test(DATE,INTERVAL)
+    RETURNS BOOLEAN
+    AS $$
+    SELECT ($1+$2)<=CURRENT_DATE;
+    $$ STABLE LANGUAGE SQL;
+
 -- function to test date moved by offset agains current date with respect
 -- to current time and time zone
 CREATE OR REPLACE FUNCTION date_time_test(date, varchar, varchar, varchar)
@@ -284,6 +290,13 @@ AS $$
 SELECT $1 + ($2||' days')::interval + ($3||' hours')::interval 
        <= CURRENT_TIMESTAMP AT TIME ZONE $4;
 $$ IMMUTABLE LANGUAGE SQL;
+
+CREATE OR REPLACE FUNCTION date_time_test(DATE, INTERVAL, VARCHAR, VARCHAR)
+RETURNS BOOLEAN
+AS $$
+SELECT ($1+$2+($3||'hours')::INTERVAL)<=
+       CURRENT_TIMESTAMP AT TIME ZONE $4;
+$$ STABLE LANGUAGE SQL;
 
 -- ========== 1. type ==============================
 -- following views and one setting function is for global setting of all
@@ -295,69 +308,60 @@ $$ IMMUTABLE LANGUAGE SQL;
 
 -- view for actual domain states
 -- ================= DOMAIN ========================
--- DROP VIEW domain_states;
-CREATE VIEW domain_states AS
+CREATE OR REPLACE VIEW domain_states AS
 SELECT
   d.id AS object_id,
   o.historyid AS object_hid,
   COALESCE(osr.states,'{}') ||
-  CASE WHEN date_test(d.exdate::date,ep_ex_not.val) 
+  CASE WHEN date_test(d.exdate::date,dlp.expiration_notify_period)
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
        THEN ARRAY[8] ELSE '{}' END ||  -- expirationWarning
-  CASE WHEN date_test(d.exdate::date,'0')                
+  CASE WHEN date_test(d.exdate::date,'0')
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
        THEN ARRAY[9] ELSE '{}' END ||  -- expired
-  CASE WHEN date_time_test(d.exdate::date,ep_ex_dns.val,ep_tm2.val,ep_tz.val)
+  CASE WHEN date_time_test(d.exdate::date,dlp.expiration_dns_protection_period,ep_tm2.val,ep_tz.val)
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
        THEN ARRAY[10] ELSE '{}' END || -- unguarded
-  CASE WHEN date_test(e.exdate::date,ep_val_not1.val)
+  CASE WHEN date_test(e.exdate::date,dlp.validation_notify1_period)
        THEN ARRAY[11] ELSE '{}' END || -- validationWarning1
-  CASE WHEN date_test(e.exdate::date,ep_val_not2.val)
+  CASE WHEN date_test(e.exdate::date,dlp.validation_notify2_period)
        THEN ARRAY[12] ELSE '{}' END || -- validationWarning2
   CASE WHEN date_time_test(e.exdate::date,'0',ep_tm2.val,ep_tz.val)
        THEN ARRAY[13] ELSE '{}' END || -- notValidated
-  CASE WHEN d.nsset ISNULL 
+  CASE WHEN d.nsset ISNULL
        THEN ARRAY[14] ELSE '{}' END || -- nssetMissing
   CASE WHEN
     d.nsset ISNULL OR
     5 = ANY(COALESCE(osr.states,'{}')) OR                -- outzoneManual
-    (((date_time_test(d.exdate::date,ep_ex_dns.val,ep_tm2.val,ep_tz.val)
+    (((date_time_test(d.exdate::date,dlp.expiration_dns_protection_period,ep_tm2.val,ep_tz.val)
        AND NOT (2 = ANY(COALESCE(osr.states,'{}')))      -- !renewProhibited
-      ) OR date_time_test(e.exdate::date,'0',ep_tm2.val,ep_tz.val)) AND 
+      ) OR date_time_test(e.exdate::date,'0',ep_tm2.val,ep_tz.val)) AND
      NOT (6 = ANY(COALESCE(osr.states,'{}'))))           -- !inzoneManual
        THEN ARRAY[15] ELSE '{}' END || -- outzone
-  CASE WHEN date_time_test(d.exdate::date,ep_ex_reg.val,ep_tm.val,ep_tz.val)
+  CASE WHEN date_time_test(d.exdate::date,dlp.expiration_registration_protection_period,ep_tm.val,ep_tz.val)
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
             AND NOT (1 = ANY(COALESCE(osr.states,'{}'))) -- !deleteProhibited
        THEN ARRAY[17] ELSE '{}' END || -- deleteCandidate
-  CASE WHEN date_test(d.exdate::date,ep_ex_let.val)
+  CASE WHEN date_test(d.exdate::date,dlp.expiration_letter_warning_period)
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
        THEN ARRAY[19] ELSE '{}' END || -- deleteWarning
-  CASE WHEN date_time_test(d.exdate::date,ep_ex_dns.val,ep_tm2.val,ep_tz.val)
+  CASE WHEN date_time_test(d.exdate::date,dlp.expiration_dns_protection_period,ep_tm2.val,ep_tz.val)
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
             AND NOT (6 = ANY(COALESCE(osr.states,'{}'))) -- !inzoneManual
        THEN ARRAY[20] ELSE '{}' END || -- outzoneUnguarded
-  CASE WHEN date_time_test(d.exdate::date,ep_ozu_warn.val,'0',ep_tz.val)
+  CASE WHEN date_time_test(d.exdate::date,dlp.outzone_unguarded_email_warning_period,'0',ep_tz.val)
             AND NOT (2 = ANY(COALESCE(osr.states,'{}'))) -- !renewProhibited
             AND NOT (6 = ANY(COALESCE(osr.states,'{}'))) -- !inzoneManual
        THEN ARRAY[28] ELSE '{}' END    -- outzoneUnguardedWarning
   AS states
-FROM
-  object_registry o,
-  domain d
-  LEFT JOIN enumval e ON (d.id=e.domainid)
-  LEFT JOIN object_state_request_now osr ON (d.id=osr.object_id)
-  JOIN enum_parameters ep_ex_not ON (ep_ex_not.id=3) -- expiration_notify_period
-  JOIN enum_parameters ep_ex_dns ON (ep_ex_dns.id=4) -- expiration_dns_protection_period
-  JOIN enum_parameters ep_ex_let ON (ep_ex_let.id=5) -- expiration_letter_warning_period
-  JOIN enum_parameters ep_ex_reg ON (ep_ex_reg.id=6) -- expiration_registration_protection_period
-  JOIN enum_parameters ep_val_not1 ON (ep_val_not1.id=7) -- validation_notify1_period
-  JOIN enum_parameters ep_val_not2 ON (ep_val_not2.id=8) -- validation_notify2_period
-  JOIN enum_parameters ep_tm ON (ep_tm.id=9)  -- regular_day_procedure_period
-  JOIN enum_parameters ep_tz ON (ep_tz.id=10) -- regular_day_procedure_zone
-  JOIN enum_parameters ep_tm2 ON (ep_tm2.id=14) -- regular_day_outzone_procedure_period
-  JOIN enum_parameters ep_ozu_warn ON (ep_ozu_warn.id=18) -- outzone_unguarded_email_warning_period
-WHERE d.id=o.id;
+FROM object_registry o
+JOIN domain d ON d.id=o.id
+LEFT JOIN enumval e ON e.domainid=d.id
+LEFT JOIN object_state_request_now osr ON osr.object_id=d.id
+JOIN domain_lifecycle_parameters dlp ON dlp.valid_from=(SELECT MAX(valid_from) FROM domain_lifecycle_parameters WHERE valid_from<=d.exdate)
+JOIN enum_parameters ep_tm ON (ep_tm.id=9)  -- regular_day_procedure_period
+JOIN enum_parameters ep_tz ON (ep_tz.id=10) -- regular_day_procedure_zone
+JOIN enum_parameters ep_tm2 ON (ep_tm2.id=14); -- regular_day_outzone_procedure_period
 
 -- view for actual nsset states
 -- for NOW they are not deleted
@@ -720,14 +724,13 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
     _nsset_new INTEGER;
     _registrant_new INTEGER;
     _keyset_new INTEGER;
-    _ex_not VARCHAR;
-    _ex_dns VARCHAR;
-    _ex_let VARCHAR;
---    _ex_reg VARCHAR;
+    _ex_not INTERVAL;
+    _ex_dns INTERVAL;
+    _ex_let INTERVAL;
     _proc_tm VARCHAR;
     _proc_tz VARCHAR;
     _proc_tm2 VARCHAR;
-    _ou_warn VARCHAR;
+    _ou_warn INTERVAL;
     _states INTEGER[];
   BEGIN
     _nsset_old := NULL;
@@ -736,14 +739,26 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
     _nsset_new := NULL;
     _registrant_new := NULL;
     _keyset_new := NULL;
-    SELECT val INTO _ex_not FROM enum_parameters WHERE id=3;
-    SELECT val INTO _ex_dns FROM enum_parameters WHERE id=4;
-    SELECT val INTO _ex_let FROM enum_parameters WHERE id=5;
---    SELECT val INTO _ex_reg FROM enum_parameters WHERE id=6;
+    IF TG_OP = 'DELETE' THEN
+      SELECT expiration_notify_period,
+             expiration_dns_protection_period,
+             expiration_letter_warning_period,
+             outzone_unguarded_email_warning_period
+      INTO _ex_not,_ex_dns,_ex_let,_ou_warn
+      FROM domain_lifecycle_parameters
+      WHERE valid_from=(SELECT MAX(valid_from) FROM domain_lifecycle_parameters WHERE valid_from<=OLD.exdate);
+    ELSE
+      SELECT expiration_notify_period,
+             expiration_dns_protection_period,
+             expiration_letter_warning_period,
+             outzone_unguarded_email_warning_period
+      INTO _ex_not,_ex_dns,_ex_let,_ou_warn
+      FROM domain_lifecycle_parameters
+      WHERE valid_from=(SELECT MAX(valid_from) FROM domain_lifecycle_parameters WHERE valid_from<=NEW.exdate);
+    END IF;
     SELECT val INTO _proc_tm FROM enum_parameters WHERE id=9;
     SELECT val INTO _proc_tz FROM enum_parameters WHERE id=10;
     SELECT val INTO _proc_tm2 FROM enum_parameters WHERE id=14;
-    SELECT val INTO _ou_warn FROM enum_parameters WHERE id=18;
     -- is it INSERT operation
     IF TG_OP = 'INSERT' THEN
       _registrant_new := NEW.registrant;
@@ -774,7 +789,7 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
         -- for renewProhibited state before setting all of these states
         -- as it's done in global (1. type) views
         -- but the point is that when renewProhibited is set
-        -- there is no way to change exdate so this situation can never happen 
+        -- there is no way to change exdate so this situation can never happen
         -- state: expiration warning
         EXECUTE status_update_state(
           date_test(NEW.exdate::date,_ex_not),
@@ -787,7 +802,7 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
         );
         -- state: unguarded
         EXECUTE status_update_state(
-          date_time_test(NEW.exdate::date,_ex_dns,_proc_tm2,_proc_tz), 
+          date_time_test(NEW.exdate::date,_ex_dns,_proc_tm2,_proc_tz),
           10, NEW.id
         );
         -- state: deleteWarning
@@ -798,7 +813,7 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
         -- state: delete candidate (seems useless - cannot switch after del)
         -- for now delete state will be set only globaly
 --        EXECUTE status_update_state(
---          date_time_test(NEW.exdate::date,_ex_reg,_proc_tm,_proc_tz), 
+--          date_time_test(NEW.exdate::date,_ex_reg,_proc_tm,_proc_tz),
 --          17, NEW.id
 --        );
         -- state: outzoneUnguardedWarning
@@ -838,8 +853,8 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
     );
     -- remove registrant's linked status if not bound
     -- locking must be done (see comment above)
-    IF _registrant_old IS NOT NULL AND 
-       status_clear_lock(_registrant_old, 16) IS NOT NULL 
+    IF _registrant_old IS NOT NULL AND
+       status_clear_lock(_registrant_old, 16) IS NOT NULL
     THEN
       SELECT count(*) INTO _num FROM domain
           WHERE registrant = OLD.registrant;
@@ -860,7 +875,7 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
     -- remove nsset's linked status if not bound
     -- locking must be done (see comment above)
     IF _nsset_old IS NOT NULL AND
-       status_clear_lock(_nsset_old, 16) IS NOT NULL  
+       status_clear_lock(_nsset_old, 16) IS NOT NULL
     THEN
       SELECT count(*) INTO _num FROM domain WHERE nsset = OLD.nsset;
       EXECUTE status_clear_state(_num <> 0, 16, OLD.nsset);
@@ -868,7 +883,7 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
     -- remove keyset's linked status if not bound
     -- locking must be done (see comment above)
     IF _keyset_old IS NOT NULL AND
-       status_clear_lock(_keyset_old, 16) IS NOT NULL  
+       status_clear_lock(_keyset_old, 16) IS NOT NULL
     THEN
       SELECT count(*) INTO _num FROM domain WHERE keyset = OLD.keyset;
       EXECUTE status_clear_state(_num <> 0, 16, OLD.keyset);
