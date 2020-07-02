@@ -1,3 +1,9 @@
+2020-07-02 (2.44.0)
+
+    * Add possibility to change domain lifecycle parameters over time
+        - Move from enum_parameters to dedicated table domain_lifecycle_parameters
+        - Adjust corresponding procedures and triggers
+
 2020-06-03 (2.43.0)
 
     * Add new request type for MojeID (MojeidNiaUpdateAccount)

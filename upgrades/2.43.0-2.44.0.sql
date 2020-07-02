@@ -1,3 +1,9 @@
+---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.44.0' WHERE id = 1;
+
+
 CREATE TABLE domain_lifecycle_parameters (
     id SERIAL PRIMARY KEY,
     valid_from TIMESTAMP NOT NULL UNIQUE DEFAULT CURRENT_TIMESTAMP,
