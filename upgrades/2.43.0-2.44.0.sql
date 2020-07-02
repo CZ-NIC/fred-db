@@ -26,13 +26,13 @@ INSERT INTO domain_lifecycle_parameters (
     validation_notify1_period,
     validation_notify2_period)
 SELECT (SELECT MIN(crdate) FROM object_registry),
-       (SELECT val||'DAYS' FROM enum_parameters WHERE name='expiration_notify_period'),
-       (SELECT val||'DAYS' FROM enum_parameters WHERE name='outzone_unguarded_email_warning_period'),
-       (SELECT val||'DAYS' FROM enum_parameters WHERE name='expiration_dns_protection_period'),
-       (SELECT val||'DAYS' FROM enum_parameters WHERE name='expiration_letter_warning_period'),
-       (SELECT val||'DAYS' FROM enum_parameters WHERE name='expiration_registration_protection_period'),
-       (SELECT val||'DAYS' FROM enum_parameters WHERE name='validation_notify1_period'),
-       (SELECT val||'DAYS' FROM enum_parameters WHERE name='validation_notify2_period')
+       (SELECT (val||'DAYS')::INTERVAL FROM enum_parameters WHERE name='expiration_notify_period'),
+       (SELECT (val||'DAYS')::INTERVAL FROM enum_parameters WHERE name='outzone_unguarded_email_warning_period'),
+       (SELECT (val||'DAYS')::INTERVAL FROM enum_parameters WHERE name='expiration_dns_protection_period'),
+       (SELECT (val||'DAYS')::INTERVAL FROM enum_parameters WHERE name='expiration_letter_warning_period'),
+       (SELECT (val||'DAYS')::INTERVAL FROM enum_parameters WHERE name='expiration_registration_protection_period'),
+       (SELECT (val||'DAYS')::INTERVAL FROM enum_parameters WHERE name='validation_notify1_period'),
+       (SELECT (val||'DAYS')::INTERVAL FROM enum_parameters WHERE name='validation_notify2_period')
 FROM domain_lifecycle_parameters
 HAVING COUNT(*)=0;
 
