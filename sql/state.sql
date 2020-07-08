@@ -358,7 +358,7 @@ FROM object_registry o
 JOIN domain d ON d.id=o.id
 LEFT JOIN enumval e ON e.domainid=d.id
 LEFT JOIN object_state_request_now osr ON osr.object_id=d.id
-JOIN domain_lifecycle_parameters dlp ON dlp.valid_from=(SELECT MAX(valid_from) FROM domain_lifecycle_parameters WHERE valid_from<=d.exdate)
+JOIN domain_lifecycle_parameters dlp ON dlp.valid_for_exdate_after=(SELECT MAX(valid_for_exdate_after) FROM domain_lifecycle_parameters WHERE valid_for_exdate_after<=d.exdate)
 JOIN enum_parameters ep_tm ON (ep_tm.id=9)  -- regular_day_procedure_period
 JOIN enum_parameters ep_tz ON (ep_tz.id=10) -- regular_day_procedure_zone
 JOIN enum_parameters ep_tm2 ON (ep_tm2.id=14); -- regular_day_outzone_procedure_period
@@ -746,7 +746,7 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
              outzone_unguarded_email_warning_period
       INTO _ex_not,_ex_dns,_ex_let,_ou_warn
       FROM domain_lifecycle_parameters
-      WHERE valid_from=(SELECT MAX(valid_from) FROM domain_lifecycle_parameters WHERE valid_from<=OLD.exdate);
+      WHERE valid_for_exdate_after=(SELECT MAX(valid_for_exdate_after) FROM domain_lifecycle_parameters WHERE valid_for_exdate_after<=OLD.exdate);
     ELSE
       SELECT expiration_notify_period,
              expiration_dns_protection_period,
@@ -754,7 +754,7 @@ CREATE OR REPLACE FUNCTION status_update_domain() RETURNS TRIGGER AS $$
              outzone_unguarded_email_warning_period
       INTO _ex_not,_ex_dns,_ex_let,_ou_warn
       FROM domain_lifecycle_parameters
-      WHERE valid_from=(SELECT MAX(valid_from) FROM domain_lifecycle_parameters WHERE valid_from<=NEW.exdate);
+      WHERE valid_for_exdate_after=(SELECT MAX(valid_for_exdate_after) FROM domain_lifecycle_parameters WHERE valid_for_exdate_after<=NEW.exdate);
     END IF;
     SELECT val INTO _proc_tm FROM enum_parameters WHERE id=9;
     SELECT val INTO _proc_tz FROM enum_parameters WHERE id=10;
