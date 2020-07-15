@@ -36,6 +36,16 @@ SELECT (SELECT MIN(crdate) FROM object_registry),
 FROM domain_lifecycle_parameters
 HAVING COUNT(*)=0;
 
+DELETE FROM enum_parameters
+WHERE name IN (
+    'expiration_notify_period',
+    'outzone_unguarded_email_warning_period',
+    'expiration_dns_protection_period',
+    'expiration_letter_warning_period',
+    'expiration_registration_protection_period',
+    'validation_notify1_period',
+    'validation_notify2_period');
+
 CREATE OR REPLACE FUNCTION date_test(DATE, INTERVAL)
     RETURNS BOOLEAN
     AS $$
