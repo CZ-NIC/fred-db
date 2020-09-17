@@ -3,14 +3,19 @@ sendauthinfo_pif,1,send-authinfo-subject.txt,68d5e3f6-7996-462f-a54a-45b1bf70916
 sendauthinfo_epp,1,send-authinfo-subject.txt,68d5e3f6-7996-462f-a54a-45b1bf709168,send-authinfo-epp-body.txt,2ab0b363-b6b8-4f5a-a0f1-deb322da580e
 expiration_notify,1,expiration-notify-subject.txt,0c9a817c-8c30-428f-b34a-2de7fdaaf0fc,expiration-notify-body.txt,4214b818-dedc-4812-a5cf-50b1222630e1
 expiration_notify,2,expiration-notify-subject.txt,0c9a817c-8c30-428f-b34a-2de7fdaaf0fc,expiration-notify-body.txt,91579b33-fb13-4f6b-913c-5c5a718e337f
+expiration_notify,3,expiration-notify-subject.txt,0c9a817c-8c30-428f-b34a-2de7fdaaf0fc,expiration-notify-body.txt,4214b818-dedc-4812-a5cf-50b1222630e1
 expiration_dns_owner,1,expiration-dns-subject.txt,a32076ab-1a1c-4321-aaf5-0dd8b9df40a8,expiration-dns-owner-body.txt,ef3e1204-4435-41e4-abb1-8daf4af895be
 expiration_dns_owner,2,expiration-dns-subject.txt,a32076ab-1a1c-4321-aaf5-0dd8b9df40a8,expiration-dns-owner-body.txt,764976a1-0da6-4469-ba1e-9ca991072867
+expiration_dns_owner,3,expiration-dns-subject.txt,a32076ab-1a1c-4321-aaf5-0dd8b9df40a8,expiration-dns-owner-body.txt,ef3e1204-4435-41e4-abb1-8daf4af895be
 expiration_register_owner,1,expiration-register-subject.txt,d82d6618-af87-40dc-b067-83cbd42ee273,expiration-register-owner-body.txt,6f54140c-22b4-4947-872b-3323ddb8fc72
 expiration_register_owner,2,expiration-register-subject.txt,d82d6618-af87-40dc-b067-83cbd42ee273,expiration-register-owner-body.txt,59d0ba34-5cf1-4fb3-8b39-7dc872ad8a27
+expiration_register_owner,3,expiration-register-subject.txt,d82d6618-af87-40dc-b067-83cbd42ee273,expiration-register-owner-body.txt,6f54140c-22b4-4947-872b-3323ddb8fc72
 expiration_dns_tech,1,expiration-dns-subject.txt,a32076ab-1a1c-4321-aaf5-0dd8b9df40a8,expiration-dns-tech-body.txt,c85768f4-4a66-4411-a3c5-3fea2d47217a
 expiration_dns_tech,2,expiration-dns-subject.txt,a32076ab-1a1c-4321-aaf5-0dd8b9df40a8,expiration-dns-tech-body.txt,9b9322c7-71e1-41cc-a952-7d78a44981ff
+expiration_dns_tech,3,expiration-dns-subject.txt,a32076ab-1a1c-4321-aaf5-0dd8b9df40a8,expiration-dns-tech-body.txt,c85768f4-4a66-4411-a3c5-3fea2d47217a
 expiration_register_tech,1,expiration-register-subject.txt,d82d6618-af87-40dc-b067-83cbd42ee273,expiration-register-tech-body.txt,419dc21f-a7ba-497c-9905-f52508bc0838
 expiration_register_tech,2,expiration-register-subject.txt,d82d6618-af87-40dc-b067-83cbd42ee273,expiration-register-tech-body.txt,cfa8dcc1-5e23-40b6-8052-b866903d00fe
+expiration_register_tech,3,expiration-register-subject.txt,d82d6618-af87-40dc-b067-83cbd42ee273,expiration-register-tech-body.txt,419dc21f-a7ba-497c-9905-f52508bc0838
 expiration_validation_before,1,expiration-validation-subject.txt,ce625bfe-bff1-4b7c-9267-b8acc22a6baf,expiration-validation-before-body.txt,d05308d2-676e-42f4-b14d-f266a0208574
 expiration_validation,1,expiration-validation-subject.txt,ce625bfe-bff1-4b7c-9267-b8acc22a6baf,expiration-validation-body.txt,ece350fe-924b-48bf-8586-e7d31da2e01e
 notification_create,1,notification-create-subject.txt,44fabb88-b715-4d3e-864c-1be3a7da01d5,notification-create-body.txt,cd8632d2-8137-49e3-82b7-cfc9248dd5e2
@@ -37,6 +42,7 @@ contact_check_notice,1,contact-check-notice-subject.txt,606c3208-78b9-45b3-8a5b-
 contact_check_warning,1,contact-check-warning-subject.txt,c9f26973-c396-42f6-8cb5-8633f5e28ca7,contact-check-warning-body.txt,238de0c9-54f6-49f9-bf60-1b4f4b895ac6
 expiration_dns_warning_owner,1,expiration-dns-warning-owner-subject.txt,d28db69e-ae71-4b6b-8bb3-b9db54b783a9,expiration-dns-warning-owner-body.txt,e1696570-534a-46ff-a731-38570501b139
 expiration_dns_warning_owner,2,expiration-dns-warning-owner-subject.txt,d28db69e-ae71-4b6b-8bb3-b9db54b783a9,expiration-dns-warning-owner-body.txt,7ea5c6fa-e15a-4c79-8d4b-1b2a71e3284f
+expiration_dns_warning_owner,3,expiration-dns-warning-owner-subject.txt,d28db69e-ae71-4b6b-8bb3-b9db54b783a9,expiration-dns-warning-owner-body.txt,e1696570-534a-46ff-a731-38570501b139
 akm_candidate_state_ok,1,akm-candidate-state-ok-subject.txt,6483cd8b-81cf-4ee0-a132-4dccaa6c4db7,akm-candidate-state-ok-body.txt,7115cc35-dd4c-4762-934d-033944f3b986
 akm_candidate_state_ko,1,akm-candidate-state-ko-subject.txt,1f57a6f3-ad5c-4d41-9747-81e093a72a7f,akm-candidate-state-ko-body.txt,96c48a9e-1182-41fe-b710-eb1526a9e19a
 akm_keyset_update,1,akm-keyset-update-subject.txt,1fb9dfb7-43f9-4231-8e68-288bda495016,akm-keyset-update-body.txt,7f508d29-c46c-4e27-885a-e7b097b5e627
