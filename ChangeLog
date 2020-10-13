@@ -1,3 +1,8 @@
+2020-10-13 (2.45.0)
+
+    * Rework unique constraints on service, request types, result codes and object types
+        - Fix case sensitivity
+
 2020-07-02 (2.44.0)
 
     * Add possibility to change domain lifecycle parameters over time
