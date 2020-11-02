@@ -1,0 +1,28 @@
+# database host
+host=localhost
+
+# database port
+port=5432
+
+# user with RW access for update queries
+user_rw=logd
+
+# user with RO or RW access for read-only queries
+user_ro=logd
+
+# database name
+dbname=fredlog
+
+# print queries to stdout
+debug=true
+
+# do not write to the database
+dry_run=true
+
+# log queries to file
+# - read-only queries will be commented out, becouse
+#   their results will be hardcoded into update queries
+logfile=02_update.log
+
+# how many rows will be updated at once
+batch_size=1000
