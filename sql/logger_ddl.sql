@@ -22,16 +22,19 @@ CREATE TABLE session (
 
 CREATE TABLE service (
     id SERIAL CONSTRAINT service_pkey PRIMARY KEY,
-    partition_postfix varchar(10) CONSTRAINT service_partition_postfix_key UNIQUE NOT NULL,
-    name varchar(64) CONSTRAINT service_name_key UNIQUE NOT NULL
+    partition_postfix varchar(10) NOT NULL,
+    name varchar(64) NOT NULL
 );
+
+CREATE UNIQUE INDEX service_name_unique_idx ON service (LOWER(name));
+CREATE UNIQUE INDEX service_partition_postfix_unique_idx ON service (LOWER(partition_postfix));
 
 CREATE TABLE request_type (
         id SERIAL CONSTRAINT request_type_pkey PRIMARY KEY,
         name varchar(64) NOT NULL,
         service_id integer NOT NULL CONSTRAINT request_type_service_id_fkey REFERENCES service(id)
 );
-ALTER TABLE request_type ADD CONSTRAINT request_type_name_service_id_key UNIQUE(name, service_id);
+CREATE UNIQUE INDEX request_type_service_id_name_unique_idx ON request_type (service_id, LOWER(name));
 
 CREATE TABLE result_code (
     id SERIAL CONSTRAINT result_code_pkey PRIMARY KEY,
@@ -39,21 +42,21 @@ CREATE TABLE result_code (
     result_code INTEGER NOT NULL,
     name VARCHAR(64) NOT NULL
 );
+CREATE UNIQUE INDEX result_code_service_id_name_unique_idx ON result_code (service_id, LOWER(name));
 
-CREATE TABLE request_object_type (
-    id SERIAL CONSTRAINT request_object_type_pkey PRIMARY KEY,
-    name VARCHAR(64)
-);
-
-
-ALTER TABLE result_code ADD CONSTRAINT result_code_unique_code  UNIQUE (service_id, result_code );
-ALTER TABLE result_code ADD CONSTRAINT result_code_unique_name  UNIQUE (service_id, name );
+ALTER TABLE result_code ADD CONSTRAINT result_code_unique_code UNIQUE (service_id, result_code);
 
 COMMENT ON TABLE result_code IS 'all possible operation result codes';
 COMMENT ON COLUMN result_code.id IS 'result_code id';
 COMMENT ON COLUMN result_code.service_id IS 'reference to service table. This is needed to distinguish entries with identical result_code values';
 COMMENT ON COLUMN result_code.result_code IS 'result code as returned by the specific service, it''s only unique within the service';
 COMMENT ON COLUMN result_code.name IS 'short name for error (abbreviation) written in camelcase';
+
+CREATE TABLE request_object_type (
+    id SERIAL CONSTRAINT request_object_type_pkey PRIMARY KEY,
+    name VARCHAR(64) NOT NULL
+);
+CREATE UNIQUE INDEX request_object_type_name_unique_idx ON request_object_type (LOWER(name));
 
 -- for CloseRequest result_code_id updates, exception commented out until request.result_code_id optional
 CREATE OR REPLACE FUNCTION get_result_code_id( integer, integer)
