@@ -79,8 +79,7 @@ UPDATE $tablename ror
       WHERE ror.object_bigid IS NULL
         AND ror.id >= $from_id
         AND ror.id < $to_id
-        FOR UPDATE
-        SKIP LOCKED);";
+        FOR UPDATE);";
         printf "migrate records (%s..%s)\\n" "$from_id" "$to_id"
     fi
 
