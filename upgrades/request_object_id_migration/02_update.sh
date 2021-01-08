@@ -7,6 +7,7 @@ failcheck() {
     case $action in
         on)
             set -e
+            # shellcheck disable=SC2154
             trap 'printf "command \"%s\" failed with exit code %s." "$last_command" "$?" >&2' EXIT
             ;;
         off)
@@ -18,8 +19,134 @@ failcheck() {
 
 failcheck on
 
-# shellcheck source=02_update.conf
-. "02_update.conf"
+default_options() {
+    help=false
+    usage=false
+
+    # print queries to stdout
+    debug=true
+
+    # do not write to the database
+    dry_run=true
+
+    # database host
+    host=localhost
+
+    # database port
+    port=5432
+
+    # user with RW access for update queries
+    user_rw=logd
+
+    # user with RO or RW access for read-only queries
+    user_ro=logd
+
+    # database name
+    dbname=fredlog
+
+    # log queries to file
+    # - read-only queries will be commented out, becouse
+    #   their results will be hardcoded into update queries
+    logfile=02_update.log
+
+    # how many rows will be updated at once
+    batch_size=1000
+}
+
+parse_options() {
+    options=$#
+    opts=""
+    leave=false
+
+    while [[ $# -gt 0 && "$leave" == "false" ]]; do
+        case "$1" in
+            -h|--help)
+                help=true
+                ;;
+            --no-debug)
+                debug=false
+                ;;
+            --no-dry-run)
+                dry_run=false
+                ;;
+            --host|--host=*)
+                if [[ "$1" =~ ^-.*=.*$ ]]; then host=${1#*=};
+                else opts="$opts $1"; shift; host="$1"; fi
+                ;;
+            --port|--port=*)
+                if [[ "$1" =~ ^-.*=.*$ ]]; then port=${1#*=};
+                else opts="$opts $1"; shift; port="$1"; fi
+                ;;
+            --user-rw|--user-rw=*)
+                if [[ "$1" =~ ^-.*=.*$ ]]; then user_rw=${1#*=};
+                else opts="$opts $1"; shift; user_rw="$1"; fi
+                ;;
+            --user-ro|--user-ro=*)
+                if [[ "$1" =~ ^-.*=.*$ ]]; then user_ro=${1#*=};
+                else opts="$opts $1"; shift; user_ro="$1"; fi
+                ;;
+            --dbname|--dbname=*)
+                if [[ "$1" =~ ^-.*=.*$ ]]; then dbname=${1#*=};
+                else opts="$opts $1"; shift; dbname="$1"; fi
+                ;;
+            --logfile|--logfile=*)
+                if [[ "$1" =~ ^-.*=.*$ ]]; then logfile=${1#*=};
+                else opts="$opts $1"; shift; logfile="$1"; fi
+                ;;
+            --batch-size|--batch-size=*)
+                if [[ "$1" =~ ^-.*=.*$ ]]; then batch_size=${1#*=};
+                else opts="$opts $1"; shift; batch_size="$1"; fi
+                ;;
+            --)
+                leave=true
+                ;;
+            -*)
+                usage=true
+                ;;
+            *)
+                leave=true
+                ;;
+        esac
+        if ! $leave; then opts="$opts $1"; fi
+        if ! $leave; then shift; fi
+    done;
+    to_shift=$((options - $#))
+}
+
+process_options() {
+    if $usage; then
+        usage
+        exit 1;
+    fi
+
+    if $help; then
+        usage
+        exit 0;
+    fi
+}
+
+print_options() {
+    if ! $debug; then printf -- "--no-debug\\n"; fi
+    if ! $dry_run; then printf -- "--no-dry-run %s\\n"; fi
+    printf -- "--host %s\\n" "$host"
+    printf -- "--port %s\\n" "$port"
+    printf -- "--user-rw %s\\n" "$user_rw"
+    printf -- "--user-ro %s\\n" "$user_ro"
+    printf -- "--dbname %s\\n" "$dbname"
+    printf -- "--logfile %s\\n" "$logfile"
+    printf -- "--batch-size %s\\n" "$batch_size"
+}
+
+options() {
+    default_options
+    parse_options "$@"
+    process_options
+    print_options
+}
+
+usage() {
+    printf "Usage: %s --no-debug --no-dry-run --host <host> --port <port> --user-rw <user_rw> --user-ro <user_ro> --dbname <dbname> --logfile <logfile> --batch-size <batch_size>\\n" "$0"
+}
 
 psql_wrapper() {
     local -r query="$1"
@@ -97,8 +224,6 @@ SELECT pgcch.relname
  WHERE pgcp.relname = 'request_object_ref';"
 
     psql_wrapper "$select_kids_query"
-    #RETVAL="a
-    #b"
     local -r children=$RETVAL
 
     for child in $children; do
@@ -110,11 +235,9 @@ SELECT pgcch.relname
 
         psql_wrapper "SELECT MIN(id) FROM $child;"
         local -i min_id=$RETVAL
-        #local -i min_id=100
 
         psql_wrapper "SELECT MAX(id) FROM $child;"
         local -i max_id=$RETVAL
-        #local -i max_id=500
 
         records=$((max_id - min_id))
         batches="$(((records / batch_size) + 1))"
@@ -134,6 +257,9 @@ SELECT pgcch.relname
         psql_wrapper "CREATE INDEX CONCURRENTLY IF NOT EXISTS ${child}_object_bigid_idx ON ${child}(object_bigid);" "rw";
     done
 }
+
+options "$@"
+if [[ "$to_shift" -gt 0 ]]; then shift $to_shift; to_shift=0; fi
 
 migrate_records
 
