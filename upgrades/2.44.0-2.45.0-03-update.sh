@@ -116,11 +116,13 @@ parse_options() {
 process_options() {
     if $usage; then
         usage
+        failcheck off
         exit 1;
     fi
 
     if $help; then
         usage
+        failcheck off
         exit 0;
     fi
 }
@@ -173,12 +175,12 @@ psql_wrapper() {
         RETVAL=$(printf "\\set ON_ERROR_STOP on\\n%s" "$query" | psql --tuples-only --no-psqlrc --host "$host" --port "$port" --username "$user" "$dbname");
         result=$?
         case $result in
-            0) printf "success\\n";;
+            #0) printf "success\\n";;
             1) printf "FATAL ERROR: client error\\n" >&2; exit ;;
             2) printf "FATAL ERROR: database error\\n" >&2; exit ;;
             3) printf "FATAL ERROR: SQL error\\n" >&2; exit ;;
         esac
-        failcheck
+        failcheck on
         if [[ -n "$logfile" ]]; then
             if [[ "$access" == "ro" ]]; then
                 printf "/*\\n%s\\n*/\\n" "$RETVAL" >> "$logfile"
@@ -194,7 +196,7 @@ migrate() {
 UPDATE $tablename ror
    SET object_bigid = object_id
  WHERE ror.object_bigid IS NULL;";
-        printf "migrate records (NOT NULL)\\n"
+        printf "migrate records (all possibly remaining that are still NULL)\\n"
     else
         local -r -i from_id=$2
         local -r -i to_id=$3
@@ -214,6 +216,15 @@ UPDATE $tablename ror
 }
 
 migrate_records() {
+    psql_wrapper "SELECT COUNT(*) FROM request_object_ref;"
+    local -i total_id=$RETVAL
+    if [[ $total_id -eq 0 ]]; then
+        printf "No records in 'request_object_ref', nothing to do.\\n"
+        return;
+    fi
+
+    local -i total_done=0
+
     local -r select_kids_query="
 SELECT pgcch.relname
   FROM pg_inherits pgi
@@ -221,15 +232,21 @@ SELECT pgcch.relname
     ON inhrelid = pgcch.oid
   JOIN pg_class AS pgcp
     ON inhparent = pgcp.oid
- WHERE pgcp.relname = 'request_object_ref';"
+ WHERE pgcp.relname = 'request_object_ref'
+ ORDER BY pgcch.relname;"
 
     psql_wrapper "$select_kids_query"
     local -r children=$RETVAL
 
     for child in $children; do
+        printf "*************************************************************\\n"
+        printf "TOTAL PROGRESS: [%llu%%] (%llu of %llu records), starting child table %s\\n" "$((total_done * 100 / total_id))" "$total_done" "$total_id" "$child"
+        printf "*************************************************************\\n"
+
         psql_wrapper "SELECT COUNT(id) FROM $child;"
         local -i count_id=$RETVAL
         if [[ $count_id -eq 0 ]]; then
+            printf "No records in '%s'... SKIPPED\\n" "$child"
             continue;
         fi
 
@@ -239,20 +256,22 @@ SELECT pgcch.relname
         psql_wrapper "SELECT MAX(id) FROM $child;"
         local -i max_id=$RETVAL
 
-        records=$((max_id - min_id))
-        batches="$(((records / batch_size) + 1))"
+        ids=$((max_id - min_id + 1))
+        printf "records up to: %llu (id: %llu - %llu)\\n" "$ids" "$min_id" "$max_id"
 
-        printf "child table: \"%s\"\\n" "$child"
-        printf "records up to: %s\\n" "$records"
-        printf "batch size: %s\\n" "$batch_size"
-        printf "number of batches set to: %s\\n" "$batches"
+        batches="$(((ids / batch_size) + 1))"
+        printf "batch size configured to: %llu\\n" "$batch_size"
+        printf "number of batches set to: %llu\\n" "$batches"
         printf "\\n"
 
         for batch_idx in $(seq 0 $((batches-1))); do
-            printf "batch #%s of %s\\n" "$((batch_idx + 1))" "$batches"
+            printf "batch #%llu of %llu [%llu%%]\\n" "$((batch_idx + 1))" "$batches" "$(((batch_idx + 1) * 100 / batches))"
             migrate "$child" "$((min_id + (batch_idx * batch_size)))" "$((min_id + (batch_idx + 1) * batch_size))"
         done
         migrate "$child"
+        printf "\\n"
+        
+        total_done=$((total_done + count_id))
 
         psql_wrapper "CREATE INDEX CONCURRENTLY IF NOT EXISTS ${child}_object_bigid_idx ON ${child}(object_bigid);" "rw";
     done
