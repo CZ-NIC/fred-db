@@ -129,7 +129,7 @@ process_options() {
 
 print_options() {
     if ! $debug; then printf -- "--no-debug\\n"; fi
-    if ! $dry_run; then printf -- "--no-dry-run %s\\n"; fi
+    if ! $dry_run; then printf -- "--no-dry-run\\n"; fi
     printf -- "--host %s\\n" "$host"
     printf -- "--port %s\\n" "$port"
     printf -- "--user-rw %s\\n" "$user_rw"
@@ -245,33 +245,34 @@ SELECT pgcch.relname
 
         psql_wrapper "SELECT COUNT(id) FROM $child;"
         local -i count_id=$RETVAL
-        if [[ $count_id -eq 0 ]]; then
-            printf "No records in '%s'... SKIPPED\\n" "$child"
+        if [[ $count_id -gt 0 ]]; then
+
+            psql_wrapper "SELECT MIN(id) FROM $child;"
+            local -i min_id=$RETVAL
+
+            psql_wrapper "SELECT MAX(id) FROM $child;"
+            local -i max_id=$RETVAL
+
+            ids=$((max_id - min_id + 1))
+            printf "records up to: %llu (id: %llu - %llu)\\n" "$ids" "$min_id" "$max_id"
+
+            batches="$(((ids / batch_size) + 1))"
+            printf "batch size configured to: %llu\\n" "$batch_size"
+            printf "number of batches set to: %llu\\n" "$batches"
+            printf "\\n"
+
+            for batch_idx in $(seq 0 $((batches-1))); do
+                printf "batch #%llu of %llu [%llu%%]\\n" "$((batch_idx + 1))" "$batches" "$(((batch_idx + 1) * 100 / batches))"
+                migrate "$child" "$((min_id + (batch_idx * batch_size)))" "$((min_id + (batch_idx + 1) * batch_size))"
+            done
+            migrate "$child"
+            printf "\\n"
+
+            total_done=$((total_done + count_id))
+        else
+            printf "No records in '%s'... update skipped\\n" "$child"
             continue;
         fi
-
-        psql_wrapper "SELECT MIN(id) FROM $child;"
-        local -i min_id=$RETVAL
-
-        psql_wrapper "SELECT MAX(id) FROM $child;"
-        local -i max_id=$RETVAL
-
-        ids=$((max_id - min_id + 1))
-        printf "records up to: %llu (id: %llu - %llu)\\n" "$ids" "$min_id" "$max_id"
-
-        batches="$(((ids / batch_size) + 1))"
-        printf "batch size configured to: %llu\\n" "$batch_size"
-        printf "number of batches set to: %llu\\n" "$batches"
-        printf "\\n"
-
-        for batch_idx in $(seq 0 $((batches-1))); do
-            printf "batch #%llu of %llu [%llu%%]\\n" "$((batch_idx + 1))" "$batches" "$(((batch_idx + 1) * 100 / batches))"
-            migrate "$child" "$((min_id + (batch_idx * batch_size)))" "$((min_id + (batch_idx + 1) * batch_size))"
-        done
-        migrate "$child"
-        printf "\\n"
-        
-        total_done=$((total_done + count_id))
 
         psql_wrapper "CREATE INDEX CONCURRENTLY IF NOT EXISTS ${child}_object_bigid_idx ON ${child}(object_bigid);" "rw";
     done

@@ -90,7 +90,7 @@ BEGIN
        'CREATE INDEX ' || table_name || '_service_id_idx ON ' || table_name || '(request_service_id);' ||
        'CREATE INDEX ' || table_name || '_object_type_id_idx ON ' || table_name || '(object_type_id);' ||
        'CREATE INDEX ' || table_name || '_object_id_idx ON ' || table_name || '(object_id);' ||
-       'CREATE INDEX ' || table_name || '_object_ident_idx ON ' || table_name || '(object_ident);'
+       'CREATE INDEX ' || table_name || '_object_ident_idx ON ' || table_name || '(object_ident);';
         EXECUTE create_indexes;
 END;
 $create_indexes_request_object_ref$ LANGUAGE plpgsql;
