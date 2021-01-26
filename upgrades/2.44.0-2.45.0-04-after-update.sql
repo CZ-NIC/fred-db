@@ -8,6 +8,16 @@ ALTER TABLE request_object_ref DROP COLUMN object_id;
 ALTER TABLE request_object_ref RENAME COLUMN object_bigid TO object_id;
 
 -- revert insert trigger
+DROP FUNCTION IF EXISTS tr_request_object_ref(
+        id BIGINT,
+        request_time_begin TIMESTAMP WITHOUT TIME ZONE,
+        request_service_id INTEGER,
+        request_monitoring BOOLEAN,
+        request_id BIGINT,
+        object_type_id INTEGER,
+        object_id INTEGER,
+        object_ident TEXT);
+
 CREATE OR REPLACE FUNCTION tr_request_object_ref(
         id BIGINT,
         request_time_begin TIMESTAMP WITHOUT TIME ZONE,

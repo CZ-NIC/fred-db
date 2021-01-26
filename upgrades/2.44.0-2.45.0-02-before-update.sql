@@ -12,9 +12,8 @@ CREATE OR REPLACE FUNCTION tr_request_object_ref(
         request_monitoring BOOLEAN,
         request_id BIGINT,
         object_type_id INTEGER,
-        object_id BIGINT,
-        object_ident TEXT,
-        object_bigid BIGINT)
+        object_id INTEGER,
+        object_ident TEXT)
 RETURNS VOID
 LANGUAGE plpgsql
 AS $tr_request_object_ref$
