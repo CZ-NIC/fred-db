@@ -1,7 +1,7 @@
 AC_INIT([fred-db], 2.37.1)
 AC_CONFIG_FILES([Makefile
 		 fred-db.spec fred-dbmanager])
-AM_INIT_AUTOMAKE([-Wall -Werror])
+AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
 #test if sed is present
 AC_PROG_SED
