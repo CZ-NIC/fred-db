@@ -1,12 +1,14 @@
 CHANGELOG
 =========
 
-2.45.0 (2020-10-13)
+2.45.0 (2021-02-10)
 -------------------
 
 * Rework unique constraints on service, request types, result codes and object types
 
   * Fix case sensitivity
+
+* Change datatype of ``request_object_ref.object_id`` to bigint
 
 2.44.0 (2020-07-02)
 -------------------
