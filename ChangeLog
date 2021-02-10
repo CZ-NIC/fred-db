@@ -1,4 +1,4 @@
-2020-10-13 (2.45.0)
+2021-02-10 (2.45.0)
 
     * Rework unique constraints on service, request types, result codes and object types
         - Fix case sensitivity
