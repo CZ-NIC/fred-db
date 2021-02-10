@@ -3,6 +3,8 @@
     * Rework unique constraints on service, request types, result codes and object types
         - Fix case sensitivity
 
+    * Change datatype of request_object_ref.object_id to bigint
+
 2020-07-02 (2.44.0)
 
     * Add possibility to change domain lifecycle parameters over time
