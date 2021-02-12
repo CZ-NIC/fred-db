@@ -271,7 +271,6 @@ SELECT pgcch.relname
             total_done=$((total_done + count_id))
         else
             printf "No records in '%s'... update skipped\\n" "$child"
-            continue;
         fi
 
         psql_wrapper "CREATE INDEX CONCURRENTLY IF NOT EXISTS ${child}_object_bigid_idx ON ${child}(object_bigid);" "rw";
