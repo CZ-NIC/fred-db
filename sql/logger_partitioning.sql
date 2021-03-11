@@ -305,8 +305,8 @@ DECLARE
         lower TIMESTAMP WITHOUT TIME ZONE;
         upper  TIMESTAMP WITHOUT TIME ZONE;
 BEGIN
-        table_postfix := quote_ident(partition_postfix(time_begin, service_id, monitoring));
-        table_name := 'request_data_' || table_postfix;
+        table_postfix := partition_postfix(time_begin, service_id, monitoring);
+        table_name := quote_ident('request_data_' || table_postfix);
 
         LOCK TABLE request_data IN SHARE UPDATE EXCLUSIVE MODE;
 
@@ -355,8 +355,8 @@ DECLARE
         lower TIMESTAMP WITHOUT TIME ZONE;
         upper  TIMESTAMP WITHOUT TIME ZONE;
 BEGIN
-        table_postfix := quote_ident(partition_postfix(time_begin, service_id, monitoring));
-        table_name := 'request_property_value_' || table_postfix; 
+        table_postfix := partition_postfix(time_begin, service_id, monitoring);
+        table_name := quote_ident('request_property_value_' || table_postfix);
 
         LOCK TABLE request_property_value IN SHARE UPDATE EXCLUSIVE MODE;
 
@@ -405,8 +405,8 @@ DECLARE
         lower TIMESTAMP WITHOUT TIME ZONE;
         upper  TIMESTAMP WITHOUT TIME ZONE;
 BEGIN
-        table_postfix := quote_ident(partition_postfix(time_begin, service_id, monitoring));
-        table_name := 'request_object_ref_' || table_postfix; 
+        table_postfix := partition_postfix(time_begin, service_id, monitoring);
+        table_name := quote_ident('request_object_ref_' || table_postfix);
 
         LOCK TABLE request_property_value IN SHARE UPDATE EXCLUSIVE MODE;
 
