@@ -1,3 +1,7 @@
+2021-03-16 (2.45.1)
+
+    * Fix partition naming (quoting)
+
 2021-02-10 (2.45.0)
 
     * Rework unique constraints on service, request types, result codes and object types
