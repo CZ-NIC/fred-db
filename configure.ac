@@ -189,7 +189,7 @@ AC_ARG_WITH([pghbadir], [AS_HELP_STRING([--with-pghbadir],
             [AC_SUBST([PGHBADIR], [$withval])],
             [])
 
-#bin directory for postgres, must contain pg_ctl, createuser, createdb, createlang, psql
+#bin directory for postgres, must contain pg_ctl, createuser, createdb, psql
 AC_ARG_WITH([pgbindir], [AS_HELP_STRING([--with-pgbindir],
             [Directory containing postgresql binary files (pg_ctl, createuser, ...) [/usr/bin]])],
             [AC_SUBST([PGBINDIR], [$withval])],
@@ -205,8 +205,6 @@ AC_CHECK_FIL([$PGBINDIR/createuser], [], [AC_MSG_ERROR(
                [File "$PGBINDIR/createuser" does not exists (use --with-pgbindir)])])
 AC_CHECK_FIL([$PGBINDIR/createdb], [], [AC_MSG_ERROR(
                [File "$PGBINDIR/createdb" does not exists (use --with-pgbindir)])])
-AC_CHECK_FIL([$PGBINDIR/createlang], [], [AC_MSG_ERROR(
-               [File "$PGBINDIR/createlang" does not exists (use --with-pgbindir)])])
 AC_CHECK_FIL([$PGBINDIR/psql], [], [AC_MSG_ERROR(
                [File "$PGBINDIR/psql" does not exists (use --with-pgbindir)])])
 
