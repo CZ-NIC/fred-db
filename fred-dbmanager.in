@@ -119,8 +119,6 @@ host @DBNAME@ @DBUSER@ @CIDRIPV6@ @METHOD@ \
         @PGBINDIR@/createuser @DBUSER@ -SDR -p @DBPORT@ > /dev/null 2>&1
         @PGBINDIR@/createdb @DBNAME@ -O @DBUSER@ -E UTF8 \
                             -p @DBPORT@ > /dev/null 2>&1
-        @PGBINDIR@/createlang plpgsql @DBNAME@ \
-                              -p @DBPORT@ > /dev/null 2>&1
         error_msg=$(( echo "CREATE EXTENSION pgcrypto" | @PGBINDIR@/psql @DBNAME@ -p @DBPORT@ ) 2>&1 | grep "ERROR" )
         if [ "$error_msg" != "" ]
         then
