@@ -300,3 +300,17 @@ CREATE TABLE nsset_dnshost_prohibited_ipaddr (
 
 COMMENT ON TABLE nsset_dnshost_prohibited_ipaddr IS 'nsset dnshost prohibited IP address config, IP address $1 is prohibited if  SELECT bool_or(($1::inet & netmask) = network)  FROM nsset_dnshost_prohibited_ipaddr WHERE family($1::inet) = family(network); returns true.';
 
+---
+--- Ticket #30595 - add contact_identity table
+---
+CREATE TABLE contact_identity (
+    id BIGSERIAL CONSTRAINT contact_identity_pkey PRIMARY KEY,
+    contact_id BIGINT NOT NULL,
+    identity_provider VARCHAR NOT NULL,
+    subject VARCHAR NOT NULL,
+    valid_from TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    valid_to TIMESTAMP NULL DEFAULT NULL,
+    CONSTRAINT contact_identity_contact_id_fkey FOREIGN KEY (contact_id) REFERENCES object_registry (id));
+
+CREATE UNIQUE INDEX contact_identity_identity_provider_subject_contact_id_valid_idx ON contact_identity (identity_provider, subject, contact_id) WHERE valid_to IS NULL;
+
