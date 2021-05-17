@@ -1,6 +1,7 @@
 mail_type,version,subject,subject_uuid,body,body_uuid
 sendauthinfo_pif,1,send-authinfo-subject.txt,68d5e3f6-7996-462f-a54a-45b1bf709168,send-authinfo-pif-body.txt,75c6627d-bf4e-4c41-861b-10f0fb1d92d9
 sendauthinfo_epp,1,send-authinfo-subject.txt,68d5e3f6-7996-462f-a54a-45b1bf709168,send-authinfo-epp-body.txt,2ab0b363-b6b8-4f5a-a0f1-deb322da580e
+sendauthinfo_epp,2,send-authinfo-subject.txt,68d5e3f6-7996-462f-a54a-45b1bf709168,send-authinfo-epp-body.txt,ca13f063-e7cc-4ee8-b365-3fef18ff6346
 expiration_notify,1,expiration-notify-subject.txt,0c9a817c-8c30-428f-b34a-2de7fdaaf0fc,expiration-notify-body.txt,4214b818-dedc-4812-a5cf-50b1222630e1
 expiration_notify,2,expiration-notify-subject.txt,0c9a817c-8c30-428f-b34a-2de7fdaaf0fc,expiration-notify-body.txt,91579b33-fb13-4f6b-913c-5c5a718e337f
 expiration_notify,3,expiration-notify-subject.txt,0c9a817c-8c30-428f-b34a-2de7fdaaf0fc,expiration-notify-body.txt,4214b818-dedc-4812-a5cf-50b1222630e1
