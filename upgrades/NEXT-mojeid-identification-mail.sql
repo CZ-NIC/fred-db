@@ -1,6 +1,18 @@
-INSERT INTO mail_template VALUES
-(21, 1,
-'Založení účtu mojeID - PIN1 pro aktivaci mojeID',
+INSERT INTO mail_template (
+    mail_type_id,
+    version,
+    subject,
+    body_template,
+    body_template_content_type,
+    mail_template_footer_id,
+    mail_template_default_id,
+    mail_header_default_id
+)
+SELECT
+    -- Keep most of the columns intact.
+    mt.mail_type_id,
+    mt.version + 1,  -- increase version
+    mt.subject,
 'Vážený uživateli,
 
 před tím, než Vám aktivujeme účet mojeID, musíme ověřit správnost Vašich
@@ -27,4 +39,15 @@ S pozdravem
 tým mojeID
 
 Pokud jste o aktivaci tohoto účtu mojeID nežádali, prosíme, tento e-mail ignorujte.
-', 'plain', 1, 1, 2, DEFAULT);
+',
+    mt.body_template_content_type,
+    mt.mail_template_footer_id,
+    mt.mail_template_default_id,
+    mt.mail_header_default_id
+FROM
+    mail_template mt
+    JOIN mail_type mtype ON (mt.mail_type_id = mtype.id)
+WHERE
+    mtype.name = 'mojeid_identification'
+ORDER BY version DESC
+LIMIT 1;
