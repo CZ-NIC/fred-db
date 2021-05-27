@@ -21,7 +21,8 @@ INSERT INTO request_type (service_id, id, name)
         (8, 15, 'MojeidDeactivateNiaAuthenticators'),
         (8, 16, 'BulkTransfer'),
         (8, 17, 'MojeidNiaUpdateAccount'),
-        (8, 18, 'MojeidDeactivatePowerAuth');
+        (8, 18, 'MojeidDeactivatePowerAuth'),
+        (8, 19, 'MojeidUnblockPowerAuth');
 
 INSERT INTO result_code (service_id, result_code, name)
     VALUES
