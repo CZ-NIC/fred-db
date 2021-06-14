@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.45.2 (2021-06-14)
+-------------------
+
+* Update template for epp send authinfo e-mail template (new ``registrar_url`` parameter)
+
 2.45.1 (2021-03-16)
 -------------------
 

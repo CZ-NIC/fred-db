@@ -1,5 +1,24 @@
-INSERT INTO mail_template VALUES
-(2, 1, 'Zaslání autorizační informace / Sending authorization information',
+---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.45.2' WHERE id = 1;
+
+
+INSERT INTO mail_template (
+    mail_type_id,
+    version,
+    subject,
+    body_template,
+    body_template_content_type,
+    mail_template_footer_id,
+    mail_template_default_id,
+    mail_header_default_id
+)
+SELECT
+    -- Keep most of the columns intact.
+    mt.mail_type_id,
+    mt.version + 1,  -- increase version
+    mt.subject,
 'Vážený zákazníku,
 
 na základě Vaší žádosti, podané prostřednictvím registrátora
@@ -34,4 +53,15 @@ If you did not submit the aforementioned request, please notify your registrar <
 
 Yours sincerely
 Support of <?cs var:defaults.company_en ?>
-', 'plain', 1, 1, 1, DEFAULT);
+',
+    mt.body_template_content_type,
+    mt.mail_template_footer_id,
+    mt.mail_template_default_id,
+    mt.mail_header_default_id
+FROM
+    mail_template mt
+    JOIN mail_type mtype ON (mt.mail_type_id = mtype.id)
+WHERE
+    mtype.name = 'sendauthinfo_epp'
+ORDER BY version DESC
+LIMIT 1;
