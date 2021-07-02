@@ -1,3 +1,9 @@
+---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.45.3' WHERE id = 1;
+
+
 INSERT INTO mail_template (
     mail_type_id,
     version,

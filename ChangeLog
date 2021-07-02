@@ -1,3 +1,7 @@
+2021-07-02 (2.45.3)
+
+    * Update template of mojeid PIN1 e-mail
+
 2021-06-14 (2.45.2)
 
     * Update template for epp send authinfo e-mail template (new ``registrar_url`` parameter)
