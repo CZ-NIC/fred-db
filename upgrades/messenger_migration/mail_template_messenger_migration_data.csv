@@ -31,6 +31,7 @@ invoice_audit,1,invoice-subject.txt,2dc28abf-9859-4b52-9bf2-10c9f39d012e,invoice
 invoice_noaudit,1,invoice-subject.txt,2dc28abf-9859-4b52-9bf2-10c9f39d012e,invoice-noaudit-body.txt,bc4cf1b3-ddea-46c6-85dc-b3952eb07628
 request_block,1,request-block-subject.txt,39ecad58-542c-419f-aac6-08431bbe0a3b,request-block-body.txt,5e188bbe-466a-4230-841c-e43adb482c3b
 mojeid_identification,1,mojeid-identification-subject.txt,e0cce3d0-f751-438b-87d3-5e2926bf0e0a,mojeid-identification-body.txt,5338dd88-4cf3-41ea-9459-32127f7686c8
+mojeid_identification,2,mojeid-identification-subject.txt,e0cce3d0-f751-438b-87d3-5e2926bf0e0a,mojeid-identification-body.txt,4606deae-edbb-4341-841f-2ce88204ec79
 mojeid_validation,1,mojeid-validation-subject.txt,430c7e37-c33e-471b-965b-754db8c0059f,mojeid-validation-body.txt,3a1fc287-8b84-4698-adfb-a775481b69c3
 annual_contact_reminder,1,annual-contact-reminder-subject.txt,25a5c13a-1bcd-4473-89f3-51710bd82d94,annual-contact-reminder-body.txt,d8cd31f6-2621-4de8-9a20-004dcbc1adc9
 mojeid_email_change,1,mojeid-email-change-subject.txt,8a69b731-4cfb-438f-b200-0e1b65a5643a,mojeid-email-change-body.txt,61ae43ad-e381-492d-b6e8-78c7cfd02a46
