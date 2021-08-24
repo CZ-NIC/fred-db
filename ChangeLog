@@ -1,3 +1,7 @@
+2021-08-24 (2.45.4)
+
+    * Do not require createlang utility
+
 2021-07-02 (2.45.3)
 
     * Update template of mojeid PIN1 e-mail
