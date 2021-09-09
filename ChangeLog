@@ -1,3 +1,7 @@
+2021-09-09 (2.45.5)
+
+    * Fix rpm build
+
 2021-08-24 (2.45.4)
 
     * Do not require createlang utility
