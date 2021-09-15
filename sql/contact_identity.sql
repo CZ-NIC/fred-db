@@ -10,5 +10,5 @@ CREATE TABLE IF NOT EXISTS contact_identity (
     valid_to TIMESTAMP NULL DEFAULT NULL CONSTRAINT contact_identity_valid_to_not_before_valid_from CHECK (valid_from <= valid_to),
     CONSTRAINT contact_identity_contact_id_fkey FOREIGN KEY (contact_id) REFERENCES object_registry (id));
 
-CREATE UNIQUE INDEX IF NOT EXISTS contact_identity_identity_provider_subject_contact_id_valid_idx ON contact_identity (identity_provider, subject, contact_id) WHERE valid_to IS NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS contact_identity_contact_id_valid_idx ON contact_identity (contact_id) WHERE valid_to IS NULL;
 
