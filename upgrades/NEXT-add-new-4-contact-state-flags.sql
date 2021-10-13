@@ -1,0 +1,1 @@
+../sql/registry_dml_identity.sql
