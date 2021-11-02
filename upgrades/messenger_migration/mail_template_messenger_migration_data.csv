@@ -49,4 +49,4 @@ akm_candidate_state_ok,1,akm-candidate-state-ok-subject.txt,6483cd8b-81cf-4ee0-a
 akm_candidate_state_ko,1,akm-candidate-state-ko-subject.txt,1f57a6f3-ad5c-4d41-9747-81e093a72a7f,akm-candidate-state-ko-body.txt,96c48a9e-1182-41fe-b710-eb1526a9e19a
 akm_keyset_update,1,akm-keyset-update-subject.txt,1fb9dfb7-43f9-4231-8e68-288bda495016,akm-keyset-update-body.txt,7f508d29-c46c-4e27-885a-e7b097b5e627
 record_statement,1,record-statement-subject.txt,dc01efa9-3c2b-41f0-a131-feddec71d5e4,record-statement-body.txt,0b2c7f19-42d8-4424-ad7c-abd459c279fb
-sendpersonalinfo_pif,1,sendpersonalinfo-pif-subject.txt,d8afee62-f8cc-479d-a346-851cddd5e84a,sendpersonalinfo-pif-body.txt,cbddde19-fd06-4d05-9cf3-f7d47c76acef
+sendpersonalinfo_pif,1,send-personalinfo-pif-subject.txt,d8afee62-f8cc-479d-a346-851cddd5e84a,send-personalinfo-pif-body.txt,cbddde19-fd06-4d05-9cf3-f7d47c76acef
