@@ -150,6 +150,8 @@ write_script()
     cat $DIR/changes_notifications.sql
     # similar search indexes
     cat $DIR/similar_search_trigram_indexes.sql
+    # identity
+    cat $DIR/contact_identity.sql
 }
 
 usage()
