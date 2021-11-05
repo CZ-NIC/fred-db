@@ -129,6 +129,8 @@ write_script()
     cat $DIR/registrar_disconnect.sql
     # mojeid
     cat $DIR/registry_dml_mojeid.sql
+    # identity
+    cat $DIR/registry_dml_identity.sql
     # contact reminder
     cat $DIR/reminder_ddl.sql
     # monitoring
@@ -148,6 +150,8 @@ write_script()
     cat $DIR/changes_notifications.sql
     # similar search indexes
     cat $DIR/similar_search_trigram_indexes.sql
+    # identity
+    cat $DIR/contact_identity.sql
 }
 
 usage()
