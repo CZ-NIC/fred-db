@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+2.46.0 (2021-11-08)
+-------------------
+
+* Add ``contact_identity`` table (to manage history of linkage between registry
+  contact and external identity service)
+
+* Add new contact states to inform that some of the contact attributes are locked and cannot be changed
+
 2.45.5 (2021-09-09)
 -------------------
 
