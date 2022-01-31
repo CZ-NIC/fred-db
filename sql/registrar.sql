@@ -20,7 +20,8 @@ CREATE TABLE Registrar (
   Email varchar(1024),
   Url varchar(1024),
   System bool default false,
-  Regex varchar(30) default NULL
+  Regex varchar(30) default NULL,
+  is_internal bool NOT NULL default false
 );
 
 comment on table Registrar is 'Evidence of registrars, who can create or change administered object via register';
