@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+2.47.0 (2022-01-31)
+-------------------
+
+* Add possibility to mark registrar as internal
+
+  * not in registrar list in public interfaces but still traceable when linked to another object
+  * not charged
+
 2.46.0 (2021-11-08)
 -------------------
 
