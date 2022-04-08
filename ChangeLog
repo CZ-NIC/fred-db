@@ -1,3 +1,7 @@
+2022-04-08 (2.48.0)
+
+    * Add object state requests reason enums for external purposes
+
 2022-04-07 (2.47.1)
 
     * Add constraint for allowed characters on ``service.name``
