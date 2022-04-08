@@ -1084,6 +1084,12 @@ SELECT array_to_string(ARRAY((
 $$ LANGUAGE SQL;
 
 -- Reason of state change
+CREATE TABLE enum_object_state_request_reason_external
+(
+    id INTEGER PRIMARY KEY,
+    description TEXT NOT NULL
+);
+
 DROP TABLE IF EXISTS object_state_request_reason;
 CREATE TABLE object_state_request_reason
 (
@@ -1092,6 +1098,7 @@ CREATE TABLE object_state_request_reason
     reason_creation VARCHAR(300) NULL DEFAULT NULL,
     -- state canceled
     reason_cancellation VARCHAR(300) NULL DEFAULT NULL,
+    reason_creation_external_id INTEGER REFERENCES enum_object_state_request_reason_external(id) DEFAULT NULL,
     PRIMARY KEY (object_state_request_id)
 );
 
