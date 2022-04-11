@@ -1,3 +1,9 @@
+---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.48.0' WHERE id = 1;
+
+
 CREATE TABLE enum_object_state_request_reason_external
 (
     id INTEGER PRIMARY KEY,
