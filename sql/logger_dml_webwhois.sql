@@ -1,5 +1,5 @@
 INSERT INTO service (id, partition_postfix, name) VALUES 
-(1, 'webwhois_', 'Web whois');
+(1, 'webwhois_', 'WebWhois');
 
 INSERT INTO request_type (service_id, id, name) VALUES 
 (1, 1104, 'Info'),

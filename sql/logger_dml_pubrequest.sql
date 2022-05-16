@@ -1,5 +1,5 @@
 INSERT INTO service (id, partition_postfix, name) VALUES
-(2, 'pubreq_', 'Public Request');
+(2, 'pubreq_', 'PublicRequest');
 
 INSERT INTO request_type (service_id, id, name) VALUES
 (2, 1600, 'AuthInfo'),

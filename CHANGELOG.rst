@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+2.47.1 (2022-04-07)
+-------------------
+
+* Add constraint for allowed characters on ``service.name``
+
+  * rename necessary services
+
 2.47.0 (2022-01-31)
 -------------------
 

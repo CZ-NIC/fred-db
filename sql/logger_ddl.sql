@@ -23,7 +23,7 @@ CREATE TABLE session (
 CREATE TABLE service (
     id SERIAL CONSTRAINT service_pkey PRIMARY KEY,
     partition_postfix varchar(10) NOT NULL,
-    name varchar(64) NOT NULL
+    name varchar(64) NOT NULL CHECK (name ~ '^[a-zA-Z0-9_\-]+$')
 );
 
 CREATE UNIQUE INDEX service_name_unique_idx ON service (LOWER(name));
