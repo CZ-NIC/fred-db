@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.48.0 (2022-04-08)
+-------------------
+
+* Add object state requests reason enums for external purposes
+
 2.47.1 (2022-04-07)
 -------------------
 
