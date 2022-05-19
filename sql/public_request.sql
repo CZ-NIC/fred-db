@@ -18,7 +18,8 @@ CREATE TABLE public_request (
   registrar_id integer CONSTRAINT public_request_registrar_id_fkey REFERENCES registrar(id),
   create_request_id bigint,
   resolve_request_id bigint,
-  on_status_action enum_on_status_action_type DEFAULT 'scheduled'::enum_on_status_action_type NOT NULL
+  on_status_action enum_on_status_action_type DEFAULT 'scheduled'::enum_on_status_action_type NOT NULL,
+  uuid UUID NOT NULL UNIQUE DEFAULT gen_random_uuid()
 );
 
 comment on table public_request is 'table of general requests give in by public users';
@@ -31,6 +32,7 @@ comment on column public_request.email_to_answer is 'manual entered email by use
 comment on column public_request.answer_email_id is 'reference to mail which was send after request was processed';
 comment on column public_request.registrar_id is 'reference to registrar when request is submitted via EPP protocol (otherwise NULL)';
 comment on column public_request.on_status_action is 'state of action performed during asynchronous processing of the public request';
+comment on column public_request.uuid is 'uuid for external reference';
 
 CREATE INDEX public_request_on_status_action_index ON public_request (on_status_action) WHERE (on_status_action = 'scheduled'::enum_on_status_action_type);
 
