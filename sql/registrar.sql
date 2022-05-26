@@ -21,7 +21,8 @@ CREATE TABLE Registrar (
   Url varchar(1024),
   System bool default false,
   Regex varchar(30) default NULL,
-  is_internal bool NOT NULL default false
+  is_internal bool NOT NULL default false,
+  uuid UUID NOT NULL UNIQUE DEFAULT gen_random_uuid()
 );
 
 comment on table Registrar is 'Evidence of registrars, who can create or change administered object via register';
@@ -44,6 +45,7 @@ comment on column Registrar.Telephone is 'phone number';
 comment on column Registrar.Fax is 'fax number';
 comment on column Registrar.Email is 'e-mail address';
 comment on column Registrar.Url is 'registrars web address';
+comment on column Registrar.Uuid is 'uuid for external reference';
 
 -- DROP TABLE registraracl CASCADE;
 CREATE TABLE registraracl (
