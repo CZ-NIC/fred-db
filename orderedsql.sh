@@ -21,6 +21,7 @@ write_script()
 	cat $DIR/history_base.sql
 	cat $DIR/ccreg.sql
 	cat $DIR/history.sql
+	cat $DIR/object_authinfo.sql
     # regex handle validation
 	cat $DIR/regex_handle_validation_ddl.sql
 	cat $DIR/regex_handle_validation_dml.sql
