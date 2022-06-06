@@ -1,3 +1,9 @@
+---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.49.0' WHERE id = 1;
+
+
 CREATE SCHEMA IF NOT EXISTS notification AUTHORIZATION fred;
 
 CREATE TYPE notification.CONTACT_TYPE AS ENUM
