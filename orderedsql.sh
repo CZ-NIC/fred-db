@@ -152,6 +152,8 @@ write_script()
     cat $DIR/similar_search_trigram_indexes.sql
     # identity
     cat $DIR/contact_identity.sql
+    # notification
+    cat $DIR/notification-object-state-additional-contact.sql
 }
 
 usage()
