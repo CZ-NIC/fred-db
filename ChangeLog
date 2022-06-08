@@ -1,3 +1,7 @@
+2022-06-08 (2.50.0)
+
+   * Add UUID identifier for public requests
+
 2022-06-06 (2.49.0)
 
    * Add table for additional notifications of object state changes
