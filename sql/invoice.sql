@@ -63,8 +63,8 @@ VAT numeric NOT NULL, -- VAT percent used for this invoice)
 total numeric(10,2) NOT NULL  DEFAULT 0.0 ,  -- amount without tax ( for accounting is same as price = total amount without tax);
 totalVAT numeric(10,2)  NOT NULL DEFAULT 0.0 , -- tax paid (0 for accounted tax it is paid at advance invoice)
 invoice_prefix_id INTEGER NOT NULL CONSTRAINT invoice_invoice_prefix_id_fkey REFERENCES invoice_prefix(ID), --  invoice type  from which year is anf which type is according to prefix 
-file INTEGER CONSTRAINT invoice_file_fkey REFERENCES files ,-- link to generated PDF (it can be null till is generated)
-fileXML INTEGER CONSTRAINT invoice_filexml_fkey REFERENCES files -- link to generated XML (it can be null till is generated) 
+file_uuid UUID,
+file_xml_uuid UUID
 );
 
 comment on table invoice is
@@ -81,8 +81,8 @@ comment on column invoice.VAT is 'VAT hight from account';
 comment on column invoice.total is 'amount without tax';
 comment on column invoice.totalVAT is 'tax paid';
 comment on column invoice.invoice_prefix_id is 'invoice type - which year and type (accounting/advance) ';
-comment on column invoice.file is 'link to generated PDF file, it can be NULL till file is generated';
-comment on column invoice.fileXML is 'link to generated XML file, it can be NULL till file is generated';
+comment on column invoice.file_uuid is 'uuid of exported file for external reference, it can be NULL if the file is not yet generated';
+comment on column invoice.file_xml_uuid is 'uuid of exported XML file for external reference, it can be NULL if the file is not yet generated';
 
 -- invoices generation
 CREATE TABLE invoice_generation
