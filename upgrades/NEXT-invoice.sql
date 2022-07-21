@@ -11,6 +11,8 @@ COMMENT ON COLUMN invoice.file_xml_uuid IS 'uuid of exported XML file for extern
 UPDATE invoice i SET file_uuid = (SELECT f.uuid FROM files f WHERE f.id = i.file);
 UPDATE invoice i SET file_xml_uuid = (SELECT f.uuid FROM files f WHERE f.id = i.filexml);
 
+ALTER TABLE invoice_mails DROP CONSTRAINT invoice_mails_mailid_fkey;
+
 CREATE OR REPLACE FUNCTION invoice_update_file()
 RETURNS trigger AS
 $$

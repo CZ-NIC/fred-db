@@ -168,11 +168,10 @@ CREATE TABLE invoice_mails
 id SERIAL NOT NULL CONSTRAINT invoice_mails_pkey PRIMARY KEY, -- unique primary key
 invoiceid INTEGER CONSTRAINT invoice_mails_invoiceid_fkey REFERENCES invoice, -- link to invoices
 genid INTEGER CONSTRAINT invoice_mails_genid_fkey REFERENCES invoice_generation, -- link to invoices
-mailid INTEGER NOT NULL CONSTRAINT invoice_mails_mailid_fkey REFERENCES mail_archive -- e-mail which contains this invoice 
+mailid INTEGER NOT NULL
 );
 
 comment on column invoice_mails.invoiceid is 'link to invoices';
-comment on column invoice_mails.mailid is 'e-mail which contains this invoice';
 
 CREATE TABLE invoice_registrar_credit_transaction_map
 (
