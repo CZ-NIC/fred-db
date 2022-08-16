@@ -1,6 +1,14 @@
 CHANGELOG
 =========
 
+2.51.0 (2022-07-21)
+-------------------
+
+* Add UUID identifier to invoice file links (keep backward compability with
+  trigger to fill file and filexml appropriate foreign key ids)
+
+* Add UUID identifier to registrar
+
 2.50.0 (2022-06-08)
 -------------------
 
