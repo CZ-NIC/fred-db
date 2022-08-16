@@ -1,3 +1,10 @@
+2022-07-21 (2.51.0)
+
+   * Add UUID identifier to invoice file links (keep backward compability with
+     trigger to fill file and filexml appropriate foreign key ids)
+
+   * Add UUID identifier to registrar
+
 2022-06-08 (2.50.0)
 
    * Add UUID identifier for public requests
