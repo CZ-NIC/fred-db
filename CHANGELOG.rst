@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.49.0 (2022-06-06)
+-------------------
+
+* Add table for additional notifications of object state changes
+
 2.48.0 (2022-04-08)
 -------------------
 

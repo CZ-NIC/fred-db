@@ -1,4 +1,4 @@
-AC_INIT([fred-db], 2.48.0)
+AC_INIT([fred-db], 2.49.0)
 AC_CONFIG_FILES([Makefile
 		 fred-db.spec fred-dbmanager])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])

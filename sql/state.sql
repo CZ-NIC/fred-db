@@ -240,7 +240,9 @@ CREATE TABLE object_state_request (
   -- could be pointer to some list of administration actions
   crdate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
   -- could be pointer to some list of administration actions
-  canceled TIMESTAMP 
+  canceled TIMESTAMP,
+  -- id for external use
+  uuid UUID NOT NULL UNIQUE DEFAULT gen_random_uuid()
 );
 
 CREATE INDEX object_state_request_object_id_idx ON object_state_request (object_id);
