@@ -25,3 +25,6 @@ CREATE TABLE notification.object_state_additional_contact
 
 CREATE UNIQUE INDEX object_state_additional_conta_object_id_state_flag_id_valid_idx
                  ON notification.object_state_additional_contact (object_id, state_flag_id, valid_from, type);
+
+
+ALTER TABLE object_state_request ADD COLUMN uuid UUID NOT NULL UNIQUE DEFAULT gen_random_uuid();
