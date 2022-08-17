@@ -1,3 +1,7 @@
+2022-08-17 (2.51.1)
+
+   * Fix - Add UUID identifier to files (referenced from trigger on invoice table)
+
 2022-07-21 (2.51.0)
 
    * Add UUID identifier to invoice file links (keep backward compability with
