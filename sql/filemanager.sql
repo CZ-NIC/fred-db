@@ -29,8 +29,11 @@ CREATE TABLE files (
 	mimetype varchar(100) NOT NULL DEFAULT 'application/octet-stream',
 	crdate timestamp NOT NULL DEFAULT now(),
 	filesize integer NOT NULL,
-	filetype smallint CONSTRAINT files_filetype_fkey REFERENCES enum_filetype(id)
+	filetype smallint CONSTRAINT files_filetype_fkey REFERENCES enum_filetype(id),
+    uuid UUID NOT NULL UNIQUE DEFAULT gen_random_uuid()
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS files_uuid_idx ON files (uuid);
 
 comment on table files is
 'table of files';
@@ -41,3 +44,4 @@ comment on column files.mimetype is 'file mimetype';
 comment on column files.crdate is 'file creation timestamp';
 comment on column files.filesize is 'file size';
 comment on column files.filetype is 'file type from table enum_filetype';
+comment on column files.uuid is 'uuid for external reference';

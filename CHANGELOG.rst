@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+2.51.1 (2022-08-17)
+-------------------
+
+* Fix - Add UUID identifier to files (referenced from trigger on invoice table)
+
+* Fix - Script file name (scripts for creating new empty db)
+
 2.51.0 (2022-07-21)
 -------------------
 
