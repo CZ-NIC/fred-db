@@ -153,7 +153,7 @@ write_script()
     # identity
     cat $DIR/contact_identity.sql
     # notification
-    cat $DIR/notification-object-state-additional-contact.sql
+    cat $DIR/notification_object_state_additional_contact.sql
 }
 
 usage()
