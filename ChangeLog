@@ -2,6 +2,8 @@
 
    * Fix - Add UUID identifier to files (referenced from trigger on invoice table)
 
+   * Fix - Script file name (scripts for creating new empty db)
+
 2022-07-21 (2.51.0)
 
    * Add UUID identifier to invoice file links (keep backward compability with
