@@ -1,3 +1,7 @@
+2022-09-20 (2.52.0)
+
+   * Registry objects authinfo password is now stored hashed and has ttl (expiration timestamp)
+
 2022-08-17 (2.51.1)
 
    * Fix - Add UUID identifier to files (referenced from trigger on invoice table)
