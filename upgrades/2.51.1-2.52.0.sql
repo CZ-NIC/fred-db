@@ -1,4 +1,10 @@
 ---
+--- don't forget to update database schema version
+---
+UPDATE enum_parameters SET val = '2.52.0' WHERE id = 1;
+
+
+---
 --- Issue #2 - add object_authinfo table
 ---
 CREATE TABLE IF NOT EXISTS object_authinfo

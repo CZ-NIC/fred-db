@@ -1,3 +1,6 @@
+
+
+
 INSERT INTO object_authinfo
            (object_id,
             registrar_id,
