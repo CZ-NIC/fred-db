@@ -1,6 +1,20 @@
 CHANGELOG
 =========
 
+2.52.0 (2022-09-20)
+-------------------
+
+* Registry objects authinfo password is now stored hashed and has ttl (expiration timestamp)
+
+* Add UUID identifier to registrar certification for external reference and
+  file link (keep backward compability with trigger)
+
+* Update registrar acl table
+
+  - Add UUID identifier for external reference
+  - Add create time
+  - Add certificate data
+
 2.51.1 (2022-08-17)
 -------------------
 
