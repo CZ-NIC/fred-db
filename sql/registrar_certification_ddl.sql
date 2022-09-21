@@ -66,22 +66,38 @@ CREATE OR REPLACE FUNCTION registrar_certification_eval_file_id_sync()
 RETURNS "trigger" AS $$
 BEGIN
     IF TG_OP = 'INSERT' THEN
+        -- old clients insert id
         IF NEW.eval_file_id IS NOT NULL THEN
-            RAISE EXCEPTION 'Inserting eval_file_id (%) into registrar_certification table is deprecated. Insert eval_file_uuid instead.', NEW.eval_file_id;
+            SELECT f.uuid
+              FROM files f
+             WHERE f.id = NEW.eval_file_id
+              INTO NEW.eval_file_uuid;
+            RETURN NEW;
         END IF;
-        SELECT f.id
-          FROM files f
-         WHERE f.uuid = NEW.eval_file_uuid
-          INTO NEW.eval_file_id;
+        -- new clients insert uuid
+        IF NEW.eval_file_uuid IS NOT NULL THEN
+            SELECT f.id
+              FROM files f
+             WHERE f.uuid = NEW.eval_file_uuid
+              INTO NEW.eval_file_id;
+            RETURN NEW;
+        END IF;
     ELSEIF TG_OP = 'UPDATE' THEN
+        -- old clients update id
         IF NEW.eval_file_id IS NOT NULL AND NEW.eval_file_id <> OLD.eval_file_id THEN
-            RAISE EXCEPTION 'Updating eval_file_id (%) in registrar_certification table is deprecated. Update eval_file_uuid instead.', NEW.eval_file_id;
+            SELECT f.uuid
+              FROM files f
+             WHERE f.id = NEW.eval_file_id
+              INTO NEW.eval_file_uuid;
+            RETURN NEW;
         END IF;
+        -- new clients update uuid
         IF NEW.eval_file_uuid IS NOT NULL AND NEW.eval_file_uuid <> OLD.eval_file_uuid THEN
             SELECT f.id
               FROM files f
              WHERE f.uuid = NEW.eval_file_uuid
               INTO NEW.eval_file_id;
+            RETURN NEW;
         END IF;
     END IF;
     RETURN NEW;
