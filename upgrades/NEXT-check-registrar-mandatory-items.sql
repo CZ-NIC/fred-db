@@ -32,7 +32,7 @@ ALTER TABLE registrar
       ALTER COLUMN postalcode SET NOT NULL,
         ADD CONSTRAINT registrar_postalcode_check CHECK(TRIM(postalcode) != '') NOT VALID,
 
-      ALTER COLUMN telephone SET DATA TYPE VARCHAR(32) USING COALESCE(TRIM(postalcode), ''),
+      ALTER COLUMN telephone SET DATA TYPE VARCHAR(32) USING COALESCE(TRIM(telephone), ''),
       ALTER COLUMN telephone SET NOT NULL,
         ADD CONSTRAINT registrar_telephone_check CHECK(TRIM(telephone) != '') NOT VALID,
 
