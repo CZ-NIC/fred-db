@@ -2,24 +2,28 @@
 CREATE TABLE Registrar (
   ID SERIAL CONSTRAINT registrar_pkey PRIMARY KEY,
   ICO  varchar(50), -- ICO of registrar
-  DIC  varchar(50), -- DIC of registrar
+  DIC varchar(50) NOT NULL CHECK(TRIM(dic) != ''), -- DIC of registrar
   varsymb  char(10) CONSTRAINT registrar_varsymb_key UNIQUE, -- coupling variable symbol ( ico )
   VAT boolean NOT NULL DEFAULT True,
-  Handle varchar(255) CONSTRAINT registrar_handle_key UNIQUE NOT NULL,
-  Name varchar(1024),
-  Organization varchar(1024),
-  Street1 varchar(1024),
-  Street2 varchar(1024),
+  Handle varchar(255) CONSTRAINT registrar_handle_key UNIQUE NOT NULL CHECK(TRIM(handle) != ''),
+  Name varchar(1024) NOT NULL CHECK(TRIM(name) != ''),
+  Organization varchar(1024) NOT NULL CHECK(TRIM(organization) != ''),
+  Street1 varchar(1024) NOT NULL CONSTRAINT registrar_street1_check CHECK(TRIM(street1) != ''),
+  -- check if street2 is present OR street3 is not present with respect to the NULL arithmetic
+  -- NULL arithmetic: NULL IS TRUE = false
+  --                  NULL IS NOT TRUE = true
+  Street2 varchar(1024) CONSTRAINT registrar_street23_check CHECK(TRIM(street2) != '' IS TRUE OR
+                                                                  TRIM(street3) != '' IS NOT TRUE),
   Street3 varchar(1024),
-  City varchar(1024),
+  City varchar(1024) NOT NULL CHECK(TRIM(city) != ''),
   StateOrProvince varchar(1024),
-  PostalCode varchar(32),
+  PostalCode varchar(32) NOT NULL CHECK(TRIM(postalcode) != ''),
   Country char(2) CONSTRAINT registrar_country_fkey REFERENCES enum_country,
-  Telephone varchar(32),
+  Telephone varchar(32) NOT NULL CHECK(TRIM(telephone) != ''),
   Fax varchar(32),
-  Email varchar(1024),
-  Url varchar(1024),
-  System bool default false,
+  Email varchar(1024) NOT NULL CHECK(TRIM(email) != ''),
+  Url varchar(1024) NOT NULL CHECK(TRIM(url) != ''),
+  System bool NOT NULL default false,
   Regex varchar(30) default NULL,
   is_internal bool NOT NULL default false,
   uuid UUID NOT NULL UNIQUE DEFAULT gen_random_uuid()

@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+NEXT
+-------------------
+
+* Add constraints to mandatory attributes of the registrar table
+
 2.52.0 (2022-09-20)
 -------------------
 
